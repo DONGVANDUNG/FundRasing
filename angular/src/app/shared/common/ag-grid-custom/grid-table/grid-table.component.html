@@ -1,0 +1,22 @@
+<ag-grid-angular
+    #agGrid
+    style="width: 100%; height: 100%;"
+    [ngStyle]="style"
+    class="ag-theme-alpine"
+    [ngClass]="className ? className : ''"
+
+    (rowDragEnd)="onRowDragEnd($event)"
+    (gridReady)="onGridReady($event)"
+    (selectionChanged)="onSelectionChanged($event)"
+    (rowClicked)="onRowClicked($event)"
+    (rowSelected)="onRowSelected($event)"
+    (cellDoubleClicked)="cellDoubleClickedEvent($event)"
+    (cellValueChanged)="onCellValueChanged($event)"
+    (cellEditingStarted)="onCellEditingStarted($event)"
+    (cellEditingStopped)="onCellEditingStopped($event)"
+    (keydown)="onKeyDown($event)"
+    (cellKeyPress)="onCellKeyPress($event)"
+    >
+</ag-grid-angular>
+<grid-pagination *ngIf="showPagination" [pageSize]="paginationParams?.pageSize" [paginationParams]="paginationParams" (pageChangedEvent)="changePage($event)" [textPagination]="textPagination" [allowToGetMultiRecords]="allowToGetMultiRecords">
+</grid-pagination>
