@@ -26,6 +26,7 @@ import { TableModule } from 'primeng/table';
 import { ImpersonationService } from './admin/users/impersonation.service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { AgGridModule } from 'ag-grid-angular';
 import { DefaultLayoutComponent } from './shared/layout/themes/default/default-layout.component';
 import { Theme2LayoutComponent } from './shared/layout/themes/theme2/theme2-layout.component';
 import { Theme3LayoutComponent } from './shared/layout/themes/theme3/theme3-layout.component';
@@ -207,7 +208,7 @@ import { ViewRecoveryCodesModalComponent } from './shared/layout/profile/view-re
         NgxSpinnerModule,
         AppBsModalModule,
         SubheaderModule,
-        ChangeProfilePictureModalModule
+        ChangeProfilePictureModalModule,AgGridModule
     ]
 })
 export class AppModule {}

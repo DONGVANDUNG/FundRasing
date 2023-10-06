@@ -8,6 +8,7 @@ import { UtilsModule } from '@shared/utils/utils.module';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { AgGridModule } from 'ag-grid-angular';
 import {
     BsDatepickerModule,
     BsDatepickerConfig,
@@ -64,7 +65,7 @@ import { GridPaginationComponent } from './ag-grid-custom/grid-pagination/grid-p
 import { TmssTooltipComponent } from './tmss-tooltip/tmss-tooltip.component';
 import { AgCheckboxRendererComponent } from '@app/shared/common/grid/ag-checkbox-renderer/ag-checkbox-renderer.component';
 import { AgDropdownRendererComponent } from './grid/ag-dropdown-renderer/ag-dropdown-renderer.component';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
     imports: [
@@ -83,6 +84,8 @@ import { AgDropdownRendererComponent } from './grid/ag-dropdown-renderer/ag-drop
         CountoModule,
         AppBsModalModule,
         AutoCompleteModule,
+        AgGridModule,
+        BrowserAnimationsModule
     ],
     declarations: [
         TimeZoneComboComponent,
@@ -136,7 +139,7 @@ import { AgDropdownRendererComponent } from './grid/ag-dropdown-renderer/ag-drop
         DatePickerInitialValueSetterDirective,
         PasswordInputWithShowButtonComponent,
         KeyValueListManagerComponent,
-
+        AgGridModule,
 
         SimpleAgGridComponent,
         TmssComboboxComponent,

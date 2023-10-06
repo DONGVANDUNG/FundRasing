@@ -72,7 +72,7 @@ namespace esign.Web.Startup
                 .AddRazorRuntimeCompilation()
 #endif
                 .AddNewtonsoftJson();
-
+            //services.Add
             services.AddSignalR();
 
             //Configure CORS for angular2 UI
@@ -146,7 +146,6 @@ namespace esign.Web.Startup
 
                 services.AddHangfireServer();
             }
-
             if (WebConsts.GraphQL.Enabled)
             {
                 services.AddAndConfigureGraphQL();
@@ -156,7 +155,7 @@ namespace esign.Web.Startup
             {
                 ConfigureHealthChecks(services);
             }
-
+            var a = _appConfiguration.GetConnectionString("Default");
             //Configure Abp and Dependency Injection
             return services.AddAbp<esignWebHostModule>(options =>
             {

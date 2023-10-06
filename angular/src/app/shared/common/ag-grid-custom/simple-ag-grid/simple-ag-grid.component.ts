@@ -7,7 +7,6 @@ import { Module } from '@ag-grid-community/all-modules';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { CommonFunction } from '@app/main/commonfuncton.component';
 
-
 @Component({
   selector: 'simple-ag-grid',
   templateUrl: './simple-ag-grid.component.html',
