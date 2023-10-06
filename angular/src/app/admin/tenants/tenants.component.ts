@@ -44,7 +44,7 @@ export class TenantsComponent extends AppComponentBase implements OnInit {
     ];
     creationDateRange: DateTime[] = [this._dateTimeService.getStartOfDay(), this._dateTimeService.getEndOfDay()];
 
-    _entityTypeFullName = 'prod.MultiTenancy.Tenant';
+    _entityTypeFullName = 'esign.MultiTenancy.Tenant';
     entityHistoryEnabled = false;
 
     filters: {

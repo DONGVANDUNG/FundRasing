@@ -65,7 +65,7 @@ import { GridPaginationComponent } from './ag-grid-custom/grid-pagination/grid-p
 import { TmssTooltipComponent } from './tmss-tooltip/tmss-tooltip.component';
 import { AgCheckboxRendererComponent } from '@app/shared/common/grid/ag-checkbox-renderer/ag-checkbox-renderer.component';
 import { AgDropdownRendererComponent } from './grid/ag-dropdown-renderer/ag-dropdown-renderer.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
     imports: [
@@ -85,7 +85,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         AppBsModalModule,
         AutoCompleteModule,
         AgGridModule,
-        BrowserAnimationsModule
+        // BrowserAnimationsModule
     ],
     declarations: [
         TimeZoneComboComponent,

@@ -755,6 +755,27 @@ namespace esign.Migrations
                });
 
             migrationBuilder.CreateTable(
+               name: "AppFriendships",
+               columns: table => new
+               {
+                   Id = table.Column<long>(nullable: false)
+                       .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                   CreationTime = table.Column<DateTime>(nullable: false),
+                   FriendProfilePictureId = table.Column<Guid>(nullable: true),
+                   FriendTenancyName = table.Column<string>(nullable: true),
+                   FriendTenantId = table.Column<int>(nullable: true),
+                   FriendUserId = table.Column<long>(nullable: false),
+                   FriendUserName = table.Column<string>(maxLength: 32, nullable: false),
+                   State = table.Column<int>(nullable: false),
+                   TenantId = table.Column<int>(nullable: true),
+                   UserId = table.Column<long>(nullable: false)
+               },
+               constraints: table =>
+               {
+                   table.PrimaryKey("PK_AppFriendships", x => x.Id);
+               });
+
+            migrationBuilder.CreateTable(
                 name: "AppInvoices",
                 columns: table => new
                 {

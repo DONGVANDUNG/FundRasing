@@ -8,10 +8,10 @@ import { AppComponent } from './app.component';
 import { LOCALE_ID } from '@angular/core';
 
 export function getRemoteServiceBaseUrl(): string {
-    return 'https://localhost:5000';
+    return 'http://localhost:5500';
 }
 
-describe('App: prod', () => {
+describe('App: esign', () => {
     // Remove freezeui loading animation
     (window as any).FreezeUI = function () {};
     (window as any).UnFreezeUI = function () {};

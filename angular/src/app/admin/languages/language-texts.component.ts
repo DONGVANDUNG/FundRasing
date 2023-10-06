@@ -81,7 +81,7 @@ export class LanguageTextsComponent extends AppComponentBase implements OnInit {
         this._activatedRoute.params.subscribe((params: Params) => {
             this.baseLanguageName = params['baseLanguageName'] || abp.localization.currentLanguage.name;
             this.targetLanguageName = params['name'];
-            this.sourceName = params['sourceName'] || 'prod';
+            this.sourceName = params['sourceName'] || 'esign';
             this.targetValueFilter = params['targetValueFilter'] || 'ALL';
             this.filterText = params['filterText'] || '';
 

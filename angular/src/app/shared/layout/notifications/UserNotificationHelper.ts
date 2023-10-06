@@ -140,7 +140,7 @@ export class UserNotificationHelper extends AppComponentBase {
         });
         if (Push.default.Permission.has()) {
             //Desktop notification
-            Push.default.create('prod', {
+            Push.default.create('esign', {
                 body: this.format(userNotification).text,
                 icon: abp.appPath + 'assets/common/images/app-logo-on-dark-sm.svg',
                 timeout: 6000,

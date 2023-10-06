@@ -39,10 +39,10 @@ package-lock.json
 Thumbs.db
 
 # VS files
-/prod.AngularUI.csproj.user
+/esign.AngularUI.csproj.user
 project.lock.json
 Properties/launchSettings.json
-/prod.AngularUI.xproj.user
+/esign.AngularUI.xproj.user
 /src/assets/common/styles/**/*.min.*
 
 src/assets/metronic/themes/**/css/*.min.css

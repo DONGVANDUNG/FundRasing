@@ -81,10 +81,10 @@ export function appInitializerFactory(injector: Injector, platformLocation: Plat
 function initializeLocalForage() {
     localForage.config({
         driver: localForage.LOCALSTORAGE,
-        name: 'prod',
+        name: 'esign',
         version: 1.0,
         storeName: 'abpzerotemplate_local_storage',
-        description: 'Cached data for prod',
+        description: 'Cached data for esign',
     });
 }
 

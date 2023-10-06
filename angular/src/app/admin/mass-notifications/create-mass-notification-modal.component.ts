@@ -114,6 +114,6 @@ export class CreateMassNotificationModalComponent extends AppComponentBase {
   }
 
   onTargetNotifiersChanged(): void {
-    this.showSMSTargetNotifierMessage = this.createMassNotificationInput.targetNotifiers.includes('prod.Notifications.SmsRealTimeNotifier');
+    this.showSMSTargetNotifierMessage = this.createMassNotificationInput.targetNotifiers.includes('esign.Notifications.SmsRealTimeNotifier');
   }
 }
