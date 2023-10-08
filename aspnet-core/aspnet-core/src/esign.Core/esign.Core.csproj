@@ -21,24 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!-- <EmbeddedResource Include="Localization\esign\esign-ar.xml" />
-    <EmbeddedResource Include="Localization\esign\esign-de.xml" />
-    <EmbeddedResource Include="Localization\esign\esign-en-GB.xml" />
-    <EmbeddedResource Include="Localization\esign\esign-es-MX.xml" />
-    <EmbeddedResource Include="Localization\esign\esign-es.xml" />
-    <EmbeddedResource Include="Localization\esign\esign-fr.xml" />
-    <EmbeddedResource Include="Localization\esign\esign-it.xml" />
-    <EmbeddedResource Include="Localization\esign\esign-nl.xml" />
-    <EmbeddedResource Include="Localization\esign\esign-pt-BR.xml" />
-    <EmbeddedResource Include="Localization\esign\esign-ru.xml" />
-    <EmbeddedResource Include="Localization\esign\esign-th.xml" />
-    <EmbeddedResource Include="Localization\esign\esign-tr.xml" />
-    <EmbeddedResource Include="Localization\esign\esign-vi.xml" />
-    <EmbeddedResource Include="Localization\esign\esign-zh-Hans.xml" />
-    <EmbeddedResource Include="Localization\esign\esign.xml" /> -->
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
     <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.2.2" />
