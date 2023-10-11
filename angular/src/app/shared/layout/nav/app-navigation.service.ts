@@ -14,8 +14,6 @@ export class AppNavigationService {
 
     getMenu(): AppMenu {
         return new AppMenu('MainMenu', 'MainMenu', [
-            new AppMenuItem('Dashboard', 'Pages.Administration.Host.Dashboard', 'flaticon-line-graph', '/app/admin/hostDashboard'),
-            new AppMenuItem('Dashboard', 'Pages.Tenant.Dashboard', 'flaticon-line-graph', '/app/main/dashboard'),
 
             /* MASTER */
             new AppMenuItem('Master', 'Pages.Master', 'flaticon-interface-8', '', [], [
@@ -27,6 +25,7 @@ export class AppNavigationService {
 
             new AppMenuItem('Tenants', 'Pages.Tenants', 'flaticon-list-3', '/app/admin/tenants'),
             new AppMenuItem('Editions', 'Pages.Editions', 'flaticon-app', '/app/admin/editions'),
+            new AppMenuItem('User', 'Pages.Editions', 'flaticon-app', '/app/admin/user-home'),
             new AppMenuItem(
                 'Administration', '', 'flaticon-interface-8', '', [],
                 [
@@ -36,8 +35,9 @@ export class AppNavigationService {
                         'flaticon-map',
                         '/app/admin/organization-units'
                     ),
+                    new AppMenuItem('UserHome', 'Pages.Administration.Users', 'flaticon-app', '/app/admin/user-home'),
                     new AppMenuItem('Roles', 'Pages.Administration.Roles', 'flaticon-suitcase', '/app/admin/roles'),
-                    new AppMenuItem('Users', 'Pages.Administration.Users', 'flaticon-users', '/app/admin/users'),
+                    // new AppMenuItem('Users', 'Pages.Administration.Users', 'flaticon-users', '/app/admin/users'),
                     new AppMenuItem(
                         'Languages',
                         'Pages.Administration.Languages',

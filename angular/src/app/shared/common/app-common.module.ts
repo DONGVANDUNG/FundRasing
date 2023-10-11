@@ -41,7 +41,6 @@ import { KeyValueListManagerComponent } from './key-value-list-manager/key-value
 
 
 
-import { DashboardViewConfigurationService } from './customizable-dashboard/dashboard-view-configuration.service';
 import { DataFormatService } from './services/data-format.service';
 
 import { TmssSelectGridModalComponent } from './grid/tmss-select-grid-modal/tmss-select-grid-modal.component';
@@ -174,7 +173,6 @@ import { AgDropdownRendererComponent } from './grid/ag-dropdown-renderer/ag-drop
         DateTimeService,
         AppLocalizationService,
         AppNavigationService,
-        DashboardViewConfigurationService,
         DataFormatService,
 
         { provide: BsDatepickerConfig, useFactory: NgxBootstrapDatePickerConfigService.getDatepickerConfig },

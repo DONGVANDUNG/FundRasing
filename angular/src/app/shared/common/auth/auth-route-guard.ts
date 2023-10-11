@@ -80,20 +80,14 @@ export class AppRouteGuard implements CanActivate, CanActivateChild, CanLoad {
             return '/account/login';
         }
 
-        if (this._permissionChecker.isGranted('Pages.Administration.Host.Dashboard')) {
-            return '/app/admin/hostDashboard';
-        }
-
-        if (this._permissionChecker.isGranted('Pages.Tenant.Dashboard')) {
-            return '/app/main/dashboard';
-        }
 
         if (this._permissionChecker.isGranted('Pages.Tenants')) {
             return '/app/admin/tenants';
         }
 
         if (this._permissionChecker.isGranted('Pages.Administration.Users')) {
-            return '/app/admin/users';
+            // return '/app/admin/users';
+            return '/app/admin/app-user-home';
         }
 
         return '/app/notifications';

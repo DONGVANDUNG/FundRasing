@@ -20,18 +20,16 @@ namespace esign.MultiTenancy.Accounting
         private readonly ISubscriptionPaymentRepository _subscriptionPaymentRepository;
         private readonly IInvoiceNumberGenerator _invoiceNumberGenerator;
         private readonly EditionManager _editionManager;
-        private readonly IRepository<Invoice> _invoiceRepository;
 
         public InvoiceAppService(
             ISubscriptionPaymentRepository subscriptionPaymentRepository,
             IInvoiceNumberGenerator invoiceNumberGenerator,
-            EditionManager editionManager,
-            IRepository<Invoice> invoiceRepository)
+            EditionManager editionManager
+            )
         {
             _subscriptionPaymentRepository = subscriptionPaymentRepository;
             _invoiceNumberGenerator = invoiceNumberGenerator;
             _editionManager = editionManager;
-            _invoiceRepository = invoiceRepository;
         }
 
         public async Task<InvoiceDto> GetInvoiceInfo(EntityDto<long> input)
@@ -48,28 +46,17 @@ namespace esign.MultiTenancy.Accounting
                 throw new UserFriendlyException(L("ThisInvoiceIsNotYours"));
             }
 
-            var invoice = await _invoiceRepository.FirstOrDefaultAsync(b => b.InvoiceNo == payment.InvoiceNo);
-            if (invoice == null)
-            {
-                throw new UserFriendlyException();
-            }
-
             var edition = await _editionManager.FindByIdAsync(payment.EditionId);
             var hostAddress = await SettingManager.GetSettingValueAsync(AppSettings.HostManagement.BillingAddress);
 
             return new InvoiceDto
             {
                 InvoiceNo = payment.InvoiceNo,
-                InvoiceDate = invoice.InvoiceDate,
                 Amount = payment.Amount,
                 EditionDisplayName = edition.DisplayName,
 
                 HostAddress = hostAddress.Replace("\r\n", "|").Split('|').ToList(),
                 HostLegalName = await SettingManager.GetSettingValueAsync(AppSettings.HostManagement.BillingLegalName),
-
-                TenantAddress = invoice.TenantAddress.Replace("\r\n", "|").Split('|').ToList(),
-                TenantLegalName = invoice.TenantLegalName,
-                TenantTaxNo = invoice.TenantTaxNo
             };
         }
 
@@ -92,16 +79,6 @@ namespace esign.MultiTenancy.Accounting
             {
                 throw new UserFriendlyException(L("InvoiceInfoIsMissingOrNotCompleted"));
             }
-
-            await _invoiceRepository.InsertAsync(new Invoice
-            {
-                InvoiceNo = invoiceNo,
-                InvoiceDate = Clock.Now,
-                TenantLegalName = tenantLegalName,
-                TenantAddress = tenantAddress,
-                TenantTaxNo = tenantTaxNo
-            });
-
             payment.InvoiceNo = invoiceNo;
         }
     }

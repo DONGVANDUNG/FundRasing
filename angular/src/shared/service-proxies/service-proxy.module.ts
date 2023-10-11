@@ -55,7 +55,6 @@ import { ZeroTemplateHttpConfigurationService } from './zero-template-http-confi
         ApiServiceProxies.TwitterServiceProxy,
 
         // Master Common Lookup
-        ApiServiceProxies.MstCmmLookupServiceProxy,
 
 
         { provide: RefreshTokenService, useClass: ZeroRefreshTokenService },

@@ -12,17 +12,14 @@ namespace esign.Gdpr
     public class ProfilePictureUserCollectedDataProvider : IUserCollectedDataProvider, ITransientDependency
     {
         private readonly UserManager _userManager;
-        private readonly IBinaryObjectManager _binaryObjectManager;
         private readonly ITempFileCacheManager _tempFileCacheManager;
 
         public ProfilePictureUserCollectedDataProvider(
             UserManager userManager,
-            IBinaryObjectManager binaryObjectManager,
             ITempFileCacheManager tempFileCacheManager
         )
         {
             _userManager = userManager;
-            _binaryObjectManager = binaryObjectManager;
             _tempFileCacheManager = tempFileCacheManager;
         }
 
@@ -33,16 +30,7 @@ namespace esign.Gdpr
             {
                 return new List<FileDto>();
             }
-
-            var profilePicture = await _binaryObjectManager.GetOrNullAsync(profilePictureId.Value);
-            if (profilePicture == null)
-            {
-                return new List<FileDto>();
-            }
-
             var file = new FileDto("ProfilePicture.png", MimeTypeNames.ImagePng);
-            _tempFileCacheManager.SetFile(file.FileToken, profilePicture.Bytes);
-
             return new List<FileDto> {file};
         }
     }

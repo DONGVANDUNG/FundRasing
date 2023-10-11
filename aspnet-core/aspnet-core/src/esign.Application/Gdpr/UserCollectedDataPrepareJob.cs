@@ -19,20 +19,17 @@ namespace esign.Gdpr
 {
     public class UserCollectedDataPrepareJob : AsyncBackgroundJob<UserIdentifier>, ITransientDependency
     {
-        private readonly IBinaryObjectManager _binaryObjectManager;
         private readonly ITempFileCacheManager _tempFileCacheManager;
         private readonly IAppNotifier _appNotifier;
         private readonly ISettingManager _settingManager;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
         
         public UserCollectedDataPrepareJob(
-            IBinaryObjectManager binaryObjectManager,
             ITempFileCacheManager tempFileCacheManager,
             IAppNotifier appNotifier,
             ISettingManager settingManager, 
             IUnitOfWorkManager unitOfWorkManager)
         {
-            _binaryObjectManager = binaryObjectManager;
             _tempFileCacheManager = tempFileCacheManager;
             _appNotifier = appNotifier;
             _settingManager = settingManager;
@@ -69,19 +66,6 @@ namespace esign.Gdpr
                                 }
                             }
                         }
-
-                        var zipFile = new BinaryObject
-                        (
-                            args.TenantId,
-                            CompressFiles(files),
-                            $"{args.UserId} {DateTime.UtcNow} UserCollectedDataPrepareJob result"
-                        );
-
-                        // Save zip file to object manager.
-                        await _binaryObjectManager.SaveAsync(zipFile);
-
-                        // Send notification to user.
-                        await _appNotifier.GdprDataPrepared(args, zipFile.Id);
                     }
                 }
             });

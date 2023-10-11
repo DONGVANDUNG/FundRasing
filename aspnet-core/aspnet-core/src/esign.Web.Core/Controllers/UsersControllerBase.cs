@@ -17,14 +17,11 @@ namespace esign.Web.Controllers
 {
     public abstract class UsersControllerBase : esignControllerBase
     {
-        protected readonly IBinaryObjectManager BinaryObjectManager;
         protected readonly IBackgroundJobManager BackgroundJobManager;
 
         protected UsersControllerBase(
-            IBinaryObjectManager binaryObjectManager,
             IBackgroundJobManager backgroundJobManager)
         {
-            BinaryObjectManager = binaryObjectManager;
             BackgroundJobManager = backgroundJobManager;
         }
 
@@ -53,14 +50,10 @@ namespace esign.Web.Controllers
                 }
 
                 var tenantId = AbpSession.TenantId;
-                var fileObject = new BinaryObject(tenantId, fileBytes, $"{DateTime.UtcNow} import from excel file.");
-
-                await BinaryObjectManager.SaveAsync(fileObject);
 
                 await BackgroundJobManager.EnqueueAsync<ImportUsersToExcelJob, ImportUsersFromExcelJobArgs>(new ImportUsersFromExcelJobArgs
                 {
                     TenantId = tenantId,
-                    BinaryObjectId = fileObject.Id,
                     User = AbpSession.ToUserIdentifier()
                 });
 

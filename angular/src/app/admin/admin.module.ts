@@ -15,6 +15,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { SubheaderModule } from '@app/shared/common/sub-header/subheader.module';
+import { UsersModule } from './users/users.module';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     // suppressScrollX: true
@@ -30,6 +31,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         BsDropdownModule.forRoot(),
         BsDatepickerModule.forRoot(),
         SubheaderModule,
+        UsersModule
     ],
     declarations: [],
     exports: [],

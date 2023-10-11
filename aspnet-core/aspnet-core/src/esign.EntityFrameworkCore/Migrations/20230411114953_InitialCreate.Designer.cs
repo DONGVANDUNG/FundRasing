@@ -11863,7 +11863,6 @@ namespace esign.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AppInvoices");
                 });
 
             modelBuilder.Entity("esign.MultiTenancy.Payments.SubscriptionPayment", b =>
@@ -13282,7 +13281,6 @@ namespace esign.Migrations
 
                     b.HasIndex("TenantId");
 
-                    b.ToTable("AppBinaryObjects");
                 });
 
             modelBuilder.Entity("esign.Welding.Andon.WldAdoEdIn", b =>

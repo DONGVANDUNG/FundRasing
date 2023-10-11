@@ -32,7 +32,6 @@ namespace esign.Configuration.Tenants
 
         private readonly IMultiTenancyConfig _multiTenancyConfig;
         private readonly ITimeZoneService _timeZoneService;
-        private readonly IBinaryObjectManager _binaryObjectManager;
         private readonly IAbpZeroLdapModuleConfig _ldapModuleConfig;
 
         public TenantSettingsAppService(
@@ -40,7 +39,6 @@ namespace esign.Configuration.Tenants
             IMultiTenancyConfig multiTenancyConfig,
             ITimeZoneService timeZoneService,
             IEmailSender emailSender,
-            IBinaryObjectManager binaryObjectManager,
             IAppConfigurationAccessor configurationAccessor
             ) : base(emailSender, configurationAccessor)
         {
@@ -49,7 +47,6 @@ namespace esign.Configuration.Tenants
             _multiTenancyConfig = multiTenancyConfig;
             _ldapModuleConfig = ldapModuleConfig;
             _timeZoneService = timeZoneService;
-            _binaryObjectManager = binaryObjectManager;
         }
 
         #region Get Settings
@@ -699,13 +696,6 @@ namespace esign.Configuration.Tenants
             {
                 return;
             }
-
-            var logoObject = await _binaryObjectManager.GetOrNullAsync(tenant.DarkLogoId.Value);
-            if (logoObject != null)
-            {
-                await _binaryObjectManager.DeleteAsync(tenant.DarkLogoId.Value);
-            }
-
             tenant.ClearLogo();
         }
 
@@ -717,13 +707,6 @@ namespace esign.Configuration.Tenants
             {
                 return;
             }
-
-            var cssObject = await _binaryObjectManager.GetOrNullAsync(tenant.CustomCssId.Value);
-            if (cssObject != null)
-            {
-                await _binaryObjectManager.DeleteAsync(tenant.CustomCssId.Value);
-            }
-
             tenant.CustomCssId = null;
         }
 

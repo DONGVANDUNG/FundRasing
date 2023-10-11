@@ -29,7 +29,6 @@ namespace esign.Authorization.Users.Importing
         private readonly IEnumerable<IPasswordValidator<User>> _passwordValidators;
         private readonly IPasswordHasher<User> _passwordHasher;
         private readonly IAppNotifier _appNotifier;
-        private readonly IBinaryObjectManager _binaryObjectManager;
         private readonly IObjectMapper _objectMapper;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
         public UserManager UserManager { get; set; }
@@ -42,7 +41,6 @@ namespace esign.Authorization.Users.Importing
             IEnumerable<IPasswordValidator<User>> passwordValidators,
             IPasswordHasher<User> passwordHasher,
             IAppNotifier appNotifier,
-            IBinaryObjectManager binaryObjectManager,
             IObjectMapper objectMapper,
             IUnitOfWorkManager unitOfWorkManager)
         {
@@ -53,7 +51,6 @@ namespace esign.Authorization.Users.Importing
             _passwordValidators = passwordValidators;
             _passwordHasher = passwordHasher;
             _appNotifier = appNotifier;
-            _binaryObjectManager = binaryObjectManager;
             _objectMapper = objectMapper;
             _unitOfWorkManager = unitOfWorkManager;
         }
@@ -76,19 +73,7 @@ namespace esign.Authorization.Users.Importing
             {
                 using (CurrentUnitOfWork.SetTenantId(args.TenantId))
                 {
-                    try
-                    {
-                        var file = await _binaryObjectManager.GetOrNullAsync(args.BinaryObjectId);
-                        return _userListExcelDataReader.GetUsersFromExcel(file.Bytes);
-                    }
-                    catch (Exception)
-                    {
                         return null;
-                    }
-                    finally
-                    {
-                        await uow.CompleteAsync();
-                    }
                 }
             }
         }

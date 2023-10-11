@@ -37,7 +37,6 @@ namespace esign.MultiTenancy.Demo
         private readonly OrganizationUnitManager _organizationUnitManager;
         private readonly UserManager _userManager;
         private readonly RandomUserGenerator _randomUserGenerator;
-        private readonly IBinaryObjectManager _binaryObjectManager;
         private readonly IAppFolders _appFolders;
         private readonly IFriendshipManager _friendshipManager;
         private readonly IRepository<ChatMessage, long> _chatMessageRepository;
@@ -47,7 +46,6 @@ namespace esign.MultiTenancy.Demo
             OrganizationUnitManager organizationUnitManager,
             UserManager userManager,
             RandomUserGenerator randomUserGenerator,
-            IBinaryObjectManager binaryObjectManager,
             IAppFolders appFolders,
             IFriendshipManager friendshipManager,
             IRepository<ChatMessage, long> chatMessageRepository,
@@ -56,7 +54,6 @@ namespace esign.MultiTenancy.Demo
             _organizationUnitManager = organizationUnitManager;
             _userManager = userManager;
             _randomUserGenerator = randomUserGenerator;
-            _binaryObjectManager = binaryObjectManager;
             _appFolders = appFolders;
             _friendshipManager = friendshipManager;
             _chatMessageRepository = chatMessageRepository;
@@ -214,11 +211,7 @@ namespace esign.MultiTenancy.Demo
             {
                 //Save a random profile picture
                 var (fileBytes, fileName) = GetRandomProfilePictureBytes();
-                var storedFile = new BinaryObject(user.TenantId, fileBytes, $"{user.Name}-{DateTime.UtcNow}-{fileName}");
-                await _binaryObjectManager.SaveAsync(storedFile);
-
                 //Update new picture on the user
-                user.ProfilePictureId = storedFile.Id;
                 await CurrentUnitOfWork.SaveChangesAsync();
             }
             catch

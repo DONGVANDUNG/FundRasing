@@ -14,11 +14,9 @@ namespace esign.Web.Controllers
     [AbpMvcAuthorize]
     public class DemoUiComponentsController : esignControllerBase
     {
-        private readonly IBinaryObjectManager _binaryObjectManager;
 
-        public DemoUiComponentsController(IBinaryObjectManager binaryObjectManager)
+        public DemoUiComponentsController()
         {
-            _binaryObjectManager = binaryObjectManager;
         }
 
         [HttpPost]
@@ -49,12 +47,8 @@ namespace esign.Web.Controllers
                         fileBytes = stream.GetAllBytes();
                     }
 
-                    var fileObject = new BinaryObject(AbpSession.TenantId, fileBytes, $"Demo ui, uploaded file {DateTime.UtcNow}");
-                    await _binaryObjectManager.SaveAsync(fileObject);
-
                     filesOutput.Add(new UploadFileOutput
                     {
-                        Id = fileObject.Id,
                         FileName = file.FileName
                     });
                 }

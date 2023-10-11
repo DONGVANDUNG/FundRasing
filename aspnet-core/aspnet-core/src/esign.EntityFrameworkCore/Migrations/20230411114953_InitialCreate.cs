@@ -775,22 +775,6 @@ namespace esign.Migrations
                    table.PrimaryKey("PK_AppFriendships", x => x.Id);
                });
 
-            migrationBuilder.CreateTable(
-                name: "AppInvoices",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    InvoiceDate = table.Column<DateTime>(nullable: false),
-                    InvoiceNo = table.Column<string>(nullable: true),
-                    TenantAddress = table.Column<string>(nullable: true),
-                    TenantLegalName = table.Column<string>(nullable: true),
-                    TenantTaxNo = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AppInvoices", x => x.Id);
-                });
 
             migrationBuilder.CreateTable(
                 name: "AbpEntityChangeSets",
@@ -1062,20 +1046,6 @@ namespace esign.Migrations
                         principalTable: "AbpDynamicEntityProperties",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AppBinaryObjects",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    Bytes = table.Column<byte[]>(nullable: false),
-                    Description = table.Column<string>(nullable: true),
-                    TenantId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AppBinaryObjects", x => x.Id);
                 });
 
 
@@ -1437,11 +1407,6 @@ namespace esign.Migrations
                 table: "AbpDynamicPropertyValues",
                 column: "DynamicPropertyId");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_AppBinaryObjects_TenantId",
-                table: "AppBinaryObjects",
-                column: "TenantId");
-
         }
 
         /// <inheritdoc />
@@ -1531,8 +1496,6 @@ namespace esign.Migrations
             migrationBuilder.DropTable(
                 name: "AppChatMessages");
 
-            migrationBuilder.DropTable(
-                name: "AppInvoices");
 
             migrationBuilder.DropTable(
                 name: "AbpEntityPropertyChanges");
@@ -1573,8 +1536,6 @@ namespace esign.Migrations
             migrationBuilder.DropTable(
                 name: "AbpDynamicProperties");
 
-            migrationBuilder.DropTable(
-                name: "AppBinaryObjects");
         }
     }
 }

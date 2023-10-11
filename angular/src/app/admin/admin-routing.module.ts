@@ -8,10 +8,15 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
                 path: '',
                 children: [
                     {
-                        path: 'users',
-                        loadChildren: () => import('./users/users.module').then((m) => m.UsersModule),
-                        data: { permission: 'Pages.Administration.Users' },
+                        path: 'user-home',
+                        loadChildren: () => import('./app-user-home/app-user-home.module').then((m) => m.AppUserHomeModule),
+                        // data: { permission: 'Pages.Administration.Users' },
                     },
+                    // { //vãi lều sai chỗ nào chưa? path
+                    //     path: 'users',
+                    //     loadChildren: () => import('./users/users.module').then((m) => m.UsersModule),
+                    //     data: { permission: 'Pages.Administration.Users' },
+                    // },
                     {
                         path: 'roles',
                         loadChildren: () => import('./roles/roles.module').then((m) => m.RolesModule),
@@ -80,12 +85,6 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
                         loadChildren: () =>
                             import('./settings/tenant-settings.module').then((m) => m.TenantSettingsModule),
                         data: { permission: 'Pages.Administration.Tenant.Settings' },
-                    },
-                    {
-                        path: 'hostDashboard',
-                        loadChildren: () =>
-                            import('./dashboard/host-dashboard.module').then((m) => m.HostDashboardModule),
-                        data: { permission: 'Pages.Administration.Host.Dashboard' },
                     },
                     {
                         path: 'demo-ui-components',
@@ -163,8 +162,6 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
                         loadChildren: () => import('./mass-notifications/mass-notifications.module').then((m) => m.MassNotificationsModule),
                         data: { permission: 'Pages.Administration.MassNotification' },
                     },
-                    { path: '', redirectTo: 'hostDashboard', pathMatch: 'full' },
-                    { path: '**', redirectTo: 'hostDashboard' },
                 ],
             },
         ]),

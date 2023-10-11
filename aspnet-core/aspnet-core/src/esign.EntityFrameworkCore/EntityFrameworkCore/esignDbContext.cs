@@ -11,7 +11,6 @@ using esign.MultiTenancy;
 using esign.MultiTenancy.Accounting;
 using esign.MultiTenancy.Payments;
 using esign.Storage;
-using esign.ESign;
 
 namespace esign.EntityFrameworkCore
 {
@@ -19,7 +18,6 @@ namespace esign.EntityFrameworkCore
     {
         /* Define an IDbSet for each entity of the application */
 
-        public virtual DbSet<BinaryObject> BinaryObjects { get; set; }
 
         public virtual DbSet<Friendship> Friendships { get; set; }
 
@@ -29,7 +27,6 @@ namespace esign.EntityFrameworkCore
 
         public virtual DbSet<SubscriptionPayment> SubscriptionPayments { get; set; }
 
-        public virtual DbSet<Invoice> Invoices { get; set; }
 
         public virtual DbSet<PersistedGrantEntity> PersistedGrants { get; set; }
 
@@ -38,20 +35,6 @@ namespace esign.EntityFrameworkCore
         public virtual DbSet<UserDelegation> UserDelegations { get; set; }
 
         public virtual DbSet<RecentPassword> RecentPasswords { get; set; }
-        public virtual DbSet<ESiDocument> ESiDocuments { get; set; }
-        public virtual DbSet<ESiDocumentFile> ESiDocumentFiles { get; set; }
-        public virtual DbSet<ESiDocumentFileImage> ESiDocumentFileImages { get; set; }
-        public virtual DbSet<ESiDocumentFileImageSign> ESiDocumentFileImageSigns { get; set; }
-        public virtual DbSet<ESiDocumentFileImageSignLog> ESiDocumentFileImageSignLogs { get; set; }
-        public virtual DbSet<ESiDocumentFileLog> ESiDocumentFileLogs { get; set; }
-        public virtual DbSet<ESiDocumentForward> ESiDocumentForwards { get; set; }
-        public virtual DbSet<ESiDocumentUser> ESiDocumentUsers { get; set; }
-        public virtual DbSet<ESiDocumentUserLog> ESiDocumentUserLogs { get; set; }
-        public virtual DbSet<ESiEmailAd> ESiEmailAds { get; set; }
-        public virtual DbSet<ESiEmailTemplate> ESiEmailTemplates { get; set; }
-        public virtual DbSet<ESiNotification> ESiNotifications { get; set; }
-        public virtual DbSet<ESiSignature> ESiSignatures { get; set; }
-        public virtual DbSet<ESiSystem> ESiSystems { get; set; }
 
         public esignDbContext(DbContextOptions<esignDbContext> options)
             : base(options)
@@ -62,11 +45,6 @@ namespace esign.EntityFrameworkCore
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            modelBuilder.Entity<BinaryObject>(b =>
-            {
-                b.HasIndex(e => new { e.TenantId });
-            });
 
             modelBuilder.Entity<ChatMessage>(b =>
             {

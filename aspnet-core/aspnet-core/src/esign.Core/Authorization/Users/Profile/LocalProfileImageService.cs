@@ -8,14 +8,11 @@ namespace esign.Authorization.Users.Profile
 {
     public class LocalProfileImageService : IProfileImageService, ITransientDependency
     {
-        private readonly IBinaryObjectManager _binaryObjectManager;
         private readonly UserManager _userManager;
 
         public LocalProfileImageService(
-            IBinaryObjectManager binaryObjectManager,
             UserManager userManager)
         {
-            _binaryObjectManager = binaryObjectManager;
             _userManager = userManager;
         }
 
@@ -26,9 +23,7 @@ namespace esign.Authorization.Users.Profile
             {
                 return "";
             }
-
-            var file = await _binaryObjectManager.GetOrNullAsync(user.ProfilePictureId.Value);
-            return file == null ? "" : Convert.ToBase64String(file.Bytes);
+             return "";
         }
     }
 }

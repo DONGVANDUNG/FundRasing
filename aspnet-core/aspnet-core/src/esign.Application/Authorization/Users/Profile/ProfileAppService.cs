@@ -31,7 +31,6 @@ namespace esign.Authorization.Users.Profile
     public class ProfileAppService : esignAppServiceBase, IProfileAppService
     {
         private const int MaxProfilePictureBytes = 5242880; //5MB
-        private readonly IBinaryObjectManager _binaryObjectManager;
         private readonly ITimeZoneService _timeZoneService;
         private readonly IFriendshipManager _friendshipManager;
         private readonly GoogleTwoFactorAuthenticateService _googleTwoFactorAuthenticateService;
@@ -42,7 +41,6 @@ namespace esign.Authorization.Users.Profile
         private readonly ProfileImageServiceFactory _profileImageServiceFactory;
 
         public ProfileAppService(
-            IBinaryObjectManager binaryObjectManager,
             ITimeZoneService timezoneService,
             IFriendshipManager friendshipManager,
             GoogleTwoFactorAuthenticateService googleTwoFactorAuthenticateService,
@@ -52,7 +50,6 @@ namespace esign.Authorization.Users.Profile
             IBackgroundJobManager backgroundJobManager,
             ProfileImageServiceFactory profileImageServiceFactory)
         {
-            _binaryObjectManager = binaryObjectManager;
             _timeZoneService = timezoneService;
             _friendshipManager = friendshipManager;
             _googleTwoFactorAuthenticateService = googleTwoFactorAuthenticateService;
@@ -364,17 +361,6 @@ namespace esign.Authorization.Users.Profile
             }
 
             var user = await UserManager.GetUserByIdAsync(userIdentifier.UserId);
-
-            if (user.ProfilePictureId.HasValue)
-            {
-                await _binaryObjectManager.DeleteAsync(user.ProfilePictureId.Value);
-            }
-
-            var storedFile = new BinaryObject(userIdentifier.TenantId, byteArray,
-                $"Profile picture of user {userIdentifier.UserId}. {DateTime.UtcNow}");
-            await _binaryObjectManager.SaveAsync(storedFile);
-
-            user.ProfilePictureId = storedFile.Id;
         }
 
 
@@ -479,13 +465,8 @@ namespace esign.Authorization.Users.Profile
 
         private async Task<byte[]> GetProfilePictureByIdOrNull(Guid profilePictureId)
         {
-            var file = await _binaryObjectManager.GetOrNullAsync(profilePictureId);
-            if (file == null)
-            {
-                return null;
-            }
 
-            return file.Bytes;
+            return null;
         }
 
         private async Task<GetProfilePictureOutput> GetProfilePictureByIdInternal(Guid profilePictureId)
