@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Abp.Domain.Entities.Auditing;
+using Abp.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -8,7 +10,7 @@ using System.Threading.Tasks;
 namespace esign.FundRaising
 {
     [Table("FundRaiser")]
-    public class FundRaiser
+    public class FundRaiser : FullAuditedEntity<long>, IEntity<long>
     {
         public int Id { get; set; }
         public string Name { get; set; }

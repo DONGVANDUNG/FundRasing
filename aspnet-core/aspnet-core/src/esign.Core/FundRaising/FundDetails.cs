@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Abp.Domain.Entities;
+using Abp.Domain.Entities.Auditing;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -9,7 +11,7 @@ namespace esign.FundRaising
 {
     [Table("FundDetails")]
 
-    public class FundDetails
+    public class FundDetails : FullAuditedEntity<long>, IEntity<long>
     {
         public int Id { get; set; }
         public int FundId { get; set; }

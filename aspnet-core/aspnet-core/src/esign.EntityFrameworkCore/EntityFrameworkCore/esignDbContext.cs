@@ -11,6 +11,7 @@ using esign.MultiTenancy;
 using esign.MultiTenancy.Accounting;
 using esign.MultiTenancy.Payments;
 using esign.Storage;
+using esign.FundRaising;
 
 namespace esign.EntityFrameworkCore
 {
@@ -35,6 +36,17 @@ namespace esign.EntityFrameworkCore
         public virtual DbSet<UserDelegation> UserDelegations { get; set; }
 
         public virtual DbSet<RecentPassword> RecentPasswords { get; set; }
+
+        //// Fund Raising
+
+        public virtual DbSet<FundDetails> FundDetails { get; set; }
+        public virtual DbSet<FundPackage> FundPackages { get; set; }
+        public virtual DbSet<FundRaiser> FundRaisers { get; set; }
+        public virtual DbSet<Funds> Funds { get; set; }
+        public virtual DbSet<FundTransactions> FundTransactions { get; set; }
+        public virtual DbSet<UserAccount> UserAccount { get; set; }
+        public virtual DbSet<UserImage> UserImages { get; set; }
+        public virtual DbSet<UserWarning> UserWarning { get; set; }
 
         public esignDbContext(DbContextOptions<esignDbContext> options)
             : base(options)
