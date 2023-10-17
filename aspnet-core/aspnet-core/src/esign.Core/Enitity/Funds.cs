@@ -7,10 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace esign.FundRaising
+namespace esign.Entity
 {
     [Table("Funds")]
-    public class Funds : FullAuditedEntity<long>, IEntity<long>
+    public class Funds : FullAuditedEntity<int>
     {
         public int Id { get; set; }
         public int FundRaiserId { get; set; }
@@ -22,5 +22,6 @@ namespace esign.FundRaising
         public string AmountOfMoney { get; set; }
         public DateTime FundEndDate { get; set; }
         public bool Status { get; set; }
+        public bool IsOutStanding { get; set; }
     }
 }

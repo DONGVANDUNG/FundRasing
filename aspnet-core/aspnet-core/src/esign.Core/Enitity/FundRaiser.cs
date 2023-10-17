@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace esign.FundRaising
 {
     [Table("FundRaiser")]
-    public class FundRaiser : FullAuditedEntity<long>, IEntity<long>
+    public class FundRaiser 
     {
         public int Id { get; set; }
         public string Name { get; set; }
