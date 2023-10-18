@@ -1,9 +1,9 @@
-﻿using esign.FundRaising.FundRaiser.Dto;
+﻿using esign.FundRaising.FundRaiserService.Dto;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace esign.FundRaising.FundRaiser
+namespace esign.FundRaising.FundRaiserService
 {
     public interface IFundRaiser
     {
@@ -14,7 +14,7 @@ namespace esign.FundRaising.FundRaiser
         bool UpdateInformation(GetInformationFundRaiserDto information);
 
         //Tạo quỹ mới
-        bool CreateFundRaising(GetInformationFundRaiserDto information);
+        bool CreateFundRaising(CreateOrEditFundRaisingDto input);
 
         //Xem các giao dịch của quỹ
         List<TransactionOfFundForDto> getListTransactionForFund(int fundId);
@@ -24,12 +24,12 @@ namespace esign.FundRaising.FundRaiser
         //Gia hạn thời gian quỹ
         void ExtendTimeOfFundRaising(DateTime timeExtend);
         //Đóng quỹ ngay lập tức
-        void CloseFundRaising();
+        void CloseFundRaising(int fundId);
         //Tạo tài khoản ví paypal
 
         //Sửa background cho quỹ
 
         //Sửa ảnh cho quỹ
-        void UpdateImageUrlForFund(string iamgeUrl);
+        void UpdateImageUrlForFund(string imageUrl);
     }
 }

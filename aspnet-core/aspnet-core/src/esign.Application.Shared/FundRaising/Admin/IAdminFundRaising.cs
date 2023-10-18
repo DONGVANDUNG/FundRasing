@@ -1,6 +1,6 @@
 ﻿using Abp.Application.Services;
 using esign.FundRaising.Admin.Dto;
-using esign.FundRaising.FundRaiser.Dto;
+using esign.FundRaising.FundRaiserService.Dto;
 using System;
 using System.Collections.Generic;
 using System.Text;

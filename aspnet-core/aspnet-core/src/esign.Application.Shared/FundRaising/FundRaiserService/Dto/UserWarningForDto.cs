@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace esign.FundRaising.FundRaiser.Dto
+namespace esign.FundRaising.FundRaiserService.Dto
 {
     public class UserWarningForDto
     {

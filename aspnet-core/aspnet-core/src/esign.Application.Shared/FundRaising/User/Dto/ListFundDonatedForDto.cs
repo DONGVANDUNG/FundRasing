@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace esign.FundRaising.User.Dto
+namespace esign.FundRaising
 {
     public class ListFundDonatedForDto
     {

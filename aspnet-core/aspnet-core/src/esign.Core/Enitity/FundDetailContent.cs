@@ -1,4 +1,5 @@
 ﻿using Abp.Application.Services.Dto;
+using Abp.Domain.Entities.Auditing;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 namespace esign.FundRaising
 {
     [Table("FundDetailContent")]
-    public class FundDetailContent :EntityDto<long>
+    public class FundDetailContent : FullAuditedEntity<int>
     {
         public int FundId { get; set; }
         public string Header { get; set; }

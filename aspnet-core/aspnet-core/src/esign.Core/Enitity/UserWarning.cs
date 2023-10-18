@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 namespace esign.FundRaising
 {
     [Table("UserWarning")]
-    public class UserWarning : FullAuditedEntity<long>, IEntity<long>
+    public class UserWarning : FullAuditedEntity<int>
     {
-        public int Id { get; set; }
+        public int UserId { get; set; }
         public string ContentWarning { get; set; }
         public int LevelWarning { get; set; }
     }

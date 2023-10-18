@@ -12,7 +12,6 @@ namespace esign.Entity
     [Table("Funds")]
     public class Funds : FullAuditedEntity<int>
     {
-        public int Id { get; set; }
         public int FundRaiserId { get; set; }
         public DateTime  FundRaisingDay { get; set; }
         public string FundName { get; set; }
@@ -21,7 +20,8 @@ namespace esign.Entity
         public string FundReason { get; set; }
         public string AmountOfMoney { get; set; }
         public DateTime FundEndDate { get; set; }
-        public bool Status { get; set; }
+        public int Status { get; set; } /// 1: Đã phát hành; 2: Đã được gia hạn; 3: Đã đóng
         public bool IsOutStanding { get; set; }
+        public int FundContentId { get; set; }
     }
 }
