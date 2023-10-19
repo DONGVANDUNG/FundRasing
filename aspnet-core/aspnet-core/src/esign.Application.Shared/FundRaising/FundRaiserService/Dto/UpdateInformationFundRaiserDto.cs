@@ -4,10 +4,10 @@ using System.Text;
 
 namespace esign.FundRaising.FundRaiserService.Dto
 {
-    public class RegisterInforFundRaiserDto
+    public class UpdateInformationFundRaiserDto
     {
-        //public int Id { get; set; }
-        public string UserLogin { get; set; }    
+        public string UserNameLogin { get; set; }
+        public string Password { get; set; }
         public string Company { get; set; }
         public string Email { get; set; }
         public string Address { get; set; }
@@ -15,6 +15,5 @@ namespace esign.FundRaising.FundRaiserService.Dto
         public string Region { get; set; }
         public string Country { get; set; }
         public string Phone { get; set; }
-        
     }
 }
