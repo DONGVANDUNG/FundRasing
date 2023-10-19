@@ -22,7 +22,15 @@ namespace esign.Authorization.Users
 
         public string GoogleAuthenticatorKey { get; set; }
         public string RecoveryCode { get; set; }
-        
+        public string UserLogin { get; set; }
+        public string Company { get; set; }
+        public string Email { get; set; }
+        public string Address { get; set; }
+        public string City { get; set; }
+        public string Region { get; set; }
+        public string Country { get; set; }
+        public string Phone { get; set; }
+
         public List<UserOrganizationUnit> OrganizationUnits { get; set; }
 
         //Can add application specific user properties here

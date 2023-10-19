@@ -41,6 +41,8 @@ using esign.Notifications.Dto;
 using esign.Organizations.Dto;
 using esign.Sessions.Dto;
 using esign.WebHooks.Dto;
+using esign.FundRaising;
+using esign.FundRaising.FundRaiserService.Dto;
 
 namespace esign
 {
@@ -162,6 +164,8 @@ namespace esign
             
             //User Delegations
             configuration.CreateMap<CreateUserDelegationDto, UserDelegation>();
+            configuration.CreateMap<DetailFundContentDto, FundDetailContent>().ReverseMap();
+            configuration.CreateMap<RegisterInforFundRaiserDto, User>().ReverseMap();
         }
     }
 }

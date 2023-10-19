@@ -7,10 +7,13 @@ namespace esign.FundRaising.FundRaiserService.Dto
 {
     public class CreateOrEditFundRaisingDto
     {
+        public int Id { get; set; }
+        public string FundName { get; set; }
         public string TitleFund { get; set; }
+        public string ImageUrl { get; set; }
         public string Created { get; set; }
-        public DateTime? FundRaisingDay { get; set; }
+        public decimal AmountOfMoney { get; set; }
+        public DateTime FundEndDate { get; set; }
         public DetailFundContentDto ContentOfFund { get; set; }
-        public GetInformationFundRaiserDto FundRaiser { get; set; }
     }
 }

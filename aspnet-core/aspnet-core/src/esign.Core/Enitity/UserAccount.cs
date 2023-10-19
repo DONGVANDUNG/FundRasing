@@ -10,11 +10,10 @@ using System.Threading.Tasks;
 namespace esign.FundRaising
 {
     [Table("UserAccount")]
-    public class UserAccount : FullAuditedEntity<long>, IEntity<long>
+    public class UserAccount : FullAuditedEntity<int>
     {
-        public int Id { get; set; }
-        public int UserId { get; set; }
-        public string UserLogin { get; set; }
+        public long UserId { get; set; }
+        public string UserNameLogin { get; set; }
         public string Password { get; set; }
         public int? LevelWarning { get; set; }
         public bool? Status { get; set; }
