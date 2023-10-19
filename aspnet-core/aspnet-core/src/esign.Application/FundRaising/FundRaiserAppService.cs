@@ -15,13 +15,16 @@ namespace esign.FundRaising
         private readonly IRepository<Funds, int> _mstSleFundRepo;
         private readonly IRepository<FundTransactions, int> _mstSleFundTransactionRepo;
         private readonly IRepository<User, long> _mstSleUserRepo;
+        private readonly IRepository<UserWarning, int> _mstSleUserWarningRepo;
         public FundRaiserAppService(IRepository<Funds, int> mstSleFundRepo,
             IRepository<FundTransactions, int> mstSleFundTransactionRepo,
-            IRepository<User, long> mstSleUserRepo)
+            IRepository<User, long> mstSleUserRepo,
+            IRepository<UserWarning, int> mstSleUserWarningRepo)
         {
             _mstSleFundRepo = mstSleFundRepo;
             _mstSleFundTransactionRepo = mstSleFundTransactionRepo;
             _mstSleUserRepo = mstSleUserRepo;
+            _mstSleUserWarningRepo = mstSleUserWarningRepo;
         }
         public void CloseFundRaising(int fundId)
         {
@@ -53,7 +56,7 @@ namespace esign.FundRaising
 
         public void ExtendTimeOfFundRaising(DateTime timeExtend)
         {
-            throw new NotImplementedException();
+            
         }
 
         public List<TransactionOfFundForDto> getListTransactionForFund(int fundId)
@@ -74,12 +77,28 @@ namespace esign.FundRaising
 
         public List<UserWarningForDto> getListWarningOfUser()
         {
-            throw new NotImplementedException();
+            var listWarning = (from userWarning in _mstSleUserWarningRepo.GetAll()
+                              join user in _mstSleUserRepo.GetAll() on userWarning.UserId equals user.Id
+                              select new UserWarningForDto
+                              {
+                                  Id = userWarning.Id,
+                                  Content = userWarning.ContentWarning,
+                                  LevelWarning = userWarning.LevelWarning == 1 ? "Cảnh cáo" : userWarning.LevelWarning == 2 ? "Khẩn cấp" : "Khóa",
+                                  CreatedWarning = userWarning.CreationTime
+                              }).ToList();
+            return listWarning;
         }
 
-        public bool RegisterAccountFundRaising(RegisterInforFundRaiserDto input)
+        public void RegisterAccountFundRaising(RegisterInforFundRaiserDto input)
         {
-            throw new NotImplementedException();
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
         public void UpdateImageUrlForFund(string imageUrl,int fundId)
@@ -98,9 +117,9 @@ namespace esign.FundRaising
             }
         }
 
-        public bool UpdateInformation(GetInformationFundRaiserDto information)
+        public bool UpdateInformation(CreateOrEditFundRaisingDto input)
         {
-            throw new NotImplementedException();
+          
         }
     }
 }
