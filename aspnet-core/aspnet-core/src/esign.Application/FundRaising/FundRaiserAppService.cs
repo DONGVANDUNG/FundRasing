@@ -21,12 +21,14 @@ namespace esign.FundRaising
         private readonly IRepository<FundDetailContent, int> _mstSleDetailConentRepo;
         private readonly IRepository<UserWarning, int> _mstSleUserWarningRepo;
         private readonly IRepository<UserAccount, int> _mstSleUserAccountRepo;
+        private readonly IRepository<FundRaiser, int> _mstSleFundRaiserRepo;
         public FundRaiserAppService(IRepository<Funds, int> mstSleFundRepo,
             IRepository<FundTransactions, int> mstSleFundTransactionRepo,
             IRepository<User, long> mstSleUserRepo,
             IRepository<FundDetailContent, int> mstSleDetailConentRepo,
             IRepository<UserWarning, int> mstSleUserWarningRepo,
-            IRepository<UserAccount, int> mstSleUserAccountRepo)
+            IRepository<UserAccount, int> mstSleUserAccountRepo,
+            IRepository<FundRaiser, int> mstSleFundRaiserRepo)
         {
             _mstSleFundRepo = mstSleFundRepo;
             _mstSleFundTransactionRepo = mstSleFundTransactionRepo;
@@ -34,8 +36,9 @@ namespace esign.FundRaising
             _mstSleDetailConentRepo = mstSleDetailConentRepo;
             _mstSleUserWarningRepo = mstSleUserWarningRepo;
             _mstSleUserAccountRepo = mstSleUserAccountRepo;
+            _mstSleFundRaiserRepo = mstSleFundRaiserRepo;
         }
-        public async void CloseFundRaising(int fundId)
+        public async Task CloseFundRaising(int fundId)
         {
             try
             {
@@ -52,7 +55,7 @@ namespace esign.FundRaising
             }
         }
 
-        public async void CreateFundRaising(CreateOrEditFundRaisingDto input)
+        public async Task CreateFundRaising(CreateOrEditFundRaisingDto input)
         {
 
             try
@@ -78,7 +81,7 @@ namespace esign.FundRaising
             }
         }
 
-        public async void UpdateFundRaising(CreateOrEditFundRaisingDto input)
+        public async Task UpdateFundRaising(CreateOrEditFundRaisingDto input)
         {
 
             try
@@ -117,7 +120,7 @@ namespace esign.FundRaising
             }
         }
 
-        public async Task<TransactionOfFundForDto> getListTransactionForFund(int fundId)
+        public async Task<List<TransactionOfFundForDto>> getListTransactionForFund(int fundId)
         {
             var listTransaction = (from transaction in _mstSleFundTransactionRepo.GetAll().Where(e => e.Id == fundId)
                                    join fund in _mstSleFundRepo.GetAll() on transaction.FundId equals fund.Id
@@ -129,7 +132,7 @@ namespace esign.FundRaising
                                        Amount = transaction.AmountOfMoney,
                                        Content = transaction.MessageToFund,
                                        FundName = fund.FundName
-                                   }).FirstOrDefaultAsync();
+                                   }).ToListAsync();
             return await listTransaction;
         }
 
@@ -154,7 +157,18 @@ namespace esign.FundRaising
                 User newUser = new User();
                 ObjectMapper.Map(input, newUser);
                 var userId = await _mstSleUserRepo.InsertAndGetIdAsync(newUser);
+                var fundRaiser = new FundRaiser();
+                fundRaiser.UserId = userId;
+                fundRaiser.Phone = input.Phone;
+                fundRaiser.Email = input.Email;
+                fundRaiser.Position = input.Position;
+                fundRaiser.CompanyName = input.Company;
+                fundRaiser.Country = input.Country;
+                fundRaiser.Introduce = input.Introduce;
+                fundRaiser.FundPackageId = input.FundPackageId;
+                var funRaiserId = await _mstSleFundRaiserRepo.InsertAndGetIdAsync(fundRaiser);
                 var userAccount = new UserAccount();
+                userAccount.FundRaiserId = funRaiserId;
                 userAccount.Status = true;
                 userAccount.UserId = userId;
                 userAccount.UserNameLogin = input.Email;
@@ -167,15 +181,15 @@ namespace esign.FundRaising
             }
         }
 
-        public void UpdateImageUrlForFund(string imageUrl,int fundId)
+        public async Task UpdateImageUrlForFund(string imageUrl,int fundId)
         {
             try
             {
-                var fund = _mstSleFundRepo.FirstOrDefault(e => e.Id == fundId);
+                var fund = await _mstSleFundRepo.FirstOrDefaultAsync(e => e.Id == fundId);
                 if(fund != null)
                 {
                     fund.FundImageUrl = imageUrl;
-                    _mstSleFundRepo.Update(fund);
+                    await _mstSleFundRepo.UpdateAsync(fund);
                 }
             }
             catch(Exception ex) {

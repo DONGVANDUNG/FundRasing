@@ -17,5 +17,6 @@ namespace esign.FundRaising
         public string Password { get; set; }
         public int? LevelWarning { get; set; }
         public bool? Status { get; set; }
+        public int FundRaiserId { get; set; }
     }
 }

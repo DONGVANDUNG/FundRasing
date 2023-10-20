@@ -1,4 +1,4 @@
-﻿using esign.FundRaising.User.Dto;
+﻿using esign.FundRaising;
 using System;
 using System.Collections.Generic;
 using System.Text;

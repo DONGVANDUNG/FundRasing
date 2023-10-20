@@ -2,34 +2,37 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace esign.FundRaising.FundRaiserService
 {
     public interface IFundRaiser
     {
         //Đăng ký tài khoản gây quỹ ( gửi mail, để đăng nhập)
-        bool RegisterAccountFundRaising();
+        Task RegisterAccountFundRaising(RegisterInforFundRaiserDto input);
 
         //Update thông tin cá nhân
-        bool UpdateInformation(GetInformationFundRaiserDto information);
+        Task UpdateInformation(UpdateInformationFundRaiserDto input);
 
         //Tạo quỹ mới
-        bool CreateFundRaising(CreateOrEditFundRaisingDto input);
+        Task CreateFundRaising(CreateOrEditFundRaisingDto input);
 
         //Xem các giao dịch của quỹ
-        List<TransactionOfFundForDto> getListTransactionForFund(int fundId);
+        Task<List<TransactionOfFundForDto>> getListTransactionForFund(int fundId);
 
         //Xem số lần cảnh cáo và nội dung cảnh cáo
-        List<UserWarningForDto> getListWarningOfUser();
+        Task<List<UserWarningForDto>> getListWarningOfUser();
         //Gia hạn thời gian quỹ
-        void ExtendTimeOfFundRaising(DateTime timeExtend);
+        Task ExtendTimeOfFundRaising(DateTime timeExtend,int fundId);
         //Đóng quỹ ngay lập tức
-        void CloseFundRaising(int fundId);
+        Task CloseFundRaising(int fundId);
         //Tạo tài khoản ví paypal
 
         //Sửa background cho quỹ
 
         //Sửa ảnh cho quỹ
-        void UpdateImageUrlForFund(string imageUrl);
+        Task UpdateImageUrlForFund(string imageUrl, int fundId);
+
+        Task UpdateFundRaising(CreateOrEditFundRaisingDto input);
     }
 }

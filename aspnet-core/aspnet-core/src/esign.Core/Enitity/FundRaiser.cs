@@ -15,11 +15,10 @@ namespace esign.FundRaising
         public string Name { get; set; }
         public string Position { get; set; }
         public string Introduce { get; set; }
-
         public string Email { get; set; }
         public string Phone { get; set; }
         public string Country { get; set; }
-        public int UserId { get; set; }
+        public long UserId { get; set; }
         public int FundPackageId { get; set; }
         public string CompanyName { get; set; }             
     }
