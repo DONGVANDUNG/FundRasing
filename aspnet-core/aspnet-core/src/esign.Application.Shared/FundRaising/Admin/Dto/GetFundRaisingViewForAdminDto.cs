@@ -9,8 +9,9 @@ namespace esign.FundRaising.Admin.Dto
         public int Id { get; set; }
         public string FundRaiser { get; set; }
         public string FundName { get; set; }
-        public int AmountOfMoney { get; set; }
+        public decimal AmountOfMoney { get; set; }
         public DateTime? FundRaisingDay { get; set; }
         public DateTime? FundFinishDay { get; set; }
+        public string Status { get; set; }
     }
 }

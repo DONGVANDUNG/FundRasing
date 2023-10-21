@@ -23,12 +23,13 @@ namespace esign.FundRaising
         private readonly IRepository<FundPackage, int> _mstSleFundPackageRepo;
         private readonly IRepository<User, long> _mstSleUserRepo;
         private readonly IRepository<UserAccount, int> _mstSleUserAccountRepo;
+        private readonly IRepository<FundTransactions, int> _mstSleTransactionRepo;
 
 
         public AdminFundRaisingAppService(IRepository<Funds> mstSleFundRepo, IRepository<FundRaiser, int>
             mstSleFundRaiserRepo, IRepository<FundDetailContent, int> mstSleFundDetailContentRepo,
             IRepository<FundRaisingTopic, int> mstSleFundTopictRepo,
-            IRepository<FundPackage, int> mstSleFundPackageRepo, IRepository<User, long> mstSleUserRepo, IRepository<UserAccount, int> mstSleUserAccountRepo)
+            IRepository<FundPackage, int> mstSleFundPackageRepo, IRepository<User, long> mstSleUserRepo, IRepository<UserAccount, int> mstSleUserAccountRepo, IRepository<FundTransactions, int> mstSleTransactionRepo)
         {
             _mstSleFundRepo = mstSleFundRepo;
             _mstSleFundRaiserRepo = mstSleFundRaiserRepo;
@@ -37,11 +38,12 @@ namespace esign.FundRaising
             _mstSleFundPackageRepo = mstSleFundPackageRepo;
             _mstSleUserRepo = mstSleUserRepo;
             _mstSleUserAccountRepo = mstSleUserAccountRepo;
+            _mstSleTransactionRepo = mstSleTransactionRepo;
         }
         public async Task<List<GetInformationFundRaiserDto>> getListFundRaiser()
         {
             var listFundRaiser = (from user in _mstSleUserRepo.GetAll().Where(e => e.TypeUser == 2)
-                                  join fundRaising in _mstSleFundRaiserRepo.GetAll() on user.Id  equals fundRaising.UserId
+                                  join fundRaising in _mstSleFundRaiserRepo.GetAll() on user.Id equals fundRaising.UserId
                                   join userAccount in _mstSleUserAccountRepo.GetAll() on user.Id equals userAccount.UserId
                                   select new GetInformationFundRaiserDto
                                   {
@@ -50,30 +52,63 @@ namespace esign.FundRaising
                                       Name = fundRaising.Name,
                                       AccountLogin = userAccount.UserNameLogin,
                                       Position = fundRaising.Position,
-                                      StatusAccount = userAccount.Status == true ? "Active": "Not Active",
+                                      StatusAccount = userAccount.Status == true ? "Active" : "Not Active",
                                       ImageUrl = user.ImageUrl
                                   }).ToListAsync();
             return await listFundRaiser;
         }
 
-        public List<GetFundRaisingViewForAdminDto> getListFundRaising()
+        public async Task<List<GetFundRaisingViewForAdminDto>> getListFundRaising()
         {
-            throw new NotImplementedException();
+            var listFundRaising = (from fundRaising in _mstSleFundRepo.GetAll()
+                                   join funRaiser in _mstSleFundRaiserRepo.GetAll() on fundRaising.FundRaiserId equals funRaiser.Id
+                                   select new GetFundRaisingViewForAdminDto
+                                   {
+                                       Id = fundRaising.Id,
+                                       FundFinishDay = fundRaising.FundRaisingDay,
+                                       FundRaiser = funRaiser.Name,
+                                       AmountOfMoney = fundRaising.AmountOfMoney,
+                                       Status = fundRaising.Status == 3 ? "Đã đóng" : "Đang hoạt động"
+                                   }).ToListAsync();
+            return await listFundRaising;
         }
 
-        public TransactionOfFundForDto getListTransactionForFund(int fundId)
+        public async Task<List<TransactionOfFundForDto>> getListTransactionForFund(int fundId)
         {
-            throw new NotImplementedException();
+            var listTransaction = (from transaction in _mstSleTransactionRepo.GetAll().Where(e => e.FundId == fundId)
+                                   join user in _mstSleUserRepo.GetAll() on transaction.UserId equals user.Id
+                                   join fund in _mstSleFundRepo.GetAll() on transaction.FundId equals fund.Id
+                                   select new TransactionOfFundForDto
+                                   {
+                                       Id = transaction.Id,
+                                       Amount = transaction.AmountOfMoney,
+                                       Content = transaction.MessageToFund,
+                                       FundName = fund.FundName,
+                                       Sender = user.UserLogin
+                                   }).ToListAsync();
+            return await listTransaction;
         }
 
-        public List<UserAccountForViewDto> getListUserAccount()
+        public async Task<List<UserAccountForViewDto>> getListUserAccount()
         {
-            throw new NotImplementedException();
+            var listAccount = (from account in _mstSleUserAccountRepo.GetAll()
+                               join user in _mstSleUserRepo.GetAll() on account.FundRaiserId equals user.Id
+                               select new UserAccountForViewDto
+                               {
+                                   Id = account.Id,
+                                   Email = user.Email,
+                                   LevelWarning = account.LevelWarning == 1 ? "Cảnh cáo" : account.LevelWarning == 2 ? "Báo động" : "Khóa",
+                                   UserName = user.UserName,
+                                   UserNameLogin = user.UserLogin
+                               }).ToListAsync();
+            return await listAccount;
         }
 
-        public void WarningAccountUser(string contentWarning)
+        public async void WarningAccountUser(string contentWarning,int userId)
         {
-            throw new NotImplementedException();
+            var user = await _mstSleUserAccountRepo.FirstOrDefaultAsync(e=> e.Id == userId);
+            user.LevelWarning += 1;
+            await _mstSleUserAccountRepo.UpdateAsync(user);
         }
     }
 }

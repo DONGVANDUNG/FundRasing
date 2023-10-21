@@ -199,6 +199,7 @@ namespace esign.FundRaising
         public async Task UpdateInformation(UpdateInformationFundRaiserDto input)
         {
 
+
             var user = await _mstSleUserRepo.FirstOrDefaultAsync(e => e.Id == AbpSession.UserId);
             if (user != null)
             {

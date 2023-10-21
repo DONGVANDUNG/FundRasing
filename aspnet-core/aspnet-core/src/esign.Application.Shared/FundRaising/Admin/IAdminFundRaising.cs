@@ -4,20 +4,21 @@ using esign.FundRaising.FundRaiserService.Dto;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace esign.FundRaising.Admin
 {
     public interface IAdminFundRaising : IApplicationService
     {
         //Lấy ra thông tin tất cả các tài khoản
-        List<UserAccountForViewDto> getListUserAccount();
+        Task<List<UserAccountForViewDto>> getListUserAccount();
         //Cảnh cáo tài khoản
-        void WarningAccountUser(string contentWarning);
+        Task WarningAccountUser(string contentWarning);
         //Lấy ra thông tin tất cả các người gây quỹ
-        List<GetInformationFundRaiserDto> getListFundRaiser();
+        Task<List<GetInformationFundRaiserDto>> getListFundRaiser();
         //Lấy ra thông tin tất cả các quỹ
-        List<GetFundRaisingViewForAdminDto> getListFundRaising();
+        Task<List<GetFundRaisingViewForAdminDto>> getListFundRaising();
         //Lấy ra thông tin tất cả các giao dịch theo quỹ
-        TransactionOfFundForDto getListTransactionForFund(int fundId);
+        Task<List<TransactionOfFundForDto>> getListTransactionForFund(int fundId);
     }
 }
