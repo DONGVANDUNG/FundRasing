@@ -12,6 +12,7 @@ using esign.MultiTenancy.Accounting;
 using esign.MultiTenancy.Payments;
 using esign.Storage;
 using esign.FundRaising;
+using esign.Entity;
 
 namespace esign.EntityFrameworkCore
 {

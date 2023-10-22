@@ -1,8 +1,6 @@
 ﻿using Abp.Domain.Repositories;
 using esign.Enitity;
 using esign.Entity;
-using esign.FundRaising.User;
-using esign.FundRaising.User.Dto;
 using Microsoft.AspNetCore.Http.HttpResults;
 using System;
 using System.Collections.Generic;

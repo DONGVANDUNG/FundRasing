@@ -12,7 +12,7 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
                         loadChildren: () => import('./app-user-home/app-user-home.module').then((m) => m.AppUserHomeModule),
                         // data: { permission: 'Pages.Administration.Users' },
                     },
-                    // { //vãi lều sai chỗ nào chưa? path
+                    // { //vãi lều sai chỗ nào chưa? path quá đảk, nok boy  gon nghẻ nhé =)))
                     //     path: 'users',
                     //     loadChildren: () => import('./users/users.module').then((m) => m.UsersModule),
                     //     data: { permission: 'Pages.Administration.Users' },

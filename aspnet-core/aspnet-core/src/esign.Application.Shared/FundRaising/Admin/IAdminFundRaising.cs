@@ -13,7 +13,7 @@ namespace esign.FundRaising.Admin
         //Lấy ra thông tin tất cả các tài khoản
         Task<List<UserAccountForViewDto>> getListUserAccount();
         //Cảnh cáo tài khoản
-        Task WarningAccountUser(string contentWarning);
+        void WarningAccountUser(string contentWarning, int userId);
         //Lấy ra thông tin tất cả các người gây quỹ
         Task<List<GetInformationFundRaiserDto>> getListFundRaiser();
         //Lấy ra thông tin tất cả các quỹ

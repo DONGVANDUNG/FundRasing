@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Twilio.Rest.Api.V2010.Account;
 
 namespace esign.FundRaising
 {
@@ -24,6 +25,7 @@ namespace esign.FundRaising
         private readonly IRepository<User, long> _mstSleUserRepo;
         private readonly IRepository<UserAccount, int> _mstSleUserAccountRepo;
         private readonly IRepository<FundTransactions, int> _mstSleTransactionRepo;
+        private readonly IRepository<UserWarning, int> _mstSleUserWarningRepo;
 
 
         public AdminFundRaisingAppService(IRepository<Funds> mstSleFundRepo, IRepository<FundRaiser, int>
@@ -104,11 +106,15 @@ namespace esign.FundRaising
             return await listAccount;
         }
 
-        public async void WarningAccountUser(string contentWarning,int userId)
+        public async void WarningAccountUser(string contentWarning, int userId)
         {
-            var user = await _mstSleUserAccountRepo.FirstOrDefaultAsync(e=> e.Id == userId);
+            var user = await _mstSleUserWarningRepo.FirstOrDefaultAsync(e => e.Id == userId);
+            var accountUser = await _mstSleUserAccountRepo.FirstOrDefaultAsync(e => e.UserId == userId);
+            accountUser.LevelWarning += 1;
+            await _mstSleUserAccountRepo.UpdateAsync(accountUser);
+            user.ContentWarning = contentWarning;
             user.LevelWarning += 1;
-            await _mstSleUserAccountRepo.UpdateAsync(user);
+            await _mstSleUserWarningRepo.UpdateAsync(user);
         }
     }
 }
