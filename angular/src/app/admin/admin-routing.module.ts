@@ -8,8 +8,8 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
                 path: '',
                 children: [
                     {
-                        path: 'user-home',
-                        loadChildren: () => import('./app-user-home/app-user-home.module').then((m) => m.AppUserHomeModule),
+                        path: 'fundRaiser',
+                        loadChildren: () => import('./app-admin-fundRaiser/app-admin-fundRaiser.module').then((m) => m.AppAdminFundRaiserModule),
                         // data: { permission: 'Pages.Administration.Users' },
                     },
                     // { //vãi lều sai chỗ nào chưa? path quá đảk, nok boy  gon nghẻ nhé =)))

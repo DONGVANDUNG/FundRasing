@@ -1,0 +1,88 @@
+<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+    <div class="kt-subheader kt-grid__item redline-header">
+        <div [class]="containerClass">
+            <div class="kt-subheader__main">
+                <h3 class="kt-subheader__title">
+                    <span class="kt_subheader__desc">{{l("SalesEmployee")}}</span>
+                </h3>
+                <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+                <span class="kt-subheader__desc">{{l("Báo cáo")}}</span>
+            </div>
+            <div class="kt-subheader__toolbar">
+                <div class="kt-subheader__wrapper">
+                    <!-- <button type="button" class="tmss-btn btn-outline-primary" (click)="clearValueFilter()">
+                        <i class="tmss-fa fas fa-redo mr-1"></i>{{l("SalesPersonResetFilter")}}
+                    </button>
+                    <button (click)="onChangeFilterShown()" *ngIf="!advancedFiltersAreShown"
+                        class="tmss-btn btn-outline-primary">
+                        <i class="fa fa-search"></i> {{l("ShowAdvancedFilters")}}
+                    </button>
+                    <button (click)="onChangeFilterShown()" *ngIf="advancedFiltersAreShown"
+                        class="tmss-btn btn-outline-primary">
+                        <i class="fa fa-search"></i> {{l("HideAdvancedFilters")}}
+                    </button>
+                    <button type="button" *ngIf="'Pages.VOD.VodReportTmv.Create' | permission"
+                    class="tmss-btn btn-outline-primary" (click)="createDepartment()">
+                    <i class="fa fa-plus"></i>{{l("Add")}}
+                </button>
+                <button type="button"
+                    class="tmss-btn btn-outline-primary" [disabled]="!selectedReport"
+                    *ngIf="'Pages.VOD.VodReportTmv.Edit' | permission"
+                    (click)="editDepartment()">
+                    <i class="fa fa-edit"></i>{{l("Edit")}}
+                </button>
+                <button type="button"
+                class="tmss-btn btn-outline-danger" [disabled]="!selectedReport"
+                    *ngIf="'Pages.VOD.VodReportTmv.Delete' | permission"
+                    (click)="deleteDepartment()">
+                    <i class="fa fa-trash"></i>{{l("Delete")}}
+                </button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div
+        [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div [hidden]="!advancedFiltersAreShown">
+                <div class="row align-items-center mt-4 mb-4">
+                    <div class="col-md-4 ml-2">
+                        <div class="form-group">
+                            <tmss-combobox [items]="listVodTypeReport" [(ngModel)]="typeOfReport" [text]="l('Loại báo cáo')" name="typeOfReport">
+                            </tmss-combobox>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <tmss-datepicker [(ngModel)]="fromDate" [text]="l('Từ ngày')" name="fromDate"></tmss-datepicker>
+                        </div>
+                    </div>
+                    <div class="col-md-3 ml-4">
+                        <div class="form-group">
+                            <tmss-datepicker [(ngModel)]="toDate" [text]="l('Đến ngày')" name="toDate"></tmss-datepicker>
+                        </div>
+                    </div>
+                    <div class="col-md-1 ml-4">
+                        <button class="tmss-btn  btn-outline-primary tmss-override" (click)="search()">
+                          <i class="fa fa-search" aria-hidden="true"></i>
+                          {{l("Search")}}
+                        </button>
+                      </div>
+                </div>
+            </div>
+            <div class="row align-items-center">
+                <div class="col-md-12">
+                    <div class="item col-12">
+                        <div class="tbContent">
+                            {{l("Nội dung báo cáo")}}
+                        </div>
+                        <grid-table [columnDefs]="columnDefs"
+                            [defaultColDef]="defaultColDef"
+                            (callBackEvent)="callBackGrid($event)"
+                            (onChangeSelection)="onChangeSelection($event)"
+                            [rowData]="rowData" [height]="'530px'"></grid-table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

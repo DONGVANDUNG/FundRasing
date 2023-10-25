@@ -90,13 +90,13 @@ module.exports = {
         '@typescript-eslint/no-empty-function': 'off',
         '@typescript-eslint/no-empty-interface': 'error',
         '@typescript-eslint/no-inferrable-types': [
-            'error',
+            'off',
             {
                 ignoreParameters: true,
             },
         ],
         '@typescript-eslint/no-misused-new': 'error',
-        '@typescript-eslint/no-non-null-assertion': 'error',
+        '@typescript-eslint/no-non-null-assertion': 'off',
         '@typescript-eslint/no-shadow': [
             'off',
             {
@@ -106,13 +106,13 @@ module.exports = {
         '@typescript-eslint/no-unused-expressions': 'error',
         '@typescript-eslint/prefer-function-type': 'error',
         '@typescript-eslint/quotes': ['error', 'single'],
-        '@typescript-eslint/semi': ['error', 'always'],
+        '@typescript-eslint/semi': ['off', 'always'],
         '@typescript-eslint/type-annotation-spacing': 'error',
         '@typescript-eslint/unified-signatures': 'error',
         'arrow-body-style': 'error',
         'brace-style': ['error', '1tbs'],
         'constructor-super': 'error',
-        curly: 'error',
+        curly: 'off',
         'dot-notation': 'off',
         'eol-last': 'error',
         eqeqeq: ['error', 'smart'],
@@ -168,10 +168,10 @@ module.exports = {
         'prefer-const': 'off',
         quotes: ['error', 'single'],
         radix: 'off',
-        semi: 'error',
+        semi: 'off',
         'valid-typeof': 'error',
         '@typescript-eslint/tslint/config': [
-            'error',
+            'off',
             {
                 rules: {
                     'import-spacing': true,

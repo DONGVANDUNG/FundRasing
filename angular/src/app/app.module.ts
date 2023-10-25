@@ -208,7 +208,8 @@ import { ViewRecoveryCodesModalComponent } from './shared/layout/profile/view-re
         NgxSpinnerModule,
         AppBsModalModule,
         SubheaderModule,
-        ChangeProfilePictureModalModule,AgGridModule
+        ChangeProfilePictureModalModule
+        , AgGridModule
     ]
 })
 export class AppModule {}

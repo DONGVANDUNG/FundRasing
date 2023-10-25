@@ -4,6 +4,7 @@ import { AppSharedModule } from '@app/shared/app-shared.module';
 import { AuditLogsRoutingModule } from './audit-logs-routing.module';
 import { AuditLogsComponent } from './audit-logs.component';
 import { AuditLogDetailModalComponent } from './audit-log-detail-modal.component';
+import { appModuleAnimation } from '@shared/animations/routerTransition';
 
 @NgModule({
     declarations: [AuditLogsComponent, AuditLogDetailModalComponent],

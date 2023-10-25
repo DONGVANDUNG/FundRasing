@@ -77,6 +77,6 @@ export class ThemesLayoutBaseComponent extends AppComponentBase {
     }
 
     getSkin(): string{
-        return this.isDarkModeActive() ? 'dark': 'light';
+        return this.isDarkModeActive() ? 'dark' : 'light';
     }
 }

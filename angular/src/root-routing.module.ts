@@ -8,6 +8,8 @@ const routes: Routes = [
         loadChildren: () => import('account/account.module').then((m) => m.AccountModule), //Lazy load account module
         data: { preload: true },
     },
+    { path: '**', redirectTo: '/app/notifications' },
+    { path: '', redirectTo: '/app/notifications', pathMatch: 'full' },
 ];
 
 @NgModule({

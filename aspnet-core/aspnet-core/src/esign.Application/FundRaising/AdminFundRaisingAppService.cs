@@ -1,4 +1,6 @@
-﻿using Abp.Domain.Repositories;
+﻿using Abp.Application.Services.Dto;
+using Abp.Domain.Repositories;
+using Abp.Linq.Extensions;
 using esign.Authorization.Users;
 using esign.Enitity;
 using esign.Entity;
@@ -12,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Twilio.Rest.Api.V2010.Account;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace esign.FundRaising
 {
@@ -42,7 +45,7 @@ namespace esign.FundRaising
             _mstSleUserAccountRepo = mstSleUserAccountRepo;
             _mstSleTransactionRepo = mstSleTransactionRepo;
         }
-        public async Task<List<GetInformationFundRaiserDto>> getListFundRaiser()
+        public async Task<PagedResultDto<GetInformationFundRaiserDto>> getListFundRaiser(GetAllFundRaiserForInputDto input)
         {
             var listFundRaiser = (from user in _mstSleUserRepo.GetAll().Where(e => e.TypeUser == 2)
                                   join fundRaising in _mstSleFundRaiserRepo.GetAll() on user.Id equals fundRaising.UserId
@@ -56,8 +59,14 @@ namespace esign.FundRaising
                                       Position = fundRaising.Position,
                                       StatusAccount = userAccount.Status == true ? "Active" : "Not Active",
                                       ImageUrl = user.ImageUrl
-                                  }).ToListAsync();
-            return await listFundRaiser;
+                                  });
+
+            var totalCount = await listFundRaiser.CountAsync();
+            var result = await listFundRaiser.PageBy(input).ToListAsync();
+
+            return new PagedResultDto<GetInformationFundRaiserDto>(
+                totalCount,
+                result);
         }
 
         public async Task<List<GetFundRaisingViewForAdminDto>> getListFundRaising()

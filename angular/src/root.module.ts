@@ -292,6 +292,7 @@ function handleLogoutRequest(authService: AppAuthService) {
             deps: [Injector],
         },
     ],
-    bootstrap: [UserComponent],
+    // bootstrap: [UserComponent],
+    bootstrap: [RootComponent],
 })
 export class RootModule {}

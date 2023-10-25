@@ -53,7 +53,7 @@ import { ZeroTemplateHttpConfigurationService } from './zero-template-http-confi
         ApiServiceProxies.DynamicPropertyValueServiceProxy,
         ApiServiceProxies.DynamicEntityPropertyValueServiceProxy,
         ApiServiceProxies.TwitterServiceProxy,
-
+        ApiServiceProxies.AdminFundRaisingServiceProxy,
         // Master Common Lookup
 
 

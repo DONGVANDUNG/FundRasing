@@ -1,4 +1,5 @@
 ﻿using Abp.Application.Services;
+using Abp.Application.Services.Dto;
 using esign.FundRaising.Admin.Dto;
 using esign.FundRaising.FundRaiserService.Dto;
 using System;
@@ -15,7 +16,7 @@ namespace esign.FundRaising.Admin
         //Cảnh cáo tài khoản
         void WarningAccountUser(string contentWarning, int userId);
         //Lấy ra thông tin tất cả các người gây quỹ
-        Task<List<GetInformationFundRaiserDto>> getListFundRaiser();
+        Task<PagedResultDto<GetInformationFundRaiserDto>> getListFundRaiser(GetAllFundRaiserForInputDto input);
         //Lấy ra thông tin tất cả các quỹ
         Task<List<GetFundRaisingViewForAdminDto>> getListFundRaising();
         //Lấy ra thông tin tất cả các giao dịch theo quỹ
