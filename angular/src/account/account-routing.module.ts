@@ -11,11 +11,11 @@ import { AccountRouteGuard } from './auth/account-route-guard';
                 path: '',
                 component: AccountComponent,
                 children: [
-                    { path: '', redirectTo: 'login', pathMatch: 'full' },
+                    { path: '', redirectTo: 'login',pathMatch:'full'},
                     {
-                        path: 'login',
+                        path: 'login',pathMatch:'full',
                         loadChildren: () => import('./login/login.module').then((m) => m.LoginModule),
-                        canActivate: [AccountRouteGuard],
+                        // canActivate: [AccountRouteGuard],
                     },
                     {
                         path: 'register',

@@ -13,6 +13,7 @@ using esign.MultiTenancy.Payments;
 using esign.Storage;
 using esign.FundRaising;
 using esign.Entity;
+using esign.Enitity;
 
 namespace esign.EntityFrameworkCore
 {
@@ -48,6 +49,8 @@ namespace esign.EntityFrameworkCore
         public virtual DbSet<UserAccount> UserAccount { get; set; }
         public virtual DbSet<UserImage> UserImages { get; set; }
         public virtual DbSet<UserWarning> UserWarning { get; set; }
+        public virtual DbSet<FundDetailContent> FundDetailContents { get; set; }
+        public virtual DbSet<FundRaisingTopic> FundRaisingTopics { get; set; }
 
         public esignDbContext(DbContextOptions<esignDbContext> options)
             : base(options)

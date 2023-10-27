@@ -12,6 +12,16 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
                         loadChildren: () => import('./app-admin-fundRaiser/app-admin-fundRaiser.module').then((m) => m.AppAdminFundRaiserModule),
                         // data: { permission: 'Pages.Administration.Users' },
                     },
+                    {
+                        path: 'fundPackage',
+                        loadChildren: () => import('./app-admin-fund-package/app-admin-fund-package.module').then((m) => m.AppAdminFundPackageModule),
+                        // data: { permission: 'Pages.Administration.Users' },
+                    },
+                    {
+                        path: 'transaction',
+                        loadChildren: () => import('./app-admin-fund-transaction/app-admin-fund-transaction.module').then((m) => m.AppAdminFundTransactionModule),
+                        // data: { permission: 'Pages.Administration.Users' },
+                    },
                     // { //vãi lều sai chỗ nào chưa? path quá đảk, nok boy  gon nghẻ nhé =)))
                     //     path: 'users',
                     //     loadChildren: () => import('./users/users.module').then((m) => m.UsersModule),

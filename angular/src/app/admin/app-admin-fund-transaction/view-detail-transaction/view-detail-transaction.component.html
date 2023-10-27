@@ -1,0 +1,30 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" Cert="dialog"
+  aria-labelledby="createOrEditModal">
+  <div class="modal-dialog tmss-modal-md">
+    <div class="modal-content">
+      <form *ngIf="active" autocomplete="off">
+        <div class="modal-header">
+          <h4 class="modal-title">
+            <span>{{l("MstSleInstructionalMaterialCreate")}}</span>
+          </h4>
+          <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+            <div class="kt-portlet kt-portlet--mobile">
+              <div class="kt-portlet__body">
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button [disabled]="saving" type="button" class="tmss-btn btn-outline-dark"
+              (click)="close()">{{l("Cancel")}}</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

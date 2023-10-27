@@ -36,6 +36,8 @@ export class AppNavigationService {
                     //     '/app/admin/organization-units'
                     // ),
                     new AppMenuItem('FundRaiser', 'Pages.Administration.Users', 'flaticon-app', '/app/admin/fundRaiser'),
+                    new AppMenuItem('Transaction', 'Pages.Administration.Users', 'flaticon-app', '/app/admin/transaction'),
+                    new AppMenuItem('FundPackage', 'Pages.Administration.Users', 'flaticon-app', '/app/admin/fundPackage'),
                     new AppMenuItem('Roles', 'Pages.Administration.Roles', 'flaticon-suitcase', '/app/admin/roles'),
                     // new AppMenuItem('Users', 'Pages.Administration.Users', 'flaticon-users', '/app/admin/users'),
                     // new AppMenuItem(
@@ -57,36 +59,36 @@ export class AppNavigationService {
                     //     'flaticon-lock',
                     //     '/app/admin/maintenance'
                     // ),
-                    // new AppMenuItem(
-                    //     'Subscription',
-                    //     'Pages.Administration.Tenant.SubscriptionManagement',
-                    //     'flaticon-refresh',
-                    //     '/app/admin/subscription-management'
-                    // ),
+                    new AppMenuItem(
+                        'Subscription',
+                        'Pages.Administration.Tenant.SubscriptionManagement',
+                        'flaticon-refresh',
+                        '/app/admin/subscription-management'
+                    ),
                     // new AppMenuItem(
                     //     'VisualSettings',
                     //     'Pages.Administration.UiCustomization',
                     //     'flaticon-medical',
                     //     '/app/admin/ui-customization'
                     // ),
-                    // new AppMenuItem(
-                    //     'WebhookSubscriptions',
-                    //     'Pages.Administration.WebhookSubscription',
-                    //     'flaticon2-world',
-                    //     '/app/admin/webhook-subscriptions'
-                    // ),
+                    new AppMenuItem(
+                        'WebhookSubscriptions',
+                        'Pages.Administration.WebhookSubscription',
+                        'flaticon2-world',
+                        '/app/admin/webhook-subscriptions'
+                    ),
                     // new AppMenuItem(
                     //     'DynamicProperties',
                     //     'Pages.Administration.DynamicProperties',
                     //     'flaticon-interface-8',
                     //     '/app/admin/dynamic-property'
                     // ),
-                    // new AppMenuItem(
-                    //     'Settings',
-                    //     'Pages.Administration.Host.Settings',
-                    //     'flaticon-settings',
-                    //     '/app/admin/hostSettings'
-                    // ),
+                    new AppMenuItem(
+                        'Settings',
+                        'Pages.Administration.Host.Settings',
+                        'flaticon-settings',
+                        '/app/admin/hostSettings'
+                    ),
                     // new AppMenuItem(
                     //     'Settings',
                     //     'Pages.Administration.Tenant.Settings',

@@ -2415,6 +2415,13 @@ ajv@^8.0.0:
     require-from-string "^2.0.2"
     uri-js "^4.2.2"
 
+angular-bootstrap-md@^15.0.0:
+  version "15.0.0"
+  resolved "https://registry.yarnpkg.com/angular-bootstrap-md/-/angular-bootstrap-md-15.0.0.tgz#e2397f76dfa3691e5339d5ceb50ecd209dfbe6da"
+  integrity sha512-Rn8Nim869YOfCy1OAm0vvsY47qDuyNfASwUYJf4SG1SgiJ/U5E7LM0nQbrFSiBNoW05dlBuPpoTu/dX4Hcygkw==
+  dependencies:
+    tslib "^2.0.0"
+
 angular-gridster2@^15.0.0:
   version "15.0.0"
   resolved "https://registry.npmjs.org/angular-gridster2/-/angular-gridster2-15.0.0.tgz"

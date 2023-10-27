@@ -1,13 +1,13 @@
-﻿using Abp.Domain.Repositories;
+﻿using Abp.Application.Services.Dto;
+using Abp.Domain.Repositories;
+using Abp.Linq.Extensions;
 using esign.Enitity;
 using esign.Entity;
-using Microsoft.AspNetCore.Http.HttpResults;
-using System;
+using esign.FundRaising.UserFundRaising.Dto;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using static esign.Configuration.AppSettings.UiManagement;
 
 namespace esign.FundRaising
 {
@@ -67,18 +67,21 @@ namespace esign.FundRaising
             return listFundOutStanding;
         }
 
-        public List<GetListFundPackageDto> GetListFundPackage()
+        public async Task<PagedResultDto<GetListFundPackageDto>> GetListFundPackage(FundPackageInputDto input)
         {
-            var listFundPackage = (from funPackage in _mstSleFundPackageRepo.GetAll().Where(e=> e.Status == true)
+            var listFundPackage = from funPackage in _mstSleFundPackageRepo.GetAll().Where(e=> e.Status == true)
                           select new GetListFundPackageDto
                           {
                               Id = funPackage.Id,
                               Discount = funPackage.Discount,
                               PaymenFee = funPackage.PaymenFee,
                               Description = funPackage.Description,
-                              Duration = funPackage.Duration
-                          }).ToList();
-            return listFundPackage;
+                              Duration = funPackage.Duration,
+                              CreatedTime = funPackage.CreationTime
+                          };
+            var totalCount = await listFundPackage.CountAsync();
+            return new PagedResultDto<GetListFundPackageDto>
+                (totalCount, await listFundPackage.PageBy(input).ToListAsync());
         }
     }
 }

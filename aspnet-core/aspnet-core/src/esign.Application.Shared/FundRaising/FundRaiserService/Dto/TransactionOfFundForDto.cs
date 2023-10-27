@@ -12,5 +12,6 @@ namespace esign.FundRaising.FundRaiserService.Dto
         public string Content { get; set; }
         public string Sender { get; set; }
         public string FundName { get; set; }
+        public string Receiver { get; set; }
     }
 }

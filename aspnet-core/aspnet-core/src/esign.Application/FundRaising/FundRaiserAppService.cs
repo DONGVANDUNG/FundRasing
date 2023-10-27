@@ -124,7 +124,7 @@ namespace esign.FundRaising
         {
             var listTransaction = (from transaction in _mstSleFundTransactionRepo.GetAll().Where(e => e.Id == fundId)
                                    join fund in _mstSleFundRepo.GetAll() on transaction.FundId equals fund.Id
-                                   join user in _mstSleUserRepo.GetAll() on transaction.UserId equals user.Id
+                                   join user in _mstSleUserRepo.GetAll() on transaction.EmailReceiver equals user.Email
                                    select new TransactionOfFundForDto
                                    {
                                        Id = transaction.Id,

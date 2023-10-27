@@ -12,8 +12,8 @@ namespace esign.FundRaising
     [Table("FundTransactions")]
     public class FundTransactions : FullAuditedEntity<int>
     {
-        public int Id { get; set; }
-        public int UserId { get; set; }
+        public string EmailSender { get; set; }
+        public string EmailReceiver { get; set; }
         public int FundId { get; set; }
         public string MessageToFund { get; set; }
         public decimal AmountOfMoney { get; set; }

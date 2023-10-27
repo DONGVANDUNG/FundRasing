@@ -4,7 +4,9 @@
     [ngStyle]="style"
     class="ag-theme-alpine"
     [ngClass]="className ? className : ''"
-
+    [columnDefs]="columnDefs"
+    [defaultColDef]="defaultColDef"
+    [rowData]="rowData"
     (rowDragEnd)="onRowDragEnd($event)"
     (gridReady)="onGridReady($event)"
     (selectionChanged)="onSelectionChanged($event)"

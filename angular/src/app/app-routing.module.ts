@@ -29,12 +29,6 @@ import { NgxSpinnerService } from 'ngx-spinner';
                         path: 'admin',
                         loadChildren: () => import('app/admin/admin.module').then((m) => m.AdminModule), //Lazy load admin module
                         data: { preload: true },
-                        canLoad: [AppRouteGuard],   
-                    },
-                    {
-                        path: 'user',
-                        loadChildren: () => import('./user/user.module').then((m) => m.UserModule), //Lazy load admin module
-                        data: { preload: true },
                         canLoad: [AppRouteGuard],
                     },
                     {

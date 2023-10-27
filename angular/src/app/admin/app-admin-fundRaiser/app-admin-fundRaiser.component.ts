@@ -71,38 +71,38 @@ export class AppAdminFundRaiserComponent extends AppComponentBase implements OnI
                 headerTooltip: this.l('STT'),
                 cellRenderer: params => params.rowIndex + (this.paginationParams.pageNum! - 1) * this.paginationParams.pageSize! + 1,
                 field: 'no',
-                cellClass: ['text-center'],
+                cellClass: ['text-left'],
                 minWidth: 100,
             },
             {
-                headerName: this.l('Title'),
-                headerTooltip: this.l('Title'),
-                field: 'title',
+                headerName: this.l('Description'),
+                headerTooltip: this.l('Description'),
+                field: 'description',
                 flex: 3,
                 width: 130,
-                cellClass: ['text-center'],
+                cellClass: ['text-left'],
             },
             {
-                headerName: this.l('Loại báo cáo'),
-                headerTooltip: this.l('TypeVodReport'),
-                field: 'typeVodReport',
+                headerName: this.l('Name'),
+                headerTooltip: this.l('Name'),
+                field: 'name',
                 flex: 2,
-                cellClass: ['text-center'],
+                cellClass: ['text-left'],
             },
             {
-                headerName: this.l('Ngày đăng'),
-                headerTooltip: this.l('ReportDate'),
-                field: 'reportDate',
+                headerName: this.l('Position'),
+                headerTooltip: this.l('Position'),
+                field: 'position',
                 flex: 3,
-                cellClass: ['text-center'],
+                cellClass: ['text-left'],
                 // valueFormatter: (params) => {
                 //     return this.dataFormatService.dateFormat(params.value)
                 // },
             },
             {
-                headerName: this.l('Tài liệu đính kèm'),
-                headerTooltip: this.l('Attachments'),
-                field: 'attachments',
+                headerName: this.l('StatusAccount'),
+                headerTooltip: this.l('StatusAccount'),
+                field: 'statusAccount',
                 flex: 4,
                 cellClass: ['text-left'],
             },
@@ -139,7 +139,7 @@ export class AppAdminFundRaiserComponent extends AppComponentBase implements OnI
             this.rowData = result.items;
             this.paginationParams.totalPage = ceil(result.totalCount / this.maxResultCount);
             this.paginationParams.totalCount = result.totalCount;
-            this.selectedReport = undefined;
+            this.params.api.setRowData(this.rowData);
         });
     }
 
@@ -148,16 +148,6 @@ export class AppAdminFundRaiserComponent extends AppComponentBase implements OnI
         this.params.api.paginationSetPageSize(this.paginationParams.pageSize);
         this.onGridReady(this.paginationParams);
     }
-
-    // changePage(paginationParams) {
-    //     this.paginationParams = paginationParams;
-    //     this.paginationParams.skipCount = (paginationParams.pageNum - 1) * paginationParams.pageSize;
-    //     this.maxResultCount = paginationParams.pageSize;
-    //     this.getAll(this.paginationParams).subscribe((result) => {
-    //         this.rowData = result.items;
-    //         this.paginationParams.totalPage = ceil(result.totalCount / this.maxResultCount);
-    //     });
-    // }
 
     eventEnter(event) {
         if (event.keyCode === 13) {
@@ -168,27 +158,6 @@ export class AppAdminFundRaiserComponent extends AppComponentBase implements OnI
     onChangeFilterShown() {
         this.advancedFiltersAreShown = !this.advancedFiltersAreShown
     }
-
-
-    // deleteDepartment() {
-    //     this.message.confirm('', this.l('AreYouSure'), (isConfirmed) => {
-    //         if (isConfirmed) {
-    //             this.mstSleVodReport
-    //                 .delete(this.selectedReport)
-    //                 .subscribe(() => {
-    //                     this.onGridReady(this.paginationParams);
-    //                     this.notify.success(this.l('SuccessfullyDeleted'));
-    //                 });
-    //         }
-    //     });
-    // }
-
-    // editDepartment() {
-    //     this.createOrEditModal.show(this.selectedReport);
-    // }
-    // createDepartment() {
-    //     this.createOrEditModal.show();
-    // }
 
     search() {
         this.onGridReady(this.paginationParams);
@@ -210,5 +179,4 @@ export class AppAdminFundRaiserComponent extends AppComponentBase implements OnI
             this.selectedReport = selected.id;
         }
     }
-
 }

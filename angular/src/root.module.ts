@@ -32,7 +32,7 @@ import { NgxBootstrapDatePickerConfigService } from 'assets/ngx-bootstrap/ngx-bo
 import { LocaleMappingService } from '@shared/locale-mapping.service';
 import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 import { DateTimeService } from '@app/shared/common/timing/date-time.service';
-import { UserComponent } from '@app/user/user.component';
+import { AccountGuestModule } from 'account-guest/account-guest.module';
 
 export function appInitializerFactory(injector: Injector, platformLocation: PlatformLocation) {
     return () => {
@@ -272,6 +272,7 @@ function handleLogoutRequest(authService: AppAuthService) {
         HttpClientModule,
         RootRoutingModule,
         NgxSpinnerModule,
+        AccountGuestModule
     ],
     declarations: [RootComponent],
     providers: [
@@ -292,7 +293,6 @@ function handleLogoutRequest(authService: AppAuthService) {
             deps: [Injector],
         },
     ],
-    bootstrap: [UserComponent],
-//    bootstrap: [RootComponent],
+    bootstrap: [RootComponent],
 })
 export class RootModule {}

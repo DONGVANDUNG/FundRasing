@@ -92,3 +92,13 @@
 .ag-theme-alpine .ag-cell {
     padding: 1px 10px 1px 10px;
 }
+.ag-row-no-animation .ag-row {
+    display: flex;
+    align-items: center;
+}
+.ag-center-cols-viewport,.ag-center-cols-container,.ag-theme-alpine .ag-row{
+    height: 23px;
+}
+.ag-theme-alpine .ag-header-cell{
+    border-bottom: none;
+}

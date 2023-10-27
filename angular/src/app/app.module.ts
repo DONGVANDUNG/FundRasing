@@ -102,7 +102,6 @@ import { EnableTwoFactorAuthenticationModalComponent } from './shared/layout/pro
 import { RecoveryCodesComponent } from './shared/layout/profile/recovery-codes.component';
 import { VerifyCodeModalComponent } from './shared/layout/profile/verify-code-modal.component';
 import { ViewRecoveryCodesModalComponent } from './shared/layout/profile/view-recovery-codes-modal.component';
-import { UserModule } from './user/user.module';
 
 @NgModule({
     declarations: [
@@ -210,8 +209,7 @@ import { UserModule } from './user/user.module';
         AppBsModalModule,
         SubheaderModule,
         ChangeProfilePictureModalModule
-        , AgGridModule,
-        UserModule
+        , AgGridModule
     ]
 })
 export class AppModule {}
