@@ -7,8 +7,8 @@ const routes: Routes = [
         path: 'account',
         loadChildren: () => import('account/account.module').then((m) => m.AccountModule), //Lazy load account module
         data: { preload: true },
-    },
-    { path: '', redirectTo: 'app/notification', pathMatch: 'full' },
+    },  
+    { path: '', redirectTo: 'app/notification' , pathMatch: 'full' },
     { path: '**', redirectTo: 'guest', pathMatch: 'full' },
 ];
 

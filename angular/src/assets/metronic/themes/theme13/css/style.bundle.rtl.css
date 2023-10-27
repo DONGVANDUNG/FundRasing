@@ -2225,7 +2225,7 @@ progress {
 .form-control {
   display: block;
   width: 100%;
-  padding: 0.775rem 1rem;
+  /* padding: 0.775rem 1rem; */
   font-size: 1.1rem;
   font-weight: 500;
   line-height: 1.5;
@@ -2716,8 +2716,8 @@ textarea.form-control-lg {
   display: flex;
   align-items: center;
   padding: 0.775rem 1rem;
-  font-size: 1.1rem;
-  font-weight: 500;
+  /* font-size: 1.1rem; */
+  font-weight: 600;
   line-height: 1.5;
   color: #5E6278;
   text-align: center;

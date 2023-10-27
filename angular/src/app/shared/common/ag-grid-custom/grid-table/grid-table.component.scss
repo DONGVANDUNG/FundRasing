@@ -92,13 +92,24 @@
 .ag-theme-alpine .ag-cell {
     padding: 1px 10px 1px 10px;
 }
-.ag-row-no-animation .ag-row {
+.ag-row-no-animation .ag-row, .ag-header-row {
     display: flex;
     align-items: center;
 }
 .ag-center-cols-viewport,.ag-center-cols-container,.ag-theme-alpine .ag-row{
     height: 23px;
 }
+.ag-header-container,.ag-header-viewport,.ag-header-row-column,.ag-header-cell{
+    height: 28px !important;
+}
+.ag-header{
+    min-height: 28px !important;
+}
 .ag-theme-alpine .ag-header-cell{
     border-bottom: none;
+}
+.ag-header-cell{
+    display: flex;
+    justify-content: center;
+    padding: 0px !important;
 }
