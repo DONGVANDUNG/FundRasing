@@ -9,6 +9,7 @@ using esign.FundRaising.Admin;
 using esign.FundRaising.Admin.Dto;
 using esign.FundRaising.FundRaiserService.Dto;
 using esign.FundRaising.UserFundRaising.Dto;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -31,12 +32,17 @@ namespace esign.FundRaising
         private readonly IRepository<UserAccount, int> _mstSleUserAccountRepo;
         private readonly IRepository<FundTransactions, int> _mstSleTransactionRepo;
         private readonly IRepository<UserWarning, int> _mstSleUserWarningRepo;
+        private readonly IRepository<GuestAccount, int> _mstSleGuestAccountRepo;
 
 
         public AdminFundRaisingAppService(IRepository<Funds> mstSleFundRepo, IRepository<FundRaiser, int>
             mstSleFundRaiserRepo, IRepository<FundDetailContent, int> mstSleFundDetailContentRepo,
             IRepository<FundRaisingTopic, int> mstSleFundTopictRepo,
-            IRepository<FundPackage, int> mstSleFundPackageRepo, IRepository<User, long> mstSleUserRepo, IRepository<UserAccount, int> mstSleUserAccountRepo, IRepository<FundTransactions, int> mstSleTransactionRepo)
+            IRepository<FundPackage, int> mstSleFundPackageRepo,
+            IRepository<User, long> mstSleUserRepo,
+            IRepository<UserAccount, int> mstSleUserAccountRepo,
+            IRepository<FundTransactions, int> mstSleTransactionRepo,
+            IRepository<GuestAccount, int> mstSleGuestAccountRepo)
         {
             _mstSleFundRepo = mstSleFundRepo;
             _mstSleFundRaiserRepo = mstSleFundRaiserRepo;
@@ -46,6 +52,7 @@ namespace esign.FundRaising
             _mstSleUserRepo = mstSleUserRepo;
             _mstSleUserAccountRepo = mstSleUserAccountRepo;
             _mstSleTransactionRepo = mstSleTransactionRepo;
+            _mstSleGuestAccountRepo = mstSleGuestAccountRepo;
         }
 
         public async Task<TransactionOfFundForDto> getInforTransactionById(int transactionId)
@@ -75,7 +82,7 @@ namespace esign.FundRaising
                                       Description = fundRaising.Introduce,
                                       Name = fundRaising.Name,
                                       Position = fundRaising.Position,
-                                      StatusAccount = user.IsActive == true ? "Active" : "Not Active",
+                                      StatusAccount = user.IsActive == true ? "Hoạt động" : "Ngừng hoạt động",
                                       ImageUrl = user.ImageUrl
                                   });
 
@@ -233,6 +240,23 @@ namespace esign.FundRaising
             FundPackageGetForEditDto fundEdit = new FundPackageGetForEditDto();
             ObjectMapper.Map(fundPackage, fundEdit);
             return fundEdit;
+        }
+        public async Task<PagedResultDto<GetListAccountUserDto>> getAllListAccount(GuestAccountForInputDto input)
+        {
+            var guestAccount = from account in _mstSleGuestAccountRepo.GetAll()
+                               select new GetListAccountUserDto
+                               {
+                                   Id = account.Id,
+                                   UserName = account.UserName,
+                                   Email = account.Email,
+                                   Status = account.Status == true ? "Đang hoạt động" : "Ngừng hoạt động",
+                                   Created = account.CreationTime
+                               };
+            var totalCount = await guestAccount.CountAsync();
+            return new PagedResultDto<GetListAccountUserDto>(
+                totalCount,
+                await guestAccount.PageBy(input).ToListAsync()
+                );
         }
     }
 }

@@ -18,6 +18,7 @@
     (cellEditingStopped)="onCellEditingStopped($event)"
     (keydown)="onKeyDown($event)"
     (cellKeyPress)="onCellKeyPress($event)"
+    [rowSelection]="rowSelection"
     >
 </ag-grid-angular>
 <grid-pagination *ngIf="showPagination" [pageSize]="paginationParams?.pageSize" [paginationParams]="paginationParams" (pageChangedEvent)="changePage($event)" [textPagination]="textPagination" [allowToGetMultiRecords]="allowToGetMultiRecords">

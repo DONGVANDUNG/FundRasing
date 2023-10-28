@@ -13,8 +13,18 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
                         // data: { permission: 'Pages.Administration.Users' },
                     },
                     {
+                        path: 'accountGuest',
+                        loadChildren: () => import('./app-admin-account-guest/app-admin-account-guest.module').then((m) => m.AppAdminFundRaiserModule),
+                        // data: { permission: 'Pages.Administration.Users' },
+                    },
+                    {
                         path: 'fundPackage',
                         loadChildren: () => import('./app-admin-fund-package/app-admin-fund-package.module').then((m) => m.AppAdminFundPackageModule),
+                        // data: { permission: 'Pages.Administration.Users' },
+                    },
+                    {
+                        path: 'fundRaising',
+                        loadChildren: () => import('./app-admin-fundraising/app-admin-fundraising.module').then((m) => m.AppAdminFundraisingModule),
                         // data: { permission: 'Pages.Administration.Users' },
                     },
                     {

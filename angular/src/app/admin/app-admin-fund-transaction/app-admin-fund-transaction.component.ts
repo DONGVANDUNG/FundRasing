@@ -170,7 +170,7 @@ export class AppAdminFundTransactionComponent extends AppComponentBase implement
         ];
         this.defaultColDef = {
             flex: 1,
-            floatingFilter: true,
+            floatingFilter: false,
             filter: 'agTextColumnFilter',
             resizable: true,
             sortable: true,

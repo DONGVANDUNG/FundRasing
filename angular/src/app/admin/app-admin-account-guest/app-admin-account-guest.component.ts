@@ -1,19 +1,17 @@
-import { Component, Injector, OnInit, ViewChild } from '@angular/core';
-import { PaginationParamsModel } from '@app/shared/common/models/base.model';
+import { Component, Injector, OnInit } from '@angular/core';
+import { GridParams, PaginationParamsModel } from '@app/shared/common/models/base.model';
+import { DataFormatService } from '@app/shared/common/services/data-format.service';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { AdminFundRaisingServiceProxy } from '@shared/service-proxies/service-proxies';
-import { GridParams } from '@app/shared/common/models/base.model';
 import { ceil } from 'lodash-es';
-import * as moment from 'moment';
-import { AppAdminWarningAccountComponent } from './app-admin-warning-account/app-admin-warning-account.component';
 
 @Component({
-  selector: 'app-app-admin-account-fundraising',
-  templateUrl: './app-admin-account-fundraising.component.html',
-  styleUrls: ['./app-admin-account-fundraising.component.less']
+    selector: 'app-app-admin-account-guest',
+    templateUrl: './app-admin-account-guest.component.html',
+    styleUrls: ['./app-admin-account-guest.component.less']
 })
-export class AppAdminAccountFundraisingComponent extends AppComponentBase implements OnInit {
-   @ViewChild("warningUser") modalWarning: AppAdminWarningAccountComponent;
+export class AppAdminAccountGuestComponent extends AppComponentBase implements OnInit {
+
     columnDefs;
     typeOfReport = 0;
     dateOfReport;
@@ -26,9 +24,11 @@ export class AppAdminAccountFundraisingComponent extends AppComponentBase implem
     paginationParams: PaginationParamsModel;
     params: GridParams;
     advancedFiltersAreShown: boolean;
-    fromDate = moment().add(-30,'day');
-    toDate = moment();
-    selectedReport;
+    createFillter;
+    statusFillter;
+    // fromDate = moment().add(-30,'day');
+    // toDate = moment();
+    selectedAccountGuest;
     sideBar = {
         toolPanels: [
             {
@@ -51,7 +51,7 @@ export class AppAdminAccountFundraisingComponent extends AppComponentBase implem
     constructor(
         injector: Injector,
         private fundRaising: AdminFundRaisingServiceProxy,
-        // private dataFormatService: DataFormatService
+        private dataFormatService: DataFormatService
     ) {
         super(injector);
         this.columnDefs = [
@@ -60,40 +60,38 @@ export class AppAdminAccountFundraisingComponent extends AppComponentBase implem
                 headerTooltip: this.l('STT'),
                 cellRenderer: params => params.rowIndex + (this.paginationParams.pageNum! - 1) * this.paginationParams.pageSize! + 1,
                 field: 'no',
-                cellClass: ['text-left'],
+                cellClass: ['text-center'],
                 minWidth: 100,
             },
             {
-                headerName: this.l('Description'),
-                headerTooltip: this.l('Description'),
-                field: 'description',
-                flex: 3,
-                width: 130,
-                cellClass: ['text-left'],
-            },
-            {
-                headerName: this.l('Name'),
-                headerTooltip: this.l('Name'),
-                field: 'name',
+                headerName: this.l('Tên đăng nhập'),
+                headerTooltip: this.l('Tên đăng nhập'),
+                field: 'userName',
                 flex: 2,
-                cellClass: ['text-left'],
+                width: 130,
+                cellClass: ['text-center'],
             },
             {
-                headerName: this.l('Position'),
-                headerTooltip: this.l('Position'),
-                field: 'position',
+                headerName: this.l('Email'),
+                headerTooltip: this.l('Email'),
+                field: 'email',
                 flex: 3,
-                cellClass: ['text-left'],
-                // valueFormatter: (params) => {
-                //     return this.dataFormatService.dateFormat(params.value)
-                // },
+                cellClass: ['text-center'],
             },
             {
-                headerName: this.l('StatusAccount'),
-                headerTooltip: this.l('StatusAccount'),
-                field: 'statusAccount',
+                headerName: this.l('Trạng Thái'),
+                headerTooltip: this.l('Trạng Thái'),
+                field: 'status',
+                flex: 2,
+                cellClass: ['text-center'],
+            },
+            {
+                headerName: this.l('Ngày tạo tài khoản'),
+                headerTooltip: this.l('Ngày tạo tài khoản'),
+                field: 'created',
+                valueGetter: params => this.dataFormatService.dateFormat(params.data.created),
                 flex: 4,
-                cellClass: ['text-left'],
+                cellClass: ['text-center'],
             },
         ];
         this.defaultColDef = {
@@ -129,13 +127,8 @@ export class AppAdminAccountFundraisingComponent extends AppComponentBase implem
             this.paginationParams.totalPage = ceil(result.totalCount / this.maxResultCount);
             this.paginationParams.totalCount = result.totalCount;
             this.params.api.setRowData(this.rowData);
+            this.selectedAccountGuest = null;
         });
-    }
-
-    callBackGridDepartment(params) {
-        this.params = params;
-        this.params.api.paginationSetPageSize(this.paginationParams.pageSize);
-        this.onGridReady(this.paginationParams);
     }
 
     eventEnter(event) {
@@ -156,7 +149,9 @@ export class AppAdminAccountFundraisingComponent extends AppComponentBase implem
     }
 
     getAll(paginationParams: PaginationParamsModel) {
-        return this.fundRaising.getListFundRaiser(
+        return this.fundRaising.getAllListAccount(
+            this.createFillter,
+            this.statusFillter,
             this.sorting ?? null,
             paginationParams ? paginationParams.skipCount : 0,
             paginationParams ? paginationParams.pageSize : 20
@@ -165,8 +160,7 @@ export class AppAdminAccountFundraisingComponent extends AppComponentBase implem
     onChangeSelection(paginationParams) {
         const selected = paginationParams.api.getSelectedRows()[0];
         if (selected) {
-            this.selectedReport = selected.id;
+            this.selectedAccountGuest = selected.id;
         }
     }
-
 }

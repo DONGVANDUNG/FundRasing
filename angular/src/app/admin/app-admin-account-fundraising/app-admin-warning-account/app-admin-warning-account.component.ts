@@ -1,4 +1,6 @@
 import { Component, EventEmitter, Injector, OnInit, Output, ViewChild } from '@angular/core';
+import { AppComponentBase } from '@shared/common/app-component-base';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs';
 
 @Component({
@@ -8,7 +10,7 @@ import { finalize } from 'rxjs';
 })
 export class AppAdminWarningAccountComponent extends AppComponentBase implements OnInit {
 
- 
+
   @ViewChild("createOrEditModal", { static: true }) modal: ModalDirective;
   @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
   listUser = [];

@@ -51,6 +51,7 @@ namespace esign.EntityFrameworkCore
         public virtual DbSet<UserWarning> UserWarning { get; set; }
         public virtual DbSet<FundDetailContent> FundDetailContents { get; set; }
         public virtual DbSet<FundRaisingTopic> FundRaisingTopics { get; set; }
+        public virtual DbSet<GuestAccount> GuestAccounts { get; set; }
 
         public esignDbContext(DbContextOptions<esignDbContext> options)
             : base(options)

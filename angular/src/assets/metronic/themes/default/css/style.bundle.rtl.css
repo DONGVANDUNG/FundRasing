@@ -2227,7 +2227,7 @@ progress {
 .form-control {
   display: block;
   width: 100%;
-  /* padding: 0.775rem 1rem; */
+  padding: 0 1rem;
   font-size: 1.1rem;
   font-weight: 500;
   line-height: 1.5;
@@ -3678,7 +3678,13 @@ textarea.form-control-lg {
   border-top: 1px solid var(--bs-dropdown-divider-bg);
   opacity: 1;
 }
-
+.btn-outline-primary {
+    color: #5867dd;
+    border-color: #5867dd; }
+    .btn-outline-primary:hover {
+      color: #fff;
+      background-color: #5867dd;
+      border-color: #5867dd; }
 .dropdown-item {
   display: block;
   width: 100%;

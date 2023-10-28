@@ -3,22 +3,26 @@
         <div [class]="containerClass">
             <div class="kt-subheader__main">
                 <h3 class="kt-subheader__title">
-                    <span class="kt_subheader__desc">{{l("SalesEmployee")}}</span>
+                    <span class="kt_subheader__desc">{{l("Thông tin quỹ")}}</span>
                 </h3>
-                <span class="kt-subheader__separator kt-subheader__separator--v"></span>
-                <span class="kt-subheader__desc">{{l("Báo cáo")}}</span>
             </div>
             <div class="kt-subheader__toolbar">
                 <div class="kt-subheader__wrapper">
-                    <button (click)="onChangeFilterShown()" *ngIf="!advancedFiltersAreShown"
-                        class="tmss-btn btn-outline-primary">
-                        <i class="fa fa-search"></i> {{l("ShowAdvancedFilters")}}
-                    </button>
-                    <button (click)="onChangeFilterShown()" *ngIf="advancedFiltersAreShown"
-                        class="tmss-btn btn-outline-primary">
-                        <i class="fa fa-search"></i> {{l("HideAdvancedFilters")}}
-                    </button>
-
+                    <div class="row mb-1">
+                        <div class="col-9"></div>
+                        <div class="col-md-3 d-flex justify-content-end">
+                            <div class="form-group float-right">
+                                <button type="button" class="tmss-btn btn-outline-primary"
+                                    (click)="clearValueFilter()">
+                                    <i class="tmss-fa fas fa-redo mr-1"></i>{{l("Refresh")}}
+                                </button>
+                                <button class="tmss-btn btn-outline-primary" type="submit" (click)="search()"><i
+                                        class="fa fa-search"></i>
+                                    <span>{{l('Search')}}</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -54,23 +58,20 @@
             <div class="row align-items-center">
                 <div class="col-md-12">
                     <div class="item col-12">
-                        <div class="tbContent">
-                            {{l("Thông tin quỹ")}}
-                        </div>
                         <grid-table [columnDefs]="columnDefsFundRaising" [defaultColDef]="defaultColDef"
                             (onGridReady)="onGridReadyFundRaising($event)"
                             (callBackEvent)="callBackGridFundRaising($event)"
                             [paginationParams]="paginationParamsFundRaising"
                             (onSelectionChanged)="onChangeSelectionFundRaising($event)" [rowData]="rowDataFundRaising"
-                            [height]="'530px'"></grid-table>
+                            [height]="'260px'"></grid-table>
                     </div>
                 </div>
             </div>
-            <div class="row mt-4 mb-4 d-flex">
+            <div class="row mt-1 mb-1 d-flex">
                 <div class="col-10"></div>
-                <div class="col-md-12">
+                <div class="col-2 d-flex justify-content-end">
                     <button class="tmss-btn btn-outline-primary" (click)="viewDetailsTransaction(selectionTransaction)">
-                        <i class="fa fa-save"></i> Xem chi tiết
+                        <i class="fa fa-eye"></i> Xem chi tiết
                     </button>
                 </div>
             </div>
@@ -80,11 +81,13 @@
                         <div class="tbContent">
                             {{l("Thông tin giao dịch")}}
                         </div>
-                        <grid-table [columnDefs]="columnDefsTransaction" [defaultColDef]="defaultColDef"
+                        <grid-table [columnDefs]="columnDefsTransaction"
+                            [defaultColDef]="defaultColDef"
+                            [rowSelection] = "'single'"
                             (onGridReady)="onGridReadyTransaction($event)"
                             [paginationParams]="paginationParamsTransaction"
                             (onSelectionChanged)="onChangeSelectionTransaction($event)" [rowData]="rowDataTransaction"
-                            [height]="'530px'"></grid-table>
+                            [height]="'260px'"></grid-table>
                     </div>
                 </div>
             </div>

@@ -1399,6 +1399,82 @@ export class AdminFundRaisingServiceProxy {
         }
         return _observableOf(null as any);
     }
+
+    /**
+     * @param created (optional) 
+     * @param status (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getAllListAccount(created: DateTime | undefined, status: boolean | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetListAccountUserDto> {
+        let url_ = this.baseUrl + "/api/services/app/AdminFundRaising/getAllListAccount?";
+        if (created === null)
+            throw new Error("The parameter 'created' cannot be null.");
+        else if (created !== undefined)
+            url_ += "Created=" + encodeURIComponent(created ? "" + created.toString() : "") + "&";
+        if (status === null)
+            throw new Error("The parameter 'status' cannot be null.");
+        else if (status !== undefined)
+            url_ += "Status=" + encodeURIComponent("" + status) + "&";
+        if (sorting === null)
+            throw new Error("The parameter 'sorting' cannot be null.");
+        else if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&";
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllListAccount(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllListAccount(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfGetListAccountUserDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfGetListAccountUserDto>;
+        }));
+    }
+
+    protected processGetAllListAccount(response: HttpResponseBase): Observable<PagedResultDtoOfGetListAccountUserDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfGetListAccountUserDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
 }
 
 @Injectable()
@@ -22290,6 +22366,62 @@ export interface IGetLatestWebLogsOutput {
     latestWebLogLines: string[] | undefined;
 }
 
+export class GetListAccountUserDto implements IGetListAccountUserDto {
+    email!: string | undefined;
+    userName!: string | undefined;
+    password!: string | undefined;
+    created!: DateTime | undefined;
+    status!: string | undefined;
+    id!: number;
+
+    constructor(data?: IGetListAccountUserDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.email = _data["email"];
+            this.userName = _data["userName"];
+            this.password = _data["password"];
+            this.created = _data["created"] ? DateTime.fromISO(_data["created"].toString()) : <any>undefined;
+            this.status = _data["status"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): GetListAccountUserDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetListAccountUserDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["email"] = this.email;
+        data["userName"] = this.userName;
+        data["password"] = this.password;
+        data["created"] = this.created ? this.created.toString() : <any>undefined;
+        data["status"] = this.status;
+        data["id"] = this.id;
+        return data;
+    }
+}
+
+export interface IGetListAccountUserDto {
+    email: string | undefined;
+    userName: string | undefined;
+    password: string | undefined;
+    created: DateTime | undefined;
+    status: string | undefined;
+    id: number;
+}
+
 export class GetListFundOustandingDto implements IGetListFundOustandingDto {
     id!: number;
     imageUrl!: string | undefined;
@@ -26491,6 +26623,54 @@ export class PagedResultDtoOfGetInformationFundRaiserDto implements IPagedResult
 export interface IPagedResultDtoOfGetInformationFundRaiserDto {
     totalCount: number;
     items: GetInformationFundRaiserDto[] | undefined;
+}
+
+export class PagedResultDtoOfGetListAccountUserDto implements IPagedResultDtoOfGetListAccountUserDto {
+    totalCount!: number;
+    items!: GetListAccountUserDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfGetListAccountUserDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totalCount = _data["totalCount"];
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(GetListAccountUserDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfGetListAccountUserDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfGetListAccountUserDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfGetListAccountUserDto {
+    totalCount: number;
+    items: GetListAccountUserDto[] | undefined;
 }
 
 export class PagedResultDtoOfGetListFundPackageDto implements IPagedResultDtoOfGetListFundPackageDto {

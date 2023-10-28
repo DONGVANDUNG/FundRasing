@@ -12,6 +12,7 @@ namespace esign.FundRaising.FundRaiserService.Dto
         public string StatusAccount { get; set; }
         public string Name { get; set; }
         public string Position { get; set; }
+        public string Email { get; set; }
         public string Description { get; set; }
     }
 }

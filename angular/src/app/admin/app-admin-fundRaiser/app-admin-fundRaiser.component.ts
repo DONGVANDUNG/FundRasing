@@ -75,14 +75,6 @@ export class AppAdminFundRaiserComponent extends AppComponentBase implements OnI
                 minWidth: 100,
             },
             {
-                headerName: this.l('Description'),
-                headerTooltip: this.l('Description'),
-                field: 'description',
-                flex: 3,
-                width: 130,
-                cellClass: ['text-left'],
-            },
-            {
                 headerName: this.l('Name'),
                 headerTooltip: this.l('Name'),
                 field: 'name',
@@ -95,9 +87,21 @@ export class AppAdminFundRaiserComponent extends AppComponentBase implements OnI
                 field: 'position',
                 flex: 3,
                 cellClass: ['text-left'],
-                // valueFormatter: (params) => {
-                //     return this.dataFormatService.dateFormat(params.value)
-                // },
+            },
+            {
+                headerName: this.l('Email'),
+                headerTooltip: this.l('Email'),
+                field: 'email',
+                flex: 3,
+                cellClass: ['text-left'],
+            },
+            {
+                headerName: this.l('Description'),
+                headerTooltip: this.l('Description'),
+                field: 'description',
+                flex: 3,
+                width: 130,
+                cellClass: ['text-left'],
             },
             {
                 headerName: this.l('StatusAccount'),

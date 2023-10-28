@@ -169,3 +169,31 @@ bs-days-calendar-view {
         padding-right: 0 !important;
     }
 }
+.tmss-btn {
+    border-radius: 6px;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.9rem;
+    font-weight: 450;
+    cursor: pointer;
+    min-width: 3rem;
+    -webkit-box-align: center;
+    padding: 6px 8px !important;
+    white-space: nowrap;
+    border-width: 0.0625em;
+    vertical-align: middle;
+    margin-left: 0.25rem;
+    margin-right: 0.25rem;
+    margin-bottom: 0.25rem;
+    background-color: transparent;
+}
+.fa-redo:before,.fa-search{
+    color:rgb(72, 72, 206);
+    margin-right: 2px;
+}
+ .fa-search:hover{
+    color:white;
+}
+.fa-eye:before{
+    color: rgb(72, 72, 206);
+}
