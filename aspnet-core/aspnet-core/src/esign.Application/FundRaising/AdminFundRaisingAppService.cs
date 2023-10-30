@@ -74,9 +74,13 @@ namespace esign.FundRaising
 
         public async Task<PagedResultDto<GetInformationFundRaiserDto>> getListFundRaiser(GetAllFundRaiserForInputDto input)
         {
-            var listFundRaiser = (from user in _mstSleUserRepo.GetAll().Where(e => e.TypeUser == 2)
-                                  join fundRaising in _mstSleFundRaiserRepo.GetAll() on user.Id equals fundRaising.UserId
-                                  select new GetInformationFundRaiserDto
+            var listFundRaiser = (from user in _mstSleUserRepo.GetAll().Where(e => e.TypeUser == 2).
+                                  Where(e => input.Email == null || e.Email.Contains(input.Email))
+                                  .Where(e => input.StatusAccount == null || e.IsActive == input.StatusAccount)
+                                  join fundRaising in _mstSleFundRaiserRepo.GetAll().Where(e => input.Created == null || e.CreationTime == input.Created)
+
+                                  on user.Id equals fundRaising.UserId
+                                  select new GetInformationFundRaiserDto    
                                   {
                                       Id = fundRaising.Id,
                                       Description = fundRaising.Introduce,

@@ -7,5 +7,8 @@ namespace esign.FundRaising.FundRaiserService.Dto
 {
     public class GetAllFundRaiserForInputDto : PagedAndSortedResultRequestDto
     {
+        public DateTime? Created { get; set; }
+        public bool? StatusAccount { get; set; }
+        public string Email { get; set; }
     }
 }

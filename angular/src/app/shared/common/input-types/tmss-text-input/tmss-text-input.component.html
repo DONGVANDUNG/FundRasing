@@ -12,7 +12,6 @@
     (input)="changeValue($event)"
     (keyup)="openModal($event)"
     [(ngModel)]="value"
-    [formControl] = "ngControl.control"
     [attr.maxlength]="maxLength ? maxLength : 999"
   >
   <span *ngIf="showSearch" class="button-search input-group-text right-text hover-search" style="padding: 0px; width: 100%" (click)="search()">

@@ -1,5 +1,6 @@
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
-import { Component, Input, Output, EventEmitter, forwardRef, ViewChild, ElementRef, Self } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Component, Input, Output, EventEmitter, forwardRef, ViewChild, ElementRef, Self, Injector } from '@angular/core';
+import { AppComponentBase } from '@shared/common/app-component-base';
 
 @Component({
   selector: 'tmss-text-input',
@@ -11,7 +12,7 @@ import { Component, Input, Output, EventEmitter, forwardRef, ViewChild, ElementR
     multi: true
   }]
 })
-export class TmssTextInputComponent implements ControlValueAccessor {
+export class TmssTextInputComponent extends AppComponentBase implements ControlValueAccessor {
   @Input() value;
   @Input() className: string = '';
   @Input() addOnMinWidth: string = '';
@@ -39,10 +40,10 @@ export class TmssTextInputComponent implements ControlValueAccessor {
   @Output() keyup = new EventEmitter();
   private onChange: Function = new Function();
   @ViewChild('input') input!: ElementRef;
-  constructor(@Self() public ngControl: NgControl) {
-    this.ngControl.valueAccessor = this;
-    this.value = '';
-  }
+  constructor(
+		injector: Injector) {
+		super(injector);
+	}
 
   changeValue(event: any) {
     const value = event ? (event.target as HTMLInputElement).value : null;

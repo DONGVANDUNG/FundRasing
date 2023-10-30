@@ -23,18 +23,17 @@ export class AppAdminFundRaiserComponent extends AppComponentBase implements OnI
     skipCount: number = 0;
     sorting: string = '';
     paginationParams: PaginationParamsModel;
-    listVodTypeReport = [
+    listStatusAccount = [
         {
-            value: 1, label: 'Tuần',
+            value:true, label: 'Hoạt động',
         },
         {
-            value: 2, label: 'Tháng',
-        },
-        {
-            value: 3, label: 'Năm',
+            value: false, label: 'Không hoạt động',
         }
-
     ]
+    createdJoin;
+    status;
+    email;
     params: GridParams;
     advancedFiltersAreShown: boolean;
     fromDate = moment().add(-30,'day');
@@ -75,15 +74,15 @@ export class AppAdminFundRaiserComponent extends AppComponentBase implements OnI
                 minWidth: 100,
             },
             {
-                headerName: this.l('Name'),
-                headerTooltip: this.l('Name'),
+                headerName: this.l('Họ tên'),
+                headerTooltip: this.l('Họ tên'),
                 field: 'name',
                 flex: 2,
                 cellClass: ['text-left'],
             },
             {
-                headerName: this.l('Position'),
-                headerTooltip: this.l('Position'),
+                headerName: this.l('Chức vụ'),
+                headerTooltip: this.l('Chức vụ'),
                 field: 'position',
                 flex: 3,
                 cellClass: ['text-left'],
@@ -96,18 +95,18 @@ export class AppAdminFundRaiserComponent extends AppComponentBase implements OnI
                 cellClass: ['text-left'],
             },
             {
-                headerName: this.l('Description'),
-                headerTooltip: this.l('Description'),
-                field: 'description',
-                flex: 3,
-                width: 130,
+                headerName: this.l('Trạng thái tài khoản'),
+                headerTooltip: this.l('Trạng thái tài khoản'),
+                field: 'statusAccount',
+                flex: 4,
                 cellClass: ['text-left'],
             },
             {
-                headerName: this.l('StatusAccount'),
-                headerTooltip: this.l('StatusAccount'),
-                field: 'statusAccount',
-                flex: 4,
+                headerName: this.l('Mô tả'),
+                headerTooltip: this.l('Mô tả'),
+                field: 'description',
+                flex: 3,
+                width: 130,
                 cellClass: ['text-left'],
             },
         ];
@@ -168,10 +167,16 @@ export class AppAdminFundRaiserComponent extends AppComponentBase implements OnI
     }
     clearValueFilter() {
         this.onGridReady(this.paginationParams);
+        this.createdJoin = null;
+        this.status = null;
+        this.email = null;
     }
 
     getAll(paginationParams: PaginationParamsModel) {
         return this.fundRaising.getListFundRaiser(
+            this.createdJoin,
+            this.status,
+            this.email,
             this.sorting ?? null,
             paginationParams ? paginationParams.skipCount : 0,
             paginationParams ? paginationParams.pageSize : 20

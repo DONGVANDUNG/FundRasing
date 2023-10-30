@@ -753,13 +753,28 @@ export class AdminFundRaisingServiceProxy {
     }
 
     /**
+     * @param created (optional) 
+     * @param statusAccount (optional) 
+     * @param email (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getListFundRaiser(sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetInformationFundRaiserDto> {
+    getListFundRaiser(created: DateTime | undefined, statusAccount: boolean | undefined, email: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetInformationFundRaiserDto> {
         let url_ = this.baseUrl + "/api/services/app/AdminFundRaising/getListFundRaiser?";
+        if (created === null)
+            throw new Error("The parameter 'created' cannot be null.");
+        else if (created !== undefined)
+            url_ += "Created=" + encodeURIComponent(created ? "" + created.toString() : "") + "&";
+        if (statusAccount === null)
+            throw new Error("The parameter 'statusAccount' cannot be null.");
+        else if (statusAccount !== undefined)
+            url_ += "StatusAccount=" + encodeURIComponent("" + statusAccount) + "&";
+        if (email === null)
+            throw new Error("The parameter 'email' cannot be null.");
+        else if (email !== undefined)
+            url_ += "Email=" + encodeURIComponent("" + email) + "&";
         if (sorting === null)
             throw new Error("The parameter 'sorting' cannot be null.");
         else if (sorting !== undefined)
@@ -22161,6 +22176,7 @@ export class GetInformationFundRaiserDto implements IGetInformationFundRaiserDto
     statusAccount!: string | undefined;
     name!: string | undefined;
     position!: string | undefined;
+    email!: string | undefined;
     description!: string | undefined;
 
     constructor(data?: IGetInformationFundRaiserDto) {
@@ -22180,6 +22196,7 @@ export class GetInformationFundRaiserDto implements IGetInformationFundRaiserDto
             this.statusAccount = _data["statusAccount"];
             this.name = _data["name"];
             this.position = _data["position"];
+            this.email = _data["email"];
             this.description = _data["description"];
         }
     }
@@ -22199,6 +22216,7 @@ export class GetInformationFundRaiserDto implements IGetInformationFundRaiserDto
         data["statusAccount"] = this.statusAccount;
         data["name"] = this.name;
         data["position"] = this.position;
+        data["email"] = this.email;
         data["description"] = this.description;
         return data;
     }
@@ -22211,6 +22229,7 @@ export interface IGetInformationFundRaiserDto {
     statusAccount: string | undefined;
     name: string | undefined;
     position: string | undefined;
+    email: string | undefined;
     description: string | undefined;
 }
 
