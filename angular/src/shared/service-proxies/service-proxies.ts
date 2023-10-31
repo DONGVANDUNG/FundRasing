@@ -1086,13 +1086,23 @@ export class AdminFundRaisingServiceProxy {
     }
 
     /**
+     * @param createdDate (optional) 
+     * @param typePackage (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getListFundPackage(sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetListFundPackageDto> {
+    getListFundPackage(createdDate: DateTime | undefined, typePackage: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetListFundPackageDto> {
         let url_ = this.baseUrl + "/api/services/app/AdminFundRaising/GetListFundPackage?";
+        if (createdDate === null)
+            throw new Error("The parameter 'createdDate' cannot be null.");
+        else if (createdDate !== undefined)
+            url_ += "CreatedDate=" + encodeURIComponent(createdDate ? "" + createdDate.toString() : "") + "&";
+        if (typePackage === null)
+            throw new Error("The parameter 'typePackage' cannot be null.");
+        else if (typePackage !== undefined)
+            url_ += "TypePackage=" + encodeURIComponent("" + typePackage) + "&";
         if (sorting === null)
             throw new Error("The parameter 'sorting' cannot be null.");
         else if (sorting !== undefined)
@@ -1416,23 +1426,28 @@ export class AdminFundRaisingServiceProxy {
     }
 
     /**
-     * @param created (optional) 
+     * @param createdDate (optional) 
      * @param status (optional) 
+     * @param email (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAllListAccount(created: DateTime | undefined, status: boolean | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetListAccountUserDto> {
+    getAllListAccount(createdDate: DateTime | undefined, status: boolean | undefined, email: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetListAccountUserDto> {
         let url_ = this.baseUrl + "/api/services/app/AdminFundRaising/getAllListAccount?";
-        if (created === null)
-            throw new Error("The parameter 'created' cannot be null.");
-        else if (created !== undefined)
-            url_ += "Created=" + encodeURIComponent(created ? "" + created.toString() : "") + "&";
+        if (createdDate === null)
+            throw new Error("The parameter 'createdDate' cannot be null.");
+        else if (createdDate !== undefined)
+            url_ += "CreatedDate=" + encodeURIComponent(createdDate ? "" + createdDate.toString() : "") + "&";
         if (status === null)
             throw new Error("The parameter 'status' cannot be null.");
         else if (status !== undefined)
             url_ += "Status=" + encodeURIComponent("" + status) + "&";
+        if (email === null)
+            throw new Error("The parameter 'email' cannot be null.");
+        else if (email !== undefined)
+            url_ += "Email=" + encodeURIComponent("" + email) + "&";
         if (sorting === null)
             throw new Error("The parameter 'sorting' cannot be null.");
         else if (sorting !== undefined)
@@ -14811,13 +14826,23 @@ export class UserServiceProxy {
     }
 
     /**
+     * @param createdDate (optional) 
+     * @param typePackage (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getListFundPackage(sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetListFundPackageDto> {
+    getListFundPackage(createdDate: DateTime | undefined, typePackage: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetListFundPackageDto> {
         let url_ = this.baseUrl + "/api/services/app/User/GetListFundPackage?";
+        if (createdDate === null)
+            throw new Error("The parameter 'createdDate' cannot be null.");
+        else if (createdDate !== undefined)
+            url_ += "CreatedDate=" + encodeURIComponent(createdDate ? "" + createdDate.toString() : "") + "&";
+        if (typePackage === null)
+            throw new Error("The parameter 'typePackage' cannot be null.");
+        else if (typePackage !== undefined)
+            url_ += "TypePackage=" + encodeURIComponent("" + typePackage) + "&";
         if (sorting === null)
             throw new Error("The parameter 'sorting' cannot be null.");
         else if (sorting !== undefined)

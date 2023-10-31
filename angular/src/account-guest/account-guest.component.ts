@@ -4,6 +4,7 @@ import { FundraisingLiveSitesComponent } from './fundraising-live-sites/fundrais
 import { FundPackageComponent } from './fund-package/fund-package.component';
 import { UserHomeComponent } from './user-home/user-home.component';
 import { Route, Router } from '@angular/router';
+import { UserLoginComponent } from './user-login/user-login.component';
 
 @Component({
     selector: 'app-account-guest',
@@ -14,7 +15,7 @@ export class AccountGuestComponent implements OnInit {
 
     @ViewChild("fundRaisingLive") fundRaisingLive: FundraisingLiveSitesComponent;
     @ViewChild("fundPackage") fundPackage: FundPackageComponent;
-    @ViewChild("userHome") userHome: UserHomeComponent;
+    @ViewChild("userHome") userHome: UserLoginComponent;
     @ViewChild("contactUs") contactUs: ContactUsComponent;
     constructor(private router: Router) { }
 

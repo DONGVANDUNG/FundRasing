@@ -80,7 +80,7 @@ namespace esign.FundRaising
                                   join fundRaising in _mstSleFundRaiserRepo.GetAll().Where(e => input.Created == null || e.CreationTime == input.Created)
 
                                   on user.Id equals fundRaising.UserId
-                                  select new GetInformationFundRaiserDto    
+                                  select new GetInformationFundRaiserDto
                                   {
                                       Id = fundRaising.Id,
                                       Description = fundRaising.Introduce,
@@ -168,6 +168,8 @@ namespace esign.FundRaising
         public async Task<PagedResultDto<GetListFundPackageDto>> GetListFundPackage(FundPackageInputDto input)
         {
             var listFundPackage = from funPackage in _mstSleFundPackageRepo.GetAll().Where(e => e.Status == true)
+                                  .Where(e => input.CreatedDate == null || e.CreationTime == input.CreatedDate)
+                                  .Where(e => input.TypePackage == null || e.Duration == input.TypePackage)
                                   select new GetListFundPackageDto
                                   {
                                       Id = funPackage.Id,
@@ -248,6 +250,9 @@ namespace esign.FundRaising
         public async Task<PagedResultDto<GetListAccountUserDto>> getAllListAccount(GuestAccountForInputDto input)
         {
             var guestAccount = from account in _mstSleGuestAccountRepo.GetAll()
+                               .Where(e => input.Email == null || e.Email.Contains(input.Email))
+                               .Where(e => input.CreatedDate == null || e.CreationTime == input.CreatedDate)
+                               .Where(e => input.Status == null || e.Status == input.Status)
                                select new GetListAccountUserDto
                                {
                                    Id = account.Id,

@@ -1,92 +1,15 @@
-<body class=" off-canvas off-canvas--window pace-done">
-  <div class="pace  pace-inactive">
-    <div class="pace-progress" data-progress-text="100%" data-progress="99" style="width: 100%;">
-      <div class="pace-progress-inner"></div>
-    </div>
-    <div class="pace-activity"></div>
+<div class="home-user d-flex justify-content-center">
+  <div class="navigation">
+    <img src="" class="image-fund" alt="">
+    <ul class="list-nav d-flex flex-column">
+      <li class="item-nav" (click)="selectTab()">Home</li>
+      <li class="item-nav" (click)="selectTab()">Make A Done</li>
+      <li class="item-nav" (click)="selectTab()"></li>
+      <li class="item-nav" (click)="selectTab()">hr</li>
+      <li class="item-nav" (click)="selectTab()">Register</li>
+      <li class="item-nav" (click)="selectTab()">Sign In</li>
+      <li class="item-nav" (click)="selectTab()">Checkout</li>
+    </ul>
   </div>
-  <div class="global-loader" style="opacity: 0; transform: translate(-50%, 400%); display: none;">Loading application...
-  </div>
-  <a href="https://givergy.force.com/community/s/contactsupport" target="_blank" class="needHelp">
-    Need Help?
-  </a>
-
-
-
-  <div id="eJOY__extension_root" class="eJOY__extension_root_class" style="all: unset;"></div><iframe id="nr-ext-rsicon"
-    style="position: absolute; display: none; width: 50px; height: 50px; z-index: 2147483647; border-style: none; background: transparent;"></iframe>
-  <div class="row" id="content-wrapper">
-    <div class="large-12" id="content">
-      <div class="login-window small-11 medium-6 large-4 xlarge-3 small-centered medium-centered large-centered window "
-        style="opacity: 1; transform: translate(-50%, -50%);">
-        <div class="header"> <object class="logo" type="image/svg+xml" data="48.0.6/images/givergy-logo.svg"> Logo
-          </object></div>
-        <div class="content">
-          <h4 class="title">Member Login</h4>
-          <form class="login-form" data-abide="ajax" autocomplete="on" data-live-validate="true" novalidate="novalidate"
-            data-invalid="">
-            <div class="row">
-              <div class="large-12 small-12 medium-12 columns">
-                <div class="username-input error"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <g fill="none" fill-rule="evenodd">
-                      <path fill-rule="nonzero"
-                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2a7.2 7.2 0 0 1-6-3.22c.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08a7.2 7.2 0 0 1-6 3.22z">
-                      </path>
-                    </g>
-                  </svg> <input name="username" class="radius" type="text" placeholder="Username" autocapitalize="off"
-                    autocorrect="off" autocomplete="on" required="" data-invalid=""> <small class="error">Username is
-                    required.</small> </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="large-12 small-12 medium-12 columns">
-                <div class="password-input error"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                    viewBox="0 0 24 24">
-                    <g fill="none" fill-rule="evenodd">
-                      <path fill-rule="nonzero"
-                        d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z">
-                      </path>
-                    </g>
-                  </svg> <input name="password" class="radius" type="password" placeholder="Password"
-                    autocapitalize="off" autocorrect="off" autocomplete="on" required="" data-invalid=""> <small
-                    class="error">Password is required.</small> </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="large-12 small-12 medium-12 columns text-right">
-                <div class="a-button a-button--bigger a-button--radius action login"> <button type="submit" name="login"
-                    class="button givergy-button"
-                    disabled="">Login</button><!--TODO uncomment when button will be enablealso do this in * client-ems-ui/src/main/webapp/js/model/user.js* client-ems-ui/src/main/webapp/js/views/loginView.js--><!--                    <button type="button" name="sf" class="salesforce-button sf">Givergy Staff Login</button>--><!--                    <button type="button" name="sf-community" class="salesforce-button sf-community">Givergy Community Login</button>-->
-                  <div class="a-loader"></div>
-                  <div class="a-thick"> <svg version="1.1" class="thick" xmlns="http://www.w3.org/2000/svg" x="0px"
-                      y="0px" viewBox="0 0 14.959 13" enable-background="new 0 0 14.959 13" xml:space="preserve"
-                      preserveAspectRatio="xMinYMin meet">
-                      <defs>
-                        <mask id="svg15tickMask" id-changed="true" maskUnits="userSpaceOnUse"
-                          maskContentUnits="userSpaceOnUse" transform="scale(1)">
-                          <path style="fill: white; stroke: none"
-                            d="M5.209,13c-0.291,0-0.569-0.127-0.774-0.354L0.321,8.478C0.115,8.251,0,7.945,0,7.625s0.115-0.627,0.321-0.852L1.096,5.92                              c0.213-0.236,0.494-0.354,0.773-0.354c0.28,0,0.561,0.117,0.774,0.354l2.565,2.558l7.105-8.125C12.521,0.126,12.799,0,13.089,0                              h0.001c0.29,0,0.568,0.126,0.773,0.353l0.774,0.852c0.428,0.47,0.428,1.234,0.001,1.705l-8.655,9.736                              C5.778,12.873,5.499,13,5.209,13z">
-                          </path>
-                        </mask>
-                      </defs>
-                      <rect width="15px" height="13px" mask="url(#svg15tickMask)" id-changed="true"></rect>
-                    </svg> </div>
-                  <div class="a-exclamation"> <svg viewBox="0 0 16 16" version="1.1">
-                      <title>Exclamation Mark Icon</title>
-                      <circle cx="8" cy="-8" r="8" transform="scale(1,-1)"></circle>
-                      <path
-                        d="m 7.994567,4.1591338 c -0.3546608,0 -0.6416956,0.2909421 -0.6416956,0.6398923 v 3.8531792 c 0,0.3534585 0.2849308,0.6398922 0.6416956,0.6398922 0.3555624,0 0.6416956,-0.2909421 0.6416956,-0.6398922 V 4.7990261 c 0,-0.3534586 -0.2843298,-0.6398923 -0.6416956,-0.6398923 z m 0,6.4163552 c -0.3546608,0 -0.6416956,0.286734 -0.6416956,0.641695 0,0.354661 0.2867342,0.641696 0.6416956,0.641696 0.3549613,0 0.6416956,-0.286734 0.6416956,-0.641696 0,-0.35466 -0.2861332,-0.641695 -0.6416956,-0.641695 z"
-                        style="stroke-width:0.30056"></path>
-                    </svg> </div>
-                </div>
-              </div>
-            </div>
-            <!--<div class="row">            <div class="small-6 medium-6 large-6 columns no-padding">                <div class="row-flex">                    <div class="small-auto columns">                        <div class="ibidcheckbox">                            <input type="checkbox" value="1" id="login-window-remember-me" name="remember-me"/>                            <label for="login-window-remember-me"></label>                        </div>                    </div>                    <div class="small-flex columns no-padding-left end">                        <label for="login-window-remember-me" class="inline ">Remember me</label>                    </div>                </div>            </div>            <div class="small-6 medium-6 large-6 columns text-right">                <a href="#" class="inline">Forgot your password?</a>            </div>        </div>-->
-          </form>
-        </div><iframe style="display: none;" id="view12loginframe" src="login.html" name="loginframe"
-          id-changed="true"></iframe>
-        <div class="loader"></div>
-      </div>
-    </div>
-  </div>
-</body>
+  <div class="fund-content"></div>
+</div>

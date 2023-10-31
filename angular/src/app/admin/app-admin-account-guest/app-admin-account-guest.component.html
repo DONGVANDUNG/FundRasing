@@ -44,22 +44,35 @@
         <div class="kt-portlet kt-portlet--mobile">
             <div>
                 <div class="row align-items-center mt-4 mb-4">
-                    <div class="col-md-4 ml-2">
-                        <!-- <div class="form-group">
-                            <tmss-combobox [items]="listVodTypeReport" [(ngModel)]="typeOfReport" [text]="l('Loại báo cáo')" name="typeOfReport">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <tmss-combobox [items]="listStatus" 
+                            [(ngModel)]="status" [text]="l('Trạng thái')" name="status"
+                            [label]="'label'" [key]="'value'" >
                             </tmss-combobox>
-                        </div> -->
+                        </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <tmss-datepicker [(ngModel)]="createFillter" [text]="l('Từ ngày')" name="fromDate"></tmss-datepicker>
+                            <tmss-datepicker [(ngModel)]="createdDate" [text]="l('Ngày tạo')" name="createdDate"></tmss-datepicker>
                         </div>
                     </div>
-                    <div class="col-md-1 ml-4">
+                    <div class="col-3">
+                        <div class="form-group">
+                            <tmss-text-input [(ngModel)]="email" [text]="l('Email')"
+                            name="email"></tmss-text-input>
+                        </div>
+                    </div>
+                    <div class="col-1"></div>
+                    <div class="col-md-2">
                         <button class="tmss-btn  btn-outline-primary tmss-override" (click)="search()">
                           <i class="fa fa-search" aria-hidden="true"></i>
                           {{l("Search")}}
                         </button>
+                        <button class="tmss-btn  btn-outline-primary tmss-override" (click)="clearValueFilter()">
+                            <i class="fa fa-redo" aria-hidden="true"></i>
+                            {{l("Refresh")}}
+                          </button>
                       </div>
                 </div>
             </div>

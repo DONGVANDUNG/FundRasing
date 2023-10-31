@@ -7,7 +7,7 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 @Component({
     selector: 'app-view-detail-transaction',
     templateUrl: './view-detail-transaction.component.html',
-    styleUrls: ['./view-detail-transaction.component.css']
+    styleUrls: ['./view-detail-transaction.component.less']
 })
 export class ViewDetailTransactionComponent extends AppComponentBase implements OnInit {
 

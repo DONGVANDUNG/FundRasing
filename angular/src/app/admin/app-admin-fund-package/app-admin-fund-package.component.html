@@ -3,7 +3,7 @@
         <div [class]="containerClass">
             <div class="kt-subheader__main">
                 <h3 class="kt-subheader__title">
-                    <span class="kt_subheader__desc">{{l("SalesEmployee")}}</span>
+                    <span class="kt_subheader__desc">{{l("Quản lý gói quỹ")}}</span>
                 </h3>
             </div>
         </div>
@@ -13,31 +13,27 @@
         <div class="kt-portlet kt-portlet--mobile">
             <div>
                 <div class="row align-items-center mt-2 mb-2">
-                    <div class="col-md-2 ml-2">
+                    <div class="col-md-2">
                         <div class="form-group">
-                            <tmss-combobox   [text]="l('Loại báo cáo')" name="typeOfReport">
+                            <tmss-combobox [items]="listTypePackage" [(ngModel)]="typePackage"
+                             [label]="'label'" [key]="'value'"  [text]="l('Loại quỹ')" name="typePackage">
                             </tmss-combobox>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <tmss-datepicker  [text]="l('Từ ngày')" name="fromDate"></tmss-datepicker>
+                            <tmss-datepicker [(ngModel)]="createdDate" [dateInputFormat]="'DD-MM-YYYY'" [text]="l('Ngày tạo gói')" name="createdDate"></tmss-datepicker>
                         </div>
                     </div>
-                    <div class="col-md-3 ml-4">
-                        <div class="form-group">
-                            <tmss-datepicker  [text]="l('Đến ngày')" name="toDate"></tmss-datepicker>
-                        </div>
+                    <div class="col-md-5">
                     </div>
-                    <div class="col-md-2 ml-4">
+                    <div class="col-md-2">
                         <button class="tmss-btn  btn-outline-primary tmss-override" (click)="search()">
-                          <i class="fa fa-search" aria-hidden="true"></i>
-                          {{l("Search")}}
-                        </button>
-                    </div>
-                    <div class="col-md-2 ml-4">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                            {{l("Search")}}
+                          </button>
                         <button class="tmss-btn  btn-outline-primary tmss-override" (click)="clearValueFilter()">
-                          <i class="fa fa-search" aria-hidden="true"></i>
+                          <i class="fa fa-redo" aria-hidden="true"></i>
                           {{l("Refresh")}}
                         </button>
                     </div>

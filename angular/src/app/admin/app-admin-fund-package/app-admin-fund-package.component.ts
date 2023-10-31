@@ -1,5 +1,5 @@
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
-import { PaginationParamsModel,GridParams } from '@app/shared/common/models/base.model';
+import { PaginationParamsModel, GridParams } from '@app/shared/common/models/base.model';
 import { DataFormatService } from '@app/shared/common/services/data-format.service';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { AdminFundRaisingServiceProxy, UserServiceProxy } from '@shared/service-proxies/service-proxies';
@@ -8,14 +8,13 @@ import * as moment from 'moment';
 import { CreateOrEditFundPackageComponent } from './create-or-edit-fund-package/create-or-edit-fund-package.component';
 
 @Component({
-  selector: 'app-app-admin-fund-package',
-  templateUrl: './app-admin-fund-package.component.html',
-  styleUrls: ['./app-admin-fund-package.component.less']
+    selector: 'app-app-admin-fund-package',
+    templateUrl: './app-admin-fund-package.component.html',
+    styleUrls: ['./app-admin-fund-package.component.less']
 })
 export class AppAdminFundPackageComponent extends AppComponentBase implements OnInit {
-    @ViewChild("createOrEdit") modalCreate : CreateOrEditFundPackageComponent;
+    @ViewChild("createOrEdit") modalCreate: CreateOrEditFundPackageComponent;
     columnDefs;
-    typeOfReport = 0;
     dateOfReport;
     rowData: any = [];
     defaultColDef;
@@ -26,8 +25,14 @@ export class AppAdminFundPackageComponent extends AppComponentBase implements On
     paginationParams: PaginationParamsModel;
     params: GridParams;
     advancedFiltersAreShown: boolean;
-    fromDate = moment().add(-30,'day');
-    toDate = moment();
+    createdDate;
+    typePackage;
+    listTypePackage = [
+        { label: 'Tuần', value: 'Tuần' },
+        { label: 'Tháng', value: 'Tháng' },
+        { label: 'Năm', value: 'Năm' },
+
+    ]
     selectedPackage;
     sideBar = {
         toolPanels: [
@@ -154,10 +159,14 @@ export class AppAdminFundPackageComponent extends AppComponentBase implements On
     }
     clearValueFilter() {
         this.onGridReady(this.paginationParams);
+        this.createdDate = null;
+        this.typePackage = null;
     }
 
     getAll(paginationParams: PaginationParamsModel) {
         return this._adminServiceProxy.getListFundPackage(
+            this.createdDate,
+            this.typePackage,
             this.sorting ?? null,
             paginationParams ? paginationParams.skipCount : 0,
             paginationParams ? paginationParams.pageSize : 20
@@ -169,7 +178,7 @@ export class AppAdminFundPackageComponent extends AppComponentBase implements On
             this.selectedPackage = selected.id;
         }
     }
-    deleteFundPackage(){
+    deleteFundPackage() {
         this.message.confirm('', this.l('AreYouSure'), (isConfirmed) => {
             if (isConfirmed) {
                 this._adminServiceProxy
@@ -181,7 +190,7 @@ export class AppAdminFundPackageComponent extends AppComponentBase implements On
             }
         })
     }
-    createOrEdit(){
+    createOrEdit() {
         this.modalCreate.show(this.selectedPackage);
     }
 }

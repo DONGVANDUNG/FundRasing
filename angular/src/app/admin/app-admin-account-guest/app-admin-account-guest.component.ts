@@ -29,6 +29,13 @@ export class AppAdminAccountGuestComponent extends AppComponentBase implements O
     // fromDate = moment().add(-30,'day');
     // toDate = moment();
     selectedAccountGuest;
+    listStatus = [
+        { label: 'Hoạt động', value: true },
+        { label: 'Không hoạt động', value: false },
+    ];
+    status;
+    createdDate;
+    email;
     sideBar = {
         toolPanels: [
             {
@@ -72,8 +79,8 @@ export class AppAdminAccountGuestComponent extends AppComponentBase implements O
                 cellClass: ['text-center'],
             },
             {
-                headerName: this.l('Email'),
-                headerTooltip: this.l('Email'),
+                headerName: this.l('Email '),
+                headerTooltip: this.l('Email '),
                 field: 'email',
                 flex: 3,
                 cellClass: ['text-center'],
@@ -145,13 +152,17 @@ export class AppAdminAccountGuestComponent extends AppComponentBase implements O
         this.onGridReady(this.paginationParams);
     }
     clearValueFilter() {
+        this.email = null;
+        this.createdDate = undefined;
+        this.status = null;
         this.onGridReady(this.paginationParams);
     }
 
     getAll(paginationParams: PaginationParamsModel) {
         return this.fundRaising.getAllListAccount(
-            this.createFillter,
-            this.statusFillter,
+            this.createdDate,
+            this.status,
+            this.email,
             this.sorting ?? null,
             paginationParams ? paginationParams.skipCount : 0,
             paginationParams ? paginationParams.pageSize : 20
