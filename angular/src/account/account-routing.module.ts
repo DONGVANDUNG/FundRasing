@@ -3,6 +3,7 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { AppUiCustomizationService } from '@shared/common/ui/app-ui-customization.service';
 import { AccountComponent } from './account.component';
 import { AccountRouteGuard } from './auth/account-route-guard';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
     imports: [
@@ -13,9 +14,9 @@ import { AccountRouteGuard } from './auth/account-route-guard';
                 children: [
                     { path: '', redirectTo: 'login',pathMatch:'full'},
                     {
-                        path: 'login',pathMatch:'full',
+                        path: 'login',
                         loadChildren: () => import('./login/login.module').then((m) => m.LoginModule),
-                        // canActivate: [AccountRouteGuard],
+                        canActivate: [AccountRouteGuard],
                     },
                     {
                         path: 'register',

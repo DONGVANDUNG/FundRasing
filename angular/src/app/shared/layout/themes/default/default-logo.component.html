@@ -1,11 +1,10 @@
 ﻿<a href="/" [class]="customHrefClass" (window:resize)="onResize()">
     <img
         alt="Logo"
-        *ngIf="!appSession.tenant || !appSession.tenant.HasLogo()"
-        [src]="defaultLogo"
-        class="h-25px app-sidebar-logo-default"
+        src="/assets/common/images/logo.jpg"
+        class="app-sidebar-logo-default"
     />
-    <img
+    <!-- <img
         alt="Logo"
         *ngIf="!appSession.tenant || !appSession.tenant.HasLogo()"
         [src]="defaultSmallLogo"
@@ -34,5 +33,5 @@
             appSession.tenant.id
         "
         class="h-20px app-sidebar-logo-minimize"
-    />
+    /> -->
 </a>
