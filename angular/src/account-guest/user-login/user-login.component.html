@@ -1,15 +1,74 @@
 <div class="home-user d-flex justify-content-center">
-  <div class="navigation">
-    <img src="" class="image-fund" alt="">
-    <ul class="list-nav d-flex flex-column">
-      <li class="item-nav" (click)="selectTab()">Home</li>
-      <li class="item-nav" (click)="selectTab()">Make A Done</li>
-      <li class="item-nav" (click)="selectTab()"></li>
-      <li class="item-nav" (click)="selectTab()">hr</li>
-      <li class="item-nav" (click)="selectTab()">Register</li>
-      <li class="item-nav" (click)="selectTab()">Sign In</li>
-      <li class="item-nav" (click)="selectTab()">Checkout</li>
-    </ul>
-  </div>
-  <div class="fund-content"></div>
+    <div class="navigation">
+        <img src="/assets/common/images/logo.jpg" class="image-fund-nav" alt="">
+        <div class="block-sparate"></div>
+        <ul class="list-nav d-flex flex-column">
+            <li class="item-nav" (click)="selectTab('home')">Home</li>
+            <li class="item-nav" (click)="selectTab('donate')">Make A Donate</li>
+            <li class="item-nav" (click)="selectTab('register')">Register</li>
+            <li class="item-nav" (click)="selectTab('sigin')">Sign In</li>
+            <li class="item-nav" (click)="selectTab('checkout')">Checkout</li>
+            <div class="block-sparate"></div>
+            <li class="item-nav-hr">
+                <hr>
+            </li>
+        </ul>
+        <div class="footer-nav">
+            <img src="/assets/common/images/powered-by-logo.svg" alt="">
+        </div>
+    </div>
+    <div class="body-content">
+        <div class="block-home" *ngIf="selectedTabHome">
+            <img src="/assets/common/images/powered-by-logo.svg" class="image-fund" alt="" />
+            <div class="fund-content">
+
+            </div>
+        </div>
+        <div class="block-donate" *ngIf="selectedTabDonate">
+            <p>Donate</p>
+        </div>
+        <div class="block-register d-flex align-items-center" *ngIf="selectedTabRegister">
+            <div class="block-header-register"></div>
+            <form class="form">
+                <p class="title">Register </p>
+                <p class="message">Signup now and get full access to our app. </p>
+                <div class="flex">
+                    <label>
+                        <input class="input" type="text" placeholder="First Name" required="">
+                    </label>
+                    <label>
+                        <input class="input" type="text" placeholder="Last Name" required="">
+                    </label>
+                </div>
+
+                <label>
+                    <input class="input" type="email" placeholder="Email" required="">
+                </label>
+
+                <label>
+                    <input class="input" type="password" placeholder="Password" required="">
+                </label>
+                <label>
+                    <input class="input" type="password" placeholder="Confirm password" required="">
+                </label>
+                <button class="submit">Submit</button>
+                <!-- <p class="signin">Already have an acount ? <a (click)="selectTab('signin')">Sign In</a> </p> -->
+            </form>
+        </div>
+        <div class="block-sign-in d-flex align-items-center" *ngIf="selectedTabSignIn">
+            <div class="block-header-register"></div>
+           <form action="" class="form">
+             <h3>Enter your deatails</h3>
+             <br>
+             <h6>What's your email?</h6>
+             <br>
+             <input type="text" placeholder="Email">
+             <button type="submit">Continue</button>
+             <p class="signin">Already have an acount ? <a (click)="selectTab('signin')">Sign In</a> </p>
+           </form>
+        </div>
+        <div class="block-checkOut" *ngIf="selectedTabCheckOut">
+            <p>CheckOut</p>
+        </div>
+    </div>
 </div>

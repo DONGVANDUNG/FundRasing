@@ -7,10 +7,10 @@ import { FundPackageComponent } from './fund-package/fund-package.component';
 import { FundraisingLiveSitesComponent } from './fundraising-live-sites/fundraising-live-sites.component';
 import { UserHomeComponent } from './user-home/user-home.component';
 import { UserLoginComponent } from './user-login/user-login.component';
-
+import {TabsModule} from 'ngx-bootstrap/tabs';
 @NgModule({
   imports: [
-    CommonModule,AccountGuestRoutingModule
+    CommonModule,AccountGuestRoutingModule, TabsModule.forRoot(),
   ],
   declarations: [AccountGuestComponent,ContactUsComponent,
     FundPackageComponent, FundraisingLiveSitesComponent, UserHomeComponent

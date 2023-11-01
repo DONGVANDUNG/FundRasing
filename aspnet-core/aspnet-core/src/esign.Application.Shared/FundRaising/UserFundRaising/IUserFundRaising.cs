@@ -15,6 +15,7 @@ namespace esign.FundRaising
         //Lấy ra thông tin chi tiết của quỹ theo id
         GetFundsDetailByIdForUser GetInforFundRaisingById(int Id);
         //Donate cho quỹ
+        //void DonateForFund();
 
         //Xem lại các quỹ mình đã donate
     }
