@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { UsersComponent } from '@app/admin/users/users.component';
 import { AccountGuestComponent } from './account-guest.component';
+import { UserFundDetailComponent } from './user-fund-detail/user-fund-detail.component';
 
 const routes: Routes = [
     {
@@ -9,6 +10,11 @@ const routes: Routes = [
         component: AccountGuestComponent,
         pathMatch: 'full',
     },
+    {
+        path: 'fund',
+        component: UserFundDetailComponent,
+    },
+
 ];
 
 @NgModule({

@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Injector, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-user-login',
@@ -11,8 +12,8 @@ export class UserLoginComponent implements OnInit {
     selectedTabRegister: boolean = false;
     selectedTabSignIn: boolean = false;
     selectedTabCheckOut: boolean = false;
-    constructor() { }
-
+    selectedFunDetail: boolean = false;
+    constructor(injectore: Injector, private router: Router) { }
     ngOnInit() {
     }
     selectTab(option) {
@@ -47,5 +48,13 @@ export class UserLoginComponent implements OnInit {
             this.selectedTabCheckOut = true;
         }
     }
-
+    showFundDetail() {
+        this.selectedFunDetail = true;
+    }
+    limitedCharacter() {
+        var input = document.querySelector<HTMLInputElement>('.input-content-donation').value;
+        var textLimited = document.querySelector<HTMLElement>('.note-input');
+        console.log(input);
+        textLimited.textContent =  `${256 - input.length} character(s) left`
+    }
 }
