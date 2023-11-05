@@ -8,7 +8,7 @@ import { CreateOrEditFundPackageComponent } from './create-or-edit-fund-package/
 
 @NgModule({
   imports: [
-    CommonModule,AppAdminFundPackageRouteModule,AdminSharedModule,AppSharedModule
+    CommonModule,AppAdminFundPackageRouteModule,AdminSharedModule
   ],
   declarations: [AppAdminFundPackageComponent,CreateOrEditFundPackageComponent]
 })

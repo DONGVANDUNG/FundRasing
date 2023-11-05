@@ -100,7 +100,7 @@ export class LoginComponent extends AppComponentBase implements OnInit {
                     this.submitting = false;
                     this.hideMainSpinner();
                 },
-                null,
+                'app/notifications',
                 token
             );
         };
