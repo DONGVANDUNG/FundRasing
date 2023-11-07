@@ -17,6 +17,7 @@ namespace esign.FundRaising
         public string Description { get; set; }
         public string Duration { get; set; }
         public float PaymenFee { get; set; }
+        public string Unit { get; set; }
         public bool Status { get; set; }
     }
 }
