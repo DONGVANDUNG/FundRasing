@@ -154,7 +154,7 @@ namespace esign.FundRaising
                            };
             return listUser.ToList();
         }
-        public async Task<List<ListFundPackageDto>> getListFundPackage()
+        public async Task<List<ListFundPackageDto>> getListFundPackageForUserDonation()
         {
             var result = from fundPackage in _mstSleFundPackageRepo.GetAll().Where(e => e.Status == true)
                          select new ListFundPackageDto

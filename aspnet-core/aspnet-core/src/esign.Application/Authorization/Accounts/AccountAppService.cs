@@ -20,7 +20,11 @@ using esign.Url;
 using esign.Authorization.Delegation;
 using Abp.Domain.Repositories;
 using Abp.Timing;
-
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting.Internal;
+using Microsoft.AspNetCore.Hosting;
+using Dapper;
 
 namespace esign.Authorization.Accounts
 {
@@ -35,17 +39,20 @@ namespace esign.Authorization.Accounts
         private readonly IImpersonationManager _impersonationManager;
         private readonly IUserLinkManager _userLinkManager;
         private readonly IPasswordHasher<User> _passwordHasher;
+        private readonly IRepository<User, long> _userRepository;
         private readonly IWebUrlService _webUrlService;
         private readonly IUserDelegationManager _userDelegationManager;
+        private readonly IConfigurationRoot _appConfiguration;
 
         public AccountAppService(
-            IUserEmailer userEmailer,
+            IUserEmailer userEmailer, IWebHostEnvironment hostingEnvironment, IWebHostEnvironment env,
             UserRegistrationManager userRegistrationManager,
             IImpersonationManager impersonationManager,
             IUserLinkManager userLinkManager,
             IPasswordHasher<User> passwordHasher,
-            IWebUrlService webUrlService, 
-            IUserDelegationManager userDelegationManager)
+            IWebUrlService webUrlService,
+            IUserDelegationManager userDelegationManager,
+            IRepository<User, long> userRepository)
         {
             _userEmailer = userEmailer;
             _userRegistrationManager = userRegistrationManager;
@@ -53,10 +60,12 @@ namespace esign.Authorization.Accounts
             _userLinkManager = userLinkManager;
             _passwordHasher = passwordHasher;
             _webUrlService = webUrlService;
-
+            _appConfiguration = env.GetAppConfiguration();
+            _appConfiguration = hostingEnvironment.GetAppConfiguration();
             AppUrlService = NullAppUrlService.Instance;
             RecaptchaValidator = NullRecaptchaValidator.Instance;
             _userDelegationManager = userDelegationManager;
+            _userRepository = userRepository;
         }
 
         public async Task<IsTenantAvailableOutput> IsTenantAvailable(IsTenantAvailableInput input)
@@ -110,13 +119,39 @@ namespace esign.Authorization.Accounts
                 false,
                 AppUrlService.CreateEmailActivationUrlFormat(AbpSession.TenantId)
             );
+            user.IsActive = true;
+            _userRepository.Update(user);
 
             var isEmailConfirmationRequiredForLogin = await SettingManager.GetSettingValueAsync<bool>(AbpZeroSettingNames.UserManagement.IsEmailConfirmationRequiredForLogin);
 
+            //using (SqlConnection connection = new SqlConnection(_appConfiguration.GetConnectionString("Default")))
+            //{
+            //     connection.Execute(@"
+            //            INSERT INTO dbo.AbpPermissions (CreationTime, CreatorUserId, Discriminator, IsGranted, Name, TenantId ,UserId) VALUES
+            //            (GetDate(),@userId, 'UserPermissionSetting',1,'test',1,@userId)
+            //        ", new
+            //    {
+            //        userId = user.Id
+            //    });
+            //}
             return new RegisterOutput
             {
-                CanLogin = user.IsActive && (user.IsEmailConfirmed || !isEmailConfirmationRequiredForLogin)
+                CanLogin = user.IsActive && (user.IsEmailConfirmed || !isEmailConfirmationRequiredForLogin),
+                UserId = user.Id
             };
+        }
+        public void AddBasePermisson(int userId)
+        {
+            using (SqlConnection connection = new SqlConnection(_appConfiguration.GetConnectionString("Default")))
+            {
+                connection.Execute(@"
+                        INSERT INTO dbo.AbpPermissions (CreationTime, CreatorUserId, Discriminator, IsGranted, Name, TenantId ,UserId) VALUES
+                        (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages.Administration.UserDonate',1,@p_userId)
+                    ", new
+                {
+                    p_userId = userId
+                });
+            }
         }
 
         public async Task SendPasswordResetCode(SendPasswordResetCodeInput input)
@@ -126,7 +161,7 @@ namespace esign.Authorization.Accounts
             {
                 return;
             }
-            
+
             user.SetNewPasswordResetCode();
             await _userEmailer.SendPasswordResetLinkAsync(
                 user,
@@ -140,13 +175,13 @@ namespace esign.Authorization.Accounts
             {
                 throw new UserFriendlyException(L("PasswordResetLinkExpired"));
             }
-            
+
             var user = await UserManager.GetUserByIdAsync(input.UserId);
             if (user == null || user.PasswordResetCode.IsNullOrEmpty() || user.PasswordResetCode != input.ResetCode)
             {
                 throw new UserFriendlyException(L("InvalidPasswordResetCode"), L("InvalidPasswordResetCode_Detail"));
             }
-    
+
             await UserManager.InitializeOptionsAsync(AbpSession.TenantId);
             CheckErrors(await UserManager.ChangePasswordAsync(user, input.Password));
             user.PasswordResetCode = null;
@@ -205,7 +240,7 @@ namespace esign.Authorization.Accounts
                 TenancyName = await GetTenancyNameOrNullAsync(input.TenantId)
             };
         }
-        
+
         [AbpAuthorize(AppPermissions.Pages_Tenants_Impersonation)]
         public virtual async Task<ImpersonateOutput> ImpersonateTenant(ImpersonateTenantInput input)
         {

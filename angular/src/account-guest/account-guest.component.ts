@@ -21,6 +21,9 @@ export class AccountGuestComponent implements OnInit {
     ngOnInit() {
     }
     gotoLogin() {
-        this.router.navigateByUrl('/guest/login')
+        this.router.navigateByUrl('/guest/login');
+    }
+    redirectLink(option){
+        this.router.navigateByUrl(`guest/${option}`);
     }
 }

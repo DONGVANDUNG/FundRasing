@@ -13,8 +13,6 @@ export class UserViewFundDetailComponent extends AppComponentBase {
     super(injector)
   }
 
-  ngOnInit() {
-  }
   redirectHome() {
     this.route.navigateByUrl('guest/donation')
   }

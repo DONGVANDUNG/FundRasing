@@ -1,6 +1,5 @@
-﻿import { Component, Injector, OnInit, ViewChild } from '@angular/core';
+﻿import { Component, Injector, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AppConsts } from '@shared/AppConsts';
 import { accountModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {
@@ -9,10 +8,10 @@ import {
     ProfileServiceProxy,
     RegisterOutput,
 } from '@shared/service-proxies/service-proxies';
+import { ReCaptchaV3Service } from 'ng-recaptcha';
+import { finalize } from 'rxjs/operators';
 import { LoginService } from '../login/login.service';
 import { RegisterModel } from './register.model';
-import { finalize, catchError } from 'rxjs/operators';
-import { ReCaptchaV3Service } from 'ng-recaptcha';
 
 @Component({
     templateUrl: './register.component.html',
@@ -59,13 +58,15 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
                 .pipe(
                     finalize(() => {
                         this.saving = false;
-                    })
+                        this._router.navigate(['account/login']);
+                    },
+                    )
                 )
                 .subscribe((result: RegisterOutput) => {
                     if (!result.canLogin) {
-                        this.notify.success(this.l('SuccessfullyRegistered'));
-                        this._router.navigate(['account/login']);
-                        return;
+                        this._accountService.addBasePermisson(result.userId).subscribe(()=>{
+                            this.notify.success(this.l('Đăng ký tài khoản thành công'));
+                        })
                     }
 
                     //Autheticate
@@ -75,6 +76,8 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
                     this._loginService.authenticate(() => {
                         this.saving = false;
                     });
+                },error=>{
+                    this.notify.success(this.l('Đã xảy ra lỗi khi tạo tài khoản'));
                 });
         };
 

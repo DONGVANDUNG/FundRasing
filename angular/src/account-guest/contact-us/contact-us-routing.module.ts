@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { UserViewCheckoutComponent } from './user-view-checkout.component';
+import { ContactUsComponent } from './contact-us.component';
 
 const routes: Routes = [
     {
         path: '',
-        component: UserViewCheckoutComponent,
+        component: ContactUsComponent,
         pathMatch: 'full',
     },
 ];
@@ -14,4 +14,4 @@ const routes: Routes = [
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
 })
-export class UserViewCheckoutRoutingModule {}
+export class ContactUsRoutingModule {}

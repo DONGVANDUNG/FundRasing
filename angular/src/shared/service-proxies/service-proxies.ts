@@ -198,6 +198,58 @@ export class AccountServiceProxy {
     }
 
     /**
+     * @param userId (optional) 
+     * @return Success
+     */
+    addBasePermisson(userId: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/Account/AddBasePermisson?";
+        if (userId === null)
+            throw new Error("The parameter 'userId' cannot be null.");
+        else if (userId !== undefined)
+            url_ += "userId=" + encodeURIComponent("" + userId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddBasePermisson(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddBasePermisson(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processAddBasePermisson(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param body (optional) 
      * @return Success
      */
@@ -14902,6 +14954,293 @@ export class UserServiceProxy {
     }
 
     /**
+     * @param fundId (optional) 
+     * @param body (optional) 
+     * @return Success
+     */
+    donateForFund(fundId: number | undefined, body: DetailDonateForFundDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/User/DonateForFund?";
+        if (fundId === null)
+            throw new Error("The parameter 'fundId' cannot be null.");
+        else if (fundId !== undefined)
+            url_ += "fundId=" + encodeURIComponent("" + fundId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDonateForFund(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDonateForFund(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processDonateForFund(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param fundId (optional) 
+     * @return Success
+     */
+    getTotalAmountDonateOfFund(fundId: number | undefined): Observable<number> {
+        let url_ = this.baseUrl + "/api/services/app/User/getTotalAmountDonateOfFund?";
+        if (fundId === null)
+            throw new Error("The parameter 'fundId' cannot be null.");
+        else if (fundId !== undefined)
+            url_ += "fundId=" + encodeURIComponent("" + fundId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTotalAmountDonateOfFund(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTotalAmountDonateOfFund(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<number>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<number>;
+        }));
+    }
+
+    protected processGetTotalAmountDonateOfFund(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param fundId (optional) 
+     * @return Success
+     */
+    getListUserDonateForFund(fundId: number | undefined): Observable<ListUserDonateForFundDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/User/GetListUserDonateForFund?";
+        if (fundId === null)
+            throw new Error("The parameter 'fundId' cannot be null.");
+        else if (fundId !== undefined)
+            url_ += "fundId=" + encodeURIComponent("" + fundId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetListUserDonateForFund(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetListUserDonateForFund(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ListUserDonateForFundDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ListUserDonateForFundDto[]>;
+        }));
+    }
+
+    protected processGetListUserDonateForFund(response: HttpResponseBase): Observable<ListUserDonateForFundDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ListUserDonateForFundDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    getListFundPackageForUserDonation(): Observable<ListFundPackageDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/User/getListFundPackageForUserDonation";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetListFundPackageForUserDonation(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetListFundPackageForUserDonation(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ListFundPackageDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ListFundPackageDto[]>;
+        }));
+    }
+
+    protected processGetListFundPackageForUserDonation(response: HttpResponseBase): Observable<ListFundPackageDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ListFundPackageDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param fundPackage (optional) 
+     * @return Success
+     */
+    registerFundPackage(fundPackage: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/User/RegisterFundPackage?";
+        if (fundPackage === null)
+            throw new Error("The parameter 'fundPackage' cannot be null.");
+        else if (fundPackage !== undefined)
+            url_ += "fundPackage=" + encodeURIComponent("" + fundPackage) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRegisterFundPackage(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRegisterFundPackage(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processRegisterFundPackage(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param body (optional) 
      * @return Success
      */
@@ -17109,6 +17448,46 @@ export interface IAddWidgetInput {
     application: string | undefined;
 }
 
+export class Amount implements IAmount {
+    value!: number;
+    currency!: string | undefined;
+
+    constructor(data?: IAmount) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.value = _data["value"];
+            this.currency = _data["currency"];
+        }
+    }
+
+    static fromJS(data: any): Amount {
+        data = typeof data === 'object' ? data : {};
+        let result = new Amount();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["value"] = this.value;
+        data["currency"] = this.currency;
+        return data;
+    }
+}
+
+export interface IAmount {
+    value: number;
+    currency: string | undefined;
+}
+
 export class AppSettingsJsonDto implements IAppSettingsJsonDto {
     webSiteUrl!: string | undefined;
     serverSiteUrl!: string | undefined;
@@ -19094,6 +19473,54 @@ export class DelegatedImpersonateInput implements IDelegatedImpersonateInput {
 
 export interface IDelegatedImpersonateInput {
     userDelegationId: number;
+}
+
+export class DetailDonateForFundDto implements IDetailDonateForFundDto {
+    sender_batch_header!: SenderBatchHeader;
+    items!: Items[] | undefined;
+
+    constructor(data?: IDetailDonateForFundDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.sender_batch_header = _data["sender_batch_header"] ? SenderBatchHeader.fromJS(_data["sender_batch_header"]) : <any>undefined;
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(Items.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): DetailDonateForFundDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new DetailDonateForFundDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["sender_batch_header"] = this.sender_batch_header ? this.sender_batch_header.toJSON() : <any>undefined;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data;
+    }
+}
+
+export interface IDetailDonateForFundDto {
+    sender_batch_header: SenderBatchHeader;
+    items: Items[] | undefined;
 }
 
 export class DetailFundContentDto implements IDetailFundContentDto {
@@ -24481,6 +24908,54 @@ export interface IIsTenantAvailableOutput {
     serverRootAddress: string | undefined;
 }
 
+export class Items implements IItems {
+    recipient_type!: string | undefined;
+    amount!: Amount;
+    receiver!: string | undefined;
+    note!: string | undefined;
+
+    constructor(data?: IItems) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.recipient_type = _data["recipient_type"];
+            this.amount = _data["amount"] ? Amount.fromJS(_data["amount"]) : <any>undefined;
+            this.receiver = _data["receiver"];
+            this.note = _data["note"];
+        }
+    }
+
+    static fromJS(data: any): Items {
+        data = typeof data === 'object' ? data : {};
+        let result = new Items();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["recipient_type"] = this.recipient_type;
+        data["amount"] = this.amount ? this.amount.toJSON() : <any>undefined;
+        data["receiver"] = this.receiver;
+        data["note"] = this.note;
+        return data;
+    }
+}
+
+export interface IItems {
+    recipient_type: string | undefined;
+    amount: Amount;
+    receiver: string | undefined;
+    note: string | undefined;
+}
+
 export class JsonClaimMapDto implements IJsonClaimMapDto {
     claim!: string | undefined;
     key!: string | undefined;
@@ -24706,6 +25181,46 @@ export interface ILinkedUserDto {
     tenantId: number | undefined;
     tenancyName: string | undefined;
     username: string | undefined;
+    id: number;
+}
+
+export class ListFundPackageDto implements IListFundPackageDto {
+    name!: string | undefined;
+    id!: number;
+
+    constructor(data?: IListFundPackageDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): ListFundPackageDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListFundPackageDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["id"] = this.id;
+        return data;
+    }
+}
+
+export interface IListFundPackageDto {
+    name: string | undefined;
     id: number;
 }
 
@@ -25455,6 +25970,50 @@ export class ListResultDtoOfSubscribableEditionComboboxItemDto implements IListR
 
 export interface IListResultDtoOfSubscribableEditionComboboxItemDto {
     items: SubscribableEditionComboboxItemDto[] | undefined;
+}
+
+export class ListUserDonateForFundDto implements IListUserDonateForFundDto {
+    urlImage!: string | undefined;
+    userName!: string | undefined;
+    amountOfMoney!: number;
+
+    constructor(data?: IListUserDonateForFundDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.urlImage = _data["urlImage"];
+            this.userName = _data["userName"];
+            this.amountOfMoney = _data["amountOfMoney"];
+        }
+    }
+
+    static fromJS(data: any): ListUserDonateForFundDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListUserDonateForFundDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["urlImage"] = this.urlImage;
+        data["userName"] = this.userName;
+        data["amountOfMoney"] = this.amountOfMoney;
+        return data;
+    }
+}
+
+export interface IListUserDonateForFundDto {
+    urlImage: string | undefined;
+    userName: string | undefined;
+    amountOfMoney: number;
 }
 
 export class LocalizableComboboxItemDto implements ILocalizableComboboxItemDto {
@@ -27870,6 +28429,7 @@ export interface IRegisterInput {
 
 export class RegisterOutput implements IRegisterOutput {
     canLogin!: boolean;
+    userId!: number;
 
     constructor(data?: IRegisterOutput) {
         if (data) {
@@ -27883,6 +28443,7 @@ export class RegisterOutput implements IRegisterOutput {
     init(_data?: any) {
         if (_data) {
             this.canLogin = _data["canLogin"];
+            this.userId = _data["userId"];
         }
     }
 
@@ -27896,12 +28457,14 @@ export class RegisterOutput implements IRegisterOutput {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["canLogin"] = this.canLogin;
+        data["userId"] = this.userId;
         return data;
     }
 }
 
 export interface IRegisterOutput {
     canLogin: boolean;
+    userId: number;
 }
 
 export class RegisterTenantInput implements IRegisterTenantInput {
@@ -28748,6 +29311,46 @@ export class SendVerificationSmsInputDto implements ISendVerificationSmsInputDto
 
 export interface ISendVerificationSmsInputDto {
     phoneNumber: string | undefined;
+}
+
+export class SenderBatchHeader implements ISenderBatchHeader {
+    email_subject!: string | undefined;
+    recipient_type!: string | undefined;
+
+    constructor(data?: ISenderBatchHeader) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.email_subject = _data["email_subject"];
+            this.recipient_type = _data["recipient_type"];
+        }
+    }
+
+    static fromJS(data: any): SenderBatchHeader {
+        data = typeof data === 'object' ? data : {};
+        let result = new SenderBatchHeader();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["email_subject"] = this.email_subject;
+        data["recipient_type"] = this.recipient_type;
+        return data;
+    }
+}
+
+export interface ISenderBatchHeader {
+    email_subject: string | undefined;
+    recipient_type: string | undefined;
 }
 
 export class SessionTimeOutSettingsEditDto implements ISessionTimeOutSettingsEditDto {

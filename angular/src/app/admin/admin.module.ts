@@ -35,10 +35,6 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         BsDropdownModule.forRoot(),
         BsDatepickerModule.forRoot(),
         SubheaderModule,
-        AppAdminFundRaiserModule,
-        AppUserFundDetailModule,
-        AppUserDonationSuccessModule,
-        AppUserCheckoutModule
     ],
     declarations: [],
     exports: [],

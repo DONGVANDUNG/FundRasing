@@ -23,5 +23,7 @@ namespace esign.FundRaising
         float getTotalAmountDonateOfFund(int fundId);
         //Lấy ra danh sách những người donate cho quỹ
         List<ListUserDonateForFundDto> GetListUserDonateForFund(int fundId);
+
+        Task<List<ListFundPackageDto>> getListFundPackageForUserDonation();
     }
 }

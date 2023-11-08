@@ -18,12 +18,27 @@ export class UserViewHomeComponent extends AppComponentBase {
     blockDonateSuccess: boolean = false;
     constructor(injector: Injector, private router: Router) {
         super(injector);
+        this.isLoading = true;
+        setTimeout(() => {
+            this.isLoading = false;
+        }
+            , 1000)
+    }
+    redirectLink(option) {
+        if (option === 1) {
+            this.router.navigateByUrl("guest/home");
+        }
+        if (option === 2) {
+            this.router.navigateByUrl("guest/fund-raising-live");
+        }
+        if (option === 3) {
+            this.router.navigateByUrl("guest/fund-package");
+        }
+        if (option === 4) {
+            this.router.navigateByUrl("guest/about-us");
+        }
     }
     selectTab() {
-        // this.isLoading = true;
-        // setTimeout(() =>
-        //     this.isLoading = false, 3000
-        // );
         const menuNav = document.querySelector<HTMLElement>(".list-nav");
         const listNav = document.querySelectorAll<HTMLElement>('.item-nav');
 
@@ -34,26 +49,6 @@ export class UserViewHomeComponent extends AppComponentBase {
                 clickedItem.classList.add("active");
             }
         });
-        // this.selectedTabHome = false;
-        // this.selectedTabDonate = false;
-        // this.selectedTabRegister = false;
-        // this.selectedTabSignIn = false;
-        // this.selectedTabCheckOut = false;
-        // if (option === "home") {
-        //     this.router.navigateByUrl('/guest/home')
-        // }
-        // if (option === "donate") {
-        //     // this.router.navigateByUrl('/guest/donation')
-        // }
-        // if (option === "register") {
-        //     this.router.navigateByUrl('/guest/home/register')
-        // }
-        // if (option === "sigin") {
-        //     this.router.navigateByUrl('/guest/sigin')
-        // }
-        // if (option === "checkout") {
-        //     this.router.navigateByUrl('/guest/checkout')
-        // }
     }
     showFundDetail() {
         this.selectedFunDetail = true;
