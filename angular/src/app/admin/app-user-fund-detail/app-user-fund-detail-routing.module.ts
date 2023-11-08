@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { UserViewListFundComponent } from 'account-guest/user-view-list-fund/user-view-list-fund.component';
+import { AppUserFundDetailComponent } from './app-user-fund-detail.component';
 
 const routes: Routes = [
     {
         path: '',
-        component: UserViewListFundComponent,
-        pathMatch: 'full',
+        component: AppUserFundDetailComponent,
+        pathMatch:'full'
     },
 ];
 
@@ -14,4 +14,4 @@ const routes: Routes = [
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
 })
-export class UserViewListFundRoutingModule {}
+export class AppUserFundDetailRoutingModule {}

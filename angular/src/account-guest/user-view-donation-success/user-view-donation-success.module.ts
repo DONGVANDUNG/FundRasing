@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UserViewFundDetailComponent } from './user-view-donation-success.component';
+import { UserViewDonationSuccessComponent } from './user-view-donation-success.component';
+import { UserViewDonationSuccessRoutingModule } from './user-view-donation-success-routing.module';
 @NgModule({
   imports: [
-    CommonModule,
+    CommonModule,UserViewDonationSuccessRoutingModule
   ],
-  declarations: [UserViewFundDetailComponent
+  declarations: [UserViewDonationSuccessComponent
     ]
 })
 export class UserViewDonationSuccessModule { }

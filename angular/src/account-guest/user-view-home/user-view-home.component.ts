@@ -19,7 +19,11 @@ export class UserViewHomeComponent extends AppComponentBase {
     constructor(injector: Injector, private router: Router) {
         super(injector);
     }
-    selectTab(option) {
+    selectTab() {
+        // this.isLoading = true;
+        // setTimeout(() =>
+        //     this.isLoading = false, 3000
+        // );
         const menuNav = document.querySelector<HTMLElement>(".list-nav");
         const listNav = document.querySelectorAll<HTMLElement>('.item-nav');
 
@@ -35,21 +39,21 @@ export class UserViewHomeComponent extends AppComponentBase {
         // this.selectedTabRegister = false;
         // this.selectedTabSignIn = false;
         // this.selectedTabCheckOut = false;
-        if (option === "home") {
-            this.router.navigateByUrl('/guest/home')
-        }
-        if (option === "donate") {
-            // this.router.navigateByUrl('/guest/donation')
-        }
-        if (option === "register") {
-            this.router.navigateByUrl('/guest/register')
-        }
-        if (option === "sigin") {
-            this.router.navigateByUrl('/guest/sigin')
-        }
-        if (option === "checkout") {
-            this.router.navigateByUrl('/guest/checkout')
-        }
+        // if (option === "home") {
+        //     this.router.navigateByUrl('/guest/home')
+        // }
+        // if (option === "donate") {
+        //     // this.router.navigateByUrl('/guest/donation')
+        // }
+        // if (option === "register") {
+        //     this.router.navigateByUrl('/guest/home/register')
+        // }
+        // if (option === "sigin") {
+        //     this.router.navigateByUrl('/guest/sigin')
+        // }
+        // if (option === "checkout") {
+        //     this.router.navigateByUrl('/guest/checkout')
+        // }
     }
     showFundDetail() {
         this.selectedFunDetail = true;

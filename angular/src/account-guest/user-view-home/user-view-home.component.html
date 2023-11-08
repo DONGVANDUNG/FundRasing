@@ -4,11 +4,11 @@
         <img src="/assets/common/images/logo.jpg" class="image-fund-nav" alt="">
         <div class="block-sparate"></div>
         <ul class="list-nav d-flex flex-column">
-            <li class="item-nav" (click)="selectTab('home')">Home</li>
-            <li class="item-nav" (click)="selectTab('donate')" routerLink="donation" routerLinkActive="true">Make A Donate</li>
-            <li class="item-nav" (click)="selectTab('register')">Register</li>
-            <li class="item-nav" (click)="selectTab('sigin')">Sign In</li>
-            <li class="item-nav" (click)="selectTab('checkout')">Checkout</li>
+            <li class="item-nav" (click)="selectTab()" routerLink="/guest/content-fund" routerLinkActive="true">Home</li>
+            <li class="item-nav" (click)="selectTab()" routerLink="donation" routerLinkActive="true">Make A Donate</li>
+            <li class="item-nav" (click)="selectTab()" routerLink="register" routerLinkActive="true">Register</li>
+            <li class="item-nav" (click)="selectTab()" routerLink="sign-in" routerLinkActive="true">Sign In</li>
+            <li class="item-nav" (click)="selectTab()" routerLink="checkout" routerLinkActive="true">Checkout</li>
             <div class="block-sparate"></div>
             <li class="item-nav-hr">
                 <hr>
@@ -19,16 +19,14 @@
         </div>
     </div>
     <div class="body-content-user">
-        <div class="block-home">
+        <!-- <div class="block-home">
             <img src="/assets/common/images/powered-by-logo.svg" class="image-fund" alt="" />
             <div class="fund-content">
 
             </div>
-        </div>
-        <div class="block-donate">
-           <router-outlet></router-outlet>
-        </div>
-        <div class="block-register d-flex align-items-center justify-content-betweent">
+        </div> -->
+        <router-outlet></router-outlet>
+        <!-- <div class="block-register d-flex align-items-center justify-content-betweent">
             <router-outlet></router-outlet>
         </div>
         <div class="block-sign-in d-flex align-items-center">
@@ -36,6 +34,6 @@
         </div>
         <div class="block-checkOut">
             <router-outlet></router-outlet>
-        </div>
+        </div> -->
     </div>
 </div>

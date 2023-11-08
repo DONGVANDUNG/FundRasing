@@ -4,10 +4,10 @@ import { AppComponentBase } from '@shared/common/app-component-base';
 
 @Component({
   selector: 'app-user-home',
-  templateUrl: './user-view-donation.component.html',
-  styleUrls: ['./user-view-donation.component.less']
+  templateUrl: './app-user-donation.component.html',
+  styleUrls: ['./app-user-donation.component.less']
 })
-export class UserViewDonationComponent extends AppComponentBase {
+export class AppUserDonationComponent extends AppComponentBase {
 
   constructor(injector: Injector,private route:Router) {
     super(injector);

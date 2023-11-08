@@ -17,6 +17,9 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { SubheaderModule } from '@app/shared/common/sub-header/subheader.module';
 import { UsersModule } from './users/users.module';
 import { AppAdminFundRaiserModule } from './app-admin-fundRaiser/app-admin-fundRaiser.module';
+import { AppUserCheckoutModule } from './app-user-checkout/app-user-checkout.module';
+import { AppUserDonationSuccessModule } from './app-user-donation-success/app-user-donation-success.module';
+import { AppUserFundDetailModule } from './app-user-fund-detail/app-user-fund-detail.module';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     // suppressScrollX: true
@@ -32,7 +35,10 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         BsDropdownModule.forRoot(),
         BsDatepickerModule.forRoot(),
         SubheaderModule,
-        AppAdminFundRaiserModule
+        AppAdminFundRaiserModule,
+        AppUserFundDetailModule,
+        AppUserDonationSuccessModule,
+        AppUserCheckoutModule
     ],
     declarations: [],
     exports: [],

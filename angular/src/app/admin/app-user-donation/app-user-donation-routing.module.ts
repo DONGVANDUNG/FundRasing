@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { UserViewDonationComponent } from './user-view-donation.component';
+import { AppUserDonationComponent } from './app-user-donation.component';
 
 const routes: Routes = [
     {
         path: '',
-        component: UserViewDonationComponent,
+        component: AppUserDonationComponent,
         pathMatch:'full'
         // children:[
         //     {
         //         path:'success',
-        //         loadChildren: () => import('../user-view-donation-success/user-view-donation-success.module').then((m) => m.UserViewDonationSuccessModule), //Lazy load account module
+        //         loadChildren: () => import('../user-view-donation-success/user-view-donation-success.module').then((m) => m.AppUserDonationSuccessModule), //Lazy load account module
         //         data: { preload: true },
         //     }
         // ]
@@ -21,4 +21,4 @@ const routes: Routes = [
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
 })
-export class UserViewDonationRoutingModule {}
+export class AppUserDonationRoutingModule {}

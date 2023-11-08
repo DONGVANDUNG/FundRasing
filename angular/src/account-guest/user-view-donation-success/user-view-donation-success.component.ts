@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './user-view-donation-success.component.html',
   styleUrls: ['./user-view-donation-success.component.less']
 })
-export class UserViewFundDetailComponent implements OnInit {
+export class UserViewDonationSuccessComponent implements OnInit {
 
   constructor() { }
 
