@@ -150,15 +150,9 @@ namespace esign.Authorization.Accounts
             using (SqlConnection connection = new SqlConnection(_appConfiguration.GetConnectionString("Default")))
             {
                 
-                //var permission = _userPermissionRepository.GetAll().Where(e => e.Name.Contains("Pages")
-                //|| e.Name.Contains("Pages.Administration")
-                //|| e.Name.Contains("Pages.Administration.UserDonate") 
-                //&& e.UserId == AbpSession.UserId).Count();
-                //if (permission == 0)
-                //{
                     connection.Execute(@"
-                            INSERT INTO dbo.AbpPermissions (CreationTime, CreatorUserId, Discriminator, IsGranted, Name, TenantId ,UserId) VALUES
-                            (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages',1,@p_userId)
+                            INSERT INTO dbo.AbpPermissions (CreationTime, CreatorUserId, Discriminator, IsGranted, Name, TenantId ,RoleId,UserId) VALUES
+                            (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages',1,2,@p_userId)
                         ", new
                     {
                         p_userId = userId
@@ -166,36 +160,12 @@ namespace esign.Authorization.Accounts
 
                     connection.Execute(@"
                             INSERT INTO dbo.AbpPermissions (CreationTime, CreatorUserId, Discriminator, IsGranted, Name, TenantId ,UserId) VALUES
-                            (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages.Administration',1,@p_userId)
+                            (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages.UserDonate',1,2,@p_userId)
                         ", new
                     {
                         p_userId = userId
                     });
 
-                    connection.Execute(@"
-                            INSERT INTO dbo.AbpPermissions (CreationTime, CreatorUserId, Discriminator, IsGranted, Name, TenantId ,UserId) VALUES
-                            (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages.Administration.UserDonate',1,@p_userId)
-                        ", new
-                    {
-                        p_userId = userId
-                    });
-
-                    connection.Execute(@"
-                            INSERT INTO dbo.AbpPermissions (CreationTime, CreatorUserId, Discriminator, IsGranted, Name, TenantId ,UserId) VALUES
-                            (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages.Administration.UserDonate.UserCheckout',1,@p_userId)
-                        ", new
-                    {
-                        p_userId = userId
-                    });
-
-                    connection.Execute(@"
-                            INSERT INTO dbo.AbpPermissions (CreationTime, CreatorUserId, Discriminator, IsGranted, Name, TenantId ,UserId) VALUES
-                            (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages.Administration.UserDonate.RegisterFundRaising',1,@p_userId)
-                        ", new
-                    {
-                        p_userId = userId
-                    });
-                //}
             }
         }
 

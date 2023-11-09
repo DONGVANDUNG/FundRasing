@@ -106,5 +106,21 @@ namespace esign.Authorization
         public const string Pages_Administration_Host_Maintenance = "Pages.Administration.Host.Maintenance";
         public const string Pages_Administration_Host_Settings = "Pages.Administration.Host.Settings";
         public const string Pages_Administration_Host_Dashboard = "Pages.Administration.Host.Dashboard";
+
+
+        // FundRaising
+        public const string Pages_FundRaising = "Pages.Administration.FundRaising";
+        public const string Pages_List_FundRaising = "Pages.Administration.FundRaising.ListFundRaising";
+        public const string Pages_FundRaiser = "Pages.Administration.FundRaising.FundRaiser";
+        public const string Pages_FundTransaction = "Pages.Administration.FundRaising.FundTransaction";
+        public const string Pages_FundPackage = "Pages.Administration.FundRaising.FundPackage";
+        public const string Pages_AccountGuest = "Pages.Administration.FundRaising.AccountGuest";
+        public const string Pages_AccountFundRaising = "Pages.Administration.FundRaising.AccountFundRaising";
+        // User Donate
+        public const string Pages_UserDonate = "Pages.UserDonate";
+        public const string Pages_UserDonate_MakeDonate = "Pages.UserDonate.MakeDonate";
+        public const string Pages_UserDonate_Checkout = "Pages.UserDonate.Checkout";
+        public const string Pages_UserDonate_Register_FundRaising = "Pages.UserDonate.RegisterFundRaising";
+
     }
 }

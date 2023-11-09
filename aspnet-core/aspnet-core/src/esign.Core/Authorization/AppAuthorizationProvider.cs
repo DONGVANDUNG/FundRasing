@@ -126,6 +126,24 @@ namespace esign.Authorization
             administration.CreateChildPermission(AppPermissions.Pages_Administration_Host_Dashboard, L("Dashboard"), multiTenancySides: MultiTenancySides.Host);
             #endregion
 
+            #region Account FundRaising
+            var adminFundRaising = administration.CreateChildPermission(AppPermissions.Pages_FundRaising, L("FundRaising"));
+            adminFundRaising.CreateChildPermission(AppPermissions.Pages_List_FundRaising, L("ListFundRaising"));
+            adminFundRaising.CreateChildPermission(AppPermissions.Pages_FundRaiser, L("ListFundRaising"));
+            adminFundRaising.CreateChildPermission(AppPermissions.Pages_FundTransaction, L("TransactionManagement"));
+            adminFundRaising.CreateChildPermission(AppPermissions.Pages_FundPackage, L("FundPackageManagement"));
+            adminFundRaising.CreateChildPermission(AppPermissions.Pages_AccountGuest, L("AccountDonateManagement"));
+            adminFundRaising.CreateChildPermission(AppPermissions.Pages_AccountFundRaising, L("AccountFundRaisingManagement"));
+            #endregion
+
+
+
+            #region Account User Donate
+            var userDonate = pages.CreateChildPermission(AppPermissions.Pages_UserDonate, L("UserDonate"));
+            userDonate.CreateChildPermission(AppPermissions.Pages_UserDonate_MakeDonate, L("Donate"));
+            userDonate.CreateChildPermission(AppPermissions.Pages_UserDonate_Checkout, L("Checkout"));
+            userDonate.CreateChildPermission(AppPermissions.Pages_UserDonate_Register_FundRaising, L("Register_FundRaising"));
+            #endregion
             //NEW
         }
         private static ILocalizableString L(string name)

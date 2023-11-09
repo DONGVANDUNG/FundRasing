@@ -38,19 +38,29 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
                         // data: { permission: 'Pages.Administration.Users' },
                     },
                     {
-                        path: 'donate-fund',
-                        loadChildren: () => import('./app-user-fund-detail/app-user-fund-detail.module').then((m) => m.AppUserFundDetailModule),
-                        // data: { permission: 'Pages.Administration.Users' },
+                        path: 'fund-detail',
+                        loadChildren: () => import('./app-user-fund-detail/app-user-fund-detail.module').then((m) => m.AppUserFundDetailModule  ),
+                        data: { permission: 'Pages.Administration.Users' },
                     },
                     {
                         path: 'donation-success',
                         loadChildren: () => import('./app-user-donation-success/app-user-donation-success.module').then((m) => m.AppUserDonationSuccessModule),
-                        // data: { permission: 'Pages.Administration.Users' },
+                        data: { permission: 'Pages.Administration.Users' },
                     },
                     {
                         path: 'checkout',
                         loadChildren: () => import('./app-user-checkout/app-user-checkout.module').then((m) => m.AppUserCheckoutModule),
                         // data: { permission: 'Pages.Administration.Users' },
+                    },
+                    { //vãi lều sai chỗ nào chưa? path quá đảk, nok boy  gon nghẻ nhé =)))
+                        path: 'users',
+                        loadChildren: () => import('./users/users.module').then((m) => m.UsersModule),
+                        data: { permission: 'Pages.Administration' },
+                    },
+                    {
+                        path: 'roles',
+                        loadChildren: () => import('./roles/roles.module').then((m) => m.RolesModule),
+                        data: { permission: 'Pages.Administration' },
                     },
                 ],
             },

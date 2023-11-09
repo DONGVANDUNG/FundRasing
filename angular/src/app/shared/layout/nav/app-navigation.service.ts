@@ -15,110 +15,39 @@ export class AppNavigationService {
     getMenu(): AppMenu {
         return new AppMenu('MainMenu', 'MainMenu', [
 
-            /* MASTER */
-            new AppMenuItem('Master', 'Pages.Master', 'flaticon-interface-8', '', [], [
-                /*Common*/
-                new AppMenuItem('Common', 'Pages.Master.Common', 'flaticon-interface-8', '', [], [
-                    new AppMenuItem('Lookup', 'Pages.Master.Common.Lookup', 'flaticon-book', '/app/main/master/common/lookup'),
-                ]),
-            ]),
+            // new AppMenuItem('Master', 'Pages.Master', 'flaticon-interface-8', '', [], [
+            //     new AppMenuItem('Common', 'Pages.Master.Common', 'flaticon-interface-8', '', [], [
+            //         new AppMenuItem('Lookup', 'Pages.Master.Common.Lookup', 'flaticon-book', '/app/main/master/common/lookup'),
+            //     ]),
+            // ]),
 
-            new AppMenuItem('Tenants', 'Pages.Tenants', 'flaticon-list-3', '/app/admin/tenants'),
-            new AppMenuItem('Editions', 'Pages.Editions', 'flaticon-app', '/app/admin/editions'),
-            new AppMenuItem('User', 'Pages.Editions', 'flaticon-app', '/app/admin/user-home'),
+            // new AppMenuItem('Tenants', 'Pages.Tenants', 'flaticon-list-3', '/app/admin/tenants'),
+            // new AppMenuItem('Editions', 'Pages.Editions', 'flaticon-app', '/app/admin/editions'),
+            // new AppMenuItem('User', 'Pages.Editions', 'flaticon-app', '/app/admin/user-home'),
+            //new AppMenuItem('Home', 'Pages.UserDonate', 'flaticon-app', '/app/admin/fund-detail'),
             new AppMenuItem(
                 'Administration', '', 'flaticon-interface-8', '', [],
                 [
-                    // new AppMenuItem(
-                    //     'OrganizationUnits',
-                    //     'Pages.Administration.OrganizationUnits',
-                    //     'flaticon-map',
-                    //     '/app/admin/organization-units'
-                    // ),
-                    new AppMenuItem('FundRaiser', 'Pages.Administration.Users', 'flaticon-app', '/app/admin/fundRaiser'),
-                    new AppMenuItem('Transaction', 'Pages.Administration.Users', 'flaticon-app', '/app/admin/transaction'),
-                    new AppMenuItem('FundPackage', 'Pages.Administration.Users', 'flaticon-app', '/app/admin/fundPackage'),
-                    new AppMenuItem('AccountGuest', 'Pages.Administration.Users', 'flaticon-app', '/app/admin/accountGuest'),
-                    new AppMenuItem('FundRaising', 'Pages.Administration.Users', 'flaticon-app', '/app/admin/fundRaising'),
-                    new AppMenuItem('Roles', 'Pages.Administration.Roles', 'flaticon-suitcase', '/app/admin/roles'),
-                    new AppMenuItem('Make Donate', 'Pages.Administration.UserDonate', 'flaticon-suitcase', '/app/admin/roles'),
-                    // new AppMenuItem('Users', 'Pages.Administration.Users', 'flaticon-users', '/app/admin/users'),
-                    // new AppMenuItem(
-                    //     'Languages',
-                    //     'Pages.Administration.Languages',
-                    //     'flaticon-tabs',
-                    //     '/app/admin/languages',
-                    //     ['/app/admin/languages/{name}/texts']
-                    // ),
-                    // new AppMenuItem(
-                    //     'AuditLogs',
-                    //     'Pages.Administration.AuditLogs',
-                    //     'flaticon-folder-1',
-                    //     '/app/admin/auditLogs'
-                    // ),
-                    // new AppMenuItem(
-                    //     'Maintenance',
-                    //     'Pages.Administration.Host.Maintenance',
-                    //     'flaticon-lock',
-                    //     '/app/admin/maintenance'
-                    // ),
-                    // new AppMenuItem(
-                    //     'Subscription',
-                    //     'Pages.Administration.Tenant.SubscriptionManagement',
-                    //     'flaticon-refresh',
-                    //     '/app/admin/subscription-management'
-                    // ),
-                    // new AppMenuItem(
-                    //     'VisualSettings',
-                    //     'Pages.Administration.UiCustomization',
-                    //     'flaticon-medical',
-                    //     '/app/admin/ui-customization'
-                    // ),
-                    // new AppMenuItem(
-                    //     'WebhookSubscriptions',
-                    //     'Pages.Administration.WebhookSubscription',
-                    //     'flaticon2-world',
-                    //     '/app/admin/webhook-subscriptions'
-                    // ),
-                    // new AppMenuItem(
-                    //     'DynamicProperties',
-                    //     'Pages.Administration.DynamicProperties',
-                    //     'flaticon-interface-8',
-                    //     '/app/admin/dynamic-property'
-                    // ),
+                    new AppMenuItem('Thông báo', 'Pages.UserDonate', 'flaticon-app', '/app/notifications'),
+                    //new AppMenuItem('Quỹ', 'Pages.Administration', 'flaticon-app', '/app/admin/fund-detail'),
+                    new AppMenuItem('Người gây quỹ', 'Pages.Administration', 'flaticon-app', '/app/admin/fundRaiser'),
+                    new AppMenuItem('Giao dịch', 'Pages.Administration', 'flaticon-app', '/app/admin/transaction'),
+                    new AppMenuItem('Gói quỹ', 'Pages.Administration', 'flaticon-app', '/app/admin/fundPackage'),
+                    new AppMenuItem('Tài khoản khách', 'Pages.Administration', 'flaticon-app', '/app/admin/accountGuest'),
+                    new AppMenuItem('Roles', 'Pages.Administration', 'flaticon-suitcase', '/app/admin/roles'),
                     new AppMenuItem(
                         'Settings',
                         'Pages.Administration.Host.Settings',
                         'flaticon-settings',
                         '/app/admin/hostSettings'
                     ),
-                    // new AppMenuItem(
-                    //     'Settings',
-                    //     'Pages.Administration.Tenant.Settings',
-                    //     'flaticon-settings',
-                    //     '/app/admin/tenantSettings'
-                    // ),
-                    // new AppMenuItem(
-                    //     'Notifications',
-                    //     '',
-                    //     'flaticon-alarm',
-                    //     '',
-                    //     [],
-                    //     [
-                    //         new AppMenuItem(
-                    //             'Inbox',
-                    //             '',
-                    //             'flaticon-mail-1',
-                    //             '/app/notifications'
-                    //         ),
-                    //         new AppMenuItem(
-                    //             'MassNotifications',
-                    //             'Pages.Administration.MassNotification',
-                    //             'flaticon-paper-plane',
-                    //             '/app/admin/mass-notifications'
-                    //         )
-                    //     ]
-                    // )
+                ]
+            ),
+            new AppMenuItem(
+                'UserDonation', '', 'flaticon-interface-8', '', [],
+                [
+                    new AppMenuItem('Quyên góp', 'Pages.UserDonate', 'flaticon-suitcase', '/app/admin/donation'),
+                    new AppMenuItem('Lịch sử', 'Pages.UserDonate', 'flaticon-suitcase', '/app/admin/checkout'),
                 ]
             ),
             new AppMenuItem(

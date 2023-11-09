@@ -2,12 +2,18 @@
 using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
 using Abp.UI;
+using Dapper;
 using esign.Authorization.Users;
+using esign.Configuration;
 using esign.Enitity;
 using esign.Entity;
 using esign.FundRaising.UserFundRaising.Dto;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting.Internal;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,9 +35,11 @@ namespace esign.FundRaising
         private readonly IRepository<FundTransactions, int> _mstSleFundTransactionRepo;
         private readonly IRepository<UserAccount, int> _mstSleUserAccountRepo;
         private readonly IRepository<User, long> _mstSleUserRepo;
+        private readonly IConfigurationRoot _appConfiguration;
 
         public UserAppService(IRepository<Funds> mstSleFundRepo, IRepository<FundRaiser, int>
-            mstSleFundRaiserRepo, IRepository<FundDetailContent, int> mstSleFundDetailContentRepo,
+            mstSleFundRaiserRepo, IRepository<FundDetailContent, int> mstSleFundDetailContentRepo, 
+            IWebHostEnvironment hostingEnvironment, IWebHostEnvironment env,
             IRepository<FundRaisingTopic, int> mstSleFundTopictRepo,
             IRepository<FundPackage, int> mstSleFundPackageRepo,
             IRepository<FundTransactions, int> mstSleFundTransactionRepo,
@@ -46,6 +54,8 @@ namespace esign.FundRaising
             _mstSleFundTransactionRepo = mstSleFundTransactionRepo;
             _mstSleUserAccountRepo = mstSleUserAccountRepo;
             _mstSleUserRepo = mstSleUserRepo;
+            _appConfiguration = env.GetAppConfiguration();
+            _appConfiguration = hostingEnvironment.GetAppConfiguration();
         }
         public GetFundsDetailByIdForUser GetInforFundRaisingById(int Id)
         {
@@ -170,5 +180,29 @@ namespace esign.FundRaising
             userCurrent.FundPackageId = fundPackage;
             await _mstSleUserRepo.UpdateAsync(userCurrent);
         }
+        public void UpdatePermissionForFundRaiser(int userId)
+        {
+            using (SqlConnection connection = new SqlConnection(_appConfiguration.GetConnectionString("Default")))
+            {
+
+                connection.Execute(@"
+                            INSERT INTO dbo.AbpPermissions (CreationTime, CreatorUserId, Discriminator, IsGranted, Name, TenantId ,RoleId,UserId) VALUES
+                            (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages',1,2,@p_userId)
+                        ", new
+                {
+                    p_userId = userId
+                });
+
+                connection.Execute(@"
+                            INSERT INTO dbo.AbpPermissions (CreationTime, CreatorUserId, Discriminator, IsGranted, Name, TenantId ,UserId) VALUES
+                            (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages.UserDonate',1,2,@p_userId)
+                        ", new
+                {
+                    p_userId = userId
+                });
+
+            }
+        }
+
     }
 }

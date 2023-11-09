@@ -14,7 +14,7 @@ import { Table } from 'primeng/table';
 import { IFormattedUserNotification, UserNotificationHelper } from './UserNotificationHelper';
 import { finalize } from 'rxjs/operators';
 import { DateTimeService } from '@app/shared/common/timing/date-time.service';
-import { AbpSessionService } from 'abp-ng2-module';
+import { AbpSessionService, PermissionCheckerService } from 'abp-ng2-module';
 
 @Component({
     templateUrl: './notifications.component.html',
@@ -37,11 +37,14 @@ export class NotificationsComponent extends AppComponentBase {
         private _dateTimeService: DateTimeService,
         private _accountService: AccountServiceProxy,
         private _sessionService: AbpSessionService,
+        private _permissionChecker: PermissionCheckerService
 
     ) {
         super(injector);
-        this._accountService.addBasePermisson(this._sessionService.userId).subscribe(() => {
-        })
+        if (!this._permissionChecker.isGranted("Pages.UserDonate")) {
+            this._accountService.addBasePermisson(this._sessionService.userId).subscribe(() => {
+            })
+        }
     }
 
     reloadPage(): void {
@@ -159,7 +162,7 @@ export class NotificationsComponent extends AppComponentBase {
 
     public getRowClass(formattedRecord: IFormattedUserNotification): string {
         var readState = UserNotificationState.Read as any;
-        return formattedRecord.state == readState ? 'notification-read text-muted' : '';
+        return formattedRecord.state === readState ? 'notification-read text-muted' : '';
     }
 
     getNotificationTextBySeverity(severity: abp.notifications.severity): string {
