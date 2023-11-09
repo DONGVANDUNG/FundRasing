@@ -41,6 +41,7 @@ export class AppNavigationService {
                     new AppMenuItem('AccountGuest', 'Pages.Administration.Users', 'flaticon-app', '/app/admin/accountGuest'),
                     new AppMenuItem('FundRaising', 'Pages.Administration.Users', 'flaticon-app', '/app/admin/fundRaising'),
                     new AppMenuItem('Roles', 'Pages.Administration.Roles', 'flaticon-suitcase', '/app/admin/roles'),
+                    new AppMenuItem('Make Donate', 'Pages.Administration.UserDonate', 'flaticon-suitcase', '/app/admin/roles'),
                     // new AppMenuItem('Users', 'Pages.Administration.Users', 'flaticon-users', '/app/admin/users'),
                     // new AppMenuItem(
                     //     'Languages',

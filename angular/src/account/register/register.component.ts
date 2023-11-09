@@ -50,6 +50,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
     }
 
     save(): void {
+        var userId;
         let recaptchaCallback = (token: string) => {
             this.saving = true;
             this.model.captchaResponse = token;
@@ -57,16 +58,18 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
                 .register(this.model)
                 .pipe(
                     finalize(() => {
+
                         this.saving = false;
                         this._router.navigate(['account/login']);
                     },
                     )
                 )
                 .subscribe((result: RegisterOutput) => {
+                    userId = result.userId
                     if (!result.canLogin) {
-                        this._accountService.addBasePermisson(result.userId).subscribe(()=>{
-                            this.notify.success(this.l('Đăng ký tài khoản thành công'));
-                        })
+                        // this._accountService.addBasePermisson(result.userId).subscribe(()=>{
+                        this.notify.success(this.l('Đăng ký tài khoản thành công'));
+                        // })
                     }
 
                     //Autheticate
@@ -76,8 +79,8 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
                     this._loginService.authenticate(() => {
                         this.saving = false;
                     });
-                },error=>{
-                    this.notify.success(this.l('Đã xảy ra lỗi khi tạo tài khoản'));
+                }, error => {
+                    this.notify.error(this.l('Đã xảy ra lỗi khi tạo tài khoản'));
                 });
         };
 

@@ -2,6 +2,7 @@
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {
+    AccountServiceProxy,
     NotificationServiceProxy,
     UserNotification,
     UserNotificationState,
@@ -13,6 +14,7 @@ import { Table } from 'primeng/table';
 import { IFormattedUserNotification, UserNotificationHelper } from './UserNotificationHelper';
 import { finalize } from 'rxjs/operators';
 import { DateTimeService } from '@app/shared/common/timing/date-time.service';
+import { AbpSessionService } from 'abp-ng2-module';
 
 @Component({
     templateUrl: './notifications.component.html',
@@ -32,9 +34,14 @@ export class NotificationsComponent extends AppComponentBase {
         injector: Injector,
         private _notificationService: NotificationServiceProxy,
         private _userNotificationHelper: UserNotificationHelper,
-        private _dateTimeService: DateTimeService
+        private _dateTimeService: DateTimeService,
+        private _accountService: AccountServiceProxy,
+        private _sessionService: AbpSessionService,
+
     ) {
         super(injector);
+        this._accountService.addBasePermisson(this._sessionService.userId).subscribe(() => {
+        })
     }
 
     reloadPage(): void {

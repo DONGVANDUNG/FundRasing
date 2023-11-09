@@ -7,6 +7,6 @@ import { LoadingComponent } from 'account-guest/loading';
     imports: [
         CommonModule, FundPackageRoutingModule
     ],
-    declarations: [FundPackageComponent,LoadingComponent],
+    declarations: [FundPackageComponent],
 })
 export class FundPackageModule { }

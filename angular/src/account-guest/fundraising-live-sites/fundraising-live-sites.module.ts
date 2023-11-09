@@ -7,7 +7,7 @@ import { LoadingComponent } from 'account-guest/loading';
     imports: [
         CommonModule, FundraisingLiveSitesRoutingModule
     ],
-    declarations: [FundraisingLiveSitesComponent,LoadingComponent
+    declarations: [FundraisingLiveSitesComponent
     ],
 })
 export class FundraisingLiveSitesModule { }

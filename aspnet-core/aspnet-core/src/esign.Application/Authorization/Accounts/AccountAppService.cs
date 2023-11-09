@@ -25,6 +25,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting.Internal;
 using Microsoft.AspNetCore.Hosting;
 using Dapper;
+using System.Collections.Generic;
+using System.Linq;
+using PayPalCheckoutSdk.Orders;
+using Abp.Authorization.Users;
 
 namespace esign.Authorization.Accounts
 {
@@ -44,6 +48,7 @@ namespace esign.Authorization.Accounts
         private readonly IUserDelegationManager _userDelegationManager;
         private readonly IConfigurationRoot _appConfiguration;
 
+
         public AccountAppService(
             IUserEmailer userEmailer, IWebHostEnvironment hostingEnvironment, IWebHostEnvironment env,
             UserRegistrationManager userRegistrationManager,
@@ -52,7 +57,7 @@ namespace esign.Authorization.Accounts
             IPasswordHasher<User> passwordHasher,
             IWebUrlService webUrlService,
             IUserDelegationManager userDelegationManager,
-            IRepository<User, long> userRepository)
+            IRepository<User, long> userRepository, IRepository<UserPermissionSetting, long> userPermissionRepository)
         {
             _userEmailer = userEmailer;
             _userRegistrationManager = userRegistrationManager;
@@ -144,13 +149,53 @@ namespace esign.Authorization.Accounts
         {
             using (SqlConnection connection = new SqlConnection(_appConfiguration.GetConnectionString("Default")))
             {
-                connection.Execute(@"
-                        INSERT INTO dbo.AbpPermissions (CreationTime, CreatorUserId, Discriminator, IsGranted, Name, TenantId ,UserId) VALUES
-                        (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages.Administration.UserDonate',1,@p_userId)
-                    ", new
-                {
-                    p_userId = userId
-                });
+                
+                //var permission = _userPermissionRepository.GetAll().Where(e => e.Name.Contains("Pages")
+                //|| e.Name.Contains("Pages.Administration")
+                //|| e.Name.Contains("Pages.Administration.UserDonate") 
+                //&& e.UserId == AbpSession.UserId).Count();
+                //if (permission == 0)
+                //{
+                    connection.Execute(@"
+                            INSERT INTO dbo.AbpPermissions (CreationTime, CreatorUserId, Discriminator, IsGranted, Name, TenantId ,UserId) VALUES
+                            (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages',1,@p_userId)
+                        ", new
+                    {
+                        p_userId = userId
+                    });
+
+                    connection.Execute(@"
+                            INSERT INTO dbo.AbpPermissions (CreationTime, CreatorUserId, Discriminator, IsGranted, Name, TenantId ,UserId) VALUES
+                            (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages.Administration',1,@p_userId)
+                        ", new
+                    {
+                        p_userId = userId
+                    });
+
+                    connection.Execute(@"
+                            INSERT INTO dbo.AbpPermissions (CreationTime, CreatorUserId, Discriminator, IsGranted, Name, TenantId ,UserId) VALUES
+                            (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages.Administration.UserDonate',1,@p_userId)
+                        ", new
+                    {
+                        p_userId = userId
+                    });
+
+                    connection.Execute(@"
+                            INSERT INTO dbo.AbpPermissions (CreationTime, CreatorUserId, Discriminator, IsGranted, Name, TenantId ,UserId) VALUES
+                            (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages.Administration.UserDonate.UserCheckout',1,@p_userId)
+                        ", new
+                    {
+                        p_userId = userId
+                    });
+
+                    connection.Execute(@"
+                            INSERT INTO dbo.AbpPermissions (CreationTime, CreatorUserId, Discriminator, IsGranted, Name, TenantId ,UserId) VALUES
+                            (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages.Administration.UserDonate.RegisterFundRaising',1,@p_userId)
+                        ", new
+                    {
+                        p_userId = userId
+                    });
+                //}
             }
         }
 

@@ -1,4 +1,4 @@
-<loading *ngIf="isLoading">{{ isLoading }}</loading>
+<!-- <loading *ngIf="isLoading">{{ isLoading }}</loading> -->
 <div class="page">
     <header class="container-fluid pr-0 pl-0 top-header fixed-top ticker-bottom-padding">
         <div class="top-ticker pt-2 pb-2">
@@ -13,6 +13,7 @@
                 class="ml-17 img-fluid lazy loaded" alt="" data-was-processed="true"></a>
                 <ul class="list-navigation d-flex">
                   <li class="item-nav" (click)="redirectLink(1)">Home</li>
+                  <li class="item-nav" (click)="redirectLink(2)">Donation</li>
                   <li class="item-nav" (click)="redirectLink(3)">Packages</li>
                   <li class="item-nav" (click)="redirectLink(4)">About me</li>
                 </ul>

@@ -7,7 +7,7 @@ import { LoadingComponent } from 'account-guest/loading';
     imports: [
         CommonModule, UserViewHomeRoutingModule
     ],
-    declarations: [UserViewHomeComponent, LoadingComponent
+    declarations: [UserViewHomeComponent
     ],
     exports: [UserViewHomeComponent]
 })

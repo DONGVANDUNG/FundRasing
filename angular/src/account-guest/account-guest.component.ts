@@ -16,9 +16,21 @@ export class AccountGuestComponent implements OnInit {
     @ViewChild("fundPackage") fundPackage: FundPackageComponent;
     @ViewChild("userHome") userHome: UserViewHomeComponent;
     @ViewChild("contactUs") contactUs: ContactUsComponent;
-    constructor(private router: Router) { }
+    isLoading: boolean = false;
+    constructor(private router: Router) { 
+        this.isLoading = true;
+        setTimeout(() => {
+            this.isLoading = false;
+        }
+            , 1000)
+    }
 
     ngOnInit() {
+        this.isLoading = true;
+        setTimeout(() => {
+            this.isLoading = false;
+        }
+            , 1000)
     }
     gotoLogin() {
         this.router.navigateByUrl('/guest/login');

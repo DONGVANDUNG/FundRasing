@@ -7,7 +7,7 @@ import { LoadingComponent } from 'account-guest/loading';
     imports: [
         CommonModule, ContactUsRoutingModule
     ],
-    declarations: [ContactUsComponent,LoadingComponent
+    declarations: [ContactUsComponent
     ],
 })
 export class ContactUsHomeModule { }
