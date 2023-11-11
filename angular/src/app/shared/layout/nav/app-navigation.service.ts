@@ -30,10 +30,11 @@ export class AppNavigationService {
                 [
                     new AppMenuItem('Thông báo', 'Pages.UserDonate', 'flaticon-app', '/app/notifications'),
                     //new AppMenuItem('Quỹ', 'Pages.Administration', 'flaticon-app', '/app/admin/fund-detail'),
-                    new AppMenuItem('Người gây quỹ', 'Pages.Administration', 'flaticon-app', '/app/admin/fundRaiser'),
-                    new AppMenuItem('Giao dịch', 'Pages.Administration', 'flaticon-app', '/app/admin/transaction'),
-                    new AppMenuItem('Gói quỹ', 'Pages.Administration', 'flaticon-app', '/app/admin/fundPackage'),
-                    new AppMenuItem('Tài khoản khách', 'Pages.Administration', 'flaticon-app', '/app/admin/accountGuest'),
+                   // new AppMenuItem('Người gây quỹ', 'Pages.Administration', 'flaticon-app', '/app/admin/fundRaiser'),
+                    //new AppMenuItem('Giao dịch', 'Pages.Administration', 'flaticon-app', '/app/admin/transaction'),
+                    //new AppMenuItem('Gói quỹ', 'Pages.Administration', 'flaticon-app', '/app/admin/fundPackage'),
+                    //new AppMenuItem('Tài khoản khách', 'Pages.Administration', 'flaticon-app', '/app/admin/accountGuest'),
+                    new AppMenuItem('Bài đăng', 'Pages.Administration', 'flaticon-app', '/app/admin/post'),
                     new AppMenuItem('Roles', 'Pages.Administration', 'flaticon-suitcase', '/app/admin/roles'),
                     new AppMenuItem(
                         'Settings',
@@ -47,7 +48,7 @@ export class AppNavigationService {
                 'UserDonation', '', 'flaticon-interface-8', '', [],
                 [
                     new AppMenuItem('Quyên góp', 'Pages.UserDonate', 'flaticon-suitcase', '/app/admin/donation'),
-                    new AppMenuItem('Lịch sử', 'Pages.UserDonate', 'flaticon-suitcase', '/app/admin/checkout'),
+                    new AppMenuItem('Lịch sử Donate', 'Pages.UserDonate', 'flaticon-suitcase', '/app/admin/checkout'),
                 ]
             ),
             new AppMenuItem(

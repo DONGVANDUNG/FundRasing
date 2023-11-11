@@ -30,7 +30,6 @@ const routes: Routes = [
                 loadChildren: () => import('./contact-us/contact-us.module').then((m) => m.ContactUsHomeModule), //Lazy load account module
                 data: { preload: true },
             },
-            { path: '**', redirectTo: 'home', pathMatch: 'full' },
             // {
             //     path: 'checkout',
             //     component: UserViewCheckoutComponent,

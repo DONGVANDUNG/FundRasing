@@ -6,14 +6,26 @@ const routes: Routes = [
     {
         path: '',
         component: AppUserDonationComponent,
-        pathMatch:'full'
-        // children:[
-        //     {
-        //         path:'success',
-        //         loadChildren: () => import('../user-view-donation-success/user-view-donation-success.module').then((m) => m.AppUserDonationSuccessModule), //Lazy load account module
-        //         data: { preload: true },
-        //     }
-        // ]
+       //pathMatch:'full'
+        children:[
+            //{ path: '**', redirectTo: 'view-fund' },
+            {
+                path:'donate/:id',
+                loadChildren: () => import('./donation-fund/donation-fund.module').then((m) => m.DonationFundModule), //Lazy load account module
+                data: { preload: true },
+            },
+            {
+                path:'view-fund',
+                loadChildren: () => import('./view-all-fund/view-all-fund.module').then((m) => m.ViewAllFundModule), //Lazy load account module
+                data: { preload: true },
+            },
+            {
+                path:'donation-success/:fundId',
+                loadChildren: () => import('./donation-success/donation-success.module').then((m) => m.DonationSuccessModule), //Lazy load account module
+                data: { preload: true },
+            },
+            { path: '', redirectTo: 'view-fund',pathMatch:'full'},
+        ]
     },
 ];
 

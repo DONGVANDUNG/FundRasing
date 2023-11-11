@@ -124,6 +124,7 @@ namespace esign.Authorization.Accounts
                 false,
                 AppUrlService.CreateEmailActivationUrlFormat(AbpSession.TenantId)
             );
+            user.TypeUser = 2;
             user.IsActive = true;
             _userRepository.Update(user);
 
@@ -139,6 +140,7 @@ namespace esign.Authorization.Accounts
             //        userId = user.Id
             //    });
             //}
+
             return new RegisterOutput
             {
                 CanLogin = user.IsActive && (user.IsEmailConfirmed || !isEmailConfirmationRequiredForLogin),

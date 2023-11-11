@@ -27,8 +27,8 @@ import { DatePickerInitialValueSetterDirective } from './timing/date-picker-init
 import { DateTimeService } from './timing/date-time.service';
 import { TimeZoneComboComponent } from './timing/timezone-combo.component';
 import { NgxBootstrapDatePickerConfigService } from 'assets/ngx-bootstrap/ngx-bootstrap-datepicker-config.service';
-import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
-import { CountoModule } from 'angular2-counto';
+import { PerfectScrollbarModule } from 'ngx-om-perfect-scrollbar';
+import { Angular2CountoModule } from '@awaismirza/angular2-counto';
 import { AppBsModalModule } from '@shared/common/appBsModal/app-bs-modal.module';
 import { SingleLineStringInputTypeComponent } from './input-types/single-line-string-input-type/single-line-string-input-type.component';
 import { ComboboxInputTypeComponent } from './input-types/combobox-input-type/combobox-input-type.component';
@@ -64,6 +64,8 @@ import { GridPaginationComponent } from './ag-grid-custom/grid-pagination/grid-p
 import { TmssTooltipComponent } from './tmss-tooltip/tmss-tooltip.component';
 import { AgCheckboxRendererComponent } from '@app/shared/common/grid/ag-checkbox-renderer/ag-checkbox-renderer.component';
 import { AgDropdownRendererComponent } from './grid/ag-dropdown-renderer/ag-dropdown-renderer.component';
+import { Calendar, CalendarModule } from 'primeng/calendar';
+import { EditorModule } from 'primeng/editor';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
@@ -80,10 +82,12 @@ import { AgDropdownRendererComponent } from './grid/ag-dropdown-renderer/ag-drop
         BsDropdownModule.forRoot(),
         BsDatepickerModule.forRoot(),
         PerfectScrollbarModule,
-        CountoModule,
+        Angular2CountoModule,
         AppBsModalModule,
         AutoCompleteModule,
         AgGridModule,
+        CalendarModule,
+        EditorModule
         // BrowserAnimationsModule
     ],
     declarations: [
@@ -168,6 +172,7 @@ import { AgDropdownRendererComponent } from './grid/ag-dropdown-renderer/ag-drop
         TmssTooltipComponent,
         AgCheckboxRendererComponent,
         AgDropdownRendererComponent,
+        Calendar
     ],
     providers: [
         DateTimeService,

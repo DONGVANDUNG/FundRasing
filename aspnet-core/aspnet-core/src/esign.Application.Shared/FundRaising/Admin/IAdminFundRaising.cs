@@ -29,8 +29,7 @@ namespace esign.FundRaising.Admin
 
         Task<PagedResultDto<GetListFundPackageDto>> GetListFundPackage(FundPackageInputDto input);
         //tạo gói quỹ
+        [HttpPost]
         Task CreateOrEditFundPackage(CreateOrEditFundPackageDto input);
-        //[HttpPost]
-        Task<string> UploadFile(IFormFile file);
     }
 }

@@ -62,6 +62,11 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
                         loadChildren: () => import('./roles/roles.module').then((m) => m.RolesModule),
                         data: { permission: 'Pages.Administration' },
                     },
+                    {
+                        path: 'post',
+                        loadChildren: () => import('./app-admin-post/app-admin-post.module').then((m) => m.AppAdminPostModule),
+                        data: { permission: 'Pages.Administration' },
+                    },
                 ],
             },
         ]),

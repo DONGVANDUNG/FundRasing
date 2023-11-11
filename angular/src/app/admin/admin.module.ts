@@ -1,25 +1,20 @@
 ﻿import { NgModule } from '@angular/core';
-import { AdminRoutingModule } from './admin-routing.module';
-import { TreeDragDropService } from 'primeng/api';
+import { SubheaderModule } from '@app/shared/common/sub-header/subheader.module';
 import {
     BsDatepickerConfig,
     BsDatepickerModule,
     BsDaterangepickerConfig,
     BsLocaleService,
 } from 'ngx-bootstrap/datepicker';
-import { NgxBootstrapDatePickerConfigService } from '../../assets/ngx-bootstrap/ngx-bootstrap-datepicker-config.service';
-import { PERFECT_SCROLLBAR_CONFIG, PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { PopoverModule } from 'ngx-bootstrap/popover';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
-import { PopoverModule } from 'ngx-bootstrap/popover';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { SubheaderModule } from '@app/shared/common/sub-header/subheader.module';
-import { UsersModule } from './users/users.module';
-import { AppAdminFundRaiserModule } from './app-admin-fundRaiser/app-admin-fundRaiser.module';
-import { AppUserCheckoutModule } from './app-user-checkout/app-user-checkout.module';
-import { AppUserDonationSuccessModule } from './app-user-donation-success/app-user-donation-success.module';
-import { AppUserFundDetailModule } from './app-user-fund-detail/app-user-fund-detail.module';
+import { PERFECT_SCROLLBAR_CONFIG, PerfectScrollbarConfigInterface } from 'ngx-om-perfect-scrollbar';
+import { TreeDragDropService } from 'primeng/api';
+import { NgxBootstrapDatePickerConfigService } from '../../assets/ngx-bootstrap/ngx-bootstrap-datepicker-config.service';
+import { AdminRoutingModule } from './admin-routing.module';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     // suppressScrollX: true

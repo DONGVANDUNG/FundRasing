@@ -10,7 +10,7 @@ import { EditionComboComponent } from '@app/admin/shared/edition-combo.component
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TreeModule } from 'primeng/tree';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
-import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { PerfectScrollbarModule } from 'ngx-om-perfect-scrollbar';
 import { CommonModule } from '@angular/common';
 import { UtilsModule } from '@shared/utils/utils.module';
 import { AppCommonModule } from '@app/shared/common/app-common.module';
@@ -21,8 +21,8 @@ import { PaginatorModule } from 'primeng/paginator';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { EditorModule } from 'primeng/editor';
 import { InputMaskModule } from 'primeng/inputmask';
-import { CountoModule } from 'angular2-counto';
-import { TextMaskModule } from 'angular2-text-mask';
+import { Angular2CountoModule } from '@awaismirza/angular2-counto';
+import { TextMaskModule } from '@awaismirza/angular2-text-mask';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { DropdownModule } from 'primeng/dropdown';
 import { AppBsModalModule } from '@shared/common/appBsModal/app-bs-modal.module';
@@ -57,7 +57,7 @@ import { SubheaderModule } from '@app/shared/common/sub-header/subheader.module'
         AutoCompleteModule,
         EditorModule,
         InputMaskModule,
-        CountoModule,
+        Angular2CountoModule,
         TextMaskModule,
         ImageCropperModule,
         PerfectScrollbarModule,
@@ -85,7 +85,7 @@ import { SubheaderModule } from '@app/shared/common/sub-header/subheader.module'
         AutoCompleteModule,
         EditorModule,
         InputMaskModule,
-        CountoModule,
+        Angular2CountoModule,
         TextMaskModule,
         ImageCropperModule,
         PerfectScrollbarModule,

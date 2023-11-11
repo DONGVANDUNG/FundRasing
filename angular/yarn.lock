@@ -493,6 +493,21 @@
   resolved "https://registry.npmjs.org/@assemblyscript/loader/-/loader-0.10.1.tgz"
   integrity sha512-H71nDOOL8Y7kWRLqf6Sums+01Q5msqBW2KhDUTemh1tvY04eSkSXrK0uj/4mmY0Xr16/3zyZmsrxN7CKuRbNRg==
 
+"@awaismirza/angular2-counto@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@awaismirza/angular2-counto/-/angular2-counto-0.0.2.tgz#18b303f3284bfc613950e56be5e86d812a528ae0"
+  integrity sha512-ZvQOPZZh5pHji0oeXiTK8CmjmTZn8sdhgbYUif83ikjfNfEqrIaWpMAv9yMHRMrlp5mdS4lCGj3g5kf789HJ3w==
+  dependencies:
+    tslib "^2.3.0"
+
+"@awaismirza/angular2-text-mask@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@awaismirza/angular2-text-mask/-/angular2-text-mask-0.0.2.tgz#b4b795c13bf6c3d79539ca1a6c32ad83c3db3ed1"
+  integrity sha512-zhAp4evEND0CwKvV0S6ggQY2SacsU99qCWFSyDUqah/fCDZL3N0LS5CxkOXZziKs/mbHFaAFuFZHqrRvitN5GA==
+  dependencies:
+    text-mask-core "^5.1.2"
+    tslib "^2.3.0"
+
 "@azure/msal-browser@^2.32.1":
   version "2.32.1"
   resolved "https://registry.npmjs.org/@azure/msal-browser/-/msal-browser-2.32.1.tgz"
@@ -2435,18 +2450,6 @@ angular-oauth2-oidc@^15.0.1:
   integrity sha512-5gpqO9QL+qFqMItYFHe8F6H5nOIEaowcNUc9iTDs3P1bfVYnoKoVAaijob53PuPTF4YwzdfwKWZi4Mq6P7GENQ==
   dependencies:
     tslib "^2.0.0"
-
-angular2-counto@^1.2.5:
-  version "1.2.5"
-  resolved "https://registry.npmjs.org/angular2-counto/-/angular2-counto-1.2.5.tgz"
-  integrity sha512-W9WVzUOn+e5tRwHtz0EUiApOBjx1X3GbZ6FVb82f6mAaJdq756WIvMgK5kldpx8jJNsR3W/riF76G26zbs10gw==
-
-angular2-text-mask@^9.0.0:
-  version "9.0.0"
-  resolved "https://registry.npmjs.org/angular2-text-mask/-/angular2-text-mask-9.0.0.tgz"
-  integrity sha512-iALcnhJPS1zvX48d86rgUgDe/crX6XfhZrXC4Gdlo2/YwZW7u7KJZY6/b3ieSCIWVq/E6p+wDCzeo3E6leRjDA==
-  dependencies:
-    text-mask-core "^5.0.0"
 
 animate.css@^4.1.0:
   version "4.1.1"
@@ -7372,12 +7375,12 @@ ng-recaptcha@^11.0.0:
     "@types/grecaptcha" "^3.0.3"
     tslib "^2.2.0"
 
-ng2-file-upload@^1.4.0:
-  version "1.4.0"
-  resolved "https://registry.npmjs.org/ng2-file-upload/-/ng2-file-upload-1.4.0.tgz"
-  integrity sha512-3J/KPU/tyh/ad6TFeUbrxX+SihUj0iOEt2Zsg4EX7mB3GFiQscXOfcUOxCkBtPWWWaqt3azrYbVGzsYa3/7NzQ==
+ng2-file-upload@5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/ng2-file-upload/-/ng2-file-upload-5.0.0.tgz#8d52062bca192e4fb2774c230c4fb051ae176403"
+  integrity sha512-M2JaX0unB/30GmQUScfXko2vseaPlU1R5jnhL5cfvOLNw8BBSVJAdOSmcavJzicgTZWCYz7y7Fvpr939bd4eCA==
   dependencies:
-    tslib "^1.9.0"
+    tslib "^2.3.0"
 
 ngx-bootstrap@^9.0.0:
   version "9.0.0"
@@ -7393,14 +7396,14 @@ ngx-image-cropper@^6.3.1:
   dependencies:
     tslib "^2.3.0"
 
-ngx-perfect-scrollbar@^10.1.1:
-  version "10.1.1"
-  resolved "https://registry.npmjs.org/ngx-perfect-scrollbar/-/ngx-perfect-scrollbar-10.1.1.tgz"
-  integrity sha512-f9IaDJGlBzSxnJ3Ki76n2JdzfQngUFyCf0E+CuVLaR5jL0IJDcTu7vOs8wexXunRMTd8xvIv0+sdIxf8hXAGWg==
+ngx-om-perfect-scrollbar@^15.0.1:
+  version "15.0.1"
+  resolved "https://registry.yarnpkg.com/ngx-om-perfect-scrollbar/-/ngx-om-perfect-scrollbar-15.0.1.tgz#3a9f75e742733126a6a88b4bb32d7ba76b63d6ed"
+  integrity sha512-BWISiim0K4nKrYdJHS2u+VzWuoVZbIndIBT2Ra7tsnTF837slLQKy2e4MF1ZyruGgOPQW1dld8Ha5CwIw3Cedw==
   dependencies:
-    perfect-scrollbar "1.5.0"
+    om-perfect-scrollbar "^2.0.0"
     resize-observer-polyfill "^1.5.0"
-    tslib "^2.0.0"
+    tslib "^2.3.0"
 
 ngx-spinner@^14.0.0:
   version "14.0.0"
@@ -7719,6 +7722,11 @@ obuf@^1.0.0, obuf@^1.1.2:
   version "1.1.2"
   resolved "https://registry.npmjs.org/obuf/-/obuf-1.1.2.tgz"
   integrity sha512-PX1wu0AmAdPqOL1mWhqmlOd8kOIZQwGZw6rh7uby9fTc5lhaOWFLX3I6R1hrF9k3zUY40e6igsLGkDXK92LJNg==
+
+om-perfect-scrollbar@^2.0.0:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/om-perfect-scrollbar/-/om-perfect-scrollbar-2.0.1.tgz#c9c6cbdf8be15ced4597e08b1bbc1debfc6c29bb"
+  integrity sha512-KOIxlE1zR9AM4bsNdptJMXLdk8LmIAyTbcBGw2Lhde0gdP8JeDmqH4JyEkNWNiQYtnyI1NqMn1V0kAPeKyqYtQ==
 
 on-finished@2.4.1:
   version "2.4.1"
@@ -8043,11 +8051,6 @@ path-type@^4.0.0:
   version "4.0.0"
   resolved "https://registry.npmjs.org/path-type/-/path-type-4.0.0.tgz"
   integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
-
-perfect-scrollbar@1.5.0:
-  version "1.5.0"
-  resolved "https://registry.npmjs.org/perfect-scrollbar/-/perfect-scrollbar-1.5.0.tgz"
-  integrity sha512-NrNHJn5mUGupSiheBTy6x+6SXCFbLlm8fVZh9moIzw/LgqElN5q4ncR4pbCBCYuCJ8Kcl9mYM0NgDxvW+b4LxA==
 
 performance-now@^2.1.0:
   version "2.1.0"
@@ -9569,9 +9572,9 @@ text-mask-addons@^3.8.0:
   resolved "https://registry.npmjs.org/text-mask-addons/-/text-mask-addons-3.8.0.tgz"
   integrity sha512-VSZSdc/tKn4zGxgpJ+uNBzoW1t472AoAFIlbw1K7hSNXz0DfSBYDJNRxLqgxOfWw1BY2z6DQpm7g0sYZn5qLpg==
 
-text-mask-core@^5.0.0:
+text-mask-core@^5.1.2:
   version "5.1.2"
-  resolved "https://registry.npmjs.org/text-mask-core/-/text-mask-core-5.1.2.tgz"
+  resolved "https://registry.yarnpkg.com/text-mask-core/-/text-mask-core-5.1.2.tgz#80dd5ebe04825757e46619e691407a9f8b3c1b6f"
   integrity sha512-VfkCMdmRRZqXgQZFlDMiavm3hzsMzBM23CxHZsaeAYg66ZhXCNJWrFmnJwNy8KF9f74YvAUAuQenxsMCfuvhUw==
 
 text-table@0.2.0, text-table@^0.2.0:

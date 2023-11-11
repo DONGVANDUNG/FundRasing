@@ -28,7 +28,7 @@ export class ChangeProfilePictureModalComponent extends AppComponentBase {
     imageChangedEvent: any = '';
     userId: number = null;
 
-    private _uploaderOptions: FileUploaderOptions = {};
+    private _uploaderOptions: FileUploaderOptions = {url:''};
 
     constructor(injector: Injector, private _profileService: ProfileServiceProxy, private _tokenService: TokenService) {
         super(injector);

@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AppCommonModule } from '@app/shared/common/app-common.module';
 import { UtilsModule } from '@shared/utils/utils.module';
-import { CountoModule } from 'angular2-counto';
+import { Angular2CountoModule } from '@awaismirza/angular2-counto';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
@@ -25,7 +25,7 @@ NgxBootstrapDatePickerConfigService.registerNgxBootstrapDatePickerLocales();
         TooltipModule,
         AppCommonModule,
         UtilsModule,
-        CountoModule,
+        Angular2CountoModule,
         BsDatepickerModule.forRoot(),
         BsDropdownModule.forRoot(),
         PopoverModule.forRoot(),

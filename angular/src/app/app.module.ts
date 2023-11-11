@@ -71,7 +71,7 @@ import { UserNotificationHelper } from './shared/layout/notifications/UserNotifi
 import { HeaderNotificationsComponent } from './shared/layout/notifications/header-notifications.component';
 import { NotificationSettingsModalComponent } from './shared/layout/notifications/notification-settings-modal.component';
 import { NotificationsComponent } from './shared/layout/notifications/notifications.component';
-import { TextMaskModule } from 'angular2-text-mask';
+import { TextMaskModule } from '@awaismirza/angular2-text-mask';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { ActiveDelegatedUsersComboComponent } from './shared/layout/topbar/active-delegated-users-combo.component';
 
@@ -82,7 +82,7 @@ import {
     PerfectScrollbarModule,
     PERFECT_SCROLLBAR_CONFIG,
     PerfectScrollbarConfigInterface,
-} from 'ngx-perfect-scrollbar';
+} from 'ngx-om-perfect-scrollbar';
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     // suppressScrollX: true
 };

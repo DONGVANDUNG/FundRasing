@@ -35889,7 +35889,8 @@ code:not([class*=language-]) {
   justify-content: space-between;
   border-top-left-radius: 0.475rem;
   border-top-right-radius: 0.475rem;
-  border-bottom: 1px solid var(--kt-modal-header-border-color);
+  /* border-bottom: 1px solid var(--kt-modal-header-border-color); */
+  border-bottom: 1px solid #e7e7f3;
 }
 .modal-header h1, .modal-header .h1, .modal-header h2, .modal-header .h2, .modal-header h3, .modal-header .h3, .modal-header h4, .modal-header .h4, .modal-header h5, .modal-header .h5, .modal-header h6, .modal-header .h6 {
   margin-bottom: 0;
