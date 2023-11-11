@@ -3,6 +3,8 @@ using Abp.Application.Services.Dto;
 using esign.FundRaising.Admin.Dto;
 using esign.FundRaising.FundRaiserService.Dto;
 using esign.FundRaising.UserFundRaising.Dto;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -28,6 +30,7 @@ namespace esign.FundRaising.Admin
         Task<PagedResultDto<GetListFundPackageDto>> GetListFundPackage(FundPackageInputDto input);
         //tạo gói quỹ
         Task CreateOrEditFundPackage(CreateOrEditFundPackageDto input);
-
+        //[HttpPost]
+        Task<string> UploadFile(IFormFile file);
     }
 }

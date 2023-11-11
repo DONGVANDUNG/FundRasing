@@ -9,10 +9,13 @@ using esign.FundRaising.Admin;
 using esign.FundRaising.Admin.Dto;
 using esign.FundRaising.FundRaiserService.Dto;
 using esign.FundRaising.UserFundRaising.Dto;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -266,6 +269,33 @@ namespace esign.FundRaising
                 totalCount,
                 await guestAccount.PageBy(input).ToListAsync()
                 );
+        }
+        public async Task<string> UploadFile(IFormFile file)
+        {
+            try
+            {
+                if (file != null && file.Length > 0)
+                {
+                    var fileName = Path.GetFileName(file.FileName);
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads", fileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await file.CopyToAsync(stream);
+                    }
+
+                    return filePath;
+                }
+                else
+                {
+                    throw new UserFriendlyException("Please select a file");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it appropriately
+                throw new UserFriendlyException("Error uploading file");
+            }
         }
     }
 }
