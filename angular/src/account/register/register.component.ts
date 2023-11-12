@@ -16,6 +16,7 @@ import { RegisterModel } from './register.model';
 @Component({
     templateUrl: './register.component.html',
     animations: [accountModuleAnimation()],
+    styleUrls: ['./register.component.less'],
 })
 export class RegisterComponent extends AppComponentBase implements OnInit {
     model: RegisterModel = new RegisterModel();

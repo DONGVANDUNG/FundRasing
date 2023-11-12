@@ -15,6 +15,11 @@ using System.IO;
 using esign.FundRaising.Admin.Dto;
 using esign.Enitity;
 using Microsoft.AspNetCore.Mvc;
+using esign.Configuration;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Hosting;
+using Dapper;
 
 namespace esign.FundRaising
 {
@@ -28,9 +33,12 @@ namespace esign.FundRaising
         private readonly IRepository<UserAccount, int> _mstSleUserAccountRepo;
         private readonly IRepository<FundRaiser, int> _mstSleFundRaiserRepo;
         private readonly IRepository<FundImage, int> _mstSleFundImageRepo;
+        private readonly IConfigurationRoot _appConfiguration;
         public FundRaiserAppService(IRepository<Funds, int> mstSleFundRepo,
             IRepository<FundTransactions, int> mstSleFundTransactionRepo,
             IRepository<User, long> mstSleUserRepo,
+            IWebHostEnvironment hostingEnvironment,
+            IWebHostEnvironment env,
             IRepository<FundDetailContent, int> mstSleDetailConentRepo,
             IRepository<UserWarning, int> mstSleUserWarningRepo,
             IRepository<UserAccount, int> mstSleUserAccountRepo,
@@ -45,6 +53,8 @@ namespace esign.FundRaising
             _mstSleUserAccountRepo = mstSleUserAccountRepo;
             _mstSleFundRaiserRepo = mstSleFundRaiserRepo;
             _mstSleFundImageRepo = mstSleFundImageRepo;
+            _appConfiguration = env.GetAppConfiguration();
+            _appConfiguration = hostingEnvironment.GetAppConfiguration();
         }
         public async Task CloseFundRaising(int fundId)
         {
@@ -228,6 +238,26 @@ namespace esign.FundRaising
                 var user = _mstSleUserRepo.FirstOrDefault(e=>e.Id == AbpSession.UserId);
                 user.TypeUser = 3;
                 await _mstSleUserRepo.UpdateAsync(user);
+                using (SqlConnection connection = new SqlConnection(_appConfiguration.GetConnectionString("Default")))
+                {
+
+                    connection.Execute(@"
+                            INSERT INTO dbo.AbpPermissions (CreationTime, CreatorUserId, Discriminator, IsGranted, Name, TenantId ,RoleId,UserId) VALUES
+                            (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages',1,2,@p_userId)
+                        ", new
+                    {
+                        p_userId = AbpSession.UserId
+                    });
+
+                    connection.Execute(@"
+                            INSERT INTO dbo.AbpPermissions (CreationTime, CreatorUserId, Discriminator, IsGranted, Name, TenantId ,UserId) VALUES
+                            (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages.UserDonate',1,2,@p_userId)
+                        ", new
+                    {
+                        p_userId = AbpSession.UserId
+                    });
+
+                }
             }
             catch (Exception ex) {
                 throw ex;

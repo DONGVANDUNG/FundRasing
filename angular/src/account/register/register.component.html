@@ -1,14 +1,14 @@
-﻿<div class="login-form" [@routerTransition]>
-    <div class="pb-13 pt-lg-0 pt-5">
-        <h3 class="fw-bolder text-dark fs-h4 fs-h1-lg">
+﻿<div class="form-container" [@routerTransition]>
+    <div class="pb-5 pt-lg-0 pt-5 d-flex justify-content-center">
+        <h3 class="fw-bolder title text-center text-dark fs-h4 fs-h1-lg">
             {{ 'SignUp' | localize }}
         </h3>
     </div>
     <form #registerForm="ngForm" class="login-form form" method="post" novalidate (ngSubmit)="save()">
-        <div class="mb-5">
+        <div class="mb-5 ml-5">
             <input
                 #nameInput="ngModel"
-                class="form-control form-control-solid h-auto py-7 px-6 rounded-lg fs-h6"
+                class="input"
                 autoFocus
                 type="text"
                 placeholder="{{ 'Name' | localize }} *"
@@ -20,10 +20,10 @@
             <validation-messages [formCtrl]="nameInput"></validation-messages>
         </div>
 
-        <div class="mb-5">
+        <div class="mb-5 ml-5">
             <input
                 #surnameInput="ngModel"
-                class="form-control form-control-solid h-auto py-7 px-6 rounded-lg fs-h6"
+                class="input"
                 type="text"
                 placeholder="{{ 'Surname' | localize }} *"
                 [(ngModel)]="model.surname"
@@ -34,10 +34,10 @@
             <validation-messages [formCtrl]="surnameInput"></validation-messages>
         </div>
 
-        <div class="mb-5">
+        <div class="mb-5 ml-5">
             <input
                 #emailAddressInput="ngModel"
-                class="form-control form-control-solid h-auto py-7 px-6 rounded-lg fs-h6"
+                class="input"
                 type="email"
                 placeholder="{{ 'EmailAddress' | localize }} *"
                 [(ngModel)]="model.emailAddress"
@@ -49,10 +49,10 @@
             <validation-messages [formCtrl]="emailAddressInput"></validation-messages>
         </div>
 
-        <div class="mb-5">
+        <div class="mb-5 ml-5">
             <input
                 #userNameInput="ngModel"
-                class="form-control form-control-solid h-auto py-7 px-6 rounded-lg fs-h6"
+                class="input"
                 type="text"
                 autocomplete="new-password"
                 placeholder="{{ 'UserName' | localize }} *"
@@ -64,11 +64,11 @@
             <validation-messages [formCtrl]="userNameInput"></validation-messages>
         </div>
 
-        <div class="mb-5">
+        <div class="mb-5 ml-5">
             <input
                 type="password"
                 name="Password"
-                class="form-control form-control-solid h-auto py-7 px-6 rounded-lg fs-h6"
+                class="input"
                 [(ngModel)]="model.password"
                 #Password="ngModel"
                 placeholder="{{ 'Password' | localize }}"
@@ -88,7 +88,7 @@
             />
         </div>
 
-        <div [hidden]="registerForm.form.valid || registerForm.form.pristine" class="mb-5">
+        <div [hidden]="registerForm.form.valid || registerForm.form.pristine" class="mb-5 ml-5">
             <ul class="form-text text-danger" *ngIf="Password.errors">
                 <li [hidden]="!Password.errors.requireDigit">
                     {{ 'PasswordComplexity_RequireDigit_Hint' | localize }}
@@ -108,11 +108,11 @@
             </ul>
         </div>
 
-        <div class="mb-5">
+        <div class="mb-5 ml-5">
             <input
                 type="password"
                 name="PasswordRepeat"
-                class="form-control form-control-solid h-auto py-7 px-6 rounded-lg fs-h6"
+                class="input"
                 [ngModel]="model.passwordRepeat"
                 #PasswordRepeat="ngModel"
                 placeholder="{{ 'PasswordRepeat' | localize }}"
@@ -127,7 +127,7 @@
             />
         </div>
 
-        <div [hidden]="registerForm.form.valid || registerForm.form.pristine" class="mb-5">
+        <div [hidden]="registerForm.form.valid || registerForm.form.pristine" class="mb-5 ml-5">
             <ul class="form-text text-danger" *ngIf="PasswordRepeat.errors">
                 <li [hidden]="!PasswordRepeat.errors.requireDigit">
                     {{ 'PasswordComplexity_RequireDigit_Hint' | localize }}
@@ -148,7 +148,7 @@
             </ul>
         </div>
 
-        <div class="pb-lg-0 pb-5">
+        <div class="pb-lg-0 pb-5 d-flex justify-content-center">
             <button
                 [disabled]="saving"
                 routerLink="/account/login"

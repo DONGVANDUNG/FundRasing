@@ -110,14 +110,14 @@ namespace esign.FundRaising
                                    || e.FundName.Contains(input.Filter))
                                    .Where(e => input.IsPayFee == null || e.IsPayFee == input.IsPayFee)
                                    .Where(e => input.CreatedDate == null || e.FundRaisingDay == input.CreatedDate)
-                                   join funRaiser in _mstSleFundRaiserRepo.GetAll() on fundRaising.FundRaiserId equals funRaiser.Id
+                                   .Where(e=>AbpSession.TenantId == null || e.FundRaiserId == AbpSession.UserId)
                                    select new GetFundRaisingViewForAdminDto
                                    {
                                        Id = fundRaising.Id,
                                        FundName = fundRaising.FundName,
                                        FundFinishDay = fundRaising.FundRaisingDay,
                                        FundRaisingDay = fundRaising.FundRaisingDay,
-                                       FundRaiser = funRaiser.Name,
+                                       //FundRaiser = funRaiser.Name,
                                        AmountOfMoney = fundRaising.AmountOfMoney,
                                        Status = fundRaising.Status == 3 ? "Đã đóng" : "Đang hoạt động",
                                        ImageUrl = _mstSleFundImageRepo.GetAll().AsNoTracking().Where(e => e.FundId == fundRaising.Id).Select(e => e.ImageUrl).ToList(),
