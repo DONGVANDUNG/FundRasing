@@ -17,7 +17,7 @@ namespace esign.FundRaising.FundRaiserService
         Task UpdateInformation(UpdateInformationFundRaiserDto input);
 
         //Tạo quỹ mới
-        Task CreateFundRaising(CreateOrEditFundRaisingDto input);
+        Task CreateFundRaising(CreateOrEditFundRaisingInputDto input);
 
         //Xem các giao dịch của quỹ
         Task<List<TransactionOfFundForDto>> getListTransactionForFund(int fundId);
@@ -37,6 +37,6 @@ namespace esign.FundRaising.FundRaiserService
 
         Task UpdateFundRaising(CreateOrEditFundRaisingDto input);
 
-        Task<string> CreateOrEditFund(CreateOrEditFundRaisingInputDto input);
+        //Task<string> CreateOrEditFund(CreateOrEditFundRaisingInputDto input);
     }
 }

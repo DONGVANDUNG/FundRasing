@@ -10,9 +10,12 @@ namespace esign.FundRaising.Admin.Dto
         public IFormFile file {  get; set; }
         public string FundName { get; set; }
         public string FundTitle { get; set; }
-        public decimal? AmountOfMoney { get; set; }
-        public DateTime? FundStartDate { get; set; }
-        public DateTime? FundEndDate { get; set; }
-        public int FundContentId { get; set; }
+        public decimal AmountOfMoney { get; set; }
+        public DateTime FundStartDate { get; set; }
+        public DateTime FundEndDate { get; set; }
+        public string FundContent { get; set; }
+        public string ReasonCreateFund { get; set; }
+        public bool IsPayFee { get; set; }    
+
     }
 }

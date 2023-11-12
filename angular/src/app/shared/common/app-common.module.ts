@@ -66,6 +66,8 @@ import { AgCheckboxRendererComponent } from '@app/shared/common/grid/ag-checkbox
 import { AgDropdownRendererComponent } from './grid/ag-dropdown-renderer/ag-dropdown-renderer.component';
 import { Calendar, CalendarModule } from 'primeng/calendar';
 import { EditorModule } from 'primeng/editor';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputNumberModule } from 'primeng/inputnumber';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
@@ -87,7 +89,8 @@ import { EditorModule } from 'primeng/editor';
         AutoCompleteModule,
         AgGridModule,
         CalendarModule,
-        EditorModule
+        EditorModule,
+        DropdownModule,InputNumberModule
         // BrowserAnimationsModule
     ],
     declarations: [

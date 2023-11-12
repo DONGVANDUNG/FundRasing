@@ -1,46 +1,65 @@
-.modal-content{
-    height: 88vh;
+.modal-content {
+    height: 95vh;
 }
-.modal-header{
+
+.modal-header {
     border-bottom: 1px solid gray;
 }
-.modal-footer{
+
+.modal-footer {
     border-top: none !important;
+    padding: 0
 }
-.modal-title{
-    color:black;
+
+.modal-title {
+    color: black;
 }
-.icon-close{
+
+.icon-close {
     font-size: 23px;
     cursor: pointer;
 }
-.label{
+
+.label {
     width: 20%;
-    color:gray;
+    color: #000;
 }
-.input{
+.label-amount,.label-fee,.label-start,.label-end{
+ width: 40%;
+}
+.input {
     padding: 7px 0px;
     padding-left: 15px;
     outline: none;
-    border:1px solid gray;
+    border: 1px solid gray;
     flex: 1;
     background-color: transparent;
     border-radius: 5px;
-    color:#000
+    color: #000
 }
-#form-add-image{
+
+#form-add-image {
     display: flex;
     width: 100%;
     flex-wrap: wrap;
     flex-direction: column;
 }
-.block-image{
+
+.block-image {
     width: 100%;
     display: flex;
     justify-content: space-between;
     flex-wrap: nowrap;
 }
-.block-image img{
+
+.block-image img {
     width: 30%;
     height: 30%;
+}
+textarea {
+    resize: horizontal;
+    overflow: hidden;
+}
+.ng-tns-c67-9{
+    display: none !important;
 }

@@ -1557,6 +1557,66 @@ export class AdminFundRaisingServiceProxy {
         }
         return _observableOf(null as any);
     }
+
+    /**
+     * @param file (optional) 
+     * @return Success
+     */
+    uploadFile(file: FileParameter | undefined): Observable<string> {
+        let url_ = this.baseUrl + "/api/services/app/AdminFundRaising/UploadFile";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = new FormData();
+        if (file === null || file === undefined)
+            throw new Error("The parameter 'file' cannot be null.");
+        else
+            content_.append("file", file.data, file.fileName ? file.fileName : "file");
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUploadFile(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUploadFile(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<string>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<string>;
+        }));
+    }
+
+    protected processUploadFile(response: HttpResponseBase): Observable<string> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
 }
 
 @Injectable()
@@ -6148,7 +6208,7 @@ export class FundRaiserServiceProxy {
      * @param body (optional) 
      * @return Success
      */
-    createFundRaising(body: CreateOrEditFundRaisingDto | undefined): Observable<void> {
+    createFundRaising(body: CreateOrEditFundRaisingInputDto | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/FundRaiser/CreateFundRaising";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -18818,6 +18878,74 @@ export interface ICreateOrEditFundRaisingDto {
     amountOfMoney: number;
     fundEndDate: DateTime;
     contentOfFund: DetailFundContentDto;
+}
+
+export class CreateOrEditFundRaisingInputDto implements ICreateOrEditFundRaisingInputDto {
+    file!: string | undefined;
+    fundName!: string | undefined;
+    fundTitle!: string | undefined;
+    amountOfMoney!: number;
+    fundStartDate!: DateTime;
+    fundEndDate!: DateTime;
+    fundContent!: string | undefined;
+    reasonCreateFund!: string | undefined;
+    isPayFee!: boolean;
+
+    constructor(data?: ICreateOrEditFundRaisingInputDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.file = _data["file"];
+            this.fundName = _data["fundName"];
+            this.fundTitle = _data["fundTitle"];
+            this.amountOfMoney = _data["amountOfMoney"];
+            this.fundStartDate = _data["fundStartDate"] ? DateTime.fromISO(_data["fundStartDate"].toString()) : <any>undefined;
+            this.fundEndDate = _data["fundEndDate"] ? DateTime.fromISO(_data["fundEndDate"].toString()) : <any>undefined;
+            this.fundContent = _data["fundContent"];
+            this.reasonCreateFund = _data["reasonCreateFund"];
+            this.isPayFee = _data["isPayFee"];
+        }
+    }
+
+    static fromJS(data: any): CreateOrEditFundRaisingInputDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateOrEditFundRaisingInputDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["file"] = this.file;
+        data["fundName"] = this.fundName;
+        data["fundTitle"] = this.fundTitle;
+        data["amountOfMoney"] = this.amountOfMoney;
+        data["fundStartDate"] = this.fundStartDate ? this.fundStartDate.toString() : <any>undefined;
+        data["fundEndDate"] = this.fundEndDate ? this.fundEndDate.toString() : <any>undefined;
+        data["fundContent"] = this.fundContent;
+        data["reasonCreateFund"] = this.reasonCreateFund;
+        data["isPayFee"] = this.isPayFee;
+        return data;
+    }
+}
+
+export interface ICreateOrEditFundRaisingInputDto {
+    file: string | undefined;
+    fundName: string | undefined;
+    fundTitle: string | undefined;
+    amountOfMoney: number;
+    fundStartDate: DateTime;
+    fundEndDate: DateTime;
+    fundContent: string | undefined;
+    reasonCreateFund: string | undefined;
+    isPayFee: boolean;
 }
 
 export class CreateOrUpdateLanguageInput implements ICreateOrUpdateLanguageInput {
@@ -33196,6 +33324,11 @@ export interface IWsFederationExternalLoginProviderSettings {
     metaDataAddress: string | undefined;
     wtrealm: string | undefined;
     authority: string | undefined;
+}
+
+export interface FileParameter {
+    data: any;
+    fileName: string;
 }
 
 export class ApiException extends Error {

@@ -59,21 +59,19 @@ namespace esign.FundRaising
         }
         public GetFundsDetailByIdForUser GetInforFundRaisingById(int Id)
         {
-            var fund = (from funDetail in _mstSleFundRepo.GetAll().Where(e => e.Id == Id && e.Status == 1 || e.Status == 2)
-                        join fundRaiser in _mstSleFundRaiserRepo.GetAll() on funDetail.FundRaiserId equals fundRaiser.Id
-                        join funContent in _mstSleFundDetailContentRepo.GetAll() on funDetail.FundContentId equals funContent.Id
+            var fund = (from funds in _mstSleFundRepo.GetAll().Where(e => e.Id == Id && e.Status == 1 || e.Status == 2)
+                        join fundRaiser in _mstSleFundRaiserRepo.GetAll() on funds.FundRaiserId equals fundRaiser.Id
+                        join funContent in _mstSleFundDetailContentRepo.GetAll() on funds.Id equals funContent.FundId
                         select new GetFundsDetailByIdForUser
                         {
-                            TitleFund = funDetail.FundTitle,
+                            TitleFund = funds.FundTitle,
                             Created = fundRaiser.Name,
-                            FundRaisingDay = funDetail.FundRaisingDay,
+                            FundRaisingDay = funds.FundRaisingDay,
                             ContentOfFund = (new DetailFundContentDto
                             {
                                 Id = Id,
                                 Header = funContent.Header,
                                 ReasonCreatedFund = funContent.ReasonCreatedFund,
-                                IdeaCreadtedFund = funContent.IdeaCreadtedFund,
-                                Footer = funContent.Footer
                             }),
                         }).FirstOrDefault();
             return fund;

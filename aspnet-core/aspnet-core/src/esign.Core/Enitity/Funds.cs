@@ -22,6 +22,7 @@ namespace esign.Entity
         public DateTime FundEndDate { get; set; }
         public int Status { get; set; } /// 1: Đã phát hành; 2: Đã được gia hạn; 3: Đã đóng
         public bool IsOutStanding { get; set; }
-        public int FundContentId { get; set; }
+        public bool IsPayFee { get; set; }
+
     }
 }

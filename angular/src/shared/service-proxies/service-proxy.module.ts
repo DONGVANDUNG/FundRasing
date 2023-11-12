@@ -55,6 +55,7 @@ import { ZeroTemplateHttpConfigurationService } from './zero-template-http-confi
         ApiServiceProxies.TwitterServiceProxy,
         ApiServiceProxies.AdminFundRaisingServiceProxy,
         ApiServiceProxies.UserServiceProxy,
+        ApiServiceProxies.FundRaiserServiceProxy,
         // Master Common Lookup
 
 

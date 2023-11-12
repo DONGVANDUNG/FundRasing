@@ -179,23 +179,73 @@
         min-width: 90%;
         margin-left: 4.8%;
         margin-right: 10%;
-        margin-top: 2%;
+        margin-top: 1%;
     }
-    .p-element,.p-calendar{
+
+    .p-element,
+    .p-calendar {
         width: 100% !important;
     }
-    .p-element{
+
+    .p-element {
         flex: 1;
     }
-    .p-inputtext,.p-inputtext:hover{
-        border:1px solid gray;
+
+    .p-inputtext,
+    .p-inputtext:hover {
+        border: 1px solid gray;
         background-color: transparent;
-        color:black;
+        color: black;
     }
-    .p-editor-container .p-editor-content .ql-editor,.p-editor-container .p-editor-toolbar{
+
+    .p-editor-container .p-editor-content .ql-editor,
+    .p-editor-container .p-editor-toolbar {
         background-color: transparent;
     }
-    .p-editor-container,.p-editor-toolbar{
-        border:1px solid gray;
+
+    .p-editor-container,
+    .p-editor-toolbar {
+        border: 1px solid gray;
+    }
+
+    .p-dropdown {
+        display: flex;
+        justify-content: space-between;
+        flex: 1;
+        outline: none;
+    }
+    .p-focus{
+        box-shadow: none !important;
+    }
+
+    .p-dropdown-trigger {
+        display: none;
+    }
+
+    .p-dropdown-label,
+    .p-dropdown-label:hover {
+        border: none
+    }
+
+    .p-dropdown-items {
+        font-size: 0.8rem !important;
+    }
+
+    .p-dropdown {
+        display: flex;
+        align-items: flex-end;
+    }
+
+    .p-element .p-dropdown.p-component {
+        height: 35px;
+        display: flex !important;
+        align-items: center;
+    }
+    .p-inputtext{
+        height: 31.5px;
     }
 }
+
+// .ng-tns-c67-9{
+//     display: none;
+// }

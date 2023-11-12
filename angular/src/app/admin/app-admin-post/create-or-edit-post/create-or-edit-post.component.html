@@ -6,72 +6,73 @@
                 <h4 class="modal-title">
                     <span>{{l("Thêm mới bài đăng gây quỹ")}}</span>
                 </h4>
-                <i class="fa icon-close fa-times" (click)="close()"></i>
+                <div class="block-button">
+                    <button class="tmss-btn btn-outline-primary" (click)="save()">
+                        {{ l("Lưu") }}
+                        <i class="fa fa-save"></i>
+                    </button>
+                    <button type="button" class="tmss-btn btn-outline-primary btn-secondary" (click)="close()">
+                        {{ l("Hủy") }}
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
             </div>
             <div class="modal-body">
                 <div class="row mb-5 d-flex justify-content-between">
-                    <div class="col-6 d-flex align-items-center">
-                        <label for="fund-name" class="label">Tên quỹ</label>
-                        <input type="text" id="fund-name" class="input">
-                    </div>
                     <div class="col-5 d-flex align-items-center">
-                        <label for="fund-name" class="label">Tiêu đề quỹ</label>
-                        <input type="text" class="fund-name" class="input">
+                        <label for="fund-name" class="label">Tên quỹ:</label>
+                        <input type="text" [(ngModel)]="input.fundName" id="fund-name" class="input">
+                    </div>
+                    <div class="col-6 d-flex align-items-center">
+                        <label class="label">Tiêu đề quỹ:</label>
+                        <input type="text" [(ngModel)]="input.fundTitle" class="input">
                     </div>
                 </div>
                 <div class="row d-flex justify-content-between mb-5">
-                    <div class="col-6 d-flex align-items-center">
-                        <label for="fund-name" class="label">Số tiền</label>
-                        <input type="text" id="fund-name" class="input">
+                    <div class="col-5 d-flex align-items-center justify-content-between">
+                        <div class="col-6 d-flex align-items-center">
+                            <label class="label-amount">Trả phí gói:</label>
+                            <p-dropdown [style]="{'width':'100%'}" [options]="listOption" [(ngModel)]="input.isPayFee" optionLabel="name"
+                            ></p-dropdown>
+                        </div>
+                        <div class="col-5 mr-3 d-flex align-items-center">
+                            <label class="label-amount">Số tiền:</label>
+                            <p-inputNumber [(ngModel)]="input.amountOfMoney" name="amountOfMoney" inputId="currency-us" mode="currency" currency="USD" locale="en-US"> </p-inputNumber>
+                        </div>
                     </div>
-                    <div class="col-5 d-flex align-items-center">
-                        <label for="fund-name" class="label">Ngày bắt đầu</label>
-                        <p-calendar name="date" formControlName="date" [(ngModel)]="startDate"
-                            dateFormat="dd//mm/yy"></p-calendar>
+                    <div class="col-6 d-flex justify-content-between">
+                        <div class="col-6 d-flex align-items-center">
+                            <label class="label-start">Ngày bắt đầu:</label>
+                            <p-calendar name="date" formControlName="date" [(ngModel)]="input.fundStartDate"
+                                dateFormat="dd/mm/yy"></p-calendar>
+                        </div>
+                        <div class="col-5 d-flex align-items-center">
+                            <label class="label-end">Ngày kết thúc:</label>
+                            <p-calendar name="date" formControlName="date" [(ngModel)]="input.fundEndDate"
+                                dateFormat="dd/mm/yy"></p-calendar>
+                        </div>
                     </div>
                 </div>
                 <div class="row d-flex justify-content-between mb-5">
-                    <div class="col-6 d-flex align-items-center">
-                        <label for="fund-name" class="label">Title</label>
-                        <input type="text" id="fund-name" class="input">
-
-                    </div>
-                    <div class="col-5 d-flex align-items-center">
-                        <label for="fund-name" class="label">Ngày kết thúc</label>
-                        <p-calendar name="date" formControlName="date" [(ngModel)]="date"
-                            dateFormat="dd//mm/yy"></p-calendar>
-                    </div>
-                </div>
-                <div class="row d-flex justify-content-between mb-5">
-                    <div class="col-6 d-flex align-items-center">
-                        <label for="fund-name" class="label">Lý do gây quỹ</label>
-                        <input type="text" id="fund-name" class="input">
-                    </div>
                     <div class="col-5">
-                        <form action="/upload" method="post" enctype="multipart/form-data">
-                        <label class="label">Ảnh</label>
-                            <input type="file" [(ngModel)]="listImage" name="images" id="images" class="input" multiple
+                        <form action="/upload" method="post" enctype="multipart/form-data" class="d-flex" id="form-add-image">
+                            <input type="file" [(ngModel)]="input.file" name="images" id="images" class="input" multiple
                                 (change)="previewImages()">
                         </form>
                     </div>
-                </div>
-                <div class="row d-flex justify-content-between mb-5">
-                    <div class="col-6 d-flex align-items-center">
-                        <label for="fund-name" class="label">Câu trả lời</label>
-                        <p-editor [(ngModel)]="text" [style]="{ height: '150px' }"></p-editor>
-                    </div>
-                    <div class="col-5">
-                        <div id="form-add-image"></div>
+                    <div class="col-6 d-flex">
+                        <label class="label">Lý do tạo quỹ:</label>
+                        <textarea name="" [(ngModel)]="input.reasonCreateFund" id="" cols="80" rows="12"></textarea>
                     </div>
                 </div>
                 <div class="row d-flex justify-content-between mb-5">
                     <div class="col-12">
-                        <p>Mô tả</p>
-                        <p-editor [(ngModel)]="text" [style]="{ height: '100px' }"></p-editor>
+                        <p>Mô tả:</p>
+                        <p-editor [(ngModel)]="input.fundContent" [style]="{ height: '140px' }"></p-editor>
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
+            <!-- <div class="modal-footer">
                 <button class="tmss-btn btn-outline-primary" (click)="save()" [buttonBusy]="isLoading"
                     [busyText]="'Đang xử lý'">
                     <i class="fa fa-save"></i>
@@ -81,7 +82,7 @@
                     <i class="fa fa-times"></i>
                     {{ l("Hủy") }}
                 </button>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>

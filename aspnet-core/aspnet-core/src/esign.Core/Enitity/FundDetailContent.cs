@@ -16,7 +16,6 @@ namespace esign.FundRaising
         public int FundId { get; set; }
         public string Header { get; set; }
         public string ReasonCreatedFund { get; set; }
-        public string IdeaCreadtedFund { get; set; }
-        public string Footer { get; set; }
+        public string Content { get; set; }
     }
 }
