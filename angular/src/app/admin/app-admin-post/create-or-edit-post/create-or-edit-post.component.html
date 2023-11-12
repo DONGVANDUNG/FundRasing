@@ -32,7 +32,7 @@
                     <div class="col-5 d-flex align-items-center justify-content-between">
                         <div class="col-6 d-flex align-items-center">
                             <label class="label-amount">Trả phí gói:</label>
-                            <p-dropdown [style]="{'width':'100%'}" [options]="listOption" [(ngModel)]="input.isPayFee" optionLabel="name"
+                            <p-dropdown [style]="{'width':'100%'}" [options]="listOption" [(ngModel)]="input.isPayFee" optionLabel="name" optionValue="code"
                             ></p-dropdown>
                         </div>
                         <div class="col-5 mr-3 d-flex align-items-center">
@@ -43,12 +43,12 @@
                     <div class="col-6 d-flex justify-content-between">
                         <div class="col-6 d-flex align-items-center">
                             <label class="label-start">Ngày bắt đầu:</label>
-                            <p-calendar name="date" formControlName="date" [(ngModel)]="input.fundStartDate"
+                            <p-calendar name="fundStartDate" [(ngModel)]="input.fundStartDate" (onSelect)="onChangeDate($event,'start')"
                                 dateFormat="dd/mm/yy"></p-calendar>
                         </div>
                         <div class="col-5 d-flex align-items-center">
                             <label class="label-end">Ngày kết thúc:</label>
-                            <p-calendar name="date" formControlName="date" [(ngModel)]="input.fundEndDate"
+                            <p-calendar name="fundEndDate" [(ngModel)]="input.fundEndDate" (onSelect)="onChangeDate($event,'end')"
                                 dateFormat="dd/mm/yy"></p-calendar>
                         </div>
                     </div>
@@ -57,7 +57,7 @@
                     <div class="col-5">
                         <form action="/upload" method="post" enctype="multipart/form-data" class="d-flex" id="form-add-image">
                             <input type="file" [(ngModel)]="input.file" name="images" id="images" class="input" multiple
-                                (change)="previewImages()">
+                                (change)="previewImages($event)">
                         </form>
                     </div>
                     <div class="col-6 d-flex">
@@ -72,17 +72,6 @@
                     </div>
                 </div>
             </div>
-            <!-- <div class="modal-footer">
-                <button class="tmss-btn btn-outline-primary" (click)="save()" [buttonBusy]="isLoading"
-                    [busyText]="'Đang xử lý'">
-                    <i class="fa fa-save"></i>
-                    {{ l("Lưu") }}
-                </button>
-                <button type="button" class="tmss-btn btn-outline-primary btn-secondary" (click)="close()">
-                    <i class="fa fa-times"></i>
-                    {{ l("Hủy") }}
-                </button>
-            </div> -->
         </div>
     </div>
 </div>

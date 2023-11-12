@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using esign.FundRaising.Admin.Dto;
 using esign.Enitity;
+using Microsoft.AspNetCore.Mvc;
 
 namespace esign.FundRaising
 {
@@ -61,8 +62,9 @@ namespace esign.FundRaising
                 throw new UserFriendlyException("Có lỗi xảy ra trong quá trình thêm mới");
             }
         }
-
-        public async Task CreateFundRaising(CreateOrEditFundRaisingInputDto input)
+        [HttpPost]
+        [Consumes("multipart/form-data")]
+        public async Task CreateFundRaising([FromForm] CreateOrEditFundRaisingInputDto input)
         {
             try
             {
@@ -81,21 +83,26 @@ namespace esign.FundRaising
                 fundDetail.Content = input.FundContent;
                 fundDetail.ReasonCreatedFund = input.ReasonCreateFund;
                 await _mstSleDetailConentRepo.InsertAsync(fundDetail);
-
-
-                if (input.file != null && input.file.Length > 0)
+                if (input.File.Count() > 0)
                 {
-                    var fileName = Path.GetFileName(input.file.FileName);
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads", fileName);
-
-                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    foreach (var file in input.File)
                     {
-                        await input.file.CopyToAsync(stream);
+                        if (file != null)
+                        {
+                            var fileName = Path.GetFileName(file.FileName);
+                            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", fileName);
+
+                            using (var stream = new FileStream(filePath, FileMode.Create))
+                            {
+                                await file.CopyToAsync(stream);
+                            }
+                            FundImage fundImage = new FundImage();
+                            fundImage.FundId = fundId;
+
+                            fundImage.ImageUrl = Path.Combine("uploads", fileName);
+                            await _mstSleFundImageRepo.InsertAsync(fundImage);
+                        }
                     }
-                    FundImage fundImage = new FundImage();
-                    fundImage.FundId = fundId;
-                    fundImage.ImageUrl = filePath;
-                    await _mstSleFundImageRepo.InsertAsync(fundImage);
                 }
                 else
                 {
@@ -132,7 +139,7 @@ namespace esign.FundRaising
                 }
             }
             catch (Exception e) { }
-}
+        }
 
         public async Task ExtendTimeOfFundRaising(DateTime timeExtend, int fundId)
         {
@@ -175,37 +182,6 @@ namespace esign.FundRaising
             return await listWarning;
         }
 
-        public async Task RegisterAccountFundRaising(RegisterInforFundRaiserDto input)
-        {
-            try
-            {
-                User newUser = new User();
-                ObjectMapper.Map(input, newUser);
-                var userId = await _mstSleUserRepo.InsertAndGetIdAsync(newUser);
-                var fundRaiser = new FundRaiser();
-                fundRaiser.UserId = userId;
-                fundRaiser.Phone = input.Phone;
-                fundRaiser.Email = input.Email;
-                fundRaiser.Position = input.Position;
-                fundRaiser.CompanyName = input.Company;
-                fundRaiser.Country = input.Country;
-                fundRaiser.Introduce = input.Introduce;
-                fundRaiser.FundPackageId = input.FundPackageId;
-                var funRaiserId = await _mstSleFundRaiserRepo.InsertAndGetIdAsync(fundRaiser);
-                var userAccount = new UserAccount();
-                userAccount.FundRaiserId = funRaiserId;
-                userAccount.Status = true;
-                userAccount.UserId = userId;
-                userAccount.UserNameLogin = input.Email;
-                userAccount.Password = "123243";
-                userAccount.LevelWarning = 0;
-            }
-            catch (Exception ex)
-            {
-                throw new UserFriendlyException("Có lỗi xảy ra trong quá trình đăng ký");
-            }
-        }
-
         public async Task UpdateImageUrlForFund(string imageUrl, int fundId)
         {
             try
@@ -235,6 +211,26 @@ namespace esign.FundRaising
                 userAccount.UserNameLogin = input.UserNameLogin;
                 //userAccount.Password = input.Password;
                 await _mstSleUserAccountRepo.UpdateAsync(userAccount);
+            }
+        }
+        public async Task RegisterFundRaiser(RegisterInforFundRaiserDto input)
+        {
+            try
+            {
+                FundRaiser fundRaiser = new FundRaiser();
+                fundRaiser.Name = input.FullName;
+                fundRaiser.Email = input.Email;
+                fundRaiser.Phone = input.Phone;
+                fundRaiser.Country = input.Country;
+                fundRaiser.UserId = AbpSession.UserId;
+                fundRaiser.Position = input.Position;
+                await _mstSleFundRaiserRepo.InsertAsync(fundRaiser);
+                var user = _mstSleUserRepo.FirstOrDefault(e=>e.Id == AbpSession.UserId);
+                user.TypeUser = 3;
+                await _mstSleUserRepo.UpdateAsync(user);
+            }
+            catch (Exception ex) {
+                throw ex;
             }
         }
     }

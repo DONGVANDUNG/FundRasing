@@ -1,8 +1,8 @@
 .input-search {
     position: absolute;
-    width: 30%;
-    height: 4.7vh;
-    border-radius: 10px;
+    width: 20%;
+    height: 3.9vh;
+    border-radius: 6px;
     // background-color: white;
     padding-left: 20px;
     top: 2%;
@@ -13,11 +13,30 @@
     color: gray;
     border: 1px solid gray;
 }
+.filter-fee{
+    width: 15%;
+    position: absolute;
+    top: 2%;
+    left: 44%;
+    z-index: 998;
+    height: 4.7vh;
+}
+.p-inputwrapper{
+    height: 100%;
+}
+.filter-date{
+    width: 15%;
+    position: absolute;
+    top: 2%;
+    left: 60%;
+    z-index: 998;
+    height: 4.7vh;
 
+}
 .fa-magnifying-glass {
     position: absolute;
     top: 3.5%;
-    left: 50.8%;
+    left: 40.5%;
     font-size: 18px;
     z-index: 999;
     cursor: pointer;
@@ -25,21 +44,23 @@
 
 .list-fund-raising {
     display: flex;
-    justify-content: space-between;
-    padding: 15px 50px 50px 50px;
+    padding: 15px;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 100%;
 }
 
 .content-item-fund {
-    width: 30%;
+    width: 31.5%;
     height: 40vh;
     border-radius: 10px;
     position: relative;
     cursor: pointer;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    overflow: hidden;
 }
 
 .image-fund {
-    height: 40vh;
     width: 100%;
     border-radius: 12px;
 }
@@ -52,7 +73,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    opacity: 0.85;
+    opacity: 0.6;
     padding-left: 20px;
     padding-top: 20px;
     border-radius: 0 0 11px 11px;
@@ -60,11 +81,14 @@
 }
 
 .created-date {
-    color: gray
+    color: white;
+    font-size: 14px;
 }
 
 .fund-title {
     width: 70%;
+    color:white;
+    font-size: 15px;
 }
 
 .block-button {

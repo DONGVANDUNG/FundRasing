@@ -67,6 +67,11 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
                         loadChildren: () => import('./app-admin-post/app-admin-post.module').then((m) => m.AppAdminPostModule),
                         data: { permission: 'Pages.Administration' },
                     },
+                    {
+                        path: 'register-fundraiser',
+                        loadChildren: () => import('./app-user-fundraiser/app-user-fundraiser.module').then((m) => m.AppAdminRegisterFundraiserModule),
+                        data: { permission: 'Pages.Administration' },
+                    },
                 ],
             },
         ]),

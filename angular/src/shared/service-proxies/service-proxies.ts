@@ -886,25 +886,25 @@ export class AdminFundRaisingServiceProxy {
     }
 
     /**
-     * @param sorting (optional) 
-     * @param skipCount (optional) 
-     * @param maxResultCount (optional) 
+     * @param filter (optional) 
+     * @param isPayFee (optional) 
+     * @param createdDate (optional) 
      * @return Success
      */
-    getListFundRaising(sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetFundRaisingViewForAdminDto> {
+    getListFundRaising(filter: string | undefined, isPayFee: boolean | undefined, createdDate: DateTime | undefined): Observable<GetFundRaisingViewForAdminDto[]> {
         let url_ = this.baseUrl + "/api/services/app/AdminFundRaising/getListFundRaising?";
-        if (sorting === null)
-            throw new Error("The parameter 'sorting' cannot be null.");
-        else if (sorting !== undefined)
-            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&";
-        if (skipCount === null)
-            throw new Error("The parameter 'skipCount' cannot be null.");
-        else if (skipCount !== undefined)
-            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
-        if (maxResultCount === null)
-            throw new Error("The parameter 'maxResultCount' cannot be null.");
-        else if (maxResultCount !== undefined)
-            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
+        if (filter === null)
+            throw new Error("The parameter 'filter' cannot be null.");
+        else if (filter !== undefined)
+            url_ += "Filter=" + encodeURIComponent("" + filter) + "&";
+        if (isPayFee === null)
+            throw new Error("The parameter 'isPayFee' cannot be null.");
+        else if (isPayFee !== undefined)
+            url_ += "IsPayFee=" + encodeURIComponent("" + isPayFee) + "&";
+        if (createdDate === null)
+            throw new Error("The parameter 'createdDate' cannot be null.");
+        else if (createdDate !== undefined)
+            url_ += "CreatedDate=" + encodeURIComponent(createdDate ? "" + createdDate.toString() : "") + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -922,14 +922,14 @@ export class AdminFundRaisingServiceProxy {
                 try {
                     return this.processGetListFundRaising(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<PagedResultDtoOfGetFundRaisingViewForAdminDto>;
+                    return _observableThrow(e) as any as Observable<GetFundRaisingViewForAdminDto[]>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<PagedResultDtoOfGetFundRaisingViewForAdminDto>;
+                return _observableThrow(response_) as any as Observable<GetFundRaisingViewForAdminDto[]>;
         }));
     }
 
-    protected processGetListFundRaising(response: HttpResponseBase): Observable<PagedResultDtoOfGetFundRaisingViewForAdminDto> {
+    protected processGetListFundRaising(response: HttpResponseBase): Observable<GetFundRaisingViewForAdminDto[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -940,7 +940,14 @@ export class AdminFundRaisingServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PagedResultDtoOfGetFundRaisingViewForAdminDto.fromJS(resultData200);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(GetFundRaisingViewForAdminDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1548,66 +1555,6 @@ export class AdminFundRaisingServiceProxy {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result200 = PagedResultDtoOfGetListAccountUserDto.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @param file (optional) 
-     * @return Success
-     */
-    uploadFile(file: FileParameter | undefined): Observable<string> {
-        let url_ = this.baseUrl + "/api/services/app/AdminFundRaising/UploadFile";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = new FormData();
-        if (file === null || file === undefined)
-            throw new Error("The parameter 'file' cannot be null.");
-        else
-            content_.append("file", file.data, file.fileName ? file.fileName : "file");
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processUploadFile(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processUploadFile(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<string>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<string>;
-        }));
-    }
-
-    protected processUploadFile(response: HttpResponseBase): Observable<string> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = resultData200 !== undefined ? resultData200 : <any>null;
-    
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -6205,21 +6152,64 @@ export class FundRaiserServiceProxy {
     }
 
     /**
-     * @param body (optional) 
+     * @param file (optional) 
+     * @param fundName (optional) 
+     * @param fundTitle (optional) 
+     * @param amountOfMoney (optional) 
+     * @param fundStartDate (optional) 
+     * @param fundEndDate (optional) 
+     * @param fundContent (optional) 
+     * @param reasonCreateFund (optional) 
+     * @param isPayFee (optional) 
      * @return Success
      */
-    createFundRaising(body: CreateOrEditFundRaisingInputDto | undefined): Observable<void> {
+    createFundRaising(file: FileParameter[] | undefined, fundName: string | undefined, fundTitle: string | undefined, amountOfMoney: number | undefined, fundStartDate: DateTime | undefined, fundEndDate: DateTime | undefined, fundContent: string | undefined, reasonCreateFund: string | undefined, isPayFee: boolean | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/FundRaiser/CreateFundRaising";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(body);
+        const content_ = new FormData();
+        if (file === null || file === undefined)
+            throw new Error("The parameter 'file' cannot be null.");
+        else
+            file.forEach(item_ => content_.append("File", item_.data, item_.fileName ? item_.fileName : "File") );
+        if (fundName === null || fundName === undefined)
+            throw new Error("The parameter 'fundName' cannot be null.");
+        else
+            content_.append("FundName", fundName.toString());
+        if (fundTitle === null || fundTitle === undefined)
+            throw new Error("The parameter 'fundTitle' cannot be null.");
+        else
+            content_.append("FundTitle", fundTitle.toString());
+        if (amountOfMoney === null || amountOfMoney === undefined)
+            throw new Error("The parameter 'amountOfMoney' cannot be null.");
+        else
+            content_.append("AmountOfMoney", amountOfMoney.toString());
+        if (fundStartDate === null || fundStartDate === undefined)
+            throw new Error("The parameter 'fundStartDate' cannot be null.");
+        else
+            content_.append("FundStartDate", fundStartDate.toJSON());
+        if (fundEndDate === null || fundEndDate === undefined)
+            throw new Error("The parameter 'fundEndDate' cannot be null.");
+        else
+            content_.append("FundEndDate", fundEndDate.toJSON());
+        if (fundContent === null || fundContent === undefined)
+            throw new Error("The parameter 'fundContent' cannot be null.");
+        else
+            content_.append("FundContent", fundContent.toString());
+        if (reasonCreateFund === null || reasonCreateFund === undefined)
+            throw new Error("The parameter 'reasonCreateFund' cannot be null.");
+        else
+            content_.append("ReasonCreateFund", reasonCreateFund.toString());
+        if (isPayFee === null || isPayFee === undefined)
+            throw new Error("The parameter 'isPayFee' cannot be null.");
+        else
+            content_.append("IsPayFee", isPayFee.toString());
 
         let options_ : any = {
             body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json-patch+json",
             })
         };
 
@@ -6487,58 +6477,6 @@ export class FundRaiserServiceProxy {
     }
 
     /**
-     * @param body (optional) 
-     * @return Success
-     */
-    registerAccountFundRaising(body: RegisterInforFundRaiserDto | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/FundRaiser/RegisterAccountFundRaising";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json-patch+json",
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processRegisterAccountFundRaising(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processRegisterAccountFundRaising(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<void>;
-        }));
-    }
-
-    protected processRegisterAccountFundRaising(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
      * @param imageUrl (optional) 
      * @param fundId (optional) 
      * @return Success
@@ -6629,6 +6567,58 @@ export class FundRaiserServiceProxy {
     }
 
     protected processUpdateInformation(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    registerFundRaiser(body: RegisterInforFundRaiserDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/FundRaiser/RegisterFundRaiser";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRegisterFundRaiser(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRegisterFundRaiser(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processRegisterFundRaiser(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -18880,74 +18870,6 @@ export interface ICreateOrEditFundRaisingDto {
     contentOfFund: DetailFundContentDto;
 }
 
-export class CreateOrEditFundRaisingInputDto implements ICreateOrEditFundRaisingInputDto {
-    file!: string | undefined;
-    fundName!: string | undefined;
-    fundTitle!: string | undefined;
-    amountOfMoney!: number;
-    fundStartDate!: DateTime;
-    fundEndDate!: DateTime;
-    fundContent!: string | undefined;
-    reasonCreateFund!: string | undefined;
-    isPayFee!: boolean;
-
-    constructor(data?: ICreateOrEditFundRaisingInputDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.file = _data["file"];
-            this.fundName = _data["fundName"];
-            this.fundTitle = _data["fundTitle"];
-            this.amountOfMoney = _data["amountOfMoney"];
-            this.fundStartDate = _data["fundStartDate"] ? DateTime.fromISO(_data["fundStartDate"].toString()) : <any>undefined;
-            this.fundEndDate = _data["fundEndDate"] ? DateTime.fromISO(_data["fundEndDate"].toString()) : <any>undefined;
-            this.fundContent = _data["fundContent"];
-            this.reasonCreateFund = _data["reasonCreateFund"];
-            this.isPayFee = _data["isPayFee"];
-        }
-    }
-
-    static fromJS(data: any): CreateOrEditFundRaisingInputDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new CreateOrEditFundRaisingInputDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["file"] = this.file;
-        data["fundName"] = this.fundName;
-        data["fundTitle"] = this.fundTitle;
-        data["amountOfMoney"] = this.amountOfMoney;
-        data["fundStartDate"] = this.fundStartDate ? this.fundStartDate.toString() : <any>undefined;
-        data["fundEndDate"] = this.fundEndDate ? this.fundEndDate.toString() : <any>undefined;
-        data["fundContent"] = this.fundContent;
-        data["reasonCreateFund"] = this.reasonCreateFund;
-        data["isPayFee"] = this.isPayFee;
-        return data;
-    }
-}
-
-export interface ICreateOrEditFundRaisingInputDto {
-    file: string | undefined;
-    fundName: string | undefined;
-    fundTitle: string | undefined;
-    amountOfMoney: number;
-    fundStartDate: DateTime;
-    fundEndDate: DateTime;
-    fundContent: string | undefined;
-    reasonCreateFund: string | undefined;
-    isPayFee: boolean;
-}
-
 export class CreateOrUpdateLanguageInput implements ICreateOrUpdateLanguageInput {
     language!: ApplicationLanguageEditDto;
 
@@ -22605,6 +22527,9 @@ export class GetFundRaisingViewForAdminDto implements IGetFundRaisingViewForAdmi
     fundRaisingDay!: DateTime | undefined;
     fundFinishDay!: DateTime | undefined;
     status!: string | undefined;
+    fundTitle!: string | undefined;
+    fundStartDate!: DateTime;
+    imageUrl!: string[] | undefined;
 
     constructor(data?: IGetFundRaisingViewForAdminDto) {
         if (data) {
@@ -22624,6 +22549,13 @@ export class GetFundRaisingViewForAdminDto implements IGetFundRaisingViewForAdmi
             this.fundRaisingDay = _data["fundRaisingDay"] ? DateTime.fromISO(_data["fundRaisingDay"].toString()) : <any>undefined;
             this.fundFinishDay = _data["fundFinishDay"] ? DateTime.fromISO(_data["fundFinishDay"].toString()) : <any>undefined;
             this.status = _data["status"];
+            this.fundTitle = _data["fundTitle"];
+            this.fundStartDate = _data["fundStartDate"] ? DateTime.fromISO(_data["fundStartDate"].toString()) : <any>undefined;
+            if (Array.isArray(_data["imageUrl"])) {
+                this.imageUrl = [] as any;
+                for (let item of _data["imageUrl"])
+                    this.imageUrl!.push(item);
+            }
         }
     }
 
@@ -22643,6 +22575,13 @@ export class GetFundRaisingViewForAdminDto implements IGetFundRaisingViewForAdmi
         data["fundRaisingDay"] = this.fundRaisingDay ? this.fundRaisingDay.toString() : <any>undefined;
         data["fundFinishDay"] = this.fundFinishDay ? this.fundFinishDay.toString() : <any>undefined;
         data["status"] = this.status;
+        data["fundTitle"] = this.fundTitle;
+        data["fundStartDate"] = this.fundStartDate ? this.fundStartDate.toString() : <any>undefined;
+        if (Array.isArray(this.imageUrl)) {
+            data["imageUrl"] = [];
+            for (let item of this.imageUrl)
+                data["imageUrl"].push(item);
+        }
         return data;
     }
 }
@@ -22655,6 +22594,9 @@ export interface IGetFundRaisingViewForAdminDto {
     fundRaisingDay: DateTime | undefined;
     fundFinishDay: DateTime | undefined;
     status: string | undefined;
+    fundTitle: string | undefined;
+    fundStartDate: DateTime;
+    imageUrl: string[] | undefined;
 }
 
 export class GetFundsDetailByIdForUser implements IGetFundsDetailByIdForUser {
@@ -27312,54 +27254,6 @@ export interface IPagedResultDtoOfGetAllSendAttemptsOutput {
     items: GetAllSendAttemptsOutput[] | undefined;
 }
 
-export class PagedResultDtoOfGetFundRaisingViewForAdminDto implements IPagedResultDtoOfGetFundRaisingViewForAdminDto {
-    totalCount!: number;
-    items!: GetFundRaisingViewForAdminDto[] | undefined;
-
-    constructor(data?: IPagedResultDtoOfGetFundRaisingViewForAdminDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.totalCount = _data["totalCount"];
-            if (Array.isArray(_data["items"])) {
-                this.items = [] as any;
-                for (let item of _data["items"])
-                    this.items!.push(GetFundRaisingViewForAdminDto.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): PagedResultDtoOfGetFundRaisingViewForAdminDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new PagedResultDtoOfGetFundRaisingViewForAdminDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["totalCount"] = this.totalCount;
-        if (Array.isArray(this.items)) {
-            data["items"] = [];
-            for (let item of this.items)
-                data["items"].push(item.toJSON());
-        }
-        return data;
-    }
-}
-
-export interface IPagedResultDtoOfGetFundRaisingViewForAdminDto {
-    totalCount: number;
-    items: GetFundRaisingViewForAdminDto[] | undefined;
-}
-
 export class PagedResultDtoOfGetInformationFundRaiserDto implements IPagedResultDtoOfGetInformationFundRaiserDto {
     totalCount!: number;
     items!: GetInformationFundRaiserDto[] | undefined;
@@ -28476,7 +28370,7 @@ export interface IRegionalStatCountry {
 }
 
 export class RegisterInforFundRaiserDto implements IRegisterInforFundRaiserDto {
-    userLogin!: string | undefined;
+    fullName!: string | undefined;
     position!: string | undefined;
     company!: string | undefined;
     email!: string | undefined;
@@ -28486,7 +28380,6 @@ export class RegisterInforFundRaiserDto implements IRegisterInforFundRaiserDto {
     country!: string | undefined;
     phone!: string | undefined;
     introduce!: string | undefined;
-    fundPackageId!: number;
 
     constructor(data?: IRegisterInforFundRaiserDto) {
         if (data) {
@@ -28499,7 +28392,7 @@ export class RegisterInforFundRaiserDto implements IRegisterInforFundRaiserDto {
 
     init(_data?: any) {
         if (_data) {
-            this.userLogin = _data["userLogin"];
+            this.fullName = _data["fullName"];
             this.position = _data["position"];
             this.company = _data["company"];
             this.email = _data["email"];
@@ -28509,7 +28402,6 @@ export class RegisterInforFundRaiserDto implements IRegisterInforFundRaiserDto {
             this.country = _data["country"];
             this.phone = _data["phone"];
             this.introduce = _data["introduce"];
-            this.fundPackageId = _data["fundPackageId"];
         }
     }
 
@@ -28522,7 +28414,7 @@ export class RegisterInforFundRaiserDto implements IRegisterInforFundRaiserDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["userLogin"] = this.userLogin;
+        data["fullName"] = this.fullName;
         data["position"] = this.position;
         data["company"] = this.company;
         data["email"] = this.email;
@@ -28532,13 +28424,12 @@ export class RegisterInforFundRaiserDto implements IRegisterInforFundRaiserDto {
         data["country"] = this.country;
         data["phone"] = this.phone;
         data["introduce"] = this.introduce;
-        data["fundPackageId"] = this.fundPackageId;
         return data;
     }
 }
 
 export interface IRegisterInforFundRaiserDto {
-    userLogin: string | undefined;
+    fullName: string | undefined;
     position: string | undefined;
     company: string | undefined;
     email: string | undefined;
@@ -28548,7 +28439,6 @@ export interface IRegisterInforFundRaiserDto {
     country: string | undefined;
     phone: string | undefined;
     introduce: string | undefined;
-    fundPackageId: number;
 }
 
 export class RegisterInput implements IRegisterInput {

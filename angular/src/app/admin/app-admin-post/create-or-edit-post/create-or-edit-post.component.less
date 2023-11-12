@@ -24,9 +24,14 @@
     width: 20%;
     color: #000;
 }
-.label-amount,.label-fee,.label-start,.label-end{
- width: 40%;
+
+.label-amount,
+.label-fee,
+.label-start,
+.label-end {
+    width: 40%;
 }
+
 .input {
     padding: 7px 0px;
     padding-left: 15px;
@@ -56,10 +61,23 @@
     width: 30%;
     height: 30%;
 }
+
 textarea {
     resize: horizontal;
     overflow: hidden;
 }
-.ng-tns-c67-9{
+
+.ng-tns-c67-9 {
     display: none !important;
+}
+
+:host ::ng-deep {
+    .p-inputnumber-input {
+        width: 100%;
+    }
+
+    .p-datepicker {
+        position: absolute;
+        left: -70px !important;
+    }
 }

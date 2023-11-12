@@ -1,29 +1,23 @@
-<input class="input-search" placeholder="Search..." />
-<i class="fa-solid fa-magnifying-glass"></i>
-<div class="row block-button" (click)="openModalCreate()">
-    <div class="btn-add-post">Add Post<i class="fa-solid fa-plus icon-post"></i></div>
+<input class="input-search" placeholder="Tên quỹ, tiêu đề quỹ" (keyup)="getAllFundRaising()" [(ngModel)]="filter" />
+<!-- <i class="fa-solid fa-magnifying-glass" (click)="getAllFundRaising()"></i> -->
+<div class="filter-fee">
+    <p-dropdown [style]="{'width':'100%'}" [options]="listOption" [(ngModel)]="isPayFee" optionLabel="name"
+        optionValue="code" (onChange)="getAllFundRaising()"placeholder="Trả phí gói"></p-dropdown>
+</div>
+<div class="filter-date">
+    <p-calendar name="fundEndDate" [(ngModel)]="createdDate" (onSelect)="onChangeDate($event)"
+    dateFormat="dd/mm/yy" placeholder="Ngày tạo quỹ"></p-calendar>
+</div>
+<div class="row block-button">
+    <div class="btn-add-post" (click)="openModalCreate()">Add Post<i class="fa-solid fa-plus icon-post"></i></div>
 </div>
 <div class="list-fund-raising">
-    <div class="content-item-fund">
-        <img src="/assets/common/images/logo.jpg" alt="" class="image-fund">
+    <div *ngFor="let item of listFundRaising" class="content-item-fund">
+        <img [src]="baseUrl + item.imageUrl[0]" alt="" class="image-fund">
         <div class="description-fund">
-            <p class="fund-title">Quỹ bảo trợ cho những trẻ em nghèo miền núi</p>
-            <p class="created-date">11/12/2023</p>
-        </div>
-    </div>
-    <div class="content-item-fund">
-        <img src="/assets/common/images/logo.jpg" alt="" class="image-fund">
-        <div class="description-fund">
-            <p class="fund-title">Quỹ bảo trợ cho những trẻ em nghèo miền núi</p>
-            <p class="created-date">11/12/2023</p>
-        </div>
-    </div>
-    <div class="content-item-fund">
-        <img src="/assets/common/images/logo.jpg" alt="" class="image-fund">
-        <div class="description-fund">
-            <p class="fund-title">Quỹ bảo trợ cho những trẻ em nghèo miền núi</p>
-            <p class="created-date">11/12/2023</p>
+            <p class="fund-title">{{item.fundTitle}}</p>
+            <p class="created-date">{{formatDateTime(item.fundStartDate,'dd/MM/yyyy hh:mm')}}</p>
         </div>
     </div>
 </div>
-<app-create-or-edit-post #createOrEdit></app-create-or-edit-post>
+<app-create-or-edit-post #createOrEdit (modalSave)="getAllFundRaising()"></app-create-or-edit-post>

@@ -7,7 +7,7 @@ namespace esign.FundRaising.Admin.Dto
 {
     public class CreateOrEditFundRaisingInputDto
     {
-        public IFormFile file {  get; set; }
+        public List<IFormFile> File {  get; set; }
         public string FundName { get; set; }
         public string FundTitle { get; set; }
         public decimal AmountOfMoney { get; set; }

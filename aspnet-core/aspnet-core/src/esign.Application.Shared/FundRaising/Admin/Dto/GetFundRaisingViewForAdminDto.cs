@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace esign.FundRaising.Admin.Dto
@@ -13,5 +14,8 @@ namespace esign.FundRaising.Admin.Dto
         public DateTime? FundRaisingDay { get; set; }
         public DateTime? FundFinishDay { get; set; }
         public string Status { get; set; }
+        public string FundTitle { get; set; }
+        public DateTime FundStartDate { get; set; }
+        public List<string> ImageUrl { get; set; }
     }
 }

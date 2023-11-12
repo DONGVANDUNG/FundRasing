@@ -199,22 +199,22 @@ export class AppAdminFundTransactionComponent extends AppComponentBase implement
         this.paginationParamsFundRaising = paginationParams;
         this.paginationParamsFundRaising.skipCount = (paginationParams.pageNum - 1) * paginationParams.pageSize;
         this.maxResultCountFundRaising = paginationParams.pageSize;
-        this.getAllFundRaising(this.paginationParamsFundRaising).subscribe((result) => {
-            this.rowDataFundRaising = result.items;
-            this.paginationParamsFundRaising.totalPage = ceil(result.totalCount / this.maxResultCountFundRaising);
-            this.paginationParamsFundRaising.totalCount = result.totalCount;
-            this.paramsFundRaising.api.setRowData(this.rowDataFundRaising);
-            this.selectedFundRaising = null;
-            this.onGridReadyTransaction(this.paginationParamsTransaction);
-        });
+        // this.getAllFundRaising(this.paginationParamsFundRaising).subscribe((result) => {
+        //     this.rowDataFundRaising = result.items;
+        //     this.paginationParamsFundRaising.totalPage = ceil(result.totalCount / this.maxResultCountFundRaising);
+        //     this.paginationParamsFundRaising.totalCount = result.totalCount;
+        //     this.paramsFundRaising.api.setRowData(this.rowDataFundRaising);
+        //     this.selectedFundRaising = null;
+        //     this.onGridReadyTransaction(this.paginationParamsTransaction);
+        // });
     }
-    getAllFundRaising(paginationParams: PaginationParamsModel) {
-        return this.fundRaising.getListFundRaising(
-            this.sorting ?? null,
-            paginationParams ? paginationParams.skipCount : 0,
-            paginationParams ? paginationParams.pageSize : 20
-        );
-    }
+    // getAllFundRaising(paginationParams: PaginationParamsModel) {
+    //     return this.fundRaising.getListFundRaising(
+    //         this.sorting ?? null,
+    //         paginationParams ? paginationParams.skipCount : 0,
+    //         paginationParams ? paginationParams.pageSize : 20
+    //     );
+    // }
     onChangeSelectionFundRaising(paginationParams) {
         const selected = paginationParams.api.getSelectedRows()[0];
         if (selected) {

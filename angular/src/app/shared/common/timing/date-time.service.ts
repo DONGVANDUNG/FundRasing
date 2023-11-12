@@ -209,7 +209,7 @@ export class DateTimeService {
 
     getTimezoneOffset(ianaTimezoneId: string): number {
         var hourAndMinuteOffset = DateTime.fromJSDate(new Date(), { zone: ianaTimezoneId }).toFormat('ZZ');
-        var multiplier = hourAndMinuteOffset[0] == '-' ? -1 : +1;
+        var multiplier = hourAndMinuteOffset[0] === '-' ? -1 : +1;
         var hourParts = hourAndMinuteOffset.replace('-','').replace('+','').split(':');
         var hourOffset = hourParts[0];
         var minuteOffset = hourParts[1];

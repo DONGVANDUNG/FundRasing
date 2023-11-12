@@ -1,6 +1,7 @@
 ﻿using esign.FundRaising.Admin.Dto;
 using esign.FundRaising.FundRaiserService.Dto;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,13 +12,12 @@ namespace esign.FundRaising.FundRaiserService
     public interface IFundRaiser
     {
         //Đăng ký tài khoản gây quỹ ( gửi mail, để đăng nhập)
-        Task RegisterAccountFundRaising(RegisterInforFundRaiserDto input);
 
         //Update thông tin cá nhân
         Task UpdateInformation(UpdateInformationFundRaiserDto input);
 
         //Tạo quỹ mới
-        Task CreateFundRaising(CreateOrEditFundRaisingInputDto input);
+        Task CreateFundRaising( CreateOrEditFundRaisingInputDto input);
 
         //Xem các giao dịch của quỹ
         Task<List<TransactionOfFundForDto>> getListTransactionForFund(int fundId);
@@ -37,6 +37,6 @@ namespace esign.FundRaising.FundRaiserService
 
         Task UpdateFundRaising(CreateOrEditFundRaisingDto input);
 
-        //Task<string> CreateOrEditFund(CreateOrEditFundRaisingInputDto input);
+        Task RegisterFundRaiser(RegisterInforFundRaiserDto input);
     }
 }

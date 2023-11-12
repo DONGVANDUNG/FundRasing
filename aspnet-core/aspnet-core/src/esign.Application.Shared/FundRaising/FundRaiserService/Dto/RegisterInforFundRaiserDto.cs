@@ -7,7 +7,7 @@ namespace esign.FundRaising.FundRaiserService.Dto
     public class RegisterInforFundRaiserDto
     {
         //public int Id { get; set; }
-        public string UserLogin { get; set; }
+        public string FullName { get; set; }
         public string Position { get; set; }
         public string Company { get; set; }
         public string Email { get; set; }
@@ -17,7 +17,6 @@ namespace esign.FundRaising.FundRaiserService.Dto
         public string Country { get; set; }
         public string Phone { get; set; }
         public string Introduce { get; set; }
-        public int FundPackageId { get; set; }
 
     }
 }
