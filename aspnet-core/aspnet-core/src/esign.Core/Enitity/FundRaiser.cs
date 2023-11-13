@@ -20,6 +20,10 @@ namespace esign.FundRaising
         public string Country { get; set; }
         public long? UserId { get; set; }
         public int FundPackageId { get; set; }
-        public string CompanyName { get; set; }             
+        public string CompanyName { get; set; }
+        public string BankName { get; set; }
+        public string BankNumber { get; set; }
+        public int Surplus { get; set; }
+        public string Unit { get; set; }
     }
 }
