@@ -14,7 +14,7 @@ namespace esign.FundRaising.FundRaiserService
         //Đăng ký tài khoản gây quỹ ( gửi mail, để đăng nhập)
 
         //Update thông tin cá nhân
-        Task UpdateInformation(UpdateInformationFundRaiserDto input);
+        //Task UpdateInformation(UpdateInformationFundRaiserDto input);
 
         //Tạo quỹ mới
         Task CreateFundRaising( CreateOrEditFundRaisingInputDto input);

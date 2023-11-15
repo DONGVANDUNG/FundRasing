@@ -25,5 +25,7 @@ namespace esign.FundRaising
         public string BankNumber { get; set; }
         public int Surplus { get; set; }
         public string Unit { get; set; }
+        public string City { get; set; }
+        public string Address { get; set; }
     }
 }

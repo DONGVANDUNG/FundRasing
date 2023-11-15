@@ -208,50 +208,54 @@ namespace esign.FundRaising
                 throw new UserFriendlyException("Có lỗi xảy ra trong quá trình cập nhật");
             }
         }
-        public async Task UpdateInformation(UpdateInformationFundRaiserDto input)
-        {
+        //public async Task UpdateInformation(UpdateInformationFundRaiserDto input)
+        //{
 
 
-            var user = await _mstSleUserRepo.FirstOrDefaultAsync(e => e.Id == AbpSession.UserId);
-            if (user != null)
-            {
-                ObjectMapper.Map(input, user);
-                await _mstSleUserRepo.UpdateAsync(user);
-                var userAccount = await _mstSleUserAccountRepo.FirstOrDefaultAsync(e => e.UserId == AbpSession.UserId);
-                userAccount.UserNameLogin = input.UserNameLogin;
-                //userAccount.Password = input.Password;
-                await _mstSleUserAccountRepo.UpdateAsync(userAccount);
-            }
-        }
+        //    var user = await _mstSleUserRepo.FirstOrDefaultAsync(e => e.Id == AbpSession.UserId);
+        //    if (user != null)
+        //    {
+        //        ObjectMapper.Map(input, user);
+        //        await _mstSleUserRepo.UpdateAsync(user);
+        //        var userAccount = await _mstSleUserAccountRepo.FirstOrDefaultAsync(e => e.UserId == AbpSession.UserId);
+        //        userAccount.UserNameLogin = input.UserNameLogin;
+        //        //userAccount.Password = input.Password;
+        //        await _mstSleUserAccountRepo.UpdateAsync(userAccount);
+        //    }
+        //}
         public async Task RegisterFundRaiser(RegisterInforFundRaiserDto input)
         {
             try
             {
                 FundRaiser fundRaiser = new FundRaiser();
-                fundRaiser.Name = input.FullName;
+                fundRaiser.Name = input.Name;
                 fundRaiser.Email = input.Email;
                 fundRaiser.Phone = input.Phone;
                 fundRaiser.Country = input.Country;
                 fundRaiser.UserId = AbpSession.UserId;
                 fundRaiser.Position = input.Position;
+                fundRaiser.BankNumber = input.BankNumber;
+                fundRaiser.BankName = input.BankName;
+                fundRaiser.Unit = "USD";
+                fundRaiser.Surplus = 100;
                 await _mstSleFundRaiserRepo.InsertAsync(fundRaiser);
-                var user = _mstSleUserRepo.FirstOrDefault(e=>e.Id == AbpSession.UserId);
+                var user = _mstSleUserRepo.FirstOrDefault(e => e.Id == AbpSession.UserId);
                 user.TypeUser = 3;
                 await _mstSleUserRepo.UpdateAsync(user);
                 using (SqlConnection connection = new SqlConnection(_appConfiguration.GetConnectionString("Default")))
                 {
 
                     connection.Execute(@"
-                            INSERT INTO dbo.AbpPermissions (CreationTime, CreatorUserId, Discriminator, IsGranted, Name, TenantId ,RoleId,UserId) VALUES
-                            (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages',1,2,@p_userId)
+                            INSERT INTO dbo.AbpPermissions (CreationTime, CreatorUserId, Discriminator, IsGranted, Name ,RoleId,UserId) VALUES
+                            (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages',4,@p_userId)
                         ", new
                     {
                         p_userId = AbpSession.UserId
                     });
 
                     connection.Execute(@"
-                            INSERT INTO dbo.AbpPermissions (CreationTime, CreatorUserId, Discriminator, IsGranted, Name, TenantId ,UserId) VALUES
-                            (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages.UserDonate',1,2,@p_userId)
+                            INSERT INTO dbo.AbpPermissions (CreationTime, CreatorUserId, Discriminator, IsGranted, Name,RoleId ,UserId) VALUES
+                            (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages.UserDonate',4,@p_userId)
                         ", new
                     {
                         p_userId = AbpSession.UserId
@@ -259,8 +263,40 @@ namespace esign.FundRaising
 
                 }
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 throw ex;
+            }
+        }
+        public async Task<RegisterInforFundRaiserDto> GetForEditFundRaiser()
+        {
+            try
+            {
+                var fundRaiser = await _mstSleFundRaiserRepo.FirstOrDefaultAsync(e => e.UserId == AbpSession.UserId);
+                if (fundRaiser?.Id != null)
+                {
+                    var fundRaiserEdit = new RegisterInforFundRaiserDto();
+                    ObjectMapper.Map(fundRaiser, fundRaiserEdit);
+                    return fundRaiserEdit;
+                }
+                return null;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+        public async Task UpdateInforFundRaiser(RegisterInforFundRaiserDto input)
+        {
+            try
+            {
+                var fundRaiser = await _mstSleFundRaiserRepo.FirstOrDefaultAsync(e => e.UserId == AbpSession.UserId);
+                ObjectMapper.Map(input, fundRaiser);
+
+            }
+            catch (Exception e)
+            {
+                throw e;
             }
         }
     }

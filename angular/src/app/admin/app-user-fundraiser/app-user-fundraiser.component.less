@@ -1,32 +1,44 @@
-.block-fundraiser{
+.block-fundraiser {
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 80vh;
     font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-          "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+        "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
-.block-information{
-    width: 85%;
+
+.block-information {
+    width: 87%;
     background-color: white;
-    height: 70vh;
+    height: auto;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     border-radius: 15px;
+    padding-bottom: 15px;
 }
-.header{
-    padding: 10px 20px;
+
+.block-information h3,
+.block-information h6 {
+    color: rgb(0, 145, 255)
+}
+
+.header {
+    padding: 10px 30px;
     // font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     //       "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
-.btn-save{
-    padding: 5px 15px;
-    background-color: rgb(173, 39, 24);
-    color:white;
-    font-size: 16px;
+
+.btn-save,.btn-change {
+    padding: 5px 18px;
+    background-color: #171717;
+    color: white;
+    font-size: 14px;
     border: none;
     outline: none;
-    border-radius: 10px;
+    border-radius: 8px;
+}
+.btn-save:hover,.btn-change:hover{
+    background-color: rgb(182, 24, 24);
 }
 .itemPreviewView__separator {
     width: 100%;
@@ -35,6 +47,30 @@
     background-color: #696969;
     border-width: 0;
 }
-.block-personal-information{
-    padding: 0 20px;
+
+.block-personal-information {
+    padding: 5px 30px;
+}
+
+.block-bank-detail {
+    padding: 5px 30px;
+}
+
+.label {
+    width: 30%;
+    color: #000;
+}
+
+.input,.input-bank {
+    padding: 7px 0px;
+    padding-left: 15px;
+    outline: none;
+    border: 1px solid gray;
+    flex: 1;
+    background-color: transparent;
+    border-radius: 5px;
+    color: #000
+}
+.input-disable{
+    background-color: #f3efef;
 }

@@ -168,6 +168,7 @@ namespace esign
             configuration.CreateMap<DetailFundContentDto, FundDetailContent>().ReverseMap();
             configuration.CreateMap<RegisterInforFundRaiserDto, User>().ReverseMap();
             configuration.CreateMap<FundPackageGetForEditDto, FundPackage>().ReverseMap();
+            configuration.CreateMap<RegisterInforFundRaiserDto, FundRaiser>().ReverseMap();
         }
     }
 }
