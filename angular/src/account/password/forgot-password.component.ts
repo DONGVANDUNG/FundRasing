@@ -8,6 +8,7 @@ import { finalize } from 'rxjs/operators';
 
 @Component({
     templateUrl: './forgot-password.component.html',
+    styleUrls: ['./forgot-password.component.less'],
     animations: [accountModuleAnimation()],
 })
 export class ForgotPasswordComponent extends AppComponentBase {

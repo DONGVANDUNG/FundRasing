@@ -15055,16 +15055,11 @@ export class UserServiceProxy {
     }
 
     /**
-     * @param fundId (optional) 
      * @param body (optional) 
      * @return Success
      */
-    donateForFund(fundId: number | undefined, body: DetailDonateForFundDto | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/User/DonateForFund?";
-        if (fundId === null)
-            throw new Error("The parameter 'fundId' cannot be null.");
-        else if (fundId !== undefined)
-            url_ += "fundId=" + encodeURIComponent("" + fundId) + "&";
+    donateForFund(body: DetailDonateForFundDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/User/DonateForFund";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -19631,6 +19626,7 @@ export interface IDelegatedImpersonateInput {
 export class DetailDonateForFundDto implements IDetailDonateForFundDto {
     sender_batch_header!: SenderBatchHeader;
     items!: Items[] | undefined;
+    fundId!: number;
 
     constructor(data?: IDetailDonateForFundDto) {
         if (data) {
@@ -19649,6 +19645,7 @@ export class DetailDonateForFundDto implements IDetailDonateForFundDto {
                 for (let item of _data["items"])
                     this.items!.push(Items.fromJS(item));
             }
+            this.fundId = _data["fundId"];
         }
     }
 
@@ -19667,6 +19664,7 @@ export class DetailDonateForFundDto implements IDetailDonateForFundDto {
             for (let item of this.items)
                 data["items"].push(item.toJSON());
         }
+        data["fundId"] = this.fundId;
         return data;
     }
 }
@@ -19674,6 +19672,7 @@ export class DetailDonateForFundDto implements IDetailDonateForFundDto {
 export interface IDetailDonateForFundDto {
     sender_batch_header: SenderBatchHeader;
     items: Items[] | undefined;
+    fundId: number;
 }
 
 export class DetailFundContentDto implements IDetailFundContentDto {
@@ -22653,9 +22652,14 @@ export interface IGetFundRaisingViewForAdminDto {
 export class GetFundsDetailByIdForUser implements IGetFundsDetailByIdForUser {
     titleFund!: string | undefined;
     created!: string | undefined;
+    fundName!: string | undefined;
+    isPayFee!: string | undefined;
     fundRaisingDay!: DateTime | undefined;
-    contentOfFund!: DetailFundContentDto;
-    fundRaiser!: GetInformationFundRaiserDto;
+    finishFundRaising!: DateTime | undefined;
+    imageUrl!: string | undefined;
+    reasonOfFund!: string | undefined;
+    description!: string | undefined;
+    amountOfMoney!: string | undefined;
     id!: number;
 
     constructor(data?: IGetFundsDetailByIdForUser) {
@@ -22671,9 +22675,14 @@ export class GetFundsDetailByIdForUser implements IGetFundsDetailByIdForUser {
         if (_data) {
             this.titleFund = _data["titleFund"];
             this.created = _data["created"];
+            this.fundName = _data["fundName"];
+            this.isPayFee = _data["isPayFee"];
             this.fundRaisingDay = _data["fundRaisingDay"] ? DateTime.fromISO(_data["fundRaisingDay"].toString()) : <any>undefined;
-            this.contentOfFund = _data["contentOfFund"] ? DetailFundContentDto.fromJS(_data["contentOfFund"]) : <any>undefined;
-            this.fundRaiser = _data["fundRaiser"] ? GetInformationFundRaiserDto.fromJS(_data["fundRaiser"]) : <any>undefined;
+            this.finishFundRaising = _data["finishFundRaising"] ? DateTime.fromISO(_data["finishFundRaising"].toString()) : <any>undefined;
+            this.imageUrl = _data["imageUrl"];
+            this.reasonOfFund = _data["reasonOfFund"];
+            this.description = _data["description"];
+            this.amountOfMoney = _data["amountOfMoney"];
             this.id = _data["id"];
         }
     }
@@ -22689,9 +22698,14 @@ export class GetFundsDetailByIdForUser implements IGetFundsDetailByIdForUser {
         data = typeof data === 'object' ? data : {};
         data["titleFund"] = this.titleFund;
         data["created"] = this.created;
+        data["fundName"] = this.fundName;
+        data["isPayFee"] = this.isPayFee;
         data["fundRaisingDay"] = this.fundRaisingDay ? this.fundRaisingDay.toString() : <any>undefined;
-        data["contentOfFund"] = this.contentOfFund ? this.contentOfFund.toJSON() : <any>undefined;
-        data["fundRaiser"] = this.fundRaiser ? this.fundRaiser.toJSON() : <any>undefined;
+        data["finishFundRaising"] = this.finishFundRaising ? this.finishFundRaising.toString() : <any>undefined;
+        data["imageUrl"] = this.imageUrl;
+        data["reasonOfFund"] = this.reasonOfFund;
+        data["description"] = this.description;
+        data["amountOfMoney"] = this.amountOfMoney;
         data["id"] = this.id;
         return data;
     }
@@ -22700,9 +22714,14 @@ export class GetFundsDetailByIdForUser implements IGetFundsDetailByIdForUser {
 export interface IGetFundsDetailByIdForUser {
     titleFund: string | undefined;
     created: string | undefined;
+    fundName: string | undefined;
+    isPayFee: string | undefined;
     fundRaisingDay: DateTime | undefined;
-    contentOfFund: DetailFundContentDto;
-    fundRaiser: GetInformationFundRaiserDto;
+    finishFundRaising: DateTime | undefined;
+    imageUrl: string | undefined;
+    reasonOfFund: string | undefined;
+    description: string | undefined;
+    amountOfMoney: string | undefined;
     id: number;
 }
 

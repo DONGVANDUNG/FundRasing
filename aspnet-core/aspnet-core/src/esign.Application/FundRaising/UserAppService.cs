@@ -27,7 +27,7 @@ namespace esign.FundRaising
 {
     public class UserAppService : esignAppServiceBase, IUserFundRaising
     {
-        private readonly IRepository<Funds, int> _mstSleFundRepo;
+        private readonly IRepository<Funds, long> _mstSleFundRepo;
         private readonly IRepository<FundRaiser, int> _mstSleFundRaiserRepo;
         private readonly IRepository<FundDetailContent, int> _mstSleFundDetailContentRepo;
         private readonly IRepository<FundRaisingTopic, int> _mstSleFundTopictRepo;
@@ -35,9 +35,10 @@ namespace esign.FundRaising
         private readonly IRepository<FundTransactions, int> _mstSleFundTransactionRepo;
         private readonly IRepository<UserAccount, int> _mstSleUserAccountRepo;
         private readonly IRepository<User, long> _mstSleUserRepo;
+        private readonly IRepository<FundImage, long> _mstSleFundImageRepo;
         private readonly IConfigurationRoot _appConfiguration;
 
-        public UserAppService(IRepository<Funds> mstSleFundRepo, IRepository<FundRaiser, int>
+        public UserAppService(IRepository<Funds,long> mstSleFundRepo, IRepository<FundRaiser, int>
             mstSleFundRaiserRepo, IRepository<FundDetailContent, int> mstSleFundDetailContentRepo, 
             IWebHostEnvironment hostingEnvironment, IWebHostEnvironment env,
             IRepository<FundRaisingTopic, int> mstSleFundTopictRepo,
@@ -62,17 +63,18 @@ namespace esign.FundRaising
             var fund = (from funds in _mstSleFundRepo.GetAll().Where(e => e.Id == Id && e.Status == 1 || e.Status == 2)
                         join fundRaiser in _mstSleFundRaiserRepo.GetAll() on funds.FundRaiserId equals fundRaiser.Id
                         join funContent in _mstSleFundDetailContentRepo.GetAll() on funds.Id equals funContent.FundId
+                        join fundImage in _mstSleFundImageRepo.GetAll() on funds.Id equals fundImage.FundId
                         select new GetFundsDetailByIdForUser
                         {
                             TitleFund = funds.FundTitle,
                             Created = fundRaiser.Name,
                             FundRaisingDay = funds.FundRaisingDay,
-                            ContentOfFund = (new DetailFundContentDto
-                            {
-                                Id = Id,
-                                Header = funContent.Header,
-                                ReasonCreatedFund = funContent.ReasonCreatedFund,
-                            }),
+                            FundName = funds.FundName,
+                            IsPayFee = funds.IsPayFee == true ? "Trả phí cho người quyên góp": "Không trả phí cho người quyên góp",
+                            AmountOfMoney = funds.AmountOfMoney.ToString(),
+                            FinishFundRaising = funds.FundEndDate,
+                            ReasonOfFund = funContent.ReasonCreatedFund,
+                            ImageUrl = fundImage.ImageUrl
                         }).FirstOrDefault();
             return fund;
         }
@@ -83,7 +85,7 @@ namespace esign.FundRaising
                                        join fundTopic in _mstSleFundTopictRepo.GetAll() on funDetail.Id equals fundTopic.FundId
                                        select new GetListFundOustandingDto
                                        {
-                                           Id = funDetail.Id,
+                                           Id = (int)funDetail.Id,
                                            ImageUrl = funDetail.FundImageUrl,
                                            TopicOfFund = fundTopic.TopicName,
                                            FundRaisingDay = funDetail.FundRaisingDay,
@@ -108,7 +110,7 @@ namespace esign.FundRaising
             return new PagedResultDto<GetListFundPackageDto>
                 (totalCount, await listFundPackage.PageBy(input).ToListAsync());
         }
-        public async Task DonateForFund(DetailDonateForFundDto input, int fundId)
+        public async Task DonateForFund(DetailDonateForFundDto input)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -126,7 +128,7 @@ namespace esign.FundRaising
                     transaction.AmountOfMoney = input.items[0].amount.value;
                     transaction.EmailReceiver = input.sender_batch_header.recipient_type;
                     transaction.MessageToFund = input.items[0].note;
-                    transaction.FundId = fundId;
+                    transaction.FundId = input.fundId;
                     //transaction.TransactionCode = detailTransaction.batch_header.payout_batch_id;
                     await _mstSleFundTransactionRepo.InsertAsync(transaction);
                 }
@@ -201,6 +203,5 @@ namespace esign.FundRaising
 
             }
         }
-
     }
 }

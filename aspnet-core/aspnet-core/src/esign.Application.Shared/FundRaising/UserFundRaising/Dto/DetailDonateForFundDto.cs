@@ -8,6 +8,7 @@ namespace esign.FundRaising.UserFundRaising.Dto
      {
         public SenderBatchHeader sender_batch_header { get; set; }
         public List<Items> items { get; set; }
+        public int fundId { get; set; }
     }
     public class Items
     {

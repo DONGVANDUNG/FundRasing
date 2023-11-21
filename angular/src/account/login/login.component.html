@@ -10,7 +10,7 @@
             class="input" autocomplete="new-password" name="password" maxlength="32" placeholder="Password">
         <validation-messages [formCtrl]="passwordInput" *ngIf="!passwordInput.touched"></validation-messages>
         <p class="page-link">
-            <span class="page-link-label d-flex justify-content-center">Forgot Password?</span>
+            <span class="page-link-label d-flex justify-content-center" routerLink="/account/forgot-password">Forgot Password?</span>
         </p>
         <button type="submit" [disabled]="!loginForm.form.valid" class="form-btn">Log in</button>
     </form>

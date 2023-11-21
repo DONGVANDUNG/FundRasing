@@ -25,16 +25,16 @@ namespace esign.FundRaising
 {
     public class FundRaiserAppService : esignAppServiceBase, IFundRaiser
     {
-        private readonly IRepository<Funds, int> _mstSleFundRepo;
+        private readonly IRepository<Funds, long> _mstSleFundRepo;
         private readonly IRepository<FundTransactions, int> _mstSleFundTransactionRepo;
         private readonly IRepository<User, long> _mstSleUserRepo;
         private readonly IRepository<FundDetailContent, int> _mstSleDetailConentRepo;
         private readonly IRepository<UserWarning, int> _mstSleUserWarningRepo;
         private readonly IRepository<UserAccount, int> _mstSleUserAccountRepo;
         private readonly IRepository<FundRaiser, int> _mstSleFundRaiserRepo;
-        private readonly IRepository<FundImage, int> _mstSleFundImageRepo;
+        private readonly IRepository<FundImage, long> _mstSleFundImageRepo;
         private readonly IConfigurationRoot _appConfiguration;
-        public FundRaiserAppService(IRepository<Funds, int> mstSleFundRepo,
+        public FundRaiserAppService(IRepository<Funds, long> mstSleFundRepo,
             IRepository<FundTransactions, int> mstSleFundTransactionRepo,
             IRepository<User, long> mstSleUserRepo,
             IWebHostEnvironment hostingEnvironment,
@@ -43,7 +43,7 @@ namespace esign.FundRaising
             IRepository<UserWarning, int> mstSleUserWarningRepo,
             IRepository<UserAccount, int> mstSleUserAccountRepo,
             IRepository<FundRaiser, int> mstSleFundRaiserRepo,
-            IRepository<FundImage, int> mstSleFundImageRepo)
+            IRepository<FundImage, long> mstSleFundImageRepo)
         {
             _mstSleFundRepo = mstSleFundRepo;
             _mstSleFundTransactionRepo = mstSleFundTransactionRepo;
@@ -89,7 +89,7 @@ namespace esign.FundRaising
                 fundInsert.IsPayFee = input.IsPayFee;
                 var fundId = await _mstSleFundRepo.InsertAndGetIdAsync(fundInsert);
                 FundDetailContent fundDetail = new FundDetailContent();
-                fundDetail.FundId = fundId;
+                fundDetail.FundId = (int)fundId;
                 fundDetail.Content = input.FundContent;
                 fundDetail.ReasonCreatedFund = input.ReasonCreateFund;
                 await _mstSleDetailConentRepo.InsertAsync(fundDetail);
@@ -144,7 +144,7 @@ namespace esign.FundRaising
                     await _mstSleFundRepo.UpdateAsync(fund);
                     FundDetailContent detailContent = new FundDetailContent();
                     ObjectMapper.Map(input.ContentOfFund, detailContent);
-                    detailContent.FundId = fund.Id;
+                    detailContent.FundId = (int)fund.Id;
                     await _mstSleDetailConentRepo.UpdateAsync(detailContent);
                 }
             }

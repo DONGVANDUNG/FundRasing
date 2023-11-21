@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 namespace esign.Enitity
 {
     [Table("FundImage")]
-    public class FundImage : FullAuditedEntity<int>
+    public class FundImage : FullAuditedEntity<long>
     {
-        public long? FundId { get; set; }
+        public long FundId { get; set; }
         public string ImageUrl { get; set; }
     }
 }

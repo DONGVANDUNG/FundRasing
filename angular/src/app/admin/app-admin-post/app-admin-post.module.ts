@@ -5,11 +5,14 @@ import { AppAdminPostRoutingModule } from './app-admin-post-routing.module';
 import { CreateOrEditPostComponent } from './create-or-edit-post/create-or-edit-post.component';
 import { AdminSharedModule } from '../shared/admin-shared.module';
 import { AppSharedModule } from '@app/shared/app-shared.module';
+import { AppAdminViewDetailPostComponent } from './app-admin-view-detail-post/app-admin-view-detail-post.component';
+import { CarouselModule } from 'primeng/carousel';
 
 @NgModule({
   imports: [
-    CommonModule,AppAdminPostRoutingModule,AdminSharedModule
+    CarouselModule,
+    CommonModule,AppAdminPostRoutingModule,AdminSharedModule,
   ],
-  declarations: [AppAdminPostComponent,CreateOrEditPostComponent]
+  declarations: [AppAdminPostComponent,CreateOrEditPostComponent,AppAdminViewDetailPostComponent]
 })
 export class AppAdminPostModule { }

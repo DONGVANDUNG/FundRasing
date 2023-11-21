@@ -26,7 +26,7 @@ namespace esign.FundRaising
 {
     public class AdminFundRaisingAppService : esignAppServiceBase, IAdminFundRaising
     {
-        private readonly IRepository<Funds, int> _mstSleFundRepo;
+        private readonly IRepository<Funds, long> _mstSleFundRepo;
         private readonly IRepository<FundRaiser, int> _mstSleFundRaiserRepo;
         private readonly IRepository<FundDetailContent, int> _mstSleFundDetailContentRepo;
         private readonly IRepository<FundRaisingTopic, int> _mstSleFundTopictRepo;
@@ -36,10 +36,10 @@ namespace esign.FundRaising
         private readonly IRepository<FundTransactions, int> _mstSleTransactionRepo;
         private readonly IRepository<UserWarning, int> _mstSleUserWarningRepo;
         private readonly IRepository<GuestAccount, int> _mstSleGuestAccountRepo;
-        private readonly IRepository<FundImage, int> _mstSleFundImageRepo;
+        private readonly IRepository<FundImage, long> _mstSleFundImageRepo;
 
 
-        public AdminFundRaisingAppService(IRepository<Funds> mstSleFundRepo, IRepository<FundRaiser, int>
+        public AdminFundRaisingAppService(IRepository<Funds,long> mstSleFundRepo, IRepository<FundRaiser, int>
             mstSleFundRaiserRepo, IRepository<FundDetailContent, int> mstSleFundDetailContentRepo,
             IRepository<FundRaisingTopic, int> mstSleFundTopictRepo,
             IRepository<FundPackage, int> mstSleFundPackageRepo,
@@ -47,7 +47,7 @@ namespace esign.FundRaising
             IRepository<UserAccount, int> mstSleUserAccountRepo,
             IRepository<FundTransactions, int> mstSleTransactionRepo,
             IRepository<GuestAccount, int> mstSleGuestAccountRepo,
-            IRepository<FundImage, int> mstSleFundImageRepo)
+            IRepository<FundImage, long> mstSleFundImageRepo)
         {
             _mstSleFundRepo = mstSleFundRepo;
             _mstSleFundRaiserRepo = mstSleFundRaiserRepo;
@@ -113,14 +113,14 @@ namespace esign.FundRaising
                                    .Where(e=>AbpSession.TenantId == null || e.FundRaiserId == AbpSession.UserId)
                                    select new GetFundRaisingViewForAdminDto
                                    {
-                                       Id = fundRaising.Id,
+                                       Id = (int)fundRaising.Id,
                                        FundName = fundRaising.FundName,
                                        FundFinishDay = fundRaising.FundRaisingDay,
                                        FundRaisingDay = fundRaising.FundRaisingDay,
                                        //FundRaiser = funRaiser.Name,
                                        AmountOfMoney = fundRaising.AmountOfMoney,
                                        Status = fundRaising.Status == 3 ? "Đã đóng" : "Đang hoạt động",
-                                       ImageUrl = _mstSleFundImageRepo.GetAll().AsNoTracking().Where(e => e.FundId == fundRaising.Id).Select(e => e.ImageUrl).ToList(),
+                                       ImageUrl = _mstSleFundImageRepo.GetAll().Where(e => e.FundId == fundRaising.Id).Select(e => e.ImageUrl).ToList(),
                                        FundStartDate = fundRaising.FundRaisingDay,
                                        FundTitle = fundRaising.FundTitle
                                    }).ToListAsync();

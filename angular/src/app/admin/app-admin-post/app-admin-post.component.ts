@@ -5,6 +5,7 @@ import { AppConsts } from '@shared/AppConsts';
 import { DateTimeService } from '@app/shared/common/timing/date-time.service';
 import * as moment from 'moment';
 import { DateTime } from 'luxon';
+import { AppAdminViewDetailPostComponent } from './app-admin-view-detail-post/app-admin-view-detail-post.component';
 
 @Component({
     selector: 'app-app-admin-post',
@@ -14,6 +15,7 @@ import { DateTime } from 'luxon';
 export class AppAdminPostComponent implements OnInit {
 
     @ViewChild("createOrEdit") modalCreate: CreateOrEditPostComponent;
+    @ViewChild("viewDetailPost") modalViewDetail: AppAdminViewDetailPostComponent;
     constructor(private _fundRaisingRepo: AdminFundRaisingServiceProxy, private _dateTimeService: DateTimeService) { }
     baseUrl = AppConsts.remoteServiceBaseUrl + '/';
     filter;
@@ -56,5 +58,8 @@ export class AppAdminPostComponent implements OnInit {
     setValueDropDown(event) {
         this.isPayFee = event;
         this.getAllFundRaising();
+    }
+    showDetailPost(id){
+        this.modalViewDetail.show(id);
     }
 }

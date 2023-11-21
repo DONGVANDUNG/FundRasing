@@ -10,9 +10,14 @@ namespace esign.FundRaising
     {
         public string TitleFund { get; set; }
         public string Created { get; set; }
+        public string FundName { get; set; }
+        public string IsPayFee { get; set; }
         public DateTime? FundRaisingDay { get; set; }
-        public DetailFundContentDto ContentOfFund { get; set; }
-        public GetInformationFundRaiserDto FundRaiser { get; set; }
+        public DateTime? FinishFundRaising { get; set; }
+        public string ImageUrl { get; set; }
+        public string ReasonOfFund { get; set; }
+        public string Description { get; set; }
+        public string AmountOfMoney { get; set; }
 
     }
 }

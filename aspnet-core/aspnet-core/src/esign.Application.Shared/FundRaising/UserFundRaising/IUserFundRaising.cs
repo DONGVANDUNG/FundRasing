@@ -16,7 +16,7 @@ namespace esign.FundRaising
         GetFundsDetailByIdForUser GetInforFundRaisingById(int Id);
         //Donate cho quỹ
         //void DonateForFund();
-        Task DonateForFund(DetailDonateForFundDto input,int fundId);
+        Task DonateForFund(DetailDonateForFundDto input);
         //Xem lại các quỹ mình đã donate
 
         // Lấy ra tổng số tiền donate của quỹ đó

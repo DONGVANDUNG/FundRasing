@@ -34,7 +34,7 @@ export class AppNavigationService {
                     //new AppMenuItem('Giao dịch', 'Pages.Administration', 'flaticon-app', '/app/admin/transaction'),
                     //new AppMenuItem('Gói quỹ', 'Pages.Administration', 'flaticon-app', '/app/admin/fundPackage'),
                     //new AppMenuItem('Tài khoản khách', 'Pages.Administration', 'flaticon-app', '/app/admin/accountGuest'),
-                    new AppMenuItem('Bài đăng', 'Pages.Administration', 'flaticon-app', '/app/admin/post'),
+                    new AppMenuItem('Bài đăng', 'Pages.UserDonate', 'flaticon-app', '/app/admin/post'),
                     new AppMenuItem('Thông tin gây quỹ', 'Pages.Administration', 'flaticon-app', '/app/admin/register-fundraiser'),
                     new AppMenuItem('Roles', 'Pages.Administration', 'flaticon-suitcase', '/app/admin/roles'),
                     new AppMenuItem(
