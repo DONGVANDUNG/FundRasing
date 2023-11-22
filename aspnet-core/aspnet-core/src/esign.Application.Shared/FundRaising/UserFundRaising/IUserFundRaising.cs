@@ -13,10 +13,10 @@ namespace esign.FundRaising
         //Lấy ra thông tin các gói quỹ
         Task<PagedResultDto<GetListFundPackageDto>> GetListFundPackage(FundPackageInputDto input);
         //Lấy ra thông tin chi tiết của quỹ theo id
-        GetFundsDetailByIdForUser GetInforFundRaisingById(int Id);
+        GetFundsDetailByIdForUser GetInforFundRaisingById(long Id);
         //Donate cho quỹ
         //void DonateForFund();
-        Task DonateForFund(DetailDonateForFundDto input);
+        Task DonateForFund(DataDonateForFundInput input);
         //Xem lại các quỹ mình đã donate
 
         // Lấy ra tổng số tiền donate của quỹ đó

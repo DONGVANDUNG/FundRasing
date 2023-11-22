@@ -28,7 +28,7 @@ namespace esign.FundRaising
         private readonly IRepository<Funds, long> _mstSleFundRepo;
         private readonly IRepository<FundTransactions, int> _mstSleFundTransactionRepo;
         private readonly IRepository<User, long> _mstSleUserRepo;
-        private readonly IRepository<FundDetailContent, int> _mstSleDetailConentRepo;
+        private readonly IRepository<FundDetailContent, long> _mstSleDetailConentRepo;
         private readonly IRepository<UserWarning, int> _mstSleUserWarningRepo;
         private readonly IRepository<UserAccount, int> _mstSleUserAccountRepo;
         private readonly IRepository<FundRaiser, long> _mstSleFundRaiserRepo;
@@ -39,7 +39,7 @@ namespace esign.FundRaising
             IRepository<User, long> mstSleUserRepo,
             IWebHostEnvironment hostingEnvironment,
             IWebHostEnvironment env,
-            IRepository<FundDetailContent, int> mstSleDetailConentRepo,
+            IRepository<FundDetailContent, long> mstSleDetailConentRepo,
             IRepository<UserWarning, int> mstSleUserWarningRepo,
             IRepository<UserAccount, int> mstSleUserAccountRepo,
             IRepository<FundRaiser, long> mstSleFundRaiserRepo,
@@ -231,7 +231,7 @@ namespace esign.FundRaising
                 fundRaiser.Name = input.Name;
                 fundRaiser.Email = input.Email;
                 fundRaiser.Phone = input.Phone;
-                fundRaiser.Country = input.Country;
+                fundRaiser.FundPackageId = 1;
                 fundRaiser.UserId = AbpSession.UserId;
                 fundRaiser.Position = input.Position;
                 fundRaiser.BankNumber = input.BankNumber;
@@ -247,7 +247,7 @@ namespace esign.FundRaising
 
                     connection.Execute(@"
                             INSERT INTO dbo.AbpPermissions (CreationTime, CreatorUserId, Discriminator, IsGranted, Name ,RoleId,UserId) VALUES
-                            (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages',4,@p_userId)
+                            (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages',3,@p_userId)
                         ", new
                     {
                         p_userId = AbpSession.UserId
@@ -255,7 +255,7 @@ namespace esign.FundRaising
 
                     connection.Execute(@"
                             INSERT INTO dbo.AbpPermissions (CreationTime, CreatorUserId, Discriminator, IsGranted, Name,RoleId ,UserId) VALUES
-                            (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages.UserDonate',4,@p_userId)
+                            (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages.UserDonate',3,@p_userId)
                         ", new
                     {
                         p_userId = AbpSession.UserId

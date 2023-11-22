@@ -15058,7 +15058,7 @@ export class UserServiceProxy {
      * @param body (optional) 
      * @return Success
      */
-    donateForFund(body: DetailDonateForFundDto | undefined): Observable<void> {
+    donateForFund(body: DataDonateForFundInput | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/User/DonateForFund";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -17596,46 +17596,6 @@ export interface IAddWidgetInput {
     application: string | undefined;
 }
 
-export class Amount implements IAmount {
-    value!: number;
-    currency!: string | undefined;
-
-    constructor(data?: IAmount) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.value = _data["value"];
-            this.currency = _data["currency"];
-        }
-    }
-
-    static fromJS(data: any): Amount {
-        data = typeof data === 'object' ? data : {};
-        let result = new Amount();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["value"] = this.value;
-        data["currency"] = this.currency;
-        return data;
-    }
-}
-
-export interface IAmount {
-    value: number;
-    currency: string | undefined;
-}
-
 export class AppSettingsJsonDto implements IAppSettingsJsonDto {
     webSiteUrl!: string | undefined;
     serverSiteUrl!: string | undefined;
@@ -19471,6 +19431,50 @@ export interface IDashboardOutput {
     widgets: WidgetOutput[] | undefined;
 }
 
+export class DataDonateForFundInput implements IDataDonateForFundInput {
+    noteTransaction!: string | undefined;
+    amountOfMoney!: number;
+    fundId!: number;
+
+    constructor(data?: IDataDonateForFundInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.noteTransaction = _data["noteTransaction"];
+            this.amountOfMoney = _data["amountOfMoney"];
+            this.fundId = _data["fundId"];
+        }
+    }
+
+    static fromJS(data: any): DataDonateForFundInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new DataDonateForFundInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["noteTransaction"] = this.noteTransaction;
+        data["amountOfMoney"] = this.amountOfMoney;
+        data["fundId"] = this.fundId;
+        return data;
+    }
+}
+
+export interface IDataDonateForFundInput {
+    noteTransaction: string | undefined;
+    amountOfMoney: number;
+    fundId: number;
+}
+
 export class DateFieldOutput implements IDateFieldOutput {
     date!: DateTime;
 
@@ -19621,58 +19625,6 @@ export class DelegatedImpersonateInput implements IDelegatedImpersonateInput {
 
 export interface IDelegatedImpersonateInput {
     userDelegationId: number;
-}
-
-export class DetailDonateForFundDto implements IDetailDonateForFundDto {
-    sender_batch_header!: SenderBatchHeader;
-    items!: Items[] | undefined;
-    fundId!: number;
-
-    constructor(data?: IDetailDonateForFundDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.sender_batch_header = _data["sender_batch_header"] ? SenderBatchHeader.fromJS(_data["sender_batch_header"]) : <any>undefined;
-            if (Array.isArray(_data["items"])) {
-                this.items = [] as any;
-                for (let item of _data["items"])
-                    this.items!.push(Items.fromJS(item));
-            }
-            this.fundId = _data["fundId"];
-        }
-    }
-
-    static fromJS(data: any): DetailDonateForFundDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new DetailDonateForFundDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["sender_batch_header"] = this.sender_batch_header ? this.sender_batch_header.toJSON() : <any>undefined;
-        if (Array.isArray(this.items)) {
-            data["items"] = [];
-            for (let item of this.items)
-                data["items"].push(item.toJSON());
-        }
-        data["fundId"] = this.fundId;
-        return data;
-    }
-}
-
-export interface IDetailDonateForFundDto {
-    sender_batch_header: SenderBatchHeader;
-    items: Items[] | undefined;
-    fundId: number;
 }
 
 export class DetailFundContentDto implements IDetailFundContentDto {
@@ -22579,7 +22531,7 @@ export class GetFundRaisingViewForAdminDto implements IGetFundRaisingViewForAdmi
     status!: string | undefined;
     fundTitle!: string | undefined;
     fundStartDate!: DateTime;
-    imageUrl!: string[] | undefined;
+    listImageUrl!: string[] | undefined;
 
     constructor(data?: IGetFundRaisingViewForAdminDto) {
         if (data) {
@@ -22601,10 +22553,10 @@ export class GetFundRaisingViewForAdminDto implements IGetFundRaisingViewForAdmi
             this.status = _data["status"];
             this.fundTitle = _data["fundTitle"];
             this.fundStartDate = _data["fundStartDate"] ? DateTime.fromISO(_data["fundStartDate"].toString()) : <any>undefined;
-            if (Array.isArray(_data["imageUrl"])) {
-                this.imageUrl = [] as any;
-                for (let item of _data["imageUrl"])
-                    this.imageUrl!.push(item);
+            if (Array.isArray(_data["listImageUrl"])) {
+                this.listImageUrl = [] as any;
+                for (let item of _data["listImageUrl"])
+                    this.listImageUrl!.push(item);
             }
         }
     }
@@ -22627,10 +22579,10 @@ export class GetFundRaisingViewForAdminDto implements IGetFundRaisingViewForAdmi
         data["status"] = this.status;
         data["fundTitle"] = this.fundTitle;
         data["fundStartDate"] = this.fundStartDate ? this.fundStartDate.toString() : <any>undefined;
-        if (Array.isArray(this.imageUrl)) {
-            data["imageUrl"] = [];
-            for (let item of this.imageUrl)
-                data["imageUrl"].push(item);
+        if (Array.isArray(this.listImageUrl)) {
+            data["listImageUrl"] = [];
+            for (let item of this.listImageUrl)
+                data["listImageUrl"].push(item);
         }
         return data;
     }
@@ -22646,7 +22598,7 @@ export interface IGetFundRaisingViewForAdminDto {
     status: string | undefined;
     fundTitle: string | undefined;
     fundStartDate: DateTime;
-    imageUrl: string[] | undefined;
+    listImageUrl: string[] | undefined;
 }
 
 export class GetFundsDetailByIdForUser implements IGetFundsDetailByIdForUser {
@@ -22656,10 +22608,11 @@ export class GetFundsDetailByIdForUser implements IGetFundsDetailByIdForUser {
     isPayFee!: string | undefined;
     fundRaisingDay!: DateTime | undefined;
     finishFundRaising!: DateTime | undefined;
-    imageUrl!: string | undefined;
+    listImageUrl!: string[] | undefined;
     reasonOfFund!: string | undefined;
     description!: string | undefined;
     amountOfMoney!: string | undefined;
+    contentFund!: string | undefined;
     id!: number;
 
     constructor(data?: IGetFundsDetailByIdForUser) {
@@ -22679,10 +22632,15 @@ export class GetFundsDetailByIdForUser implements IGetFundsDetailByIdForUser {
             this.isPayFee = _data["isPayFee"];
             this.fundRaisingDay = _data["fundRaisingDay"] ? DateTime.fromISO(_data["fundRaisingDay"].toString()) : <any>undefined;
             this.finishFundRaising = _data["finishFundRaising"] ? DateTime.fromISO(_data["finishFundRaising"].toString()) : <any>undefined;
-            this.imageUrl = _data["imageUrl"];
+            if (Array.isArray(_data["listImageUrl"])) {
+                this.listImageUrl = [] as any;
+                for (let item of _data["listImageUrl"])
+                    this.listImageUrl!.push(item);
+            }
             this.reasonOfFund = _data["reasonOfFund"];
             this.description = _data["description"];
             this.amountOfMoney = _data["amountOfMoney"];
+            this.contentFund = _data["contentFund"];
             this.id = _data["id"];
         }
     }
@@ -22702,10 +22660,15 @@ export class GetFundsDetailByIdForUser implements IGetFundsDetailByIdForUser {
         data["isPayFee"] = this.isPayFee;
         data["fundRaisingDay"] = this.fundRaisingDay ? this.fundRaisingDay.toString() : <any>undefined;
         data["finishFundRaising"] = this.finishFundRaising ? this.finishFundRaising.toString() : <any>undefined;
-        data["imageUrl"] = this.imageUrl;
+        if (Array.isArray(this.listImageUrl)) {
+            data["listImageUrl"] = [];
+            for (let item of this.listImageUrl)
+                data["listImageUrl"].push(item);
+        }
         data["reasonOfFund"] = this.reasonOfFund;
         data["description"] = this.description;
         data["amountOfMoney"] = this.amountOfMoney;
+        data["contentFund"] = this.contentFund;
         data["id"] = this.id;
         return data;
     }
@@ -22718,10 +22681,11 @@ export interface IGetFundsDetailByIdForUser {
     isPayFee: string | undefined;
     fundRaisingDay: DateTime | undefined;
     finishFundRaising: DateTime | undefined;
-    imageUrl: string | undefined;
+    listImageUrl: string[] | undefined;
     reasonOfFund: string | undefined;
     description: string | undefined;
     amountOfMoney: string | undefined;
+    contentFund: string | undefined;
     id: number;
 }
 
@@ -25098,54 +25062,6 @@ export interface IIsTenantAvailableOutput {
     state: TenantAvailabilityState;
     tenantId: number | undefined;
     serverRootAddress: string | undefined;
-}
-
-export class Items implements IItems {
-    recipient_type!: string | undefined;
-    amount!: Amount;
-    receiver!: string | undefined;
-    note!: string | undefined;
-
-    constructor(data?: IItems) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.recipient_type = _data["recipient_type"];
-            this.amount = _data["amount"] ? Amount.fromJS(_data["amount"]) : <any>undefined;
-            this.receiver = _data["receiver"];
-            this.note = _data["note"];
-        }
-    }
-
-    static fromJS(data: any): Items {
-        data = typeof data === 'object' ? data : {};
-        let result = new Items();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["recipient_type"] = this.recipient_type;
-        data["amount"] = this.amount ? this.amount.toJSON() : <any>undefined;
-        data["receiver"] = this.receiver;
-        data["note"] = this.note;
-        return data;
-    }
-}
-
-export interface IItems {
-    recipient_type: string | undefined;
-    amount: Amount;
-    receiver: string | undefined;
-    note: string | undefined;
 }
 
 export class JsonClaimMapDto implements IJsonClaimMapDto {
@@ -28448,7 +28364,7 @@ export class RegisterInforFundRaiserDto implements IRegisterInforFundRaiserDto {
     email!: string | undefined;
     address!: string | undefined;
     city!: string | undefined;
-    country!: string | undefined;
+    fundPackage!: number;
     phone!: string | undefined;
     introduce!: string | undefined;
     position!: string | undefined;
@@ -28474,7 +28390,7 @@ export class RegisterInforFundRaiserDto implements IRegisterInforFundRaiserDto {
             this.email = _data["email"];
             this.address = _data["address"];
             this.city = _data["city"];
-            this.country = _data["country"];
+            this.fundPackage = _data["fundPackage"];
             this.phone = _data["phone"];
             this.introduce = _data["introduce"];
             this.position = _data["position"];
@@ -28500,7 +28416,7 @@ export class RegisterInforFundRaiserDto implements IRegisterInforFundRaiserDto {
         data["email"] = this.email;
         data["address"] = this.address;
         data["city"] = this.city;
-        data["country"] = this.country;
+        data["fundPackage"] = this.fundPackage;
         data["phone"] = this.phone;
         data["introduce"] = this.introduce;
         data["position"] = this.position;
@@ -28519,7 +28435,7 @@ export interface IRegisterInforFundRaiserDto {
     email: string | undefined;
     address: string | undefined;
     city: string | undefined;
-    country: string | undefined;
+    fundPackage: number;
     phone: string | undefined;
     introduce: string | undefined;
     position: string | undefined;
@@ -29467,46 +29383,6 @@ export class SendVerificationSmsInputDto implements ISendVerificationSmsInputDto
 
 export interface ISendVerificationSmsInputDto {
     phoneNumber: string | undefined;
-}
-
-export class SenderBatchHeader implements ISenderBatchHeader {
-    email_subject!: string | undefined;
-    recipient_type!: string | undefined;
-
-    constructor(data?: ISenderBatchHeader) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.email_subject = _data["email_subject"];
-            this.recipient_type = _data["recipient_type"];
-        }
-    }
-
-    static fromJS(data: any): SenderBatchHeader {
-        data = typeof data === 'object' ? data : {};
-        let result = new SenderBatchHeader();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["email_subject"] = this.email_subject;
-        data["recipient_type"] = this.recipient_type;
-        return data;
-    }
-}
-
-export interface ISenderBatchHeader {
-    email_subject: string | undefined;
-    recipient_type: string | undefined;
 }
 
 export class SessionTimeOutSettingsEditDto implements ISessionTimeOutSettingsEditDto {

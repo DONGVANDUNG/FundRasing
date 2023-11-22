@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting.Internal;
 using Newtonsoft.Json;
+using NUglify.Html;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -29,7 +30,7 @@ namespace esign.FundRaising
     {
         private readonly IRepository<Funds, long> _mstSleFundRepo;
         private readonly IRepository<FundRaiser, long> _mstSleFundRaiserRepo;
-        private readonly IRepository<FundDetailContent, int> _mstSleFundDetailContentRepo;
+        private readonly IRepository<FundDetailContent, long> _mstSleFundDetailContentRepo;
         private readonly IRepository<FundRaisingTopic, int> _mstSleFundTopictRepo;
         private readonly IRepository<FundPackage, int> _mstSleFundPackageRepo;
         private readonly IRepository<FundTransactions, int> _mstSleFundTransactionRepo;
@@ -38,14 +39,14 @@ namespace esign.FundRaising
         private readonly IRepository<FundImage, long> _mstSleFundImageRepo;
         private readonly IConfigurationRoot _appConfiguration;
 
-        public UserAppService(IRepository<Funds,long> mstSleFundRepo, IRepository<FundRaiser, long>
-            mstSleFundRaiserRepo, IRepository<FundDetailContent, int> mstSleFundDetailContentRepo, 
+        public UserAppService(IRepository<Funds, long> mstSleFundRepo, IRepository<FundRaiser, long>
+            mstSleFundRaiserRepo, IRepository<FundDetailContent, long> mstSleFundDetailContentRepo,
             IWebHostEnvironment hostingEnvironment, IWebHostEnvironment env,
             IRepository<FundRaisingTopic, int> mstSleFundTopictRepo,
             IRepository<FundPackage, int> mstSleFundPackageRepo,
             IRepository<FundTransactions, int> mstSleFundTransactionRepo,
             IRepository<UserAccount, int> mstSleUserAccountRepo,
-            IRepository<User, long> mstSleUserRepo)
+            IRepository<User, long> mstSleUserRepo, IRepository<FundImage, long> mstSleFundImageRepo)
         {
             _mstSleFundRepo = mstSleFundRepo;
             _mstSleFundRaiserRepo = mstSleFundRaiserRepo;
@@ -57,24 +58,26 @@ namespace esign.FundRaising
             _mstSleUserRepo = mstSleUserRepo;
             _appConfiguration = env.GetAppConfiguration();
             _appConfiguration = hostingEnvironment.GetAppConfiguration();
+            _mstSleFundImageRepo = mstSleFundImageRepo;
         }
-        public GetFundsDetailByIdForUser GetInforFundRaisingById(int Id)
+        public GetFundsDetailByIdForUser GetInforFundRaisingById(long Id)
         {
             var fund = (from funds in _mstSleFundRepo.GetAll().Where(e => e.Id == Id && e.Status == 1 || e.Status == 2)
                         join fundRaiser in _mstSleFundRaiserRepo.GetAll() on funds.FundRaiserId equals fundRaiser.Id
                         join funContent in _mstSleFundDetailContentRepo.GetAll() on funds.Id equals funContent.FundId
-                        join fundImage in _mstSleFundImageRepo.GetAll() on funds.Id equals fundImage.FundId
+                        //join fundImage in _mstSleFundImageRepo.GetAll() on funds.Id equals fundImage.FundId
                         select new GetFundsDetailByIdForUser
                         {
                             TitleFund = funds.FundTitle,
                             Created = fundRaiser.Name,
                             FundRaisingDay = funds.FundRaisingDay,
                             FundName = funds.FundName,
-                            IsPayFee = funds.IsPayFee == true ? "Trả phí cho người quyên góp": "Không trả phí cho người quyên góp",
+                            IsPayFee = funds.IsPayFee == true ? "Trả phí cho người quyên góp" : "Không trả phí cho người quyên góp",
                             AmountOfMoney = funds.AmountOfMoney.ToString(),
                             FinishFundRaising = funds.FundEndDate,
                             ReasonOfFund = funContent.ReasonCreatedFund,
-                            ImageUrl = fundImage.ImageUrl
+                            ListImageUrl = _mstSleFundImageRepo.GetAll().AsNoTracking().Where(im=>im.FundId == funds.Id).Select(im=>im.ImageUrl).ToList(),
+                            ContentFund = funContent.Content,
                         }).FirstOrDefault();
             return fund;
         }
@@ -110,20 +113,31 @@ namespace esign.FundRaising
             return new PagedResultDto<GetListFundPackageDto>
                 (totalCount, await listFundPackage.PageBy(input).ToListAsync());
         }
-        public async Task DonateForFund(DetailDonateForFundDto input)
+        public async Task DonateForFund(DataDonateForFundInput input)
         {
             using (HttpClient client = new HttpClient())
             {
-                //var fundRaiserId = _mstSleFundRepo.FirstOrDefault(e => e.Id == input.fundId).FundRaiserId;
-                //var emailDonation = _mstSleFundRaiserRepo.FirstOrDefault(e => e.Id == fundRaiserId).Email;
+                var inputData = new DetailDonateForFundDto();
+                List<Items> listItem = new List<Items>();
+                SenderBatchHeader senderBatchHeader = new SenderBatchHeader();
+                Items item = new Items();
+                Amount amount = new Amount();
+                amount.value = input.AmountOfMoney;
+                amount.currency = "USD";
+                item.recipient_type = "Email";
+                item.amount = amount;
+                senderBatchHeader.recipient_type = "Email";
+                inputData.sender_batch_header = senderBatchHeader;
 
-                input.items[0].recipient_type = "email";
-                input.sender_batch_header.recipient_type = "email";
-                //input.items[0].receiver = emailDonation;
-                input.items[0].amount.currency = "USD";
+                var fundRaiserCreatedFund = _mstSleFundRepo.FirstOrDefault(e => e.Id == input.FundId).FundRaiserId;
 
-                string jsonContent = Newtonsoft.Json.JsonConvert.SerializeObject(input);
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "A21AAJiAsWYpBzoBzNqo0ZEkhw6Ri5o4mJT0IZAWNrbyC134IyZObb1Dz-lkCDVXeSvdhFuO7jALnnHclIpelTnoputMS9_TA");
+                var emailFund = _mstSleFundRaiserRepo.FirstOrDefault(e => e.Id == fundRaiserCreatedFund).Email;
+                item.receiver = emailFund;
+                listItem.Add(item);
+                inputData.items = listItem;
+
+                string jsonContent = Newtonsoft.Json.JsonConvert.SerializeObject(inputData);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "A21AAIejJmmgDMGn5fvV2moex46BPvhlKuD6jxFV014HPI62E8zHzNv7tE1GqvHmsFQrBSDhSdqXZ7I5y8o8trCdfCHQ81o3g");
                 var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await client.PostAsync("https://api.sandbox.paypal.com/v1/payments/payouts", content);
                 if (response.IsSuccessStatusCode == true)
@@ -132,10 +146,10 @@ namespace esign.FundRaising
                     string responseContent = await response.Content.ReadAsStringAsync();
                     detailTransaction = Newtonsoft.Json.JsonConvert.DeserializeObject<ResultResponseDonatedDto>(responseContent);
                     var transaction = new FundTransactions();
-                    transaction.AmountOfMoney = input.items[0].amount.value;
-                    transaction.EmailReceiver = input.sender_batch_header.recipient_type;
-                    transaction.MessageToFund = input.items[0].note;
-                    transaction.FundId = input.fundId;
+                    transaction.AmountOfMoney = input.AmountOfMoney;
+                    transaction.EmailReceiver = emailFund;
+                    transaction.MessageToFund = input.NoteTransaction;
+                    transaction.FundId = input.FundId;
                     //transaction.TransactionCode = detailTransaction.batch_header.payout_batch_id;
                     await _mstSleFundTransactionRepo.InsertAsync(transaction);
                 }

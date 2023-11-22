@@ -13,7 +13,7 @@
 </div>
 <div class="list-fund-raising">
     <div *ngFor="let item of listFundRaising" class="content-item-fund" (click)="showDetailPost(item.id)">
-        <img [src]="baseUrl + item.imageUrl[0]" alt="" class="image-fund">
+        <img [src]="baseUrl + item.listImageUrl[0]" alt="" class="image-fund">
         <div class="description-fund">
             <p class="fund-title">{{item.fundTitle}}</p>
             <p class="created-date">{{formatDateTime(item.fundStartDate,'dd/MM/yyyy hh:mm')}}</p>

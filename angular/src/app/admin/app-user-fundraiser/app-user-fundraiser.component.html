@@ -17,18 +17,19 @@
           <input type="text" [(ngModel)]="dataFundRaiser.position" name="position" class="input">
         </div>
         <div class="col-4 d-flex align-items-center">
-          <label class="label">Tỉnh thành:</label>
-          <input type="text" [(ngModel)]="dataFundRaiser.city" name="city" class="input">
+            <label for="fund-name" class="label">Địa chỉ:</label>
+            <input type="text" [(ngModel)]="dataFundRaiser.address" name="address" id="fund-name" class="input">
         </div>
-      </div>
-      <div class="row mb-5 d-flex justify-content-between mt-5">
+    </div>
+    <div class="row mb-5 d-flex justify-content-between mt-5">
         <div class="col-4 d-flex align-items-center">
-          <label for="fund-name" class="label">Địa chỉ:</label>
-          <input type="text" [(ngModel)]="dataFundRaiser.address" name="address" id="fund-name" class="input">
+            <label class="label">Số điện thoại:</label>
+            <input type="text" [(ngModel)]="dataFundRaiser.phone" name="phone" class="input">
         </div>
         <div class="col-4 d-flex align-items-center">
-          <label class="label">Số điện thoại:</label>
-          <input type="text" [(ngModel)]="dataFundRaiser.phone" name="phone" class="input">
+          <label class="label">Gói quỹ:</label>
+          <p-dropdown [style]="{'width':'100%'}" [options]="listPackage" [(ngModel)]="dataFundRaiser.fundPackage" optionLabel="name"
+        optionValue="id"></p-dropdown>
         </div>
         <div class="col-4 d-flex align-items-center">
           <label class="label">Ghi chú:</label>

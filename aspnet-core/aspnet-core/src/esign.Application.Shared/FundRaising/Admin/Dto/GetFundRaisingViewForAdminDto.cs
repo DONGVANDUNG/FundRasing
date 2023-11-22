@@ -16,6 +16,6 @@ namespace esign.FundRaising.Admin.Dto
         public string Status { get; set; }
         public string FundTitle { get; set; }
         public DateTime FundStartDate { get; set; }
-        public List<string> ImageUrl { get; set; }
+        public List<string> ListImageUrl { get; set; }
     }
 }

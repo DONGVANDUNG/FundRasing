@@ -28,7 +28,7 @@ namespace esign.FundRaising
     {
         private readonly IRepository<Funds, long> _mstSleFundRepo;
         private readonly IRepository<FundRaiser, long> _mstSleFundRaiserRepo;
-        private readonly IRepository<FundDetailContent, int> _mstSleFundDetailContentRepo;
+        private readonly IRepository<FundDetailContent, long> _mstSleFundDetailContentRepo;
         private readonly IRepository<FundRaisingTopic, int> _mstSleFundTopictRepo;
         private readonly IRepository<FundPackage, int> _mstSleFundPackageRepo;
         private readonly IRepository<User, long> _mstSleUserRepo;
@@ -40,7 +40,7 @@ namespace esign.FundRaising
 
 
         public AdminFundRaisingAppService(IRepository<Funds,long> mstSleFundRepo, IRepository<FundRaiser, long>
-            mstSleFundRaiserRepo, IRepository<FundDetailContent, int> mstSleFundDetailContentRepo,
+            mstSleFundRaiserRepo, IRepository<FundDetailContent, long> mstSleFundDetailContentRepo,
             IRepository<FundRaisingTopic, int> mstSleFundTopictRepo,
             IRepository<FundPackage, int> mstSleFundPackageRepo,
             IRepository<User, long> mstSleUserRepo,
@@ -110,7 +110,7 @@ namespace esign.FundRaising
                                    || e.FundName.Contains(input.Filter))
                                    .Where(e => input.IsPayFee == null || e.IsPayFee == input.IsPayFee)
                                    .Where(e => input.CreatedDate == null || e.FundRaisingDay == input.CreatedDate)
-                                   .Where(e=>AbpSession.TenantId == null || e.FundRaiserId == AbpSession.UserId)
+                                   //.Where(e=>AbpSession.TenantId == null || e.FundRaiserId == AbpSession.UserId)
                                    select new GetFundRaisingViewForAdminDto
                                    {
                                        Id = (int)fundRaising.Id,
@@ -120,7 +120,7 @@ namespace esign.FundRaising
                                        //FundRaiser = funRaiser.Name,
                                        AmountOfMoney = fundRaising.AmountOfMoney,
                                        Status = fundRaising.Status == 3 ? "Đã đóng" : "Đang hoạt động",
-                                       ImageUrl = _mstSleFundImageRepo.GetAll().Where(e => e.FundId == fundRaising.Id).Select(e => e.ImageUrl).ToList(),
+                                       ListImageUrl = _mstSleFundImageRepo.GetAll().Where(e => e.FundId == fundRaising.Id).Select(e => e.ImageUrl).ToList(),
                                        FundStartDate = fundRaising.FundRaisingDay,
                                        FundTitle = fundRaising.FundTitle
                                    }).ToListAsync();
@@ -239,15 +239,15 @@ namespace esign.FundRaising
         }
         public async Task DeleteFundPackage(int fundPackageId)
         {
-            var fundPackage = await _mstSleFundPackageRepo.FirstOrDefaultAsync(e => e.Id == fundPackageId);
+            //var fundPackage = await _mstSleFundPackageRepo.FirstOrDefaultAsync(e => e.Id == fundPackageId);
 
-            var checkUsed = await _mstSleFundRaiserRepo.FirstOrDefaultAsync(e => e.FundPackageId == fundPackageId);
-            if (checkUsed == null)
-            {
-                await _mstSleFundPackageRepo.DeleteAsync(fundPackage);
-            }
-            else
-                throw new UserFriendlyException("Gói quỹ hiện tại đang được sử dụng bởi người dùng");
+            //var checkUsed = await _mstSleFundRaiserRepo.FirstOrDefaultAsync(e => e.FundPackageId == fundPackageId);
+            //if (checkUsed == null)
+            //{
+            //    await _mstSleFundPackageRepo.DeleteAsync(fundPackage);
+            //}
+            //else
+            //    throw new UserFriendlyException("Gói quỹ hiện tại đang được sử dụng bởi người dùng");
         }
         public FundPackageGetForEditDto getForEditFundPackage(int fundPackageId)
         {

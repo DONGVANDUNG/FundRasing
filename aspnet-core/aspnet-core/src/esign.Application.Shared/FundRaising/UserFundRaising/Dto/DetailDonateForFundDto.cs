@@ -20,7 +20,7 @@ namespace esign.FundRaising.UserFundRaising.Dto
     }
     public class Amount
     {
-        public float value { get; set; }
+        public float? value { get; set; }
         public string currency { get; set; }
         
     }

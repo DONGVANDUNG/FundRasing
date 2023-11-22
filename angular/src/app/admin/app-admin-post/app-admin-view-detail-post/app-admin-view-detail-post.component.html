@@ -1,20 +1,69 @@
-<div bsModal #viewModal="bs-modal" class="modal fade" tabindex="-1" Cert="dialog"
-    aria-labelledby="viewModal" aria-hidden="true" [config]="{backdrop:'static'}">
+<div bsModal #viewModal="bs-modal" class="modal fade" tabindex="-1" Cert="dialog" aria-labelledby="viewModal"
+    aria-hidden="true" [config]="{backdrop:'static'}">
+    <loading-admin *ngIf="isLoading">{{ isLoading }}</loading-admin>
     <div class="modal-dialog fund-modal-md">
         <div class="modal-content">
             <div class="modal-header redline-header">
                 <h4 class="modal-title">
-                    <span>{{l("Thêm mới bài đăng gây quỹ")}}</span>
+                    <span>{{l("Thông tin chi tiết bài đăng gây quỹ")}}</span>
                 </h4>
                 <div class="block-button">
 
-                        <i class="fa fa-times" (click)="close()"></i>
+                    <i class="fa fa-times" (click)="close()"></i>
                 </div>
             </div>
             <div class="modal-body">
-                <div class="block-image">
-                   <!-- <img [src]="baseUrl" class="image-fund" alt=""> -->
+                <div class="header d-flex justify-content-between">
+                    <h2 class="text-center">{{this.inforFundDetail?.fundName}}</h2>
+                    <button class="btn-donate" (click)="openDonateForm()">{{textButton}}</button>
                 </div>
+                <div class="block-image-fund d-flex justify-content-between">
+                    <img [src]="imageUrl" class="image-fund" alt="" />
+                    <div class="block-content-fund">
+                        <p><span>Tiêu đề quỹ:&nbsp;</span>{{this.inforFundDetail?.titleFund}}</p>
+                        <!-- <p><span>Lý do gây quỹ:&nbsp;</span>{{this.inforFundDetail?.reasonOfFund}}</p> -->
+                        <p><span>Người tạo quỹ:&nbsp;&nbsp;</span>{{this.inforFundDetail?.created}}</p>
+                        <p><span>Trả phí:&nbsp;&nbsp;</span>{{this.inforFundDetail?.isPayFee}}</p>
+                        <p><span>Ngày tạo quỹ:&nbsp;&nbsp;</span> {{this.inforFundDetail?.fundRaisingDay}}</p>
+                        <p><span>Ngày kết thúc:&nbsp;&nbsp;</span>{{this.inforFundDetail?.finishFundRaising}}</p>
+                        <p><span>Số tiền donate tối thiểu:&nbsp;&nbsp;</span>{{this.inforFundDetail?.amountOfMoney}} USD</p>
+                        <p><span>Tổng tiền donate:&nbsp;</span>{{this.inforFundDetail?.titleFund}}</p>
+                    </div>
+                </div>
+                <p class="content-fund">{{this.inforFundDetail?.contentFund}}</p>
+                <p class="content-fund" [innerHtml]="this.inforFundDetail?.contentFund"></p>
+
+                <p-accordion [activeIndex]="activeIndex" class="w-full">
+                    <p-accordionTab>
+                        <ng-template pTemplate="content">
+                            <!-- <div class="block-donation-header d-flex justify-content-between align-items-center">
+                                    <p>Donation:</p>
+                                    <span>£10</span>
+                                </div> -->
+                            <div class="block-donation-content">
+                                <label for="" class="ml-3">Số tiền: </label>
+                                <div class="mb-5 mt-5 d-flex flex-column justify-content-between" style="width: 30%;">
+                                    <span class="p-input-icon-right">
+                                        <i class="fa-solid fa-dollar-sign"></i>
+                                        <input type="number" max="30" min="10" pInputText [(ngModel)]="amountOfMoney"
+                                            class="input-amount" />
+                                    </span>
+                                    <!-- <input type="text" pInputText [(ngModel)]="amountOfMoney" class="input-amount" /> -->
+                                    <p-slider [max]="30" [min]="10" [(ngModel)]="amountOfMoney"
+                                        class="w-full"></p-slider>
+                                </div>
+                                <input type="text" class="input-content-donation" [(ngModel)]="noteTransaction"
+                                    placeholder="Write your message here." (keydown)="limitedCharacter()">
+                                <br>
+                                <span class="note-input">255 character(s) left</span>
+                                <br>
+                                <div class="btn-donation">
+                                    <button type="button" (click)="donateToFund()">Submit</button>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </p-accordionTab>
+                </p-accordion>
             </div>
         </div>
     </div>

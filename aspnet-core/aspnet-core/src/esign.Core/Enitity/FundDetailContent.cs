@@ -11,9 +11,9 @@ using System.Threading.Tasks;
 namespace esign.FundRaising
 {
     [Table("FundDetailContent")]
-    public class FundDetailContent : FullAuditedEntity<int>
+    public class FundDetailContent : FullAuditedEntity<long>
     {
-        public int FundId { get; set; }
+        public long FundId { get; set; }
         public string Header { get; set; }
         public string ReasonCreatedFund { get; set; }
         public string Content { get; set; }

@@ -1,6 +1,6 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { FundRaiserServiceProxy, RegisterInforFundRaiserDto } from '@shared/service-proxies/service-proxies';
+import { FundRaiserServiceProxy, RegisterInforFundRaiserDto, UserServiceProxy } from '@shared/service-proxies/service-proxies';
 import { error } from 'console';
 
 @Component({
@@ -9,15 +9,18 @@ import { error } from 'console';
   styleUrls: ['./app-user-fundraiser.component.less']
 })
 export class AppUserFundraiserComponent extends AppComponentBase implements OnInit {
-  inputT;
+  listPackage = [];
   isChangeBankInfo: boolean = false;
   dataFundRaiser: RegisterInforFundRaiserDto = new RegisterInforFundRaiserDto;
-  constructor(injector: Injector, private fundRaisingRepo: FundRaiserServiceProxy) {
+  constructor(injector: Injector, private fundRaisingRepo: FundRaiserServiceProxy,private _userServiceProxy: UserServiceProxy) {
     super(injector);
   }
 
   ngOnInit() {
     this.dataFundRaiser = new RegisterInforFundRaiserDto();
+    this._userServiceProxy.getListFundPackageForUserDonation().subscribe(rs=>{
+        this.listPackage = rs;
+    })
     this.fundRaisingRepo.getForEditFundRaiser().subscribe(result => {
       this.dataFundRaiser = result;
       if(!this.dataFundRaiser.id){
