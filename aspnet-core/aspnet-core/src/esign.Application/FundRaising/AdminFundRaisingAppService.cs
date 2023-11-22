@@ -27,7 +27,7 @@ namespace esign.FundRaising
     public class AdminFundRaisingAppService : esignAppServiceBase, IAdminFundRaising
     {
         private readonly IRepository<Funds, long> _mstSleFundRepo;
-        private readonly IRepository<FundRaiser, int> _mstSleFundRaiserRepo;
+        private readonly IRepository<FundRaiser, long> _mstSleFundRaiserRepo;
         private readonly IRepository<FundDetailContent, int> _mstSleFundDetailContentRepo;
         private readonly IRepository<FundRaisingTopic, int> _mstSleFundTopictRepo;
         private readonly IRepository<FundPackage, int> _mstSleFundPackageRepo;
@@ -39,7 +39,7 @@ namespace esign.FundRaising
         private readonly IRepository<FundImage, long> _mstSleFundImageRepo;
 
 
-        public AdminFundRaisingAppService(IRepository<Funds,long> mstSleFundRepo, IRepository<FundRaiser, int>
+        public AdminFundRaisingAppService(IRepository<Funds,long> mstSleFundRepo, IRepository<FundRaiser, long>
             mstSleFundRaiserRepo, IRepository<FundDetailContent, int> mstSleFundDetailContentRepo,
             IRepository<FundRaisingTopic, int> mstSleFundTopictRepo,
             IRepository<FundPackage, int> mstSleFundPackageRepo,

@@ -28,7 +28,7 @@ namespace esign.FundRaising
     public class UserAppService : esignAppServiceBase, IUserFundRaising
     {
         private readonly IRepository<Funds, long> _mstSleFundRepo;
-        private readonly IRepository<FundRaiser, int> _mstSleFundRaiserRepo;
+        private readonly IRepository<FundRaiser, long> _mstSleFundRaiserRepo;
         private readonly IRepository<FundDetailContent, int> _mstSleFundDetailContentRepo;
         private readonly IRepository<FundRaisingTopic, int> _mstSleFundTopictRepo;
         private readonly IRepository<FundPackage, int> _mstSleFundPackageRepo;
@@ -38,7 +38,7 @@ namespace esign.FundRaising
         private readonly IRepository<FundImage, long> _mstSleFundImageRepo;
         private readonly IConfigurationRoot _appConfiguration;
 
-        public UserAppService(IRepository<Funds,long> mstSleFundRepo, IRepository<FundRaiser, int>
+        public UserAppService(IRepository<Funds,long> mstSleFundRepo, IRepository<FundRaiser, long>
             mstSleFundRaiserRepo, IRepository<FundDetailContent, int> mstSleFundDetailContentRepo, 
             IWebHostEnvironment hostingEnvironment, IWebHostEnvironment env,
             IRepository<FundRaisingTopic, int> mstSleFundTopictRepo,
@@ -114,9 +114,16 @@ namespace esign.FundRaising
         {
             using (HttpClient client = new HttpClient())
             {
+                //var fundRaiserId = _mstSleFundRepo.FirstOrDefault(e => e.Id == input.fundId).FundRaiserId;
+                //var emailDonation = _mstSleFundRaiserRepo.FirstOrDefault(e => e.Id == fundRaiserId).Email;
+
+                input.items[0].recipient_type = "email";
+                input.sender_batch_header.recipient_type = "email";
+                //input.items[0].receiver = emailDonation;
+                input.items[0].amount.currency = "USD";
 
                 string jsonContent = Newtonsoft.Json.JsonConvert.SerializeObject(input);
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "A21AALaCMoEq7nEt65LBp6qbQBhGTgYTraDNKiX8v-w0Vo1391ABpYsPul2elML2iibDn6qJa-1vQuj6n--uZPumniEDFK9mw");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "A21AAJiAsWYpBzoBzNqo0ZEkhw6Ri5o4mJT0IZAWNrbyC134IyZObb1Dz-lkCDVXeSvdhFuO7jALnnHclIpelTnoputMS9_TA");
                 var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await client.PostAsync("https://api.sandbox.paypal.com/v1/payments/payouts", content);
                 if (response.IsSuccessStatusCode == true)

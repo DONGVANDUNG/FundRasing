@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Injector, OnInit, Output, ViewChild } from '@angular/core';
+import { AppConsts } from '@shared/AppConsts';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { FileParameter, FundRaiserServiceProxy, UserServiceProxy } from '@shared/service-proxies/service-proxies';
 import { DateTime } from 'luxon';
@@ -6,15 +7,15 @@ import * as moment from 'moment';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 
 @Component({
-    selector: 'app-app-admin-view-detail-post',
+    selector: 'app-admin-view-detail-post',
     templateUrl: './app-admin-view-detail-post.component.html',
     styleUrls: ['./app-admin-view-detail-post.component.less']
 })
 export class AppAdminViewDetailPostComponent extends AppComponentBase {
 
-    @ViewChild("createOrEditModal", { static: true }) modal: ModalDirective;
+    @ViewChild("view", { static: true }) modal: ModalDirective;
     //@Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
-
+    baseUrl = AppConsts.remoteServiceBaseUrl + '/';
     inforFundDetail;
     isLoading;
     responsiveOptions
@@ -43,9 +44,10 @@ export class AppAdminViewDetailPostComponent extends AppComponentBase {
         ];
     }
     show(fundId) {
-        this._userServiceProxy.getInforFundRaisingById(fundId).subscribe(result => {
-            this.inforFundDetail = result;
-        })
+        // this._userServiceProxy.getInforFundRaisingById(fundId).subscribe(result => {
+        //     this.inforFundDetail = result;
+        //     this.baseUrl += this.inforFundDetail?.imageUrl;
+        // })
         this.modal.show();
     }
     close() {

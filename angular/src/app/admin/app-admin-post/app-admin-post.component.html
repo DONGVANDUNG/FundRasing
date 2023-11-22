@@ -12,7 +12,7 @@
     <div class="btn-add-post" (click)="openModalCreate()">Add Post<i class="fa-solid fa-plus icon-post"></i></div>
 </div>
 <div class="list-fund-raising">
-    <div *ngFor="let item of listFundRaising" class="content-item-fund">
+    <div *ngFor="let item of listFundRaising" class="content-item-fund" (click)="showDetailPost(item.id)">
         <img [src]="baseUrl + item.imageUrl[0]" alt="" class="image-fund">
         <div class="description-fund">
             <p class="fund-title">{{item.fundTitle}}</p>
@@ -21,4 +21,4 @@
     </div>
 </div>
 <app-create-or-edit-post #createOrEdit (modalSave)="getAllFundRaising()"></app-create-or-edit-post>
-<app-app-admin-view-detail-post #viewDetailPost></app-app-admin-view-detail-post>
+<app-admin-view-detail-post #viewDetailPost></app-admin-view-detail-post>

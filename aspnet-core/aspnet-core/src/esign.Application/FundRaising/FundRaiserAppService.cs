@@ -31,7 +31,7 @@ namespace esign.FundRaising
         private readonly IRepository<FundDetailContent, int> _mstSleDetailConentRepo;
         private readonly IRepository<UserWarning, int> _mstSleUserWarningRepo;
         private readonly IRepository<UserAccount, int> _mstSleUserAccountRepo;
-        private readonly IRepository<FundRaiser, int> _mstSleFundRaiserRepo;
+        private readonly IRepository<FundRaiser, long> _mstSleFundRaiserRepo;
         private readonly IRepository<FundImage, long> _mstSleFundImageRepo;
         private readonly IConfigurationRoot _appConfiguration;
         public FundRaiserAppService(IRepository<Funds, long> mstSleFundRepo,
@@ -42,7 +42,7 @@ namespace esign.FundRaising
             IRepository<FundDetailContent, int> mstSleDetailConentRepo,
             IRepository<UserWarning, int> mstSleUserWarningRepo,
             IRepository<UserAccount, int> mstSleUserAccountRepo,
-            IRepository<FundRaiser, int> mstSleFundRaiserRepo,
+            IRepository<FundRaiser, long> mstSleFundRaiserRepo,
             IRepository<FundImage, long> mstSleFundImageRepo)
         {
             _mstSleFundRepo = mstSleFundRepo;
