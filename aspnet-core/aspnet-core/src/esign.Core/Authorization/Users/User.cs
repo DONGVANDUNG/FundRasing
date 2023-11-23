@@ -32,7 +32,7 @@ namespace esign.Authorization.Users
         public string Phone { get; set; }
         public int? TypeUser { get; set; }
         public string ImageUrl { get; set; }
-        public int FundPackageId { get; set; }
+        public float? Blances { get; set; }
 
         public List<UserOrganizationUnit> OrganizationUnits { get; set; }
 

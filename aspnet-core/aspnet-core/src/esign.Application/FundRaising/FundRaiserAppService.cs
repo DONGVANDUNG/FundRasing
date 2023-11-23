@@ -247,7 +247,7 @@ namespace esign.FundRaising
 
                     connection.Execute(@"
                             INSERT INTO dbo.AbpPermissions (CreationTime, CreatorUserId, Discriminator, IsGranted, Name ,RoleId,UserId) VALUES
-                            (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages',3,@p_userId)
+                            (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages',4,@p_userId)
                         ", new
                     {
                         p_userId = AbpSession.UserId
@@ -255,7 +255,15 @@ namespace esign.FundRaising
 
                     connection.Execute(@"
                             INSERT INTO dbo.AbpPermissions (CreationTime, CreatorUserId, Discriminator, IsGranted, Name,RoleId ,UserId) VALUES
-                            (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages.UserDonate',3,@p_userId)
+                            (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages.UserDonate',4,@p_userId)
+                        ", new
+                    {
+                        p_userId = AbpSession.UserId
+                    });
+
+                    connection.Execute(@"
+                            INSERT INTO dbo.AbpPermissions (CreationTime, CreatorUserId, Discriminator, IsGranted, Name,RoleId ,UserId) VALUES
+                            (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages.UserDonate.FundRaising',4,@p_userId)
                         ", new
                     {
                         p_userId = AbpSession.UserId

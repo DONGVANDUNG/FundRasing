@@ -10,16 +10,11 @@ export class AppNavigationService {
     constructor(
         private _permissionCheckerService: PermissionCheckerService,
         private _appSessionService: AppSessionService
-    ) {}
+    ) { }
 
     getMenu(): AppMenu {
         return new AppMenu('MainMenu', 'MainMenu', [
 
-            // new AppMenuItem('Master', 'Pages.Master', 'flaticon-interface-8', '', [], [
-            //     new AppMenuItem('Common', 'Pages.Master.Common', 'flaticon-interface-8', '', [], [
-            //         new AppMenuItem('Lookup', 'Pages.Master.Common.Lookup', 'flaticon-book', '/app/main/master/common/lookup'),
-            //     ]),
-            // ]),
 
             // new AppMenuItem('Tenants', 'Pages.Tenants', 'flaticon-list-3', '/app/admin/tenants'),
             // new AppMenuItem('Editions', 'Pages.Editions', 'flaticon-app', '/app/admin/editions'),
@@ -28,30 +23,25 @@ export class AppNavigationService {
             new AppMenuItem(
                 'Administration', '', 'flaticon-interface-8', '', [],
                 [
-                    new AppMenuItem('Thông báo', 'Pages.UserDonate', 'flaticon-app', '/app/notifications'),
+                    new AppMenuItem('Thông báo', 'Pages.Administration', 'flaticon-app', '/app/notifications'),
                     new AppMenuItem('Quỹ', 'Pages.Administration', 'flaticon-app', '/app/admin/fund-detail'),
                     new AppMenuItem('Người gây quỹ', 'Pages.Administration', 'flaticon-app', '/app/admin/fundRaiser'),
                     new AppMenuItem('Giao dịch', 'Pages.Administration', 'flaticon-app', '/app/admin/transaction'),
                     new AppMenuItem('Gói quỹ', 'Pages.Administration', 'flaticon-app', '/app/admin/fundPackage'),
                     new AppMenuItem('Tài khoản khách', 'Pages.Administration', 'flaticon-app', '/app/admin/accountGuest'),
-                    new AppMenuItem('Bài đăng', 'Pages.UserDonate', 'flaticon-app', '/app/admin/post'),
-                    new AppMenuItem('Thông tin gây quỹ', 'Pages.Administration', 'flaticon-app', '/app/admin/register-fundraiser'),
                     new AppMenuItem('Roles', 'Pages.Administration', 'flaticon-suitcase', '/app/admin/roles'),
                     new AppMenuItem(
                         'Settings',
                         'Pages.Administration.Host.Settings',
                         'flaticon-settings',
                         '/app/admin/hostSettings'
+                        ),
+                    ]
                     ),
-                ]
-            ),
-            new AppMenuItem(
-                'UserDonation', '', 'flaticon-interface-8', '', [],
-                [
-                    new AppMenuItem('Quyên góp', 'Pages.UserDonate', 'flaticon-suitcase', '/app/admin/donation'),
-                    new AppMenuItem('Lịch sử Donate', 'Pages.UserDonate', 'flaticon-suitcase', '/app/admin/checkout'),
-                ]
-            ),
+                    new AppMenuItem('Trang chủ', 'Pages.UserDonate', 'flaticon-app', '/app/admin/post'),
+                    new AppMenuItem('Bài đăng', 'Pages.FundRaising', 'flaticon-app', '/app/admin/register-fundraiser'),
+            new AppMenuItem('Đăng ký gây quỹ', 'Pages.UserDonate', 'flaticon-app', '/app/admin/register-fundraiser'),
+            new AppMenuItem('Lịch sử Donate', 'Pages.UserDonate', 'flaticon-suitcase', '/app/admin/checkout'),
             new AppMenuItem(
                 'DemoUiComponents',
                 'Pages.DemoUiComponents',

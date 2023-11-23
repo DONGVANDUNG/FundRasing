@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using esign.EntityFrameworkCore;
 
@@ -11,9 +12,11 @@ using esign.EntityFrameworkCore;
 namespace esign.Migrations
 {
     [DbContext(typeof(esignDbContext))]
-    partial class esignDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231122141327_update-table-22-11")]
+    partial class updatetable2211
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1602,9 +1605,6 @@ namespace esign.Migrations
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
 
-                    b.Property<float?>("Blances")
-                        .HasColumnType("real");
-
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
 
@@ -1642,6 +1642,9 @@ namespace esign.Migrations
                     b.Property<string>("EmailConfirmationCode")
                         .HasMaxLength(328)
                         .HasColumnType("nvarchar(328)");
+
+                    b.Property<int>("FundPackageId")
+                        .HasColumnType("int");
 
                     b.Property<string>("GoogleAuthenticatorKey")
                         .HasColumnType("nvarchar(max)");
@@ -2247,8 +2250,8 @@ namespace esign.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("FundPackageId")
-                        .HasColumnType("int");
+                    b.Property<long?>("FundPackageId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Introduce")
                         .HasColumnType("nvarchar(max)");

@@ -88,7 +88,7 @@ namespace esign.FundRaising
                                   on user.Id equals fundRaising.UserId
                                   select new GetInformationFundRaiserDto
                                   {
-                                      Id = fundRaising.Id,
+                                      Id = (long)fundRaising.Id,
                                       Description = fundRaising.Introduce,
                                       Name = fundRaising.Name,
                                       Position = fundRaising.Position,

@@ -154,7 +154,7 @@ namespace esign.Authorization.Accounts
                 
                     connection.Execute(@"
                             INSERT INTO dbo.AbpPermissions (CreationTime, CreatorUserId, Discriminator, IsGranted, Name, TenantId ,RoleId,UserId) VALUES
-                            (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages',1,2,@p_userId)
+                            (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages',1,3,@p_userId)
                         ", new
                     {
                         p_userId = userId
@@ -162,7 +162,7 @@ namespace esign.Authorization.Accounts
 
                     connection.Execute(@"
                             INSERT INTO dbo.AbpPermissions (CreationTime, CreatorUserId, Discriminator, IsGranted, Name, TenantId ,RoleId,UserId) VALUES
-                            (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages.UserDonate',1,2,@p_userId)
+                            (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages.UserDonate',1,3,@p_userId)
                         ", new
                     {
                         p_userId = userId

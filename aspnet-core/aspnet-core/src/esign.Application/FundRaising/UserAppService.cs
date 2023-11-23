@@ -129,9 +129,9 @@ namespace esign.FundRaising
                 senderBatchHeader.recipient_type = "Email";
                 inputData.sender_batch_header = senderBatchHeader;
 
-                var fundRaiserCreatedFund = _mstSleFundRepo.FirstOrDefault(e => e.Id == input.FundId).FundRaiserId;
+                var fundRaiserCreatedFund = _mstSleFundRepo.FirstOrDefault(e => e.Id == (long)(input.FundId)).FundRaiserId;
 
-                var emailFund = _mstSleFundRaiserRepo.FirstOrDefault(e => e.Id == fundRaiserCreatedFund).Email;
+                var emailFund = _mstSleFundRaiserRepo.FirstOrDefault(e => (long?)e.Id == fundRaiserCreatedFund).Email;
                 item.receiver = emailFund;
                 listItem.Add(item);
                 inputData.items = listItem;
@@ -197,9 +197,9 @@ namespace esign.FundRaising
         }
         public async Task RegisterFundPackage(int fundPackage)
         {
-            var userCurrent = await _mstSleUserRepo.FirstOrDefaultAsync(e => e.Id == AbpSession.UserId);
-            userCurrent.FundPackageId = fundPackage;
-            await _mstSleUserRepo.UpdateAsync(userCurrent);
+            //var userCurrent = await _mstSleUserRepo.FirstOrDefaultAsync(e => e.Id == AbpSession.UserId);
+            //userCurrent.FundPackageId = fundPackage;
+            //await _mstSleUserRepo.UpdateAsync(userCurrent);
         }
         public void UpdatePermissionForFundRaiser(int userId)
         {
@@ -208,15 +208,15 @@ namespace esign.FundRaising
 
                 connection.Execute(@"
                             INSERT INTO dbo.AbpPermissions (CreationTime, CreatorUserId, Discriminator, IsGranted, Name, TenantId ,RoleId,UserId) VALUES
-                            (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages',1,2,@p_userId)
+                            (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages.FundRaising',1,4,@p_userId)
                         ", new
                 {
                     p_userId = userId
                 });
 
                 connection.Execute(@"
-                            INSERT INTO dbo.AbpPermissions (CreationTime, CreatorUserId, Discriminator, IsGranted, Name, TenantId ,UserId) VALUES
-                            (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages.UserDonate',1,2,@p_userId)
+                            INSERT INTO dbo.AbpPermissions (CreationTime, CreatorUserId, Discriminator, IsGranted, Name, TenantId,RoleId ,UserId) VALUES
+                            (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages.FundRaising',1,4,@p_userId)
                         ", new
                 {
                     p_userId = userId

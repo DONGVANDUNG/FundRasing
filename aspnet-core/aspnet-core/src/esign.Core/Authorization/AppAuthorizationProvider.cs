@@ -127,13 +127,13 @@ namespace esign.Authorization
             #endregion
 
             #region Account FundRaising
-            var adminFundRaising = administration.CreateChildPermission(AppPermissions.Pages_FundRaising, L("FundRaising"));
-            adminFundRaising.CreateChildPermission(AppPermissions.Pages_List_FundRaising, L("ListFundRaising"));
-            adminFundRaising.CreateChildPermission(AppPermissions.Pages_FundRaiser, L("ListFundRaising"));
-            adminFundRaising.CreateChildPermission(AppPermissions.Pages_FundTransaction, L("TransactionManagement"));
-            adminFundRaising.CreateChildPermission(AppPermissions.Pages_FundPackage, L("FundPackageManagement"));
-            adminFundRaising.CreateChildPermission(AppPermissions.Pages_AccountGuest, L("AccountDonateManagement"));
-            adminFundRaising.CreateChildPermission(AppPermissions.Pages_AccountFundRaising, L("AccountFundRaisingManagement"));
+           // var adminFundRaising = pages.CreateChildPermission(AppPermissions.Pages_FundRaising, L("FundRaising"));
+            //adminFundRaising.CreateChildPermission(AppPermissions.Pages_List_FundRaising, L("ListFundRaising"));
+            //adminFundRaising.CreateChildPermission(AppPermissions.Pages_FundRaiser, L("ListFundRaising"));
+            //adminFundRaising.CreateChildPermission(AppPermissions.Pages_FundTransaction, L("TransactionManagement"));
+            //adminFundRaising.CreateChildPermission(AppPermissions.Pages_FundPackage, L("FundPackageManagement"));
+            //adminFundRaising.CreateChildPermission(AppPermissions.Pages_AccountGuest, L("AccountDonateManagement"));
+            //adminFundRaising.CreateChildPermission(AppPermissions.Pages_AccountFundRaising, L("AccountFundRaisingManagement"));
             #endregion
 
 
@@ -143,6 +143,7 @@ namespace esign.Authorization
             userDonate.CreateChildPermission(AppPermissions.Pages_UserDonate_MakeDonate, L("Donate"));
             userDonate.CreateChildPermission(AppPermissions.Pages_UserDonate_Checkout, L("Checkout"));
             userDonate.CreateChildPermission(AppPermissions.Pages_UserDonate_Register_FundRaising, L("Register_FundRaising"));
+            userDonate.CreateChildPermission(AppPermissions.Pages_UserDonate_FundRaising, L("FundRaising"));
             #endregion
             //NEW
         }
