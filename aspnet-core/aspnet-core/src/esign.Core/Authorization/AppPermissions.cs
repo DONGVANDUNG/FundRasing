@@ -109,7 +109,7 @@ namespace esign.Authorization
 
 
         // FundRaising
-        //public const string Pages_List_FundRaising = "Pages.FundRaising.ListFundRaising";
+        public const string Pages_FundRaising = "Pages.FundRaising";
         //public const string Pages_FundRaiser = "Pages.FundRaising.FundRaiser";
         //public const string Pages_FundTransaction = "Pages.FundRaising.FundTransaction";
         //public const string Pages_FundPackage = "Pages.FundRaising.FundPackage";
@@ -119,7 +119,7 @@ namespace esign.Authorization
         public const string Pages_UserDonate = "Pages.UserDonate";
         public const string Pages_UserDonate_MakeDonate = "Pages.UserDonate.MakeDonate";
         public const string Pages_UserDonate_Checkout = "Pages.UserDonate.Checkout";
-        public const string Pages_UserDonate_Register_FundRaising = "Pages.UserDonate.RegisterFundRaising";
+       // public const string Pages_UserDonate_Register_FundRaising = "Pages.UserDonate.RegisterFundRaising";
         public const string Pages_UserDonate_FundRaising = "Pages.UserDonate.FundRaising";
 
     }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using esign.EntityFrameworkCore;
 
@@ -11,9 +12,11 @@ using esign.EntityFrameworkCore;
 namespace esign.Migrations
 {
     [DbContext(typeof(esignDbContext))]
-    partial class esignDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231123105537_update-type-amount")]
+    partial class updatetypeamount
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2020,9 +2023,6 @@ namespace esign.Migrations
                     b.Property<float>("AmountOfMoney")
                         .HasColumnType("real");
 
-                    b.Property<float>("Commission")
-                        .HasColumnType("real");
-
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2");
 
@@ -2223,9 +2223,6 @@ namespace esign.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<float>("Commission")
-                        .HasColumnType("real");
-
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2");
 
@@ -2284,9 +2281,6 @@ namespace esign.Migrations
                     b.Property<float>("AmountOfMoney")
                         .HasColumnType("real");
 
-                    b.Property<float>("Commission")
-                        .HasColumnType("real");
-
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2");
 
@@ -2298,6 +2292,12 @@ namespace esign.Migrations
 
                     b.Property<DateTime?>("DeletionTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("EmailReceiver")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmailSender")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("FundId")
                         .HasColumnType("int");
@@ -2312,12 +2312,6 @@ namespace esign.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("MessageToFund")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Receiver")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Sender")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UserId")

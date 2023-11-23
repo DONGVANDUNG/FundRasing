@@ -68,9 +68,14 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
                         //data: { permission: 'Pages.FundRaising' },
                     },
                     {
+                        path: 'register-bank',
+                        loadChildren: () => import('./app-user-bank/app-user-bank.module').then((m) => m.AppUserBankModule),
+                        //data: { permission: 'Pages.FundRaising' },
+                    },
+                    {
                         path: 'register-fundraiser',
                         loadChildren: () => import('./app-user-fundraiser/app-user-fundraiser.module').then((m) => m.AppAdminRegisterFundraiserModule),
-                        data: { permission: 'Pages.UserDonate' },
+                        //data: { permission: 'Pages.UserDonate.FundRaising' },
                     },
                 ],
             },

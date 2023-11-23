@@ -43,7 +43,7 @@ namespace esign.EntityFrameworkCore
 
         public virtual DbSet<FundDetails> FundDetails { get; set; }
         public virtual DbSet<FundPackage> FundPackages { get; set; }
-        public virtual DbSet<FundRaiser> FundRaisers { get; set; }
+        //public virtual DbSet<FundRaiser> FundRaisers { get; set; }
         public virtual DbSet<Funds> Funds { get; set; }
         public virtual DbSet<FundTransactions> FundTransactions { get; set; }
         public virtual DbSet<UserAccount> UserAccount { get; set; }
@@ -53,6 +53,7 @@ namespace esign.EntityFrameworkCore
         public virtual DbSet<FundRaisingTopic> FundRaisingTopics { get; set; }
         public virtual DbSet<GuestAccount> GuestAccounts { get; set; }
         public virtual DbSet<FundImage> FundImage { get; set; }
+        public virtual DbSet<BankAccount> BankAccounts { get; set; }
 
         public esignDbContext(DbContextOptions<esignDbContext> options)
             : base(options)

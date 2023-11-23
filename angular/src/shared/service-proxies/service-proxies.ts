@@ -6475,218 +6475,6 @@ export class FundRaiserServiceProxy {
         }
         return _observableOf(null as any);
     }
-
-    /**
-     * @param imageUrl (optional) 
-     * @param fundId (optional) 
-     * @return Success
-     */
-    updateImageUrlForFund(imageUrl: string | undefined, fundId: number | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/FundRaiser/UpdateImageUrlForFund?";
-        if (imageUrl === null)
-            throw new Error("The parameter 'imageUrl' cannot be null.");
-        else if (imageUrl !== undefined)
-            url_ += "imageUrl=" + encodeURIComponent("" + imageUrl) + "&";
-        if (fundId === null)
-            throw new Error("The parameter 'fundId' cannot be null.");
-        else if (fundId !== undefined)
-            url_ += "fundId=" + encodeURIComponent("" + fundId) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-            })
-        };
-
-        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processUpdateImageUrlForFund(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processUpdateImageUrlForFund(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<void>;
-        }));
-    }
-
-    protected processUpdateImageUrlForFund(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @param body (optional) 
-     * @return Success
-     */
-    registerFundRaiser(body: RegisterInforFundRaiserDto | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/FundRaiser/RegisterFundRaiser";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json-patch+json",
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processRegisterFundRaiser(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processRegisterFundRaiser(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<void>;
-        }));
-    }
-
-    protected processRegisterFundRaiser(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @return Success
-     */
-    getForEditFundRaiser(): Observable<RegisterInforFundRaiserDto> {
-        let url_ = this.baseUrl + "/api/services/app/FundRaiser/GetForEditFundRaiser";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetForEditFundRaiser(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetForEditFundRaiser(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<RegisterInforFundRaiserDto>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<RegisterInforFundRaiserDto>;
-        }));
-    }
-
-    protected processGetForEditFundRaiser(response: HttpResponseBase): Observable<RegisterInforFundRaiserDto> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = RegisterInforFundRaiserDto.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @param body (optional) 
-     * @return Success
-     */
-    updateInforFundRaiser(body: RegisterInforFundRaiserDto | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/FundRaiser/UpdateInforFundRaiser";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json-patch+json",
-            })
-        };
-
-        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processUpdateInforFundRaiser(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processUpdateInforFundRaiser(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<void>;
-        }));
-    }
-
-    protected processUpdateInforFundRaiser(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
 }
 
 @Injectable()
@@ -15389,6 +15177,264 @@ export class UserServiceProxy {
     }
 
     /**
+     * @return Success
+     */
+    getForEditFundRaiser(): Observable<RegisterInforFundRaiserDto> {
+        let url_ = this.baseUrl + "/api/services/app/User/GetForEditFundRaiser";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetForEditFundRaiser(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetForEditFundRaiser(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<RegisterInforFundRaiserDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<RegisterInforFundRaiserDto>;
+        }));
+    }
+
+    protected processGetForEditFundRaiser(response: HttpResponseBase): Observable<RegisterInforFundRaiserDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = RegisterInforFundRaiserDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    updateInforFundRaiser(body: RegisterInforFundRaiserDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/User/UpdateInforFundRaiser";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdateInforFundRaiser(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateInforFundRaiser(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processUpdateInforFundRaiser(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    getInforBankUser(): Observable<InforDetailBankAcountDto> {
+        let url_ = this.baseUrl + "/api/services/app/User/GetInforBankUser";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetInforBankUser(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetInforBankUser(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<InforDetailBankAcountDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<InforDetailBankAcountDto>;
+        }));
+    }
+
+    protected processGetInforBankUser(response: HttpResponseBase): Observable<InforDetailBankAcountDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = InforDetailBankAcountDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    registerFundRaiser(body: RegisterInforFundRaiserDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/User/RegisterFundRaiser";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRegisterFundRaiser(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRegisterFundRaiser(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processRegisterFundRaiser(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    createOrEditAccountBank(body: InforDetailBankAcountDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/User/CreateOrEditAccountBank";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateOrEditAccountBank(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateOrEditAccountBank(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processCreateOrEditAccountBank(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param body (optional) 
      * @return Success
      */
@@ -22605,14 +22651,16 @@ export class GetFundsDetailByIdForUser implements IGetFundsDetailByIdForUser {
     titleFund!: string | undefined;
     created!: string | undefined;
     fundName!: string | undefined;
-    isPayFee!: string | undefined;
+    payFee!: string | undefined;
     fundRaisingDay!: DateTime | undefined;
     finishFundRaising!: DateTime | undefined;
     listImageUrl!: string[] | undefined;
     reasonOfFund!: string | undefined;
     description!: string | undefined;
-    amountOfMoney!: string | undefined;
+    amountOfMoney!: number | undefined;
     contentFund!: string | undefined;
+    paymenFee!: number | undefined;
+    isPayeFee!: boolean;
     id!: number;
 
     constructor(data?: IGetFundsDetailByIdForUser) {
@@ -22629,7 +22677,7 @@ export class GetFundsDetailByIdForUser implements IGetFundsDetailByIdForUser {
             this.titleFund = _data["titleFund"];
             this.created = _data["created"];
             this.fundName = _data["fundName"];
-            this.isPayFee = _data["isPayFee"];
+            this.payFee = _data["payFee"];
             this.fundRaisingDay = _data["fundRaisingDay"] ? DateTime.fromISO(_data["fundRaisingDay"].toString()) : <any>undefined;
             this.finishFundRaising = _data["finishFundRaising"] ? DateTime.fromISO(_data["finishFundRaising"].toString()) : <any>undefined;
             if (Array.isArray(_data["listImageUrl"])) {
@@ -22641,6 +22689,8 @@ export class GetFundsDetailByIdForUser implements IGetFundsDetailByIdForUser {
             this.description = _data["description"];
             this.amountOfMoney = _data["amountOfMoney"];
             this.contentFund = _data["contentFund"];
+            this.paymenFee = _data["paymenFee"];
+            this.isPayeFee = _data["isPayeFee"];
             this.id = _data["id"];
         }
     }
@@ -22657,7 +22707,7 @@ export class GetFundsDetailByIdForUser implements IGetFundsDetailByIdForUser {
         data["titleFund"] = this.titleFund;
         data["created"] = this.created;
         data["fundName"] = this.fundName;
-        data["isPayFee"] = this.isPayFee;
+        data["payFee"] = this.payFee;
         data["fundRaisingDay"] = this.fundRaisingDay ? this.fundRaisingDay.toString() : <any>undefined;
         data["finishFundRaising"] = this.finishFundRaising ? this.finishFundRaising.toString() : <any>undefined;
         if (Array.isArray(this.listImageUrl)) {
@@ -22669,6 +22719,8 @@ export class GetFundsDetailByIdForUser implements IGetFundsDetailByIdForUser {
         data["description"] = this.description;
         data["amountOfMoney"] = this.amountOfMoney;
         data["contentFund"] = this.contentFund;
+        data["paymenFee"] = this.paymenFee;
+        data["isPayeFee"] = this.isPayeFee;
         data["id"] = this.id;
         return data;
     }
@@ -22678,14 +22730,16 @@ export interface IGetFundsDetailByIdForUser {
     titleFund: string | undefined;
     created: string | undefined;
     fundName: string | undefined;
-    isPayFee: string | undefined;
+    payFee: string | undefined;
     fundRaisingDay: DateTime | undefined;
     finishFundRaising: DateTime | undefined;
     listImageUrl: string[] | undefined;
     reasonOfFund: string | undefined;
     description: string | undefined;
-    amountOfMoney: string | undefined;
+    amountOfMoney: number | undefined;
     contentFund: string | undefined;
+    paymenFee: number | undefined;
+    isPayeFee: boolean;
     id: number;
 }
 
@@ -24742,6 +24796,66 @@ export interface IIncomeStastistic {
     label: string | undefined;
     date: DateTime;
     amount: number;
+}
+
+export class InforDetailBankAcountDto implements IInforDetailBankAcountDto {
+    id!: number;
+    bankName!: string | undefined;
+    bankNumber!: string | undefined;
+    accountName!: string | undefined;
+    userId!: number;
+    balance!: number | undefined;
+    unit!: string | undefined;
+
+    constructor(data?: IInforDetailBankAcountDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.bankName = _data["bankName"];
+            this.bankNumber = _data["bankNumber"];
+            this.accountName = _data["accountName"];
+            this.userId = _data["userId"];
+            this.balance = _data["balance"];
+            this.unit = _data["unit"];
+        }
+    }
+
+    static fromJS(data: any): InforDetailBankAcountDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new InforDetailBankAcountDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["bankName"] = this.bankName;
+        data["bankNumber"] = this.bankNumber;
+        data["accountName"] = this.accountName;
+        data["userId"] = this.userId;
+        data["balance"] = this.balance;
+        data["unit"] = this.unit;
+        return data;
+    }
+}
+
+export interface IInforDetailBankAcountDto {
+    id: number;
+    bankName: string | undefined;
+    bankNumber: string | undefined;
+    accountName: string | undefined;
+    userId: number;
+    balance: number | undefined;
+    unit: string | undefined;
 }
 
 export class InsertOrUpdateAllValuesInput implements IInsertOrUpdateAllValuesInput {
@@ -28357,19 +28471,14 @@ export interface IRegionalStatCountry {
 
 export class RegisterInforFundRaiserDto implements IRegisterInforFundRaiserDto {
     id!: number;
-    bankName!: string | undefined;
-    bankNumber!: string | undefined;
-    name!: string | undefined;
     company!: string | undefined;
-    email!: string | undefined;
     address!: string | undefined;
     city!: string | undefined;
-    fundPackage!: number;
+    fundPackage!: number | undefined;
     phone!: string | undefined;
-    introduce!: string | undefined;
-    position!: string | undefined;
-    surplus!: number;
-    unit!: string | undefined;
+    description!: string | undefined;
+    country!: string | undefined;
+    emailAddress!: string | undefined;
 
     constructor(data?: IRegisterInforFundRaiserDto) {
         if (data) {
@@ -28383,19 +28492,14 @@ export class RegisterInforFundRaiserDto implements IRegisterInforFundRaiserDto {
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"];
-            this.bankName = _data["bankName"];
-            this.bankNumber = _data["bankNumber"];
-            this.name = _data["name"];
             this.company = _data["company"];
-            this.email = _data["email"];
             this.address = _data["address"];
             this.city = _data["city"];
             this.fundPackage = _data["fundPackage"];
             this.phone = _data["phone"];
-            this.introduce = _data["introduce"];
-            this.position = _data["position"];
-            this.surplus = _data["surplus"];
-            this.unit = _data["unit"];
+            this.description = _data["description"];
+            this.country = _data["country"];
+            this.emailAddress = _data["emailAddress"];
         }
     }
 
@@ -28409,38 +28513,28 @@ export class RegisterInforFundRaiserDto implements IRegisterInforFundRaiserDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
-        data["bankName"] = this.bankName;
-        data["bankNumber"] = this.bankNumber;
-        data["name"] = this.name;
         data["company"] = this.company;
-        data["email"] = this.email;
         data["address"] = this.address;
         data["city"] = this.city;
         data["fundPackage"] = this.fundPackage;
         data["phone"] = this.phone;
-        data["introduce"] = this.introduce;
-        data["position"] = this.position;
-        data["surplus"] = this.surplus;
-        data["unit"] = this.unit;
+        data["description"] = this.description;
+        data["country"] = this.country;
+        data["emailAddress"] = this.emailAddress;
         return data;
     }
 }
 
 export interface IRegisterInforFundRaiserDto {
     id: number;
-    bankName: string | undefined;
-    bankNumber: string | undefined;
-    name: string | undefined;
     company: string | undefined;
-    email: string | undefined;
     address: string | undefined;
     city: string | undefined;
-    fundPackage: number;
+    fundPackage: number | undefined;
     phone: string | undefined;
-    introduce: string | undefined;
-    position: string | undefined;
-    surplus: number;
-    unit: string | undefined;
+    description: string | undefined;
+    country: string | undefined;
+    emailAddress: string | undefined;
 }
 
 export class RegisterInput implements IRegisterInput {

@@ -8,19 +8,14 @@ namespace esign.FundRaising.FundRaiserService.Dto
     {
         public int Id { get; set; }
 
-        public string BankName { get; set; }
-        public string BankNumber { get; set; }
-        public string Name { get; set; }
         public string Company { get; set; }
-        public string Email { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
-        public int FundPackage { get; set; }
+        public long? FundPackage { get; set; }
         public string Phone { get; set; }
-        public string Introduce { get; set; }
-        public string Position { get; set; }
-        public int Surplus { get; set; }
-        public string Unit { get; set; }
+        public string Description { get; set; }
+        public string Country { get; set; }
+        public string EmailAddress { get; set; }
 
     }
 }

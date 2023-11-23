@@ -12,7 +12,7 @@ namespace esign.FundRaising.FundRaiserService.Dto
         public string TitleFund { get; set; }
         public string ImageUrl { get; set; }
         public string Created { get; set; }
-        public decimal AmountOfMoney { get; set; }
+        public float AmountOfMoney { get; set; }
         public DateTime FundEndDate { get; set; }
         public DetailFundContentDto ContentOfFund { get; set; }
     }

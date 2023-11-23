@@ -27,5 +27,6 @@ namespace esign.FundRaising
         Task<List<ListFundPackageDto>> getListFundPackageForUserDonation();
 
         void UpdatePermissionForFundRaiser(int userId);
+        Task<InforDetailBankAcountDto> GetInforBankUser();
     }
 }

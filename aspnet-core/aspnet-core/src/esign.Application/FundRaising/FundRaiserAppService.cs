@@ -31,7 +31,7 @@ namespace esign.FundRaising
         private readonly IRepository<FundDetailContent, long> _mstSleDetailConentRepo;
         private readonly IRepository<UserWarning, int> _mstSleUserWarningRepo;
         private readonly IRepository<UserAccount, int> _mstSleUserAccountRepo;
-        private readonly IRepository<FundRaiser, long> _mstSleFundRaiserRepo;
+        ///private readonly IRepository<FundRaiser, long> _mstSleFundRaiserRepo;
         private readonly IRepository<FundImage, long> _mstSleFundImageRepo;
         private readonly IConfigurationRoot _appConfiguration;
         public FundRaiserAppService(IRepository<Funds, long> mstSleFundRepo,
@@ -42,7 +42,7 @@ namespace esign.FundRaising
             IRepository<FundDetailContent, long> mstSleDetailConentRepo,
             IRepository<UserWarning, int> mstSleUserWarningRepo,
             IRepository<UserAccount, int> mstSleUserAccountRepo,
-            IRepository<FundRaiser, long> mstSleFundRaiserRepo,
+            //IRepository<FundRaiser, long> mstSleFundRaiserRepo,
             IRepository<FundImage, long> mstSleFundImageRepo)
         {
             _mstSleFundRepo = mstSleFundRepo;
@@ -51,7 +51,7 @@ namespace esign.FundRaising
             _mstSleDetailConentRepo = mstSleDetailConentRepo;
             _mstSleUserWarningRepo = mstSleUserWarningRepo;
             _mstSleUserAccountRepo = mstSleUserAccountRepo;
-            _mstSleFundRaiserRepo = mstSleFundRaiserRepo;
+            //_mstSleFundRaiserRepo = mstSleFundRaiserRepo;
             _mstSleFundImageRepo = mstSleFundImageRepo;
             _appConfiguration = env.GetAppConfiguration();
             _appConfiguration = hostingEnvironment.GetAppConfiguration();
@@ -166,7 +166,7 @@ namespace esign.FundRaising
         {
             var listTransaction = (from transaction in _mstSleFundTransactionRepo.GetAll().Where(e => e.Id == fundId)
                                    join fund in _mstSleFundRepo.GetAll() on transaction.FundId equals fund.Id
-                                   join user in _mstSleUserRepo.GetAll() on transaction.EmailReceiver equals user.Email
+                                   join user in _mstSleUserRepo.GetAll() on transaction.Receiver equals user.Email
                                    select new TransactionOfFundForDto
                                    {
                                        Id = transaction.Id,
@@ -192,120 +192,5 @@ namespace esign.FundRaising
             return await listWarning;
         }
 
-        public async Task UpdateImageUrlForFund(string imageUrl, int fundId)
-        {
-            try
-            {
-                var fund = await _mstSleFundRepo.FirstOrDefaultAsync(e => e.Id == fundId);
-                if (fund != null)
-                {
-                    fund.FundImageUrl = imageUrl;
-                    await _mstSleFundRepo.UpdateAsync(fund);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new UserFriendlyException("Có lỗi xảy ra trong quá trình cập nhật");
-            }
-        }
-        //public async Task UpdateInformation(UpdateInformationFundRaiserDto input)
-        //{
-
-
-        //    var user = await _mstSleUserRepo.FirstOrDefaultAsync(e => e.Id == AbpSession.UserId);
-        //    if (user != null)
-        //    {
-        //        ObjectMapper.Map(input, user);
-        //        await _mstSleUserRepo.UpdateAsync(user);
-        //        var userAccount = await _mstSleUserAccountRepo.FirstOrDefaultAsync(e => e.UserId == AbpSession.UserId);
-        //        userAccount.UserNameLogin = input.UserNameLogin;
-        //        //userAccount.Password = input.Password;
-        //        await _mstSleUserAccountRepo.UpdateAsync(userAccount);
-        //    }
-        //}
-        public async Task RegisterFundRaiser(RegisterInforFundRaiserDto input)
-        {
-            try
-            {
-                FundRaiser fundRaiser = new FundRaiser();
-                fundRaiser.Name = input.Name;
-                fundRaiser.Email = input.Email;
-                fundRaiser.Phone = input.Phone;
-                fundRaiser.FundPackageId = 1;
-                fundRaiser.UserId = AbpSession.UserId;
-                fundRaiser.Position = input.Position;
-                fundRaiser.BankNumber = input.BankNumber;
-                fundRaiser.BankName = input.BankName;
-                fundRaiser.Unit = "USD";
-                fundRaiser.Surplus = 100;
-                await _mstSleFundRaiserRepo.InsertAsync(fundRaiser);
-                var user = _mstSleUserRepo.FirstOrDefault(e => e.Id == AbpSession.UserId);
-                user.TypeUser = 3;
-                await _mstSleUserRepo.UpdateAsync(user);
-                using (SqlConnection connection = new SqlConnection(_appConfiguration.GetConnectionString("Default")))
-                {
-
-                    connection.Execute(@"
-                            INSERT INTO dbo.AbpPermissions (CreationTime, CreatorUserId, Discriminator, IsGranted, Name ,RoleId,UserId) VALUES
-                            (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages',4,@p_userId)
-                        ", new
-                    {
-                        p_userId = AbpSession.UserId
-                    });
-
-                    connection.Execute(@"
-                            INSERT INTO dbo.AbpPermissions (CreationTime, CreatorUserId, Discriminator, IsGranted, Name,RoleId ,UserId) VALUES
-                            (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages.UserDonate',4,@p_userId)
-                        ", new
-                    {
-                        p_userId = AbpSession.UserId
-                    });
-
-                    connection.Execute(@"
-                            INSERT INTO dbo.AbpPermissions (CreationTime, CreatorUserId, Discriminator, IsGranted, Name,RoleId ,UserId) VALUES
-                            (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages.UserDonate.FundRaising',4,@p_userId)
-                        ", new
-                    {
-                        p_userId = AbpSession.UserId
-                    });
-
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-        public async Task<RegisterInforFundRaiserDto> GetForEditFundRaiser()
-        {
-            try
-            {
-                var fundRaiser = await _mstSleFundRaiserRepo.FirstOrDefaultAsync(e => e.UserId == AbpSession.UserId);
-                if (fundRaiser?.Id != null)
-                {
-                    var fundRaiserEdit = new RegisterInforFundRaiserDto();
-                    ObjectMapper.Map(fundRaiser, fundRaiserEdit);
-                    return fundRaiserEdit;
-                }
-                return null;
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-        }
-        public async Task UpdateInforFundRaiser(RegisterInforFundRaiserDto input)
-        {
-            try
-            {
-                var fundRaiser = await _mstSleFundRaiserRepo.FirstOrDefaultAsync(e => e.UserId == AbpSession.UserId);
-                ObjectMapper.Map(input, fundRaiser);
-
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-        }
     }
 }

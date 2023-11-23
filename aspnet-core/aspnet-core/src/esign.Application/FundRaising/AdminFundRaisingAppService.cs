@@ -27,7 +27,7 @@ namespace esign.FundRaising
     public class AdminFundRaisingAppService : esignAppServiceBase, IAdminFundRaising
     {
         private readonly IRepository<Funds, long> _mstSleFundRepo;
-        private readonly IRepository<FundRaiser, long> _mstSleFundRaiserRepo;
+        //private readonly IRepository<FundRaiser, long> _mstSleFundRaiserRepo;
         private readonly IRepository<FundDetailContent, long> _mstSleFundDetailContentRepo;
         private readonly IRepository<FundRaisingTopic, int> _mstSleFundTopictRepo;
         private readonly IRepository<FundPackage, int> _mstSleFundPackageRepo;
@@ -39,8 +39,9 @@ namespace esign.FundRaising
         private readonly IRepository<FundImage, long> _mstSleFundImageRepo;
 
 
-        public AdminFundRaisingAppService(IRepository<Funds,long> mstSleFundRepo, IRepository<FundRaiser, long>
-            mstSleFundRaiserRepo, IRepository<FundDetailContent, long> mstSleFundDetailContentRepo,
+        public AdminFundRaisingAppService(IRepository<Funds,long> mstSleFundRepo,
+            //IRepository<FundRaiser, long>mstSleFundRaiserRepo,
+            IRepository<FundDetailContent, long> mstSleFundDetailContentRepo,
             IRepository<FundRaisingTopic, int> mstSleFundTopictRepo,
             IRepository<FundPackage, int> mstSleFundPackageRepo,
             IRepository<User, long> mstSleUserRepo,
@@ -50,7 +51,7 @@ namespace esign.FundRaising
             IRepository<FundImage, long> mstSleFundImageRepo)
         {
             _mstSleFundRepo = mstSleFundRepo;
-            _mstSleFundRaiserRepo = mstSleFundRaiserRepo;
+            //_mstSleFundRaiserRepo = mstSleFundRaiserRepo;
             _mstSleFundDetailContentRepo = mstSleFundDetailContentRepo;
             _mstSleFundTopictRepo = mstSleFundTopictRepo;
             _mstSleFundPackageRepo = mstSleFundPackageRepo;
@@ -72,28 +73,27 @@ namespace esign.FundRaising
                                    Amount = trans.AmountOfMoney,
                                    FundName = fund.FundName,
                                    CreatedTime = trans.CreationTime,
-                                   Receiver = trans.EmailReceiver,
-                                   Sender = trans.EmailSender,
+                                   Receiver = trans.Receiver,
+                                   Sender = trans.Sender,
                                }).FirstOrDefaultAsync();
             return await transaction;
         }
 
         public async Task<PagedResultDto<GetInformationFundRaiserDto>> getListFundRaiser(GetAllFundRaiserForInputDto input)
         {
-            var listFundRaiser = (from user in _mstSleUserRepo.GetAll().Where(e => e.TypeUser == 2).
+            var listFundRaiser = (from user in _mstSleUserRepo.GetAll().Where(e => e.TypeUser == 3).
                                   Where(e => input.Email == null || e.Email.Contains(input.Email))
                                   .Where(e => input.StatusAccount == null || e.IsActive == input.StatusAccount)
-                                  join fundRaising in _mstSleFundRaiserRepo.GetAll().Where(e => input.Created == null || e.CreationTime == input.Created)
+                                  .Where(e => input.Created == null || e.FundRaiserDate == input.Created)
 
-                                  on user.Id equals fundRaising.UserId
                                   select new GetInformationFundRaiserDto
                                   {
-                                      Id = (long)fundRaising.Id,
-                                      Description = fundRaising.Introduce,
-                                      Name = fundRaising.Name,
-                                      Position = fundRaising.Position,
+                                      Id = user.Id,
+                                      //Description = fundRaising.Introduce,
+                                      Name = user.Name,
+                                      //Position = user.Position,
                                       StatusAccount = user.IsActive == true ? "Hoạt động" : "Ngừng hoạt động",
-                                      ImageUrl = user.ImageUrl
+                                      //ImageUrl = user.ImageUrl
                                   });
 
             var totalCount = await listFundRaiser.CountAsync();
@@ -130,7 +130,7 @@ namespace esign.FundRaising
         public async Task<PagedResultDto<TransactionOfFundForDto>> getListTransactionForFund(TransactionForFundInputDto input)
         {
             var listTransaction = from transaction in _mstSleTransactionRepo.GetAll().Where(e => e.FundId == input.FundId)
-                                  join user in _mstSleUserRepo.GetAll() on transaction.EmailSender equals user.Email
+                                  join user in _mstSleUserRepo.GetAll() on transaction.Sender equals user.Email
                                   //join fund in _mstSleFundRepo.GetAll() on transaction.FundId equals fund.Id
                                   select new TransactionOfFundForDto
                                   {

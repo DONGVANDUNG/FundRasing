@@ -1,6 +1,6 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { FundRaiserServiceProxy, RegisterInforFundRaiserDto, UserServiceProxy } from '@shared/service-proxies/service-proxies';
+import { FundRaiserServiceProxy, InforDetailBankAcountDto, RegisterInforFundRaiserDto, UserServiceProxy } from '@shared/service-proxies/service-proxies';
 import { error } from 'console';
 
 @Component({
@@ -12,6 +12,7 @@ export class AppUserFundraiserComponent extends AppComponentBase implements OnIn
   listPackage = [];
   isChangeBankInfo: boolean = false;
   dataFundRaiser: RegisterInforFundRaiserDto = new RegisterInforFundRaiserDto;
+  dataInforBankUser: InforDetailBankAcountDto = new InforDetailBankAcountDto;
   constructor(injector: Injector, private fundRaisingRepo: FundRaiserServiceProxy,private _userServiceProxy: UserServiceProxy) {
     super(injector);
   }
@@ -21,11 +22,14 @@ export class AppUserFundraiserComponent extends AppComponentBase implements OnIn
     this._userServiceProxy.getListFundPackageForUserDonation().subscribe(rs=>{
         this.listPackage = rs;
     })
-    this.fundRaisingRepo.getForEditFundRaiser().subscribe(result => {
+    this._userServiceProxy.getForEditFundRaiser().subscribe(result => {
       this.dataFundRaiser = result;
       if(!this.dataFundRaiser.id){
         this.notify.warn("Vui lòng đăng ký thông tin để tham gia gây quỹ")
       }
+    })
+    this._userServiceProxy.getInforBankUser().subscribe(result=>{
+            this.dataInforBankUser = result;
     })
   }
   changeInforBank() {
@@ -42,11 +46,11 @@ export class AppUserFundraiserComponent extends AppComponentBase implements OnIn
   }
   save() {
     if (!this.dataFundRaiser.id) {
-      this.fundRaisingRepo.registerFundRaiser(this.dataFundRaiser).subscribe(() => {this.notify.success("Đăng ký gây quỹ thành công") },
+      this._userServiceProxy.registerFundRaiser(this.dataFundRaiser).subscribe(() => {this.notify.success("Đăng ký gây quỹ thành công") },
        (error => { this.notify.error("Đã xảy ra lỗi") }));
     }
     else {
-      this.fundRaisingRepo.updateInforFundRaiser(this.dataFundRaiser).subscribe(()=>{
+      this._userServiceProxy.updateInforFundRaiser(this.dataFundRaiser).subscribe(()=>{
         this.notify.success("Cập nhật thông tin thành công")
       },error=>{
         this.notify.error("Có lỗi xảy ra");

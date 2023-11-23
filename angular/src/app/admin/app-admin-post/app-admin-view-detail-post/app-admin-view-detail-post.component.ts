@@ -21,6 +21,8 @@ export class AppAdminViewDetailPostComponent extends AppComponentBase {
     responsiveOptions
     saving;
     fundId;
+    feeFund;
+    totalAmount;
     amountOfMoney;
     noteTransaction;
     isDonate: boolean = false;
@@ -82,7 +84,7 @@ export class AppAdminViewDetailPostComponent extends AppComponentBase {
         this.inputData.amountOfMoney = this.amountOfMoney;
         this.inputData.fundId = this.fundId;
         this.inputData.noteTransaction = this.noteTransaction;
-        if(this.amountOfMoney == null){
+        if (this.amountOfMoney == null) {
             this.notify.warn("Nhập số tiền cần quyên góp");
             return;
         }
@@ -99,5 +101,14 @@ export class AppAdminViewDetailPostComponent extends AppComponentBase {
             }
             )
         )
+    }
+    calcAmountMoney() {
+        if (!this.inforFundDetail.isPayFee) {
+            this.feeFund = this.inforFundDetail.paymenFee;
+            this.totalAmount = this.inforFundDetail.amountOfMoney + this.inforFundDetail.amountOfMoney * this.feeFund / 100
+        }
+        else {
+            this.totalAmount = this.inforFundDetail.amountOfMoney
+        }
     }
 }

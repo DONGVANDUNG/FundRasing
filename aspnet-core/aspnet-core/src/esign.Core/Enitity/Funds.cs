@@ -18,11 +18,12 @@ namespace esign.Entity
         public string FundImageUrl { get; set; }
         public string FundTitle { get; set; }
        // public string FundReason { get; set; }
-        public decimal AmountOfMoney { get; set; }
+        public float AmountOfMoney { get; set; }
         public DateTime FundEndDate { get; set; }
         public int Status { get; set; } /// 1: Đã phát hành; 2: Đã được gia hạn; 3: Đã đóng
         public bool IsOutStanding { get; set; }
         public bool IsPayFee { get; set; }
+        public float Commission { get; set; }
 
     }
 }

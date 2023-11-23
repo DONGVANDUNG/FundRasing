@@ -10,7 +10,7 @@ namespace esign.FundRaising.Admin.Dto
         public List<IFormFile> File {  get; set; }
         public string FundName { get; set; }
         public string FundTitle { get; set; }
-        public decimal AmountOfMoney { get; set; }
+        public float AmountOfMoney { get; set; }
         public DateTime FundStartDate { get; set; }
         public DateTime FundEndDate { get; set; }
         public string FundContent { get; set; }

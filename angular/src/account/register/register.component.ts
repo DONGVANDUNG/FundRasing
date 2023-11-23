@@ -22,7 +22,10 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
     model: RegisterModel = new RegisterModel();
     passwordComplexitySetting: PasswordComplexitySetting = new PasswordComplexitySetting();
     saving = false;
-
+    listOptionAccount = [
+        {label:'Quyên góp, Đấu giá',value: 1},
+        {label:'Gây quỹ từ thiện',value: 2}
+    ]
     constructor(
         injector: Injector,
         private _accountService: AccountServiceProxy,

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using esign.EntityFrameworkCore;
 
@@ -11,9 +12,11 @@ using esign.EntityFrameworkCore;
 namespace esign.Migrations
 {
     [DbContext(typeof(esignDbContext))]
-    partial class esignDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231123041403_remove-fundraiser")]
+    partial class removefundraiser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1825,58 +1828,6 @@ namespace esign.Migrations
                     b.ToTable("AppChatMessages");
                 });
 
-            modelBuilder.Entity("esign.Enitity.BankAccount", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("AccountName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<float?>("Balance")
-                        .HasColumnType("real");
-
-                    b.Property<string>("BankName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("BankNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("CreatorUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("DeleterUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime?>("DeletionTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("LastModifierUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Unit")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long?>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("BankAccount");
-                });
-
             modelBuilder.Entity("esign.Enitity.FundImage", b =>
                 {
                     b.Property<long>("Id")
@@ -2017,11 +1968,8 @@ namespace esign.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<float>("AmountOfMoney")
-                        .HasColumnType("real");
-
-                    b.Property<float>("Commission")
-                        .HasColumnType("real");
+                    b.Property<decimal>("AmountOfMoney")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2");
@@ -2223,9 +2171,6 @@ namespace esign.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<float>("Commission")
-                        .HasColumnType("real");
-
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2");
 
@@ -2284,9 +2229,6 @@ namespace esign.Migrations
                     b.Property<float>("AmountOfMoney")
                         .HasColumnType("real");
 
-                    b.Property<float>("Commission")
-                        .HasColumnType("real");
-
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2");
 
@@ -2298,6 +2240,12 @@ namespace esign.Migrations
 
                     b.Property<DateTime?>("DeletionTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("EmailReceiver")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmailSender")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("FundId")
                         .HasColumnType("int");
@@ -2312,12 +2260,6 @@ namespace esign.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("MessageToFund")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Receiver")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Sender")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UserId")

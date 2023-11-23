@@ -127,7 +127,7 @@ namespace esign.Authorization
             #endregion
 
             #region Account FundRaising
-           // var adminFundRaising = pages.CreateChildPermission(AppPermissions.Pages_FundRaising, L("FundRaising"));
+           var adminFundRaising = pages.CreateChildPermission(AppPermissions.Pages_FundRaising, L("FundRaising"));
             //adminFundRaising.CreateChildPermission(AppPermissions.Pages_List_FundRaising, L("ListFundRaising"));
             //adminFundRaising.CreateChildPermission(AppPermissions.Pages_FundRaiser, L("ListFundRaising"));
             //adminFundRaising.CreateChildPermission(AppPermissions.Pages_FundTransaction, L("TransactionManagement"));
@@ -142,7 +142,7 @@ namespace esign.Authorization
             var userDonate = pages.CreateChildPermission(AppPermissions.Pages_UserDonate, L("UserDonate"));
             userDonate.CreateChildPermission(AppPermissions.Pages_UserDonate_MakeDonate, L("Donate"));
             userDonate.CreateChildPermission(AppPermissions.Pages_UserDonate_Checkout, L("Checkout"));
-            userDonate.CreateChildPermission(AppPermissions.Pages_UserDonate_Register_FundRaising, L("Register_FundRaising"));
+            //userDonate.CreateChildPermission(AppPermissions.Pages_UserDonate_Register_FundRaising, L("Register_FundRaising"));
             userDonate.CreateChildPermission(AppPermissions.Pages_UserDonate_FundRaising, L("FundRaising"));
             #endregion
             //NEW

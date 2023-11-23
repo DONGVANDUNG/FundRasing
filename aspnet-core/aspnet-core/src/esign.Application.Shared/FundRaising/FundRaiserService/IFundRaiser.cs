@@ -33,10 +33,9 @@ namespace esign.FundRaising.FundRaiserService
         //Sửa background cho quỹ
 
         //Sửa ảnh cho quỹ
-        Task UpdateImageUrlForFund(string imageUrl, int fundId);
+        //Task UpdateImageUrlForFund(string imageUrl, int fundId);
 
         Task UpdateFundRaising(CreateOrEditFundRaisingDto input);
 
-        Task RegisterFundRaiser(RegisterInforFundRaiserDto input);
     }
 }
