@@ -1,83 +1,274 @@
-.block-list-fund {
-    margin-top: 40px;
-    width: 100%;
-    flex-wrap: wrap;
-}
-
-.item-fundraising {
-    width: 29.2%;
-    margin: 0 20px 2.875rem 20px;
-    background-color: #95d4de;
-    margin-bottom: 1.875rem;
-    height: 55.5vh;
-    border-radius: 0.625rem;
-    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
-    padding: 10px 0;
+.fa-times {
     cursor: pointer;
+    font-size: 20px;
+}
+.donation{
+    width: 95%;
+   padding-left: 5vh;
+}
+:host ::ng-deep {
+    .product-item {
+        .product-item-content {
+            border: 1px solid var(--surface-d);
+            border-radius: 3px;
+            margin: .3rem;
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .product-image {
+            width: 50%;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)
+        }
+    }
+
+    .modal.show .modal-dialog {
+        transform: none;
+        display: flex;
+        justify-content: center;
+    }
+
+    .modal-content {
+        width: 75%;
+    }
+
+    .modal-body {
+        height: 90vh;
+        overflow-y: auto;
+    }
+
+    .p-accordion-header {
+        display: none;
+    }
+
+    .p-accordion .p-accordion-content {
+        padding: unset;
+        background-color: transparent;
+    }
+
+    .p-accordion .p-accordion-tab {
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
 }
 
-.item-fund-image {
+.image-fund {
+    height: auto;
+    width: 38%;
+}
+
+.header {
     width: 100%;
-    display: flex;
-    height: 52%;
-    margin-top: 15px;
-    justify-content: center;
-}
-
-.item-fund-image img {
-    width: 80%;
-}
-
-.footer-block-fund {
-    padding-left: 10px;
-    width: 85%;
-    display: flex;
-    justify-content: space-around;
     align-items: center;
-    margin-top: 30px;
-}
-
-.text-ordering {
-    font-size: 1.5rem;
-    color: #00acc6;
-    margin-left: 30px;
-    margin-bottom: 2px;
-}
-
-.text-donate {
-    margin-left: 30px;
-    font-size: 1.5rem;
-}
-
-.text-footer {
-    margin-bottom: 0px;
-    color: #202020;
-    font-size: 1rem;
-    font-weight: bold;
+    margin-bottom: 20px;
 }
 
 .btn-donate {
-    width: 40%;
-    border-radius: 1.25rem;
-    padding: 0.625rem 1.25rem;
-    text-align: center;
-    font-weight: normal;
-    font-size: 1.2rem;
-    overflow: hidden;
-    background-color: #00acc6;
-    color: #fff;
+    padding-top: 0.4375rem;
+    padding-bottom: 0.4375rem;
     border: none;
     outline: none;
+    color: white;
+    font-size: 1rem;
+    background-color: #000;
+    padding: 7px 25px;
+    border-radius: 10px;
 }
-.header-block-donate {
-    height: 10vh;
-    //   background-color: #3d5e5e;;
+
+.block-donation-header {
     background-color: #00acc6;
     width: 100%;
-    padding-left: 50px;
-    font-size: 25px;
+    height: 6vh;
+}
+
+.block-content-fund {
+    width: 58%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.block-donation {
+    width: 95%;
+    margin-top: 20px;
+}
+
+.content-fund {
+    font-size: 1.2rem;
+    margin-top: 20px;
+}
+
+.block-donation-header>p,
+.block-donation-header>span {
+    margin-bottom: 0px;
+    margin-left: 25px;
+    font-size: 1.4rem;
+    color: black;
+}
+
+.block-donation-header span {
+    margin-right: 20px;
+}
+
+.block-donation-content {
+    //background: linear-gradient(106.26deg, rgba(234, 11, 32, 1) 0%, rgba(50, 45, 213, 1) 100%);
+    margin-top: 15px;
+    border-radius: 10px;
+    padding: 20px;
+    border: 1px solid #80808075;
+}
+
+.block-donation-content>p {
+    color: black;
+    margin-left: 25px;
+    padding-top: 15px;
+    font-size: 1.4rem;
+}
+
+.block-donation-content .input-content-donation {
+    padding-bottom: 120px;
+    width: 100%;
+    padding-left: 15px;
+    border: none;
+    border-radius: 0.625rem;
+    outline: none;
+    padding-top: 15px;
+    font-size: 1.1rem;
+    border: 1px solid rgb(163, 162, 162);
+}
+
+.note-input {
+    float: right;
+    margin-top: 10px;
+    color: #000;
+}
+
+.block-donation-content .btn-donation {
+    width: 100%;
+    justify-content: center;
+}
+
+.block-donation-content .btn-donation button {
+    padding-top: 0.4375rem;
+    padding-bottom: 0.4375rem;
+    border: none;
+    outline: none;
+    color: white;
+    font-size: 1.2rem;
+    background-color: #000;
+    padding: 7px 25px;
+    border-radius: 10px;
+}
+
+.block-donation-content .btn-donation:hover button {
+    background-color: gray;
+    color: white
+}
+
+.input-email {
+    border-radius: 5px;
+    width: 40%;
+    margin-bottom: 10px;
+    border: none;
+    padding: 8px 15px;
+    font-size: 1rem;
+    outline: none;
+}
+
+.block-content-fund span {
     font-weight: bold;
 }
-.header-block-donate span{
-    cursor: pointer;
+
+.input-amount {
+    width: 100%;
+    border: 1px solid rgb(163, 162, 162);
+    padding: 7px;
+    border-radius: 5px;
+    outline: none;
+}
+
+.w-full {
+    margin-left: 5px;
+}
+
+.p-input-icon-right {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.p-accordion-content {
+    border: 1px solid gainsboro;
+}
+
+
+
+.loaderBar {
+    // width: calc(160px / 0.707);
+    width: 100%;
+    height: 3px;
+    background: transparent;
+    border-radius: 3px;
+    //border: 1px solid #006DFE;
+    position: relative;
+    overflow: hidden;
+}
+
+.loaderBar::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    border-radius: 3px;
+    background-color: #bc0a7f;
+    animation: fillProgress 1s ease-in-out infinite, lightEffect 1s infinite linear;
+    animation-fill-mode: forwards;
+}
+
+@keyframes fillProgress {
+    0% {
+        width: 0;
+    }
+
+    100% {
+        width: 100%;
+    }
+}
+
+.text-fee-fund,
+.total-amoount {
+    border: 1px solid rgb(163, 162, 162);
+    padding: 7px;
+    border-radius: 5px;
+}
+
+.text-fee-fund,
+.total-amoount {
+    outline: none;
+}
+
+.block-checkbox {
+    width: 30%;
+}
+
+.block-is-public {
+    width: 39%;
+}
+
+th,
+td {
+    width: 20%;
+    border: 1px solid gainsboro;
+    padding: 2px;
+}
+
+table {
+    border-collapse: collapse;
+    padding: 0 20px;
 }

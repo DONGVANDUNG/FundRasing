@@ -81,6 +81,7 @@ namespace esign.FundRaising
                         on funds.Id equals funContent.FundId
                         select new GetFundsDetailByIdForUser
                         {
+                            Id = funds.Id,
                             TitleFund = funds.FundTitle,
                             Created = user.Name,
                             FundRaisingDay = funds.FundRaisingDay,
@@ -118,7 +119,7 @@ namespace esign.FundRaising
                                   select new GetListFundPackageDto
                                   {
                                       Id = funPackage.Id,
-                                      Discount = funPackage.Discount,
+                                      //Discount = funPackage.Discount,
                                       PaymenFee = funPackage.PaymenFee,
                                       Description = funPackage.Description,
                                       Duration = funPackage.Duration,
@@ -140,10 +141,17 @@ namespace esign.FundRaising
                 var accountUserDonate = await _mstBankRepo.FirstOrDefaultAsync(e => e.UserId == AbpSession.UserId);
                 accountUserDonate.Balance -= input.AmountOfMoney;
                 await _mstBankRepo.UpdateAsync(accountUserDonate);
-                //Lưu giao dịch
-                var receivedId = _mstSleFundRepo.FirstOrDefault(e => e.Id == input.FundId).FundRaiserId;
-                var fundRaiserReceive = _mstSleUserRepo.FirstOrDefault(e => e.Id == receivedId).UserName;
+
+                var fundRaiserId = _mstSleFundRepo.FirstOrDefault(e => e.Id == input.FundId).FundRaiserId;
+                var fundRaiserReceive = _mstSleUserRepo.FirstOrDefault(e => e.Id == fundRaiserId).UserName;
                 var userSend = _mstSleUserRepo.FirstOrDefault(e => e.Id == AbpSession.UserId).UserName;
+
+                
+                //Nhận tiền
+                var accountUserRaiseFund = await _mstBankRepo.FirstOrDefaultAsync(e => e.UserId == fundRaiserId);
+                accountUserRaiseFund.Balance += input.AmountOfMoney;
+                await _mstBankRepo.UpdateAsync(accountUserRaiseFund);
+
                 var transactionUserDonate = new FundTransactions();
                 transactionUserDonate.FundId = input.FundId;
                 transactionUserDonate.AmountOfMoney = input.AmountOfMoney;
@@ -151,16 +159,14 @@ namespace esign.FundRaising
                 transactionUserDonate.Commission = input.AmountOfMoney * commission / 100;
                 transactionUserDonate.Receiver = fundRaiserReceive;
                 transactionUserDonate.Sender = userSend;
+                transactionUserDonate.SenderId = AbpSession.UserId;
+                transactionUserDonate.ReceiverId = fundRaiserId;
+                transactionUserDonate.Balance = accountUserRaiseFund.Balance;
+                transactionUserDonate.IsPublic = input.IsPublic;
                 await _mstSleFundTransactionRepo.InsertAsync(transactionUserDonate);
+                
 
-
-                //Nhận tiền và trừ tiền gói quỹ cho người tạo quỹ
-                var fundRaiserId = _mstSleFundRepo.FirstOrDefault(e => e.Id == input.FundId).FundRaiserId;
-                var accountUserRaiseFund = await _mstBankRepo.FirstOrDefaultAsync(e => e.UserId == fundRaiserId);
-                accountUserRaiseFund.Balance = input.AmountOfMoney - (input.AmountOfMoney * commission);
-                await _mstBankRepo.UpdateAsync(accountUserRaiseFund);
                 //Lưu giao dịch
-               
 
 
                 // Chuyển tiền cho admin
@@ -168,23 +174,23 @@ namespace esign.FundRaising
                 bankAdmin.Balance += input.AmountOfMoney * (commission / 100);
                 await _mstBankRepo.UpdateAsync(accountUserRaiseFund);
 
-               
                 var transactionAdmin = new FundTransactions();
                 transactionAdmin.FundId = input.FundId;
                 transactionAdmin.AmountOfMoney = input.AmountOfMoney * (commission / 100);
-                transactionAdmin.MessageToFund = input.NoteTransaction;
+                transactionAdmin.MessageToFund = "Trừ tiền phí gói quỹ";
                 transactionAdmin.Commission = input.AmountOfMoney * commission / 100;
                 transactionAdmin.Receiver = "Admin";
                 transactionAdmin.Sender = userSend;
+                transactionAdmin.SenderId = fundRaiserId;
+                transactionAdmin.Balance = bankAdmin.Balance;
+                transactionAdmin.ReceiverId = 1;
+
                 await _mstSleFundTransactionRepo.InsertAsync(transactionAdmin);
             }
             catch (Exception ex)
             {
                 throw new Exception("Có lỗi xảy ra khi quyên góp");
             }
-
-
-
         }
 
         public float getTotalAmountDonateOfFund(int fundId)

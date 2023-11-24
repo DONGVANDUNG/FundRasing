@@ -19,6 +19,11 @@ namespace esign.FundRaising
         public float AmountOfMoney { get; set; }
         public float Commission { get; set; }
         public int UserId { get; set; }
+        public float? Balance { get; set; }
+        public bool? IsAdmin { get; set; }
+        public long? SenderId { get; set; }
+        public long? ReceiverId { get; set; }
+        public bool? IsPublic { get; set; }
         //public string TransactionCode { get; set; }
     }
 }

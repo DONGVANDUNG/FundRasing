@@ -1,13 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DonationFundComponent } from './donation-fund.component';
+import { AppUserAutionComponent } from './app-user-aution.component';
 
 const routes: Routes = [
     {
         path: '',
-        component: DonationFundComponent,
-        pathMatch:'full'
-
+        component: AppUserAutionComponent,
+        pathMatch: 'full',
     },
 ];
 
@@ -15,4 +14,4 @@ const routes: Routes = [
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
 })
-export class DonationFundRoutingModule {}
+export class AppUserBankRoutingModule {}

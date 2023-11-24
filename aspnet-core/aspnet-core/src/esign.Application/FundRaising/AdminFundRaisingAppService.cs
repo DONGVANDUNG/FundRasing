@@ -182,7 +182,7 @@ namespace esign.FundRaising
                                   select new GetListFundPackageDto
                                   {
                                       Id = funPackage.Id,
-                                      Discount = funPackage.Discount,
+                                      //Discount = funPackage.Discount,
                                       PaymenFee = funPackage.PaymenFee,
                                       Description = funPackage.Description,
                                       Duration = funPackage.Duration,
@@ -202,7 +202,7 @@ namespace esign.FundRaising
         }
         public async Task CreateFundPackage(CreateOrEditFundPackageDto input)
         {
-            var checkExisted = _mstSleFundPackageRepo.GetAll().Where(e => e.PaymenFee == input.PaymenFee && e.Discount == input.Discount);
+            var checkExisted = _mstSleFundPackageRepo.GetAll().Where(e => e.PaymenFee == input.PaymenFee );
             if (checkExisted.Count() >= 1)
             {
                 throw new UserFriendlyException("Đã tồn tại gói quỹ");
@@ -210,9 +210,9 @@ namespace esign.FundRaising
             else
             {
                 var fundPackage = new FundPackage();
-                fundPackage.UserId = (int)AbpSession.UserId;
+                //fundPackage.UserId = (int)AbpSession.UserId;
                 fundPackage.PaymenFee = input.PaymenFee;
-                fundPackage.Discount = input.Discount;
+                //fundPackage.Discount = input.Discount;
                 fundPackage.Duration = input.Duration;
                 fundPackage.Description = input.Description;
                 fundPackage.Status = input.Status;
@@ -224,9 +224,9 @@ namespace esign.FundRaising
             var fund = await _mstSleFundPackageRepo.FirstOrDefaultAsync(e => e.Id == input.Id && e.Status == true);
             if (fund == null)
             {
-                fund.UserId = (int)AbpSession.UserId;
+                //fund.UserId = (int)AbpSession.UserId;
                 fund.PaymenFee = input.PaymenFee;
-                fund.Discount = input.Discount;
+                //fund.Discount = input.Discount;
                 fund.Duration = input.Duration;
                 fund.Description = input.Description;
                 fund.Status = input.Status;

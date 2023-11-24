@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using esign.EntityFrameworkCore;
 
@@ -11,9 +12,11 @@ using esign.EntityFrameworkCore;
 namespace esign.Migrations
 {
     [DbContext(typeof(esignDbContext))]
-    partial class esignDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231124071242_add-table-auction")]
+    partial class addtableauction
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1833,10 +1836,13 @@ namespace esign.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<int?>("AmountJumpMax")
+                    b.Property<int?>("AmountJump")
                         .HasColumnType("int");
 
-                    b.Property<int?>("AmountJumpMin")
+                    b.Property<int?>("AmountMax")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("AmountMin")
                         .HasColumnType("int");
 
                     b.Property<float?>("AuctionPresentAmount")
@@ -1856,6 +1862,9 @@ namespace esign.Migrations
 
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("ImageUrlItem")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("IntroduceItem")
                         .HasColumnType("nvarchar(max)");

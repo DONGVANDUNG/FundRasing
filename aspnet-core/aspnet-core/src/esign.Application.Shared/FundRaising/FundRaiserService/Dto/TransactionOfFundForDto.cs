@@ -13,5 +13,7 @@ namespace esign.FundRaising.FundRaiserService.Dto
         public string Sender { get; set; }
         public string FundName { get; set; }
         public string Receiver { get; set; }
+        public bool? IsPublic { get; set; }
+
     }
 }

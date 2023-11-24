@@ -15,7 +15,7 @@
             <div class="modal-body">
                 <div class="header d-flex justify-content-between">
                     <h2 class="text-center">{{this.inforFundDetail?.fundName}}</h2>
-                    <button class="btn-donate" (click)="openDonateForm()">{{textButton}}</button>
+                    <button class="btn-donate" [routerLink]="['../donation',this.fundId]">Quyên góp</button>
                 </div>
                 <div class="block-image-fund d-flex justify-content-between">
                     <img [src]="imageUrl" class="image-fund" alt="" />
@@ -32,7 +32,9 @@
                 </div>
                 <p class="content-fund">{{this.inforFundDetail?.contentFund}}</p>
                 <p class="content-fund" [innerHtml]="this.inforFundDetail?.contentFund"></p>
+                <div class="block-transaction">
 
+                </div>
                 <p-accordion [activeIndex]="activeIndex" class="w-full">
                     <p-accordionTab>
                         <ng-template pTemplate="content">
@@ -41,7 +43,13 @@
                                     <span>£10</span>
                                 </div> -->
                             <div class="block-donation-content">
-                                <label for="" class="ml-3">Số tiền: </label>
+                                <div class="block-checkbox d-flex justify-content-between align-items-center mb-5">
+                                    <label for="" class="ml-3">Số tiền </label>
+                                    <div class="block-is-public d-flex justify-content-between align-items-center">
+                                        <label for="">Công khai</label>
+                                        <input type="checkbox" [(ngModel)]="this.inputData.isPublic">
+                                    </div>
+                                </div>
                                 <div class="mb-5 mt-5 d-flex flex-column justify-content-between" style="width: 30%;">
                                     <span class="p-input-icon-right">
                                         <i class="fa-solid fa-dollar-sign"></i>
@@ -53,7 +61,7 @@
                                         class="w-full"></p-slider>
                                 </div>
                                 <input type="text" class="input-content-donation" [(ngModel)]="noteTransaction"
-                                    placeholder="Write your message here." (keydown)="limitedCharacter()">
+                                placeholder="Write your message here." (keydown)="limitedCharacter()">
                                 <br>
                                 <span class="note-input">255 character(s) left</span>
                                 <br>

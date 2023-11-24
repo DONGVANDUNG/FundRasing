@@ -46,6 +46,7 @@ using esign.FundRaising.FundRaiserService.Dto;
 using esign.FundRaising.Admin.Dto;
 using esign.FundRaising.UserFundRaising.Dto;
 using esign.Enitity;
+using esign.FundRaising.UserFundRaising.Dto.Auction;
 
 namespace esign
 {
@@ -172,6 +173,7 @@ namespace esign
             configuration.CreateMap<FundPackageGetForEditDto, FundPackage>().ReverseMap();
             configuration.CreateMap<User, InforDetailBankAcountDto>().ReverseMap();
             configuration.CreateMap<BankAccount, InforDetailBankAcountDto>().ReverseMap();
+            configuration.CreateMap<Auction, CreateOrEditAuctionInputDto>().ReverseMap();
             //configuration.CreateMap<RegisterInforFundRaiserDto, FundRaiser>().ReverseMap();
         }
     }

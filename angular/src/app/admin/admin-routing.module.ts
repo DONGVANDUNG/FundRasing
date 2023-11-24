@@ -33,7 +33,7 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
                         // data: { permission: 'Pages.Administration.Users' },
                     },
                     {
-                        path: 'donation',
+                        path: 'donation/:fundId',
                         loadChildren: () => import('./app-user-donation/app-user-donation.module').then((m) => m.AppUserDonationModule),
                         // data: { permission: 'Pages.Administration.Users' },
                     },
@@ -75,6 +75,16 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
                     {
                         path: 'register-fundraiser',
                         loadChildren: () => import('./app-user-fundraiser/app-user-fundraiser.module').then((m) => m.AppAdminRegisterFundraiserModule),
+                        //data: { permission: 'Pages.UserDonate.FundRaising' },
+                    },
+                    {
+                        path: 'auction-admin',
+                        loadChildren: () => import('./app-admin-auction/app-admin-auction.module').then((m) => m.AppAdminAuctionModule),
+                        //data: { permission: 'Pages.UserDonate.FundRaising' },
+                    },
+                    {
+                        path: 'auction-user',
+                        loadChildren: () => import('./app-user-aution/app-user-aution.module').then((m) => m.AppUserAutionModule),
                         //data: { permission: 'Pages.UserDonate.FundRaising' },
                     },
                 ],

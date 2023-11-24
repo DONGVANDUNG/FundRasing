@@ -1,0 +1,166 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" Cert="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop:'static'}">
+    <div class="modal-dialog tmss-modal-md d-flex justify-content-center">
+        <div class="modal-content">
+            <form *ngIf="active" autocomplete="off">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>{{l("Thêm mới bài đăng đấu giá")}}</span>
+                    </h4>
+                    <span (click)="close()" aria-hidden="true">&times;</span>
+                </div>
+
+                <div class="modal-body">
+                    <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+                        <div class="kt-portlet kt-portlet--mobile">
+                            <div class="kt-portlet__body">
+                                <div class="row col-12 d-flex justify-content-between">
+                                    <!-- left -->
+                                    <div class="col-7">
+                                        <div class="row mb-4">
+                                            <div class="col-12 d-flex justify-content-between align-items-center">
+                                                <div class="col-4">
+                                                    <label for="fund-name" class="label">Tên vật phẩm đấu giá:</label>
+                                                </div>
+                                                <div class="col-1">
+                                                    <i class="fa-solid fa-circle-info"></i>
+                                                </div>
+                                                <div class="col-7">
+                                                    <input type="text" class="input">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-12 d-flex justify-content-between align-items-center">
+                                                <div class="col-4">
+                                                    <label for="fund-name" class="label">Tiêu đề bài đăng:</label>
+                                                </div>
+                                                <div class="col-1">
+                                                    <i class="fa-solid fa-circle-info"></i>
+                                                </div>
+                                                <div class="col-7">
+                                                    <input type="text" [(ngModel)]="input.titleAuction" name="titleAuction" class="input">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-12 d-flex justify-content-between align-items-center">
+                                                <div class="col-4">
+                                                    <label for="fund-name" class="label">Ngày bắt đầu:</label>
+                                                </div>
+                                                <div class="col-1">
+                                                    <i class="fa-solid fa-circle-info"></i>
+                                                </div>
+                                                <div class="col-7">
+                                                    <p-calendar name="fundEndDate" [(ngModel)]="input.startDate"
+                                                        (onSelect)="onChangeDate($event,'start')"
+                                                        dateFormat="dd/mm/yy"></p-calendar>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-12 d-flex justify-content-between align-items-center">
+                                                <div class="col-4">
+                                                    <label for="fund-name" class="label">Ngày kết thúc:</label>
+                                                </div>
+                                                <div class="col-1">
+                                                    <i class="fa-solid fa-circle-info"></i>
+                                                </div>
+                                                <div class="col-7">
+                                                    <p-calendar name="fundStartDate" [(ngModel)]="input.endDate"
+                                                        (onSelect)="onChangeDate($event,'end')"
+                                                        dateFormat="dd/mm/yy"></p-calendar>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- right -->
+                                    <div class="col-5">
+                                        <div class="row mb-4 mb-4">
+                                            <div class="col-12 d-flex justify-content-between align-items-center">
+                                                <div class="col-4">
+                                                    <label for="fund-name" class="label">Mức nhỏ nhất:</label>
+                                                </div>
+                                                <div class="col-1">
+                                                    <i class="fa-solid fa-circle-info"></i>
+                                                </div>
+                                                <div class="col-7">
+                                                    <input type="number" name="amountJumpMin" [(ngModel)]="input.amountJumpMin"
+                                                        class="input">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-12 d-flex justify-content-between align-items-center">
+                                                <div class="col-4">
+                                                    <label for="fund-name" class="label">Mức lớn nhất:</label>
+                                                </div>
+                                                <div class="col-1">
+                                                    <i class="fa-solid fa-circle-info"></i>
+                                                </div>
+                                                <div class="col-7">
+                                                    <input type="number" name="amountJumpMax"  [(ngModel)]="input.amountJumpMax"
+                                                        class="input">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-12 d-flex justify-content-between align-items-center">
+                                                <div class="col-4">
+                                                    <label for="fund-name" class="label">Giá khởi điểm:</label>
+                                                </div>
+                                                <div class="col-1">
+                                                    <i class="fa-solid fa-circle-info"></i>
+                                                </div>
+                                                <div class="col-7">
+                                                    <input type="number" name="startingPrice" [(ngModel)]="input.startingPrice"
+                                                        class="input">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-12 d-flex justify-content-between align-items-center">
+                                                <div class="col-4">
+                                                    <label for="fund-name" class="label">Số lượng vật phẩm:</label>
+                                                </div>
+                                                <div class="col-1">
+                                                    <i class="fa-solid fa-circle-info"></i>
+                                                </div>
+                                                <div class="col-7">
+                                                    <input type="number" name="amount"  [(ngModel)]="input.amount" class="input">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-5 mb-5">
+                                    <div class="col-12">
+                                        <p>Giới thiệu vật phẩm:</p>
+                                        <p-editor [style]="{ height: '140px' }"></p-editor>
+                                    </div>
+                                </div>
+                                <div class="row d-flex justify-content-between mb-5">
+                                    <div class="col-5">
+                                        <form action="/upload" method="post" enctype="multipart/form-data"
+                                            class="d-flex" id="form-add-image-auction">
+                                            <input type="file" [(ngModel)]="input.file" name="images"
+                                                id="images-auction" multiple (change)="previewImages($event)">
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button [disabled]="saving" type="button" class="tmss-btn btn-outline-dark"
+                            (click)="close()">{{l("Cancel")}}</button>
+                        <button class="tmss-btn btn-outline-primary" (click)="save()">
+                            {{ l("Lưu") }}
+                            <i class="fa fa-save"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

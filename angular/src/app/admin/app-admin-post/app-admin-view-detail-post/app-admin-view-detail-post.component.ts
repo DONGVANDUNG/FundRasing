@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Injector, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Injector, OnInit, Output, ViewChild } from '@angular/core';
+import { ActivatedRoute, Route } from '@angular/router';
 import { AppConsts } from '@shared/AppConsts';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { DataDonateForFundInput, FundRaiserServiceProxy, UserServiceProxy } from '@shared/service-proxies/service-proxies';
@@ -9,7 +10,7 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
     templateUrl: './app-admin-view-detail-post.component.html',
     styleUrls: ['./app-admin-view-detail-post.component.less']
 })
-export class AppAdminViewDetailPostComponent extends AppComponentBase {
+export class AppAdminViewDetailPostComponent extends AppComponentBase implements OnInit {
     inputData: DataDonateForFundInput = new DataDonateForFundInput();
     activeIndex = 1;
     @ViewChild("viewModal", { static: true }) modal: ModalDirective;
@@ -29,7 +30,8 @@ export class AppAdminViewDetailPostComponent extends AppComponentBase {
     textButton = 'Quyên góp';
     constructor(injector: Injector,
         private _fundRaiser: FundRaiserServiceProxy,
-        private _userServiceProxy: UserServiceProxy) {
+        private _userServiceProxy: UserServiceProxy,
+        private route:ActivatedRoute) {
         super(injector)
         this.responsiveOptions = [
             {
@@ -49,14 +51,15 @@ export class AppAdminViewDetailPostComponent extends AppComponentBase {
             }
         ];
     }
+    ngOnInit(): void {
+    }
     show(fundId) {
         this.inforFundDetail = new DataDonateForFundInput;
         this.amountOfMoney = undefined;
-        this.fundId = undefined;
+        this.fundId = fundId;
         this.noteTransaction = undefined;
         this._userServiceProxy.getInforFundRaisingById(fundId).subscribe(result => {
             this.inforFundDetail = result;
-            this.fundId = fundId;
             this.imageUrl = this.baseUrl + result.listImageUrl[0];
         })
         this.modal.show();
@@ -70,15 +73,15 @@ export class AppAdminViewDetailPostComponent extends AppComponentBase {
         console.log(input);
         textLimited.textContent = `${256 - input.length} character(s) left`
     }
-    openDonateForm() {
-        if (this.activeIndex === 0) {
-            this.activeIndex = 1;
-            this.textButton = 'Quyên góp';
-        }
-        else {
-            this.activeIndex = 0
-            this.textButton = 'Hủy';
-        }
+    openDonateInterface() {
+        // if (this.activeIndex === 0) {
+        //     this.activeIndex = 1;
+        //     this.textButton = 'Quyên góp';
+        // }
+        // else {
+        //     this.activeIndex = 0
+        //     this.textButton = 'Hủy';
+        // }
     }
     donateToFund() {
         this.inputData.amountOfMoney = this.amountOfMoney;
@@ -101,14 +104,5 @@ export class AppAdminViewDetailPostComponent extends AppComponentBase {
             }
             )
         )
-    }
-    calcAmountMoney() {
-        if (!this.inforFundDetail.isPayFee) {
-            this.feeFund = this.inforFundDetail.paymenFee;
-            this.totalAmount = this.inforFundDetail.amountOfMoney + this.inforFundDetail.amountOfMoney * this.feeFund / 100
-        }
-        else {
-            this.totalAmount = this.inforFundDetail.amountOfMoney
-        }
     }
 }
