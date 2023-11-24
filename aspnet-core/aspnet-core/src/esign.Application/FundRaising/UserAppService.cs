@@ -132,7 +132,9 @@ namespace esign.FundRaising
         {
             try
             {
-                var commission = _mstSleFundRepo.FirstOrDefault(e => e.Id == input.FundId).Commission;
+                var userCreatedFundId = _mstSleFundRepo.FirstOrDefault(e => e.Id == input.FundId).FundRaiserId;
+                var fundPackageId = _mstSleUserRepo.FirstOrDefault(e => e.Id == userCreatedFundId).FundPackageId;
+                var commission = _mstSleFundPackageRepo.FirstOrDefault(e=>e.Id == fundPackageId).Commission;
 
                 //Trừ tiền người donate
                 var accountUserDonate = await _mstBankRepo.FirstOrDefaultAsync(e => e.UserId == AbpSession.UserId);
@@ -169,12 +171,12 @@ namespace esign.FundRaising
                
                 var transactionAdmin = new FundTransactions();
                 transactionAdmin.FundId = input.FundId;
-                transactionAdmin.AmountOfMoney = input.AmountOfMoney;
+                transactionAdmin.AmountOfMoney = input.AmountOfMoney * (commission / 100);
                 transactionAdmin.MessageToFund = input.NoteTransaction;
                 transactionAdmin.Commission = input.AmountOfMoney * commission / 100;
                 transactionAdmin.Receiver = "Admin";
                 transactionAdmin.Sender = userSend;
-                await _mstSleFundTransactionRepo.InsertAsync(transactionUserDonate);
+                await _mstSleFundTransactionRepo.InsertAsync(transactionAdmin);
             }
             catch (Exception ex)
             {
@@ -344,7 +346,7 @@ namespace esign.FundRaising
         }
         public async Task CreateOrEditAccountBank(InforDetailBankAcountDto input)
         {
-            if (input.Id == null)
+            if (input.Id == 0)
             {
                 var bank = new BankAccount();
                 ObjectMapper.Map(input, bank);
