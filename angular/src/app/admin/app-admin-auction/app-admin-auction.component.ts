@@ -182,7 +182,7 @@ export class AppAdminAuctionComponent extends AppComponentBase implements OnInit
     }
 
     getAll(paginationParams: PaginationParamsModel) {
-        return this._fundRaiser.getAllAuction(
+        return this._fundRaiser.getAllAuctionAdmin(
             this.sorting ?? null,
             paginationParams ? paginationParams.skipCount : 0,
             paginationParams ? paginationParams.pageSize : 20

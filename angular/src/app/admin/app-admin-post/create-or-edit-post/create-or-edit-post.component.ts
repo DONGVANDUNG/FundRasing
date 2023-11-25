@@ -52,7 +52,7 @@ export class CreateOrEditPostComponent extends AppComponentBase {
     constructor(injector: Injector, private _fundRaiser: FundRaiserServiceProxy) {
         super(injector)
     }
-    show() {
+    show(postId) {
         this.modal.show();
         this.input = {
             file: [],

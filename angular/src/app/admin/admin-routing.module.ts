@@ -43,11 +43,6 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
                         data: { permission: 'Pages.Administration.Users' },
                     },
                     {
-                        path: 'donation-success',
-                        loadChildren: () => import('./app-user-donation-success/app-user-donation-success.module').then((m) => m.AppUserDonationSuccessModule),
-                        data: { permission: 'Pages.Administration.Users' },
-                    },
-                    {
                         path: 'checkout',
                         loadChildren: () => import('./app-user-checkout/app-user-checkout.module').then((m) => m.AppUserCheckoutModule),
                         // data: { permission: 'Pages.Administration.Users' },
@@ -63,7 +58,7 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
                         data: { permission: 'Pages.Administration' },
                     },
                     {
-                        path: 'post',
+                        path: 'admin-post',
                         loadChildren: () => import('./app-admin-post/app-admin-post.module').then((m) => m.AppAdminPostModule),
                         //data: { permission: 'Pages.FundRaising' },
                     },
@@ -85,6 +80,21 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
                     {
                         path: 'auction-user',
                         loadChildren: () => import('./app-user-aution/app-user-aution.module').then((m) => m.AppUserAutionModule),
+                        //data: { permission: 'Pages.UserDonate.FundRaising' },
+                    },
+                    {
+                        path: 'auction-detail/:auctionId',
+                        loadChildren: () => import('./app-user-detail-auction/app-user-detail-auction.module').then((m) => m.AppUserDetailAuctionModule),
+                        //data: { permission: 'Pages.UserDonate.FundRaising' },
+                    },
+                    {
+                        path: 'user-post',
+                        loadChildren: () => import('./app-user-post/app-user-post.module').then((m) => m.AppUserPostModule),
+                        //data: { permission: 'Pages.UserDonate.FundRaising' },
+                    },
+                    {
+                        path: 'user-post-detail/:postId',
+                        loadChildren: () => import('./app-user-post-detail/app-user-post-detail.module').then((m) => m.AppUserPostDetailModule),
                         //data: { permission: 'Pages.UserDonate.FundRaising' },
                     },
                 ],

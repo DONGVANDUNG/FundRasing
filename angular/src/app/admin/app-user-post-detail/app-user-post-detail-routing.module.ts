@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AppUserAutionComponent } from './app-user-aution.component';
+import { AppUserPostDetailComponent } from './app-user-post-detail.component';
 
 const routes: Routes = [
     {
         path: '',
-        component: AppUserAutionComponent,
+        component: AppUserPostDetailComponent,
         pathMatch: 'full',
     },
 ];
@@ -14,4 +14,4 @@ const routes: Routes = [
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
 })
-export class AppUserAuctionRoutingModule {}
+export class AppUserPostDetailRoutingModule {}

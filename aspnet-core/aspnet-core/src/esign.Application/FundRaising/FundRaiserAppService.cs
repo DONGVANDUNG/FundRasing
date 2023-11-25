@@ -33,7 +33,6 @@ namespace esign.FundRaising
         private readonly IRepository<User, long> _mstSleUserRepo;
         private readonly IRepository<FundDetailContent, long> _mstSleDetailConentRepo;
         private readonly IRepository<UserWarning, int> _mstSleUserWarningRepo;
-        private readonly IRepository<UserAccount, int> _mstSleUserAccountRepo;
         private readonly IRepository<Auction, long> _mstAuctionRepo;
         private readonly IRepository<AuctionTransactions, long> _mstAuctionTransactionRepo;
         private readonly IRepository<AuctionImages, long> _mstAuctionImagesRepo;
@@ -47,7 +46,6 @@ namespace esign.FundRaising
             IWebHostEnvironment env,
             IRepository<FundDetailContent, long> mstSleDetailConentRepo,
             IRepository<UserWarning, int> mstSleUserWarningRepo,
-            IRepository<UserAccount, int> mstSleUserAccountRepo,
             //IRepository<FundRaiser, long> mstSleFundRaiserRepo,
             IRepository<FundImage, long> mstSleFundImageRepo,
             IRepository<Auction, long> mstAuctionRepo,
@@ -59,7 +57,6 @@ namespace esign.FundRaising
             _mstSleUserRepo = mstSleUserRepo;
             _mstSleDetailConentRepo = mstSleDetailConentRepo;
             _mstSleUserWarningRepo = mstSleUserWarningRepo;
-            _mstSleUserAccountRepo = mstSleUserAccountRepo;
             //_mstSleFundRaiserRepo = mstSleFundRaiserRepo;
             _mstSleFundImageRepo = mstSleFundImageRepo;
             _appConfiguration = env.GetAppConfiguration();
@@ -286,7 +283,7 @@ namespace esign.FundRaising
                                }).ToList();
             return listAuction;
         }
-        public async Task<PagedResultDto<GetAllAuctionDto>> getAllAuction(AuctionInputDto input)
+        public async Task<PagedResultDto<GetAllAuctionDto>> getAllAuctionAdmin(AuctionInputDto input)
         {
             var query = from auction in _mstAuctionRepo.GetAll().Where(e => AbpSession.TenantId == null || e.UserId == AbpSession.UserId)
                         select new GetAllAuctionDto
@@ -325,6 +322,29 @@ namespace esign.FundRaising
                 throw new Exception("Không tồn tại phiên đấu giá");
             }
         }
-        
+        public List<GetAllAuctionDto> getAllAuctionUser()
+        {
+            var listAuction = (from auction in _mstAuctionRepo.GetAll().Where(e => AbpSession.TenantId == null
+                               || e.UserId == AbpSession.UserId)
+                               join image in _mstAuctionImagesRepo.GetAll()
+                               on auction.Id equals image.AuctionId
+                               select new GetAllAuctionDto
+                               {
+                                   Id = auction.Id,
+                                   ItemName = auction.ItemName,
+                                   TitleAuction = auction.TitleAuction,
+                                   AmountJumpMax = auction.AmountJumpMax,
+                                   AmountJumpMin = auction.AmountJumpMin,
+                                   EndDate = auction.EndDate,
+                                   StartingPrice = auction.StartingPrice,
+                                   StartDate = auction.StartDate,
+                                   IntroduceItem = auction.IntroduceItem,
+                                   ListImage = _mstAuctionImagesRepo.GetAll().Where(e => e.AuctionId == auction.Id).Select(re => re.ImageUrl).ToList()
+                               }).ToList();
+
+
+            return listAuction;
+        }
+
     }
 }

@@ -1,11 +1,11 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { AppUserAuctionRoutingModule } from './app-user-auction-routing.module';
 import { AppUserAutionComponent } from './app-user-aution.component';
-import { AppUserBankRoutingModule } from './app-user-auction-routing.module';
 
 @NgModule({
   imports: [
-    CommonModule,AppUserBankRoutingModule
+    CommonModule,AppUserAuctionRoutingModule
   ],
   declarations: [AppUserAutionComponent]
 })

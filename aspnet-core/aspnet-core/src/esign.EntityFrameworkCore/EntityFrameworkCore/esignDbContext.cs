@@ -46,7 +46,6 @@ namespace esign.EntityFrameworkCore
         //public virtual DbSet<FundRaiser> FundRaisers { get; set; }
         public virtual DbSet<Funds> Funds { get; set; }
         public virtual DbSet<FundTransactions> FundTransactions { get; set; }
-        public virtual DbSet<UserAccount> UserAccount { get; set; }
         public virtual DbSet<UserImage> UserImages { get; set; }
         public virtual DbSet<UserWarning> UserWarning { get; set; }
         public virtual DbSet<FundDetailContent> FundDetailContents { get; set; }

@@ -32,20 +32,18 @@ namespace esign.FundRaising
         private readonly IRepository<FundRaisingTopic, int> _mstSleFundTopictRepo;
         private readonly IRepository<FundPackage, int> _mstSleFundPackageRepo;
         private readonly IRepository<User, long> _mstSleUserRepo;
-        private readonly IRepository<UserAccount, int> _mstSleUserAccountRepo;
         private readonly IRepository<FundTransactions, int> _mstSleTransactionRepo;
         private readonly IRepository<UserWarning, int> _mstSleUserWarningRepo;
         private readonly IRepository<GuestAccount, int> _mstSleGuestAccountRepo;
         private readonly IRepository<FundImage, long> _mstSleFundImageRepo;
 
 
-        public AdminFundRaisingAppService(IRepository<Funds,long> mstSleFundRepo,
+        public AdminFundRaisingAppService(IRepository<Funds, long> mstSleFundRepo,
             //IRepository<FundRaiser, long>mstSleFundRaiserRepo,
             IRepository<FundDetailContent, long> mstSleFundDetailContentRepo,
             IRepository<FundRaisingTopic, int> mstSleFundTopictRepo,
             IRepository<FundPackage, int> mstSleFundPackageRepo,
             IRepository<User, long> mstSleUserRepo,
-            IRepository<UserAccount, int> mstSleUserAccountRepo,
             IRepository<FundTransactions, int> mstSleTransactionRepo,
             IRepository<GuestAccount, int> mstSleGuestAccountRepo,
             IRepository<FundImage, long> mstSleFundImageRepo)
@@ -56,7 +54,6 @@ namespace esign.FundRaising
             _mstSleFundTopictRepo = mstSleFundTopictRepo;
             _mstSleFundPackageRepo = mstSleFundPackageRepo;
             _mstSleUserRepo = mstSleUserRepo;
-            _mstSleUserAccountRepo = mstSleUserAccountRepo;
             _mstSleTransactionRepo = mstSleTransactionRepo;
             _mstSleGuestAccountRepo = mstSleGuestAccountRepo;
             _mstSleFundImageRepo = mstSleFundImageRepo;
@@ -104,27 +101,30 @@ namespace esign.FundRaising
                 result);
         }
 
-        public async Task<List<GetFundRaisingViewForAdminDto>> getListFundRaising(FundRaisingInputDto input)
+        public async Task<PagedResultDto<GetFundRaisingViewForAdminDto>> getListFundRaising(FundRaisingInputDto input)
         {
-            var listFundRaising = (from fundRaising in _mstSleFundRepo.GetAll().Where(e => input.Filter == null || e.FundTitle.Contains(input.Filter)
+            var listFundRaising = from fundRaising in _mstSleFundRepo.GetAll().Where(e => input.Filter == null || e.FundTitle.Contains(input.Filter)
                                    || e.FundName.Contains(input.Filter))
                                    .Where(e => input.IsPayFee == null || e.IsPayFee == input.IsPayFee)
                                    .Where(e => input.CreatedDate == null || e.FundRaisingDay == input.CreatedDate)
-                                   //.Where(e=>AbpSession.TenantId == null || e.FundRaiserId == AbpSession.UserId)
-                                   select new GetFundRaisingViewForAdminDto
-                                   {
-                                       Id = (int)fundRaising.Id,
-                                       FundName = fundRaising.FundName,
-                                       FundFinishDay = fundRaising.FundRaisingDay,
-                                       FundRaisingDay = fundRaising.FundRaisingDay,
-                                       //FundRaiser = funRaiser.Name,
-                                       AmountOfMoney = fundRaising.AmountOfMoney,
-                                       Status = fundRaising.Status == 3 ? "Đã đóng" : "Đang hoạt động",
-                                       ListImageUrl = _mstSleFundImageRepo.GetAll().Where(e => e.FundId == fundRaising.Id).Select(e => e.ImageUrl).ToList(),
-                                       FundStartDate = fundRaising.FundRaisingDay,
-                                       FundTitle = fundRaising.FundTitle
-                                   }).ToListAsync();
-            return await listFundRaising;
+                                  select new GetFundRaisingViewForAdminDto
+                                  {
+                                      Id = (int)fundRaising.Id,
+                                      FundName = fundRaising.FundName,
+                                      FundFinishDay = fundRaising.FundRaisingDay,
+                                      FundRaisingDay = fundRaising.FundRaisingDay,
+                                      AmountOfMoney = fundRaising.AmountOfMoney,
+                                      Status = fundRaising.Status == 3 ? "Đã đóng" : "Đang hoạt động",
+                                      ListImageUrl = _mstSleFundImageRepo.GetAll().Where(e => e.FundId == fundRaising.Id).Select(e => e.ImageUrl).ToList(),
+                                      FundStartDate = fundRaising.FundRaisingDay,
+                                      FundTitle = fundRaising.FundTitle
+                                  };
+
+            var totalCount = await listFundRaising.CountAsync();
+            var result = await listFundRaising.PageBy(input).ToListAsync();
+            return new PagedResultDto<GetFundRaisingViewForAdminDto>(
+               totalCount,
+               result);
         }
 
         public async Task<PagedResultDto<TransactionOfFundForDto>> getListTransactionForFund(TransactionForFundInputDto input)
@@ -149,31 +149,31 @@ namespace esign.FundRaising
         }
 
 
-        public async Task<List<UserAccountForViewDto>> getListUserAccount()
-        {
-            var listAccount = (from account in _mstSleUserAccountRepo.GetAll()
-                               join user in _mstSleUserRepo.GetAll() on account.FundRaiserId equals user.Id
-                               select new UserAccountForViewDto
-                               {
-                                   Id = account.Id,
-                                   Email = user.Email,
-                                   LevelWarning = account.LevelWarning == 1 ? "Cảnh cáo" : account.LevelWarning == 2 ? "Báo động" : "Khóa",
-                                   UserName = user.UserName,
-                                   UserNameLogin = user.UserLogin
-                               }).ToListAsync();
-            return await listAccount;
-        }
+        //public async Task<List<UserAccountForViewDto>> getListUserAccount()
+        //{
+        //    var listAccount = (from account in _mstSleUserAccountRepo.GetAll()
+        //                       join user in _mstSleUserRepo.GetAll() on account.FundRaiserId equals user.Id
+        //                       select new UserAccountForViewDto
+        //                       {
+        //                           Id = account.Id,
+        //                           Email = user.Email,
+        //                           LevelWarning = account.LevelWarning == 1 ? "Cảnh cáo" : account.LevelWarning == 2 ? "Báo động" : "Khóa",
+        //                           UserName = user.UserName,
+        //                           UserNameLogin = user.UserLogin
+        //                       }).ToListAsync();
+        //    return await listAccount;
+        //}
 
-        public async void WarningAccountUser(string contentWarning, int userId)
-        {
-            var user = await _mstSleUserWarningRepo.FirstOrDefaultAsync(e => e.Id == userId);
-            var accountUser = await _mstSleUserAccountRepo.FirstOrDefaultAsync(e => e.UserId == userId);
-            accountUser.LevelWarning += 1;
-            await _mstSleUserAccountRepo.UpdateAsync(accountUser);
-            user.ContentWarning = contentWarning;
-            user.LevelWarning += 1;
-            await _mstSleUserWarningRepo.UpdateAsync(user);
-        }
+        //public async void WarningAccountUser(string contentWarning, int userId)
+        //{
+        //    var user = await _mstSleUserWarningRepo.FirstOrDefaultAsync(e => e.Id == userId);
+        //    var accountUser = await _mstSleUserAccountRepo.FirstOrDefaultAsync(e => e.UserId == userId);
+        //    accountUser.LevelWarning += 1;
+        //    await _mstSleUserAccountRepo.UpdateAsync(accountUser);
+        //    user.ContentWarning = contentWarning;
+        //    user.LevelWarning += 1;
+        //    await _mstSleUserWarningRepo.UpdateAsync(user);
+        //}
         public async Task<PagedResultDto<GetListFundPackageDto>> GetListFundPackage(FundPackageInputDto input)
         {
             var listFundPackage = from funPackage in _mstSleFundPackageRepo.GetAll().Where(e => e.Status == true)
@@ -202,7 +202,7 @@ namespace esign.FundRaising
         }
         public async Task CreateFundPackage(CreateOrEditFundPackageDto input)
         {
-            var checkExisted = _mstSleFundPackageRepo.GetAll().Where(e => e.PaymenFee == input.PaymenFee );
+            var checkExisted = _mstSleFundPackageRepo.GetAll().Where(e => e.PaymenFee == input.PaymenFee);
             if (checkExisted.Count() >= 1)
             {
                 throw new UserFriendlyException("Đã tồn tại gói quỹ");

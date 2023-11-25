@@ -17,5 +17,6 @@ namespace esign.FundRaising.UserFundRaising.Dto.Auction
         public int? StartingPrice { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
+        public List<string> ListImage { get; set; }
     }
 }
