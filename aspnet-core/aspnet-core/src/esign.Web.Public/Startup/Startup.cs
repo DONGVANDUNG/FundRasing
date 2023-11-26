@@ -19,6 +19,8 @@ using Microsoft.Extensions.Logging;
 using esign.Configuration;
 using esign.Identity;
 using esign.Web.HealthCheck;
+using esign.Web.Chat.SignalR;
+using esign.Web.Chat.SignalRNew;
 
 namespace esign.Web.Public.Startup
 {
@@ -89,6 +91,7 @@ namespace esign.Web.Public.Startup
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHub<AbpCommonHub>("/signalr");
+                endpoints.MapHub<AuctionHub>("/update-amount-auction");
 
                 endpoints.MapControllerRoute("defaultWithArea", "{area}/{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");

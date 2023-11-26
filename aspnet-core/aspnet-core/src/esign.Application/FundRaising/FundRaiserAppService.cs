@@ -23,6 +23,7 @@ using Dapper;
 using esign.FundRaising.UserFundRaising.Dto.Auction;
 using Abp.Application.Services.Dto;
 using Abp.Linq.Extensions;
+using Microsoft.AspNetCore.SignalR;
 
 namespace esign.FundRaising
 {
@@ -39,6 +40,7 @@ namespace esign.FundRaising
         ///private readonly IRepository<FundRaiser, long> _mstSleFundRaiserRepo;
         private readonly IRepository<FundImage, long> _mstSleFundImageRepo;
         private readonly IConfigurationRoot _appConfiguration;
+        private readonly IHubContext<Hub> _auctionHubContext;
         public FundRaiserAppService(IRepository<Funds, long> mstSleFundRepo,
             IRepository<FundTransactions, int> mstSleFundTransactionRepo,
             IRepository<User, long> mstSleUserRepo,
@@ -50,7 +52,8 @@ namespace esign.FundRaising
             IRepository<FundImage, long> mstSleFundImageRepo,
             IRepository<Auction, long> mstAuctionRepo,
             IRepository<AuctionTransactions, long> mstAuctionTransactionRepo,
-            IRepository<AuctionImages, long> mstAuctionImagesRepo)
+            IRepository<AuctionImages, long> mstAuctionImagesRepo,
+            IHubContext<Hub> auctionHubContext)
         {
             _mstSleFundRepo = mstSleFundRepo;
             _mstSleFundTransactionRepo = mstSleFundTransactionRepo;
@@ -64,6 +67,7 @@ namespace esign.FundRaising
             _mstAuctionRepo = mstAuctionRepo;
             _mstAuctionTransactionRepo = mstAuctionTransactionRepo;
             _mstAuctionImagesRepo = mstAuctionImagesRepo;
+            _auctionHubContext = auctionHubContext;
         }
         public async Task CloseFundRaising(int fundId)
         {
@@ -265,7 +269,11 @@ namespace esign.FundRaising
             if (auction != null)
             {
                 auction.AuctionPresentAmount = input.AmountAuction;
+                AuctionHub auctionHub = new AuctionHub();
+                auctionHub.UpdateAmountOfAuction((float)auction.AuctionPresentAmount);
             }
+
+            await _mstAuctionRepo.UpdateAsync(auction);
             auctionTransaction.NewAmount = auction.AuctionPresentAmount;
             auctionTransaction.AuctionId = input.AuctionId;
             auctionTransaction.AuctionDate = DateTime.Now;
