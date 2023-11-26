@@ -21,5 +21,6 @@ namespace esign.Enitity
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public float? AuctionPresentAmount { get; set; }
+        public bool? IsPublic { get; set; }
     }
 }

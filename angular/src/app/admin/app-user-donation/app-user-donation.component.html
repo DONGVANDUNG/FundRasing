@@ -1,4 +1,17 @@
 <div class="donation">
+    <div class="block-image-fund d-flex justify-content-between">
+        <img [src]="imageUrl" class="image-fund" alt="" />
+        <div class="block-content-fund">
+            <p><span>Tiêu đề quỹ:&nbsp;</span>{{this.inforFundDetail?.titleFund}}</p>
+            <!-- <p><span>Lý do gây quỹ:&nbsp;</span>{{this.inforFundDetail?.reasonOfFund}}</p> -->
+            <p><span>Người tạo quỹ:&nbsp;&nbsp;</span>{{this.inforFundDetail?.created}}</p>
+            <p><span>Trả phí:&nbsp;&nbsp;</span>{{this.inforFundDetail?.isPayFee}}</p>
+            <p><span>Ngày tạo quỹ:&nbsp;&nbsp;</span> {{this.inforFundDetail?.fundRaisingDay}}</p>
+            <p><span>Ngày kết thúc:&nbsp;&nbsp;</span>{{this.inforFundDetail?.finishFundRaising}}</p>
+            <p><span>Số tiền donate tối thiểu:&nbsp;&nbsp;</span>{{this.inforFundDetail?.amountOfMoney}} USD</p>
+            <p><span>Tổng tiền donate:&nbsp;</span>{{this.inforFundDetail?.titleFund}}</p>
+        </div>
+    </div>
     <p-accordion [activeIndex]="activeIndex" class="w-full">
         <p-accordionTab>
             <ng-template pTemplate="content">
@@ -34,24 +47,24 @@
     <div class="block-transaction">
         <h4 class="mt-5 mb-5">Danh sách người gây quỹ gần đây</h4>
         <table style="width:100%">
-                <thead>
-                    <tr>
-                        <th>Tên quỹ</th>
-                        <th>Người quyên góp</th>
-                        <th>Số coin</th>
-                        <th>Nội dung</th>
-                        <th>Ngày quyên góp</th>
-                    </tr>
-                </thead>
-                <tbody *ngFor="let transaction of listTransaction">
-                    <tr>
-                        <td>{{transaction.fundName}}</td>
-                        <td>{{transaction.isPublic == true ? transaction.sender : "Anonymous"}}</td>
-                        <td>{{transaction.amount}}</td>
-                        <td>{{transaction.content}}</td>
-                        <td>{{transaction.createdTime}}</td>
-                    </tr>
-                </tbody>
+            <thead>
+                <tr>
+                    <th>Tên quỹ</th>
+                    <th>Người quyên góp</th>
+                    <th>Số coin</th>
+                    <th>Nội dung</th>
+                    <th>Ngày quyên góp</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let transaction of listTransaction">
+                <tr>
+                    <td>{{transaction.fundName}}</td>
+                    <td>{{transaction.isPublic == true ? transaction.sender : "Anonymous"}}</td>
+                    <td>{{transaction.amount}}</td>
+                    <td>{{transaction.content}}</td>
+                    <td>{{transaction.createdTime}}</td>
+                </tr>
+            </tbody>
         </table>
     </div>
 </div>

@@ -117,7 +117,8 @@ namespace esign.FundRaising
                                       Status = fundRaising.Status == 3 ? "Đã đóng" : "Đang hoạt động",
                                       ListImageUrl = _mstSleFundImageRepo.GetAll().Where(e => e.FundId == fundRaising.Id).Select(e => e.ImageUrl).ToList(),
                                       FundStartDate = fundRaising.FundRaisingDay,
-                                      FundTitle = fundRaising.FundTitle
+                                      FundTitle = fundRaising.FundTitle,
+                                      Unit = "Coin"
                                   };
 
             var totalCount = await listFundRaising.CountAsync();

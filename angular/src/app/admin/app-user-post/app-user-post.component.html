@@ -9,7 +9,7 @@
     dateFormat="dd/mm/yy" placeholder="Ngày tạo quỹ"></p-calendar>
 </div>
 <div class="list-fund-raising">
-    <div *ngFor="let item of listFundRaising" class="content-item-fund" [routerLink]="['../user-post-detail',item.id]">
+    <div *ngFor="let item of listFundRaising" class="content-item-fund" [routerLink]="['../donation',item.id]">
         <img [src]="baseUrl + item.listImageUrl[0]" alt="" class="image-fund">
         <div class="description-fund">
             <p class="fund-title">{{item.fundTitle}}</p>

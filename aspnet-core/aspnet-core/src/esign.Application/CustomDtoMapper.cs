@@ -174,6 +174,7 @@ namespace esign
             configuration.CreateMap<User, InforDetailBankAcountDto>().ReverseMap();
             configuration.CreateMap<BankAccount, InforDetailBankAcountDto>().ReverseMap();
             configuration.CreateMap<Auction, CreateOrEditAuctionInputDto>().ReverseMap();
+            configuration.CreateMap<Auction, GetAllAuctionDto>().ReverseMap();
             //configuration.CreateMap<RegisterInforFundRaiserDto, FundRaiser>().ReverseMap();
         }
     }

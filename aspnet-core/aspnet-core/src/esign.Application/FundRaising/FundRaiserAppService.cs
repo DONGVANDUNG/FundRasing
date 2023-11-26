@@ -216,6 +216,7 @@ namespace esign.FundRaising
                 {
                     Auction auction = new Auction();
                     ObjectMapper.Map(input, auction);
+                    auction.UserId = AbpSession.UserId;
                     var auctionId = await _mstAuctionRepo.InsertAndGetIdAsync(auction);
                     if (input.File.Count() > 0)
                     {
@@ -257,6 +258,10 @@ namespace esign.FundRaising
             var auction = _mstAuctionRepo.FirstOrDefault(e => e.Id == input.AuctionId);
             var auctionTransaction = new AuctionTransactions();
             auctionTransaction.OldAmount = auction.AuctionPresentAmount != null ? auction.AuctionPresentAmount : auction.StartingPrice;
+            if(input.AmountAuction < auction.AuctionPresentAmount || input.AmountAuction > auction.AuctionPresentAmount + auction.AmountJumpMax)
+            {
+                throw new UserFriendlyException("Mức đấu thầu không hợp lệ");
+            }
             if (auction != null)
             {
                 auction.AuctionPresentAmount = input.AmountAuction;
@@ -295,7 +300,7 @@ namespace esign.FundRaising
                             AmountJumpMin = auction.AmountJumpMin,
                             EndDate = auction.EndDate,
                             StartingPrice = auction.StartingPrice,
-                            StartDate = auction.StartDate,
+                            StartDate = (DateTime)auction.StartDate,
                             IntroduceItem = auction.IntroduceItem,
                         };
 
@@ -337,7 +342,7 @@ namespace esign.FundRaising
                                    AmountJumpMin = auction.AmountJumpMin,
                                    EndDate = auction.EndDate,
                                    StartingPrice = auction.StartingPrice,
-                                   StartDate = auction.StartDate,
+                                   StartDate = (DateTime)auction.StartDate,
                                    IntroduceItem = auction.IntroduceItem,
                                    ListImage = _mstAuctionImagesRepo.GetAll().Where(e => e.AuctionId == auction.Id).Select(re => re.ImageUrl).ToList()
                                }).ToList();
@@ -345,6 +350,18 @@ namespace esign.FundRaising
 
             return listAuction;
         }
-
+        public GetAllAuctionDto getAuctionById(long? auctionId)
+        {
+            var auction =_mstAuctionRepo.FirstOrDefault(e => e.Id == auctionId);
+            var auctionResult = new GetAllAuctionDto();
+            ObjectMapper.Map(auction, auctionResult);
+            auctionResult.ListImage = _mstAuctionImagesRepo.GetAll().Where(e=>e.AuctionId == auctionId).Select(re=>re.ImageUrl).ToList();
+            auctionResult.NextMaximumBid = auctionResult.AuctionPresentAmount + auction.AmountJumpMax;
+            auctionResult.NextMinimumBid = auctionResult.AuctionPresentAmount + auction.AmountJumpMin;
+            TimeSpan timeSpan = DateTime.Now - auctionResult.StartDate;
+            auctionResult.TimeLeft = (int?)timeSpan.TotalDays;
+            auctionResult.UserName = _mstSleUserRepo.FirstOrDefault(e=>e.Id == auction.UserId).UserName;
+            return auctionResult;
+        }
     }
 }

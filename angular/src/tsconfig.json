@@ -1,5 +1,6 @@
 ﻿{
   "compilerOptions": {
+   "noPropertyAccessFromIndexSignature": false,
     "declaration": false,
     "experimentalDecorators": true,
     "lib": ["es6", "dom"],

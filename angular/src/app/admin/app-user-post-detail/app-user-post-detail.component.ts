@@ -34,47 +34,34 @@ export class AppUserPostDetailComponent extends AppComponentBase implements OnIn
       private _userServiceProxy: UserServiceProxy,
       private route:ActivatedRoute) {
       super(injector)
-      this.responsiveOptions = [
-          {
-              breakpoint: '1199px',
-              numVisible: 1,
-              numScroll: 1
-          },
-          {
-              breakpoint: '991px',
-              numVisible: 2,
-              numScroll: 1
-          },
-          {
-              breakpoint: '767px',
-              numVisible: 1,
-              numScroll: 1
-          }
-      ];
   }
   ngOnInit(): void {
-    this.postId = this.route.snapshot.params['fundId'];
+    this.postId = this.route.snapshot.params['postId'];
+    this._userServiceProxy.getInforFundRaisingById(this.postId).subscribe(result => {
+        this.inforFundDetail = result;
+        this.imageUrl = this.baseUrl + result.listImageUrl[0];
+    })
   }
-  show(fundId) {
-      this.inforFundDetail = new DataDonateForFundInput;
-      this.amountOfMoney = undefined;
-      this.fundId = fundId;
-      this.noteTransaction = undefined;
-      this._userServiceProxy.getInforFundRaisingById(fundId).subscribe(result => {
-          this.inforFundDetail = result;
-          this.imageUrl = this.baseUrl + result.listImageUrl[0];
-      })
-      this.modal.show();
-  }
-  close() {
-      this.modal.hide();
-  }
-  limitedCharacter() {
-      var input = document.querySelector<HTMLInputElement>('.input-content-donation').value;
-      var textLimited = document.querySelector<HTMLElement>('.note-input');
-      console.log(input);
-      textLimited.textContent = `${256 - input.length} character(s) left`
-  }
+//   show(fundId) {
+//       this.inforFundDetail = new DataDonateForFundInput;
+//       this.amountOfMoney = undefined;
+//       this.fundId = fundId;
+//       this.noteTransaction = undefined;
+//       this._userServiceProxy.getInforFundRaisingById(fundId).subscribe(result => {
+//           this.inforFundDetail = result;
+//           this.imageUrl = this.baseUrl + result.listImageUrl[0];
+//       })
+//       this.modal.show();
+//   }
+//   close() {
+//       this.modal.hide();
+//   }
+//   limitedCharacter() {
+//       var input = document.querySelector<HTMLInputElement>('.input-content-donation').value;
+//       var textLimited = document.querySelector<HTMLElement>('.note-input');
+//       console.log(input);
+//       textLimited.textContent = `${256 - input.length} character(s) left`
+//   }
   openDonateInterface() {
       // if (this.activeIndex === 0) {
       //     this.activeIndex = 1;

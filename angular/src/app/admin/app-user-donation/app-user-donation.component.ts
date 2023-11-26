@@ -1,5 +1,6 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
+import { AppConsts } from '@shared/AppConsts';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { DataDonateForFundInput, FundRaiserServiceProxy, TransactionOfFundForDto, UserServiceProxy } from '@shared/service-proxies/service-proxies';
 
@@ -14,6 +15,9 @@ export class AppUserDonationComponent extends AppComponentBase implements OnInit
     amountOfMoney;
     noteTransaction;
     activeIndex = 0;
+    inforFundDetail;
+    imageUrl;
+    baseUrl = AppConsts.remoteServiceBaseUrl + '/';
     listTransaction : TransactionOfFundForDto[] = []
     inputData: DataDonateForFundInput = new DataDonateForFundInput();
     constructor(injector: Injector,
@@ -29,6 +33,10 @@ export class AppUserDonationComponent extends AppComponentBase implements OnInit
         this.noteTransaction = undefined;
         this._fundRaiser.getListTransactionForFund(this.fundId).subscribe(result=>{
             this.listTransaction = result;
+        })
+        this._userServiceProxy.getInforFundRaisingById(this.fundId).subscribe(result => {
+            this.inforFundDetail = result;
+            this.imageUrl = this.baseUrl + result.listImageUrl[0];
         })
     }
 
@@ -51,7 +59,7 @@ export class AppUserDonationComponent extends AppComponentBase implements OnInit
             () => {
                 this.notify.success("Quyên góp thành công");
                 this.isLoading = false;
-                this.router.navigateByUrl('/admin/post');
+                this.router.navigateByUrl('app/admin/user-post');
             },
             (error => {
                 this.notify.error(error);

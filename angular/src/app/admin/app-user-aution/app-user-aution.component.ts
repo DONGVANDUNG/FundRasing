@@ -1,4 +1,5 @@
 import { Component, Injector, OnInit } from '@angular/core';
+import { AppConsts } from '@shared/AppConsts';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { FundRaiserServiceProxy, GetAllAuctionDto, UserServiceProxy } from '@shared/service-proxies/service-proxies';
 
@@ -9,6 +10,7 @@ import { FundRaiserServiceProxy, GetAllAuctionDto, UserServiceProxy } from '@sha
 })
 export class AppUserAutionComponent extends AppComponentBase implements OnInit {
     dataAution = [];
+    baseUrl = AppConsts.remoteServiceBaseUrl + '/';
     constructor(injector: Injector, private _userServiceProxy: UserServiceProxy,
         private _fundRaiser:FundRaiserServiceProxy) {
         super(injector);

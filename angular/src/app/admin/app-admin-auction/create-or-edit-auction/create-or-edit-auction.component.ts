@@ -81,7 +81,7 @@ export class CreateOrEditAuctionComponent extends AppComponentBase implements On
         console.log(123)
         this.active = true;
         this._fundRaiser.createOrEditAuction(
-            null,
+            0,
             this.input.file,
             this.input.titleAuction,
             this.input.itemName,
@@ -110,7 +110,7 @@ export class CreateOrEditAuctionComponent extends AppComponentBase implements On
         for (let index = 0; index < event.target.files.length; index++) {
             this.input.file.push({ data: event.target.files[index], fileName: event.target.files[index].name })
         }
-        const preview = document.querySelector<HTMLInputElement>('#form-add-image-auction');
+        const preview = document.querySelector<HTMLElement>('#form-add-image-auction');
         const input = document.querySelector<HTMLInputElement>('#images-auction');
         var blockImageExisted = document.querySelector<HTMLElement>(".block-image-auction")
         if (input.files) {
