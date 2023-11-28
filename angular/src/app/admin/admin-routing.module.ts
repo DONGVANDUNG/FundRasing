@@ -97,6 +97,11 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
                         loadChildren: () => import('./app-user-post-detail/app-user-post-detail.module').then((m) => m.AppUserPostDetailModule),
                         //data: { permission: 'Pages.UserDonate.FundRaising' },
                     },
+                    {
+                        path: 'request-to-fundraiser',
+                        loadChildren: () => import('./app-admin-request-to-fundraiser/app-admin-request-to-fundraiser.module').then((m) => m.AppAdminRequestToFundraiserModule),
+                        //data: { permission: 'Pages.UserDonate.FundRaising' },
+                    },
                 ],
             },
         ]),

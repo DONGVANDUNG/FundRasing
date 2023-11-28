@@ -1,5 +1,6 @@
 ﻿using esign.FundRaising.Admin.Dto;
 using esign.FundRaising.FundRaiserService.Dto;
+using esign.FundRaising.UserFundRaising.Dto.Auction;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -36,6 +37,7 @@ namespace esign.FundRaising.FundRaiserService
         //Task UpdateImageUrlForFund(string imageUrl, int fundId);
 
         Task UpdateFundRaising(CreateOrEditFundRaisingDto input);
+        Task UserAuction(UserAuction input);
 
     }
 }

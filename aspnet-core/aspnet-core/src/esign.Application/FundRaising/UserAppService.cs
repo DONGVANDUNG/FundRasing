@@ -43,6 +43,7 @@ namespace esign.FundRaising
         private readonly IRepository<User, long> _mstSleUserRepo;
         private readonly IRepository<FundImage, long> _mstSleFundImageRepo;
         private readonly IRepository<BankAccount, long> _mstBankRepo;
+        private readonly IRepository<RequestToFundRaiser, long> _mstRequestToFundRaiserRepo;
         private readonly IConfigurationRoot _appConfiguration;
 
 
@@ -311,7 +312,13 @@ namespace esign.FundRaising
                 user.Country = input.Country;
                 user.Phone = input.Phone;
                 user.FundPackageId = 1;
-                user.TypeUser = 3;
+                //user.TypeUser = 3;
+                RequestToFundRaiser request = new RequestToFundRaiser();
+                request.UserId = AbpSession.UserId;
+                request.RequestTime = DateTime.Now;
+                request.IsApprove = false;
+                await _mstRequestToFundRaiserRepo.InsertAsync(request);
+
                 await _mstSleUserRepo.UpdateAsync(user);
                 using (SqlConnection connection = new SqlConnection(_appConfiguration.GetConnectionString("Default")))
                 {

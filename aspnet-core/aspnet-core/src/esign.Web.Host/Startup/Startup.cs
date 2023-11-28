@@ -45,6 +45,9 @@ using Owl.reCAPTCHA;
 using HealthChecksUISettings = HealthChecks.UI.Configuration.Settings;
 using Microsoft.AspNetCore.Server.Kestrel.Https;
 using esign.Web.MultiTenancy;
+using Microsoft.AspNetCore.SignalR;
+using esign.Web.Chat.SignalRNew;
+using esign.FundRaising.SendEmail;
 
 namespace esign.Web.Startup
 {
@@ -155,6 +158,8 @@ namespace esign.Web.Startup
             {
                 ConfigureHealthChecks(services);
             }
+            services.AddTransient<ISendEmail,SendEmailAppService>();
+            services.AddControllersWithViews();
             var a = _appConfiguration.GetConnectionString("Default");
             //Configure Abp and Dependency Injection
             return services.AddAbp<esignWebHostModule>(options =>
@@ -250,6 +255,7 @@ namespace esign.Web.Startup
             {
                 endpoints.MapHub<AbpCommonHub>("/signalr");
                 endpoints.MapHub<ChatHub>("/signalr-chat");
+                endpoints.MapHub<AuctionHub>("/update-amount-auction");
 
                 endpoints.MapControllerRoute("defaultWithArea", "{area}/{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");

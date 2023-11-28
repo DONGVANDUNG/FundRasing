@@ -92,6 +92,7 @@ namespace esign.Web.Public.Startup
             {
                 endpoints.MapHub<AbpCommonHub>("/signalr");
                 endpoints.MapHub<AuctionHub>("/update-amount-auction");
+                endpoints.MapHub<ChatHub>("/signalr-chat");
 
                 endpoints.MapControllerRoute("defaultWithArea", "{area}/{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");

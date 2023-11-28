@@ -24,6 +24,7 @@ using esign.FundRaising.UserFundRaising.Dto.Auction;
 using Abp.Application.Services.Dto;
 using Abp.Linq.Extensions;
 using Microsoft.AspNetCore.SignalR;
+using Abp.RealTime;
 
 namespace esign.FundRaising
 {
@@ -40,7 +41,6 @@ namespace esign.FundRaising
         ///private readonly IRepository<FundRaiser, long> _mstSleFundRaiserRepo;
         private readonly IRepository<FundImage, long> _mstSleFundImageRepo;
         private readonly IConfigurationRoot _appConfiguration;
-        private readonly IHubContext<Hub> _auctionHubContext;
         public FundRaiserAppService(IRepository<Funds, long> mstSleFundRepo,
             IRepository<FundTransactions, int> mstSleFundTransactionRepo,
             IRepository<User, long> mstSleUserRepo,
@@ -52,8 +52,7 @@ namespace esign.FundRaising
             IRepository<FundImage, long> mstSleFundImageRepo,
             IRepository<Auction, long> mstAuctionRepo,
             IRepository<AuctionTransactions, long> mstAuctionTransactionRepo,
-            IRepository<AuctionImages, long> mstAuctionImagesRepo,
-            IHubContext<Hub> auctionHubContext)
+            IRepository<AuctionImages, long> mstAuctionImagesRepo)
         {
             _mstSleFundRepo = mstSleFundRepo;
             _mstSleFundTransactionRepo = mstSleFundTransactionRepo;
@@ -67,7 +66,6 @@ namespace esign.FundRaising
             _mstAuctionRepo = mstAuctionRepo;
             _mstAuctionTransactionRepo = mstAuctionTransactionRepo;
             _mstAuctionImagesRepo = mstAuctionImagesRepo;
-            _auctionHubContext = auctionHubContext;
         }
         public async Task CloseFundRaising(int fundId)
         {
@@ -138,6 +136,13 @@ namespace esign.FundRaising
                 throw new UserFriendlyException("Error uploading file");
             }
         }
+        //public async Task<CreateOrEditFundRaisingInputDto> getFundRaisingForEdit(long fundId)
+        //{
+        //    var fundRaising = _mstSleFundRepo.FirstOrDefault(e => e.Id == fundId);
+        //    CreateOrEditFundRaisingInputDto fundResult = new CreateOrEditFundRaisingInputDto();
+        //    ObjectMapper.Map(fundRaising, fundResult);
+        //    fundResult.List
+        //}
 
         public async Task UpdateFundRaising(CreateOrEditFundRaisingDto input)
         {
@@ -269,8 +274,6 @@ namespace esign.FundRaising
             if (auction != null)
             {
                 auction.AuctionPresentAmount = input.AmountAuction;
-                AuctionHub auctionHub = new AuctionHub();
-                auctionHub.UpdateAmountOfAuction((float)auction.AuctionPresentAmount);
             }
 
             await _mstAuctionRepo.UpdateAsync(auction);
@@ -338,7 +341,7 @@ namespace esign.FundRaising
         public List<GetAllAuctionDto> getAllAuctionUser()
         {
             var listAuction = (from auction in _mstAuctionRepo.GetAll().Where(e => AbpSession.TenantId == null
-                               || e.UserId == AbpSession.UserId)
+                               || e.UserId != AbpSession.UserId)
                                join image in _mstAuctionImagesRepo.GetAll()
                                on auction.Id equals image.AuctionId
                                select new GetAllAuctionDto

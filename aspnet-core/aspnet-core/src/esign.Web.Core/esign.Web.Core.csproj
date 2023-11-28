@@ -64,5 +64,9 @@
 	  <ProjectReference Include="..\esign.EntityFrameworkCore\esign.EntityFrameworkCore.csproj" />
 	  <ProjectReference Include="..\esign.GraphQL\esign.GraphQL.csproj" />
 	</ItemGroup>
+	
+	<ItemGroup>
+	  <Folder Include="Chat\SignalRNew\" />
+	</ItemGroup>
 
 </Project>

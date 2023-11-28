@@ -8,6 +8,8 @@ using esign.Entity;
 using esign.FundRaising.Admin;
 using esign.FundRaising.Admin.Dto;
 using esign.FundRaising.FundRaiserService.Dto;
+using esign.FundRaising.SendEmail;
+using esign.FundRaising.SendEmail.Dto;
 using esign.FundRaising.UserFundRaising.Dto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -36,6 +38,8 @@ namespace esign.FundRaising
         private readonly IRepository<UserWarning, int> _mstSleUserWarningRepo;
         private readonly IRepository<GuestAccount, int> _mstSleGuestAccountRepo;
         private readonly IRepository<FundImage, long> _mstSleFundImageRepo;
+        private readonly IRepository<RequestToFundRaiser, long> _mstRequestToFundraiserRepo;
+        private readonly ISendEmail _sendEmail;
 
 
         public AdminFundRaisingAppService(IRepository<Funds, long> mstSleFundRepo,
@@ -46,7 +50,9 @@ namespace esign.FundRaising
             IRepository<User, long> mstSleUserRepo,
             IRepository<FundTransactions, int> mstSleTransactionRepo,
             IRepository<GuestAccount, int> mstSleGuestAccountRepo,
-            IRepository<FundImage, long> mstSleFundImageRepo)
+            IRepository<FundImage, long> mstSleFundImageRepo,
+            IRepository<RequestToFundRaiser, long> mstRequestToFundraiserRepo,
+            ISendEmail sendEmail)
         {
             _mstSleFundRepo = mstSleFundRepo;
             //_mstSleFundRaiserRepo = mstSleFundRaiserRepo;
@@ -57,6 +63,8 @@ namespace esign.FundRaising
             _mstSleTransactionRepo = mstSleTransactionRepo;
             _mstSleGuestAccountRepo = mstSleGuestAccountRepo;
             _mstSleFundImageRepo = mstSleFundImageRepo;
+            _mstRequestToFundraiserRepo = mstRequestToFundraiserRepo;
+            _sendEmail = sendEmail;
         }
 
         public async Task<TransactionOfFundForDto> getInforTransactionById(int transactionId)
@@ -276,6 +284,44 @@ namespace esign.FundRaising
                 totalCount,
                 await guestAccount.PageBy(input).ToListAsync()
                 );
+        }
+        public async Task<PagedResultDto<GetAllRequestToFundRaiserDto>> getAllRequestToFundRaiser(RequestToFundRaiserInputDto input)
+        {
+            var listRequest = from request in _mstRequestToFundraiserRepo.GetAll()
+                              join user in _mstSleUserRepo.GetAll() on request.UserId equals user.Id
+                              select new GetAllRequestToFundRaiserDto
+                              {
+                                  Id = request.Id,
+                                  UserId = user.Id,
+                                  RequestTime = request.RequestTime,
+                                  UserName = user.UserName,
+                                  IsApprove = request.IsApprove
+                              };
+            var totalCount = await listRequest.CountAsync();
+            return new PagedResultDto<GetAllRequestToFundRaiserDto>(
+                totalCount,
+                await listRequest.PageBy(input).ToListAsync()
+                );
+        }
+        public async Task ApproveFundRaiser(long userId)
+        {
+            var user = await _mstSleUserRepo.FirstOrDefaultAsync(e => e.Id == userId);
+            if(user!= null)
+            {
+                user.TypeUser = 3;
+                await _mstSleUserRepo.UpdateAsync(user);
+                var request = await _mstRequestToFundraiserRepo.FirstOrDefaultAsync(e => e.UserId == userId);
+                request.IsApprove = true;
+                await _mstRequestToFundraiserRepo.UpdateAsync(request);
+
+                SendEmailInputDto sendEmailInput = new SendEmailInputDto {
+                        EmailReceive = user.EmailAddress,
+                        Body = "Xin chúc mừng bạn đã trở thành người gây quỹ trên hệ thống của chúng tôi, bạn có thể bắt đầu ngay vào việc gây quỹ.",
+                        Subject = "Thông báo trở thành người gây quỹ",
+                };
+                _sendEmail.SendEmail(sendEmailInput);
+            }
+
         }
     }
 }
