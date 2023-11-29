@@ -80,4 +80,30 @@ export class UserViewHomeComponent extends AppComponentBase {
             );
         }
     }
+    changeBanner(index){
+        var banner = document.querySelectorAll('.circle-img')
+        var backgroundBanner = document.querySelector('.home-banner')
+        var bannerTitle = document.querySelector<HTMLElement>('.banner-title')
+        var bannerContent = document.querySelector<HTMLElement>('.banner-content')
+
+        var bannerClasses = ['banner1', 'banner2', 'banner3'];
+         backgroundBanner.classList.remove(...bannerClasses);
+
+         if (index >= 1 && index <= bannerClasses.length) {
+            backgroundBanner.classList.add(bannerClasses[index - 1]);
+        }
+
+        var circleImgs = document.querySelectorAll<HTMLElement>('.circle-img');
+        circleImgs.forEach((circleImg, i) => {
+            circleImg.style.backgroundColor = i + 1 === index ? '#F9153E' : 'grey';
+        });
+
+        bannerTitle.classList.add('zoomOutAnimation');
+        bannerContent.classList.add('zoomOutAnimation');
+       
+        setTimeout(() => {
+            bannerTitle.classList.remove('zoomOutAnimation');
+            bannerContent.classList.remove('zoomOutAnimation');
+        }, 1000);
+    }
 }

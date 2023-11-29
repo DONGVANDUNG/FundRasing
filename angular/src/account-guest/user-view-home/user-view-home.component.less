@@ -1522,27 +1522,90 @@ form.form div.submit input {
         height: 450px;
         border-bottom: 1px solid #000;
         flex-direction: column;
-        background-color: #666;
+        background-size: 100%;
+        background-position: bottom right;
+        background-repeat: no-repeat;
+        position: relative;
 
         .banner-title {
             height: 100px;
+            transform: scale(1);
 
             p {
                 color: white;
                 background-color: #ed1651;
                 padding: 5px 20px 5px 20px;
                 font-family: @font;
+                animation: zoomOut 1s;
             }
         }
 
         .banner-content {
+
             h3 {
+                transform: scale(1);
                 color: white;
                 font-size: 4rem;
                 font-family: @font;
                 text-align: center;
+                animation: zoomOut 1s;
+            }
+
+
+        }
+
+        .scene {
+            justify-content: center;
+            position: absolute;
+            bottom: 10px;
+
+            .circle-img1 {
+                background-color: #F9153E;
+            }
+
+            .circle-img1,
+            .circle-img2,
+            .circle-img3 {
+                width: 10px;
+                height: 10px;
+                border-radius: 100%;
+                margin: 0 6px;
+                display: inline-block;
+                zoom: 1;
+                cursor: pointer;
+            }
+
+            .circle-img2,
+            .circle-img3 {
+                background-color: #9ea3a2;
+
+            }
+
+            .circle-img1.banner1,
+            .circle-img2.banner2,
+            .circle-img3.banner3 {
+                background-color: #F9153E;
             }
         }
+
+        .zoomOutAnimation{
+            animation: zoomOut 1s;
+        }
+    }
+
+    .banner1 {
+        background-image: url('/assets/common/images/banner.jpg');
+        animation: fadeOpacity 1s;
+    }
+
+    .banner2 {
+        background-image: url('/assets/common/images/banner2.jpg');
+        animation: fadeOpacity 1s;
+    }
+
+    .banner3 {
+        background-image: url('/assets/common/images/banner3.jpg');
+        animation: fadeOpacity 1s;
     }
 
     .home-raising-funds {
@@ -1689,8 +1752,12 @@ form.form div.submit input {
 
     .home-widget-statistic {
         height: 350px;
-        background-color: rgb(145, 145, 145);
         flex-direction: column;
+        background-image: url('/assets/common/images/hand.jpg');
+        background-size: 100%;
+        background-position: center;
+        background-repeat: no-repeat;
+        filter: saturate(0.5);
 
         h2 {
             font-family: 'Roboto', sans-serif;
@@ -1725,17 +1792,20 @@ form.form div.submit input {
                 span:last-child {
                     font-weight: 900;
                     margin-top: 10px;
-                    font-size: 2rem;
+                    font-size: 3rem;
                 }
             }
         }
     }
 
     .home-give-now {
+        background-color: white;
         height: 500px;
         padding: 50px 0px 30px 0px;
 
-        .give-now-logo {}
+        .give-now-logo {
+            text-align: right;
+        }
 
         .what-give-now {
             h2 {
@@ -1749,11 +1819,12 @@ form.form div.submit input {
                 padding-right: 30%
             }
 
-            ;
+
         }
     }
 
     .home-partner {
+        background-color: white;
         height: 300px;
         flex-direction: column;
 
@@ -1765,7 +1836,7 @@ form.form div.submit input {
         }
 
         .list-partner {
-            padding: 0 10px;
+            padding: 0 100px;
             justify-content: space-between;
 
             li {
@@ -1778,6 +1849,10 @@ form.form div.submit input {
         height: 500px;
         background-color: rgb(157, 157, 157);
         flex-direction: column;
+        background-image: url('/assets/common/images/detail.jpg');
+        background-size: 100%;
+        background-position: center;
+        background-repeat: no-repeat;
 
         .wraper-list {
             flex-direction: column;
@@ -1846,4 +1921,24 @@ form.form div.submit input {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+@keyframes fadeOpacity {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes zoomOut {
+    from {
+        transform: scale(1.5);
+    }
+
+    to {
+        transform: scale(1);
+    }
 }

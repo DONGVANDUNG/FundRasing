@@ -15,10 +15,11 @@
     </div> -->
     <div class="row pt-3 pb-3 pl-3 h-100 bg-white d-flex justify-content-between">
       <div class="col-7 col-md-7 col-lg-6 top-logo my-auto d-flex justify-content-between">
-        <a onclick="trackAction('goToHome', 'Logo')" href="/us/"><img
+        <!-- <a onclick="trackAction('goToHome', 'Logo')" href="/us/"><img
             src="https://x3f3b2w2.stackpathcdn.com/wp-content/uploads/assets/logo-with-b-corp.png"
             data-src="https://x3f3b2w2.stackpathcdn.com/wp-content/uploads/assets/logo-with-b-corp.png" width="200"
-            class="ml-17 img-fluid lazy loaded" alt="" data-was-processed="true"></a>
+            class="ml-17 img-fluid lazy loaded" alt="" data-was-processed="true"></a> -->
+        <a href="/assets/common/images/logo.jpg"></a>
         <ul class="list-navigation d-flex">
           <li class="item-nav" (click)="redirectLink(1)">Trang chủ</li>
           <li class="item-nav" (click)="redirectLink(2)">Dự án</li>
@@ -35,13 +36,18 @@
     </div>
   </header>
   <div id="main-body" class="body-home-guest">
-    <div class="home-banner w-100 ">
+    <div class="home-banner banner1 w-100 ">
       <div class="banner-title w-75">
         <p>Nền tảng gây quỹ cộng đồng trực tuyến</p>
       </div>
       <div class="banner-content w-75">
         <h3>Kết nối gây quỹ và ủng hộ trực tuyến tiện lợi, tin cậy và minh bạch</h3>
       </div>
+      <div class="scene w-50 d-flex">
+        <div class="circle-img circle-img1" (click)="changeBanner(1)"></div>
+        <div class="circle-img circle-img2" (click)="changeBanner(2)"></div>
+        <div class="circle-img circle-img3" (click)="changeBanner(3)"></div>
+    </div>
     </div>
     <div class="home-raising-funds w-100">
       <div class="raising-funds-title">
@@ -66,7 +72,7 @@
                   <span>18.1295</span>
                   <span>50%</span>
                 </div>
-                <p>với mục tiêu 24.000.000đ</p> 
+                <p>với mục tiêu 24.000.000đ</p>
               </div>
             </div>
           </div>
@@ -104,15 +110,15 @@
     </div>
     <div class="home-give-now w-100 d-flex">
       <div class="give-now give-now-logo w-50">
-        <img src="/src/assets/common/images/givenow.png" alt="" class="">
+        <img src="/assets/common/images/logo.jpg" alt="" class="">
       </div>
       <div class="give-now what-give-now w-50">
-        <h2>GiveNow là gì?</h2>
-        <p>GiveNow là nền tảng gây quỹ cộng đồng trực tuyến tiện lợi, tin cậy và minh bạch.</p>
-        <p>GiveNow được tin dùng bởi các tổ chức cộng đồng uy tín như: Quỹ Bảo Trợ Trẻ Em Việt Nam, Operation Smile,
+        <h2>Fundraising là gì?</h2>
+        <p>Fundraising là nền tảng gây quỹ cộng đồng trực tuyến tiện lợi, tin cậy và minh bạch.</p>
+        <p>Fundraising được tin dùng bởi các tổ chức cộng đồng uy tín như: Quỹ Bảo Trợ Trẻ Em Việt Nam, Operation Smile,
           Quỹ Vì Tầm Vóc Việt, Pan Nature, Mạng Lưới Ung Thư Vú Việt Nam, Trung tâm hợp tác phát triển Tây Bắc và
           nhiều tổ chức khác.</p>
-        <p>GiveNow được hỗ trợ công nghệ bởi FPT Smart Cloud, Comartek, Viettel Pay và VNPay, đảm bảo ứng dụng hoạt
+        <p>Fundraising được hỗ trợ công nghệ bởi FPT Smart Cloud, Comartek, Viettel Pay và VNPay, đảm bảo ứng dụng hoạt
           động ổn định, phương thức thanh toán đa dạng và an toàn.</p>
       </div>
     </div>
@@ -120,30 +126,28 @@
       <h2>Đối tác của chúng tôi</h2>
       <ul class="list-partner d-flex w-100">
         <li>
-          <p>Ảnh</p>
-          <!-- <img src="/src/assets/common/images/purpleLoading.gif" alt=""> -->
+          <img src="/assets/common/images/partner/vnpay.jpg" alt="">
         </li>
         <li>
-          <p>Ảnh</p>
-          <!-- <img src="/src/assets/common/images/purpleLoading.gif" alt=""> -->
+          <img src="/assets/common/images/partner/viettel.jpg" alt="">
         </li>
         <li>
-          <p>Ảnh</p>
-          <!-- <img src="/src/assets/common/images/purpleLoading.gif" alt=""> -->
+          <img src="/assets/common/images/partner/fpt.jpg" alt="">
         </li>
         <li>
-          <p>Ảnh</p>
-          <!-- <img src="/src/assets/common/images/purpleLoading.gif" alt=""> -->
+          <img src="/assets/common/images/partner/comartek.jpg" alt="">
         </li>
         <li>
-          <p>Ảnh</p>
-          <!-- <img src="/src/assets/common/images/purpleLoading.gif" alt=""> -->
+          <img src="/assets/common/images/partner/cfc.jpg" alt="">
+        </li>
+        <li>
+          <img src="/assets/common/images/partner/bud.jpg" alt="">
         </li>
       </ul>
     </div>
 
     <div class="body-main-wrapper w-100">
-      <div class="wraper-list w-75" >
+      <div class="wraper-list w-75">
         <h2>[Vietnamplus.vn] GiveNow – Nền tảng trao gửi niềm tin cho các dự án thiện nguyện</h2>
         <p>Chỉ sau ít tháng triển khai, nền tảng gây quỹ cộng đồng trực tuyến GiveNow đã trở thành một địa chỉ tin cậy
           cho các dự án hay những con người yêu thiện nguyện.
