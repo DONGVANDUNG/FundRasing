@@ -43,7 +43,7 @@ export class AppNavigationService {
             new AppMenuItem('Thông tin bài đăng', 'Pages.FundRaising', 'flaticon-app', '/app/admin/admin-post'),
             new AppMenuItem('Quyên góp từ thiện', 'Pages.FundRaising', 'flaticon-app', '/app/admin/user-post'),
             new AppMenuItem('Tham gia đấu giá', '', 'flaticon-app', '/app/admin/auction-user'),
-            new AppMenuItem('Bài đăng đấu giá', '', 'flaticon-app', '/app/admin/auction-admin'),
+            new AppMenuItem('Đăng bài đấu giá', '', 'flaticon-app', '/app/admin/auction-admin'),
             new AppMenuItem('Đăng ký gây quỹ', 'Pages.UserDonate', 'flaticon-app', '/app/admin/register-fundraiser'),
             new AppMenuItem('Lịch sử Donate', 'Pages.UserDonate', 'flaticon-suitcase', '/app/admin/checkout'),
             new AppMenuItem(

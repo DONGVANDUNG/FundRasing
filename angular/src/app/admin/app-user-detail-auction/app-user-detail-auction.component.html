@@ -2,9 +2,9 @@
 <div class="block-auction">
     <p class="title-header">{{this.dataAuction.titleAuction}}</p>
     <div class="header-auction d-flex">
-        <div class="block-starting-price">Khởi điểm:{{this.dataAuction.startingPrice}} Coin</div>
+        <div class="block-starting-price">Khởi điểm:{{this.dataAuction.startingPrice}} VND</div>
         <span class="name-user-created">{{this.dataAuction.isPublic == true ? this.dataAuction.userName :
-            "Anonymous"}}</span>
+            "Ẩn danh"}}</span>
     </div>
     <hr class="itemPreviewView__separator">
 
@@ -20,19 +20,19 @@
                 </div>
                 <div class="item-content">
                     <p>Giá thầu hiện tại:</p>
-                    <span>{{this.dataAuction.auctionPresentAmount +" Coin"}}</span>
+                    <span>{{this.dataAuction.auctionPresentAmount +" VND"}}</span>
                 </div>
                 <div class="item-content">
                     <p>Giá thầu tối thiểu tiếp theo:</p>
-                    <span>{{this.dataAuction.nextMinimumBid +" Coin"}}</span>
+                    <span>{{this.dataAuction.nextMinimumBid +" VND"}}</span>
                 </div>
                 <div class="item-content">
                     <p>Giá thầu tối đa tiếp theo:</p>
-                    <span>{{this.dataAuction.nextMaximumBid +" Coin"}}</span>
+                    <span>{{this.dataAuction.nextMaximumBid +" VND"}}</span>
                 </div>
             </div>
             <div class="block-fill-auction">
-                <input type="number" placeholder="Nhập giá(Coin)" name="fill-auction" class="input-fill-auction" [(ngModel)]="this.userAuction.amountAuction">
+                <input type="number" placeholder="Nhập giá(VND)" name="fill-auction" class="input-fill-auction" [(ngModel)]="this.userAuction.amountAuction">
                 <button type="button" class="btn-place-bid" (click)="placeBid()">Đấu giá</button>
             </div>
             <div class="block-is-public">

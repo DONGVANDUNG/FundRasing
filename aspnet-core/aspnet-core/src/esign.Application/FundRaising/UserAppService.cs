@@ -69,33 +69,33 @@ namespace esign.FundRaising
             _mstSleFundImageRepo = mstSleFundImageRepo;
             _mstBankRepo = mstBankRepo;
         }
-        public GetFundsDetailByIdForUser GetInforFundRaisingById(long Id)
-        {
-            var fund = (from funds in _mstSleFundRepo.GetAll().Where(e => e.Id == Id && (e.Status == 1 || e.Status == 2))
-                        join user in _mstSleUserRepo.GetAll().Where(e => e.TypeUser == 3)
-                        on funds.FundRaiserId equals user.Id
-                        join fundPackage in _mstSleFundPackageRepo.GetAll() on user.FundPackageId equals fundPackage.Id
+        //public GetFundsDetailByIdForUser GetInforFundRaisingById(long Id)
+        //{
+        //    var fund = (from funds in _mstSleFundRepo.GetAll().Where(e => e.Id == Id && (e.Status == 1 || e.Status == 2))
+        //                join user in _mstSleUserRepo.GetAll().Where(e => e.TypeUser == 3)
+        //                on funds.FundRaiserId equals user.Id
+        //                join fundPackage in _mstSleFundPackageRepo.GetAll() on user.FundPackageId equals fundPackage.Id
 
-                        join funContent in _mstSleFundDetailContentRepo.GetAll()
-                        on funds.Id equals funContent.FundId
-                        select new GetFundsDetailByIdForUser
-                        {
-                            Id = funds.Id,
-                            TitleFund = funds.FundTitle,
-                            Created = user.Name,
-                            FundRaisingDay = funds.FundRaisingDay,
-                            FundName = funds.FundName,
-                            PayFee = funds.IsPayFee == true ? "Trả phí cho người quyên góp" : "Không trả phí cho người quyên góp",
-                            AmountOfMoney = funds.AmountOfMoney,
-                            FinishFundRaising = funds.FundEndDate,
-                            ReasonOfFund = funContent.ReasonCreatedFund,
-                            ListImageUrl = _mstSleFundImageRepo.GetAll().AsNoTracking().Where(im => im.FundId == funds.Id).Select(im => im.ImageUrl).ToList(),
-                            ContentFund = funContent.Content,
-                            PaymenFee = fundPackage.PaymenFee,
-                            IsPayeFee = funds.IsPayFee
-                        }).FirstOrDefault();
-            return fund;
-        }
+        //                join funContent in _mstSleFundDetailContentRepo.GetAll()
+        //                on funds.Id equals funContent.FundId
+        //                select new GetFundsDetailByIdForUser
+        //                {
+        //                    Id = funds.Id,
+        //                    TitleFund = funds.FundTitle,
+        //                    Created = user.Name,
+        //                    FundRaisingDay = funds.FundRaisingDay,
+        //                    FundName = funds.FundName,
+        //                    PayFee = funds.IsPayFee == true ? "Trả phí cho người quyên góp" : "Không trả phí cho người quyên góp",
+        //                    AmountOfMoney = funds.AmountOfMoney,
+        //                    FinishFundRaising = funds.FundEndDate,
+        //                    ReasonOfFund = funContent.ReasonCreatedFund,
+        //                    ListImageUrl = _mstSleFundImageRepo.GetAll().AsNoTracking().Where(im => im.FundId == funds.Id).Select(im => im.ImageUrl).ToList(),
+        //                    ContentFund = funContent.Content,
+        //                    PaymenFee = fundPackage.PaymenFee,
+        //                    IsPayeFee = funds.IsPayFee
+        //                }).FirstOrDefault();
+        //    return fund;
+        //}
 
         public List<GetListFundOustandingDto> GetListFundOutStanding()
         {
@@ -372,24 +372,24 @@ namespace esign.FundRaising
             }
         }
 
-        public async Task<List<GetFundRaisingViewForAdminDto>> getListFundRaising()
-        {
-            var listFundRaising = (from fundRaising in _mstSleFundRepo.GetAll()
-                                   join user in _mstSleUserRepo.GetAll() on fundRaising.FundRaiserId equals user.Id
-                                   select new GetFundRaisingViewForAdminDto
-                                   {
-                                       Id = (int)fundRaising.Id,
-                                       FundName = fundRaising.FundName,
-                                       FundFinishDay = fundRaising.FundRaisingDay,
-                                       FundRaisingDay = fundRaising.FundRaisingDay,
-                                       AmountOfMoney = fundRaising.AmountOfMoney,
-                                       Status = fundRaising.Status == 3 ? "Đã đóng" : "Đang hoạt động",
-                                       ListImageUrl = _mstSleFundImageRepo.GetAll().Where(e => e.FundId == fundRaising.Id).Select(e => e.ImageUrl).ToList(),
-                                       FundStartDate = fundRaising.FundRaisingDay,
-                                       FundTitle = fundRaising.FundTitle,
-                                       FundRaiser = user.UserName
-                                   }).ToListAsync();
-            return await listFundRaising;
-        }
+        //public async Task<List<GetFundRaisingViewForAdminDto>> getListFundRaising()
+        //{
+        //    var listFundRaising = (from fundRaising in _mstSleFundRepo.GetAll()
+        //                           join user in _mstSleUserRepo.GetAll() on fundRaising.FundRaiserId equals user.Id
+        //                           select new GetFundRaisingViewForAdminDto
+        //                           {
+        //                               Id = (int)fundRaising.Id,
+        //                               FundName = fundRaising.FundName,
+        //                               FundFinishDay = fundRaising.FundRaisingDay,
+        //                               FundRaisingDay = fundRaising.FundRaisingDay,
+        //                               AmountOfMoney = fundRaising.AmountOfMoney,
+        //                               Status = fundRaising.Status == 3 ? "Đã đóng" : "Đang hoạt động",
+        //                               ListImageUrl = _mstSleFundImageRepo.GetAll().Where(e => e.FundId == fundRaising.Id).Select(e => e.ImageUrl).ToList(),
+        //                               FundStartDate = fundRaising.FundRaisingDay,
+        //                               FundTitle = fundRaising.FundTitle,
+        //                               FundRaiser = user.UserName
+        //                           }).ToListAsync();
+        //    return await listFundRaising;
+        //}
     }
 }

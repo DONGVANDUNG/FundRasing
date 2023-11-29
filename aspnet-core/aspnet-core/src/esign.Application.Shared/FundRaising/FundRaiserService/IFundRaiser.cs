@@ -18,17 +18,17 @@ namespace esign.FundRaising.FundRaiserService
         //Task UpdateInformation(UpdateInformationFundRaiserDto input);
 
         //Tạo quỹ mới
-        Task CreateFundRaising( CreateOrEditFundRaisingInputDto input);
+       // Task CreateFundRaising( CreateOrEditFundRaisingInputDto input);
 
         //Xem các giao dịch của quỹ
-        Task<List<TransactionOfFundForDto>> getListTransactionForFund(int fundId);
+        //Task<List<TransactionOfFundForDto>> getListTransactionForFund(int fundId);
 
         //Xem số lần cảnh cáo và nội dung cảnh cáo
-        Task<List<UserWarningForDto>> getListWarningOfUser();
+        //Task<List<UserWarningForDto>> getListWarningOfUser();
         //Gia hạn thời gian quỹ
-        Task ExtendTimeOfFundRaising(DateTime timeExtend,int fundId);
+        //Task ExtendTimeOfFundRaising(DateTime timeExtend,int fundId);
         //Đóng quỹ ngay lập tức
-        Task CloseFundRaising(int fundId);
+        //Task CloseFundRaising(int fundId);
         //Tạo tài khoản ví paypal
 
         //Sửa background cho quỹ
@@ -36,8 +36,8 @@ namespace esign.FundRaising.FundRaiserService
         //Sửa ảnh cho quỹ
         //Task UpdateImageUrlForFund(string imageUrl, int fundId);
 
-        Task UpdateFundRaising(CreateOrEditFundRaisingDto input);
-        Task UserAuction(UserAuction input);
+        //Task UpdateFundRaising(CreateOrEditFundRaisingDto input);
+        //Task UserAuction(UserAuction input);
 
     }
 }

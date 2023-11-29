@@ -109,32 +109,32 @@ namespace esign.FundRaising
                 result);
         }
 
-        public async Task<PagedResultDto<GetFundRaisingViewForAdminDto>> getListFundRaising(FundRaisingInputDto input)
-        {
-            var listFundRaising = from fundRaising in _mstSleFundRepo.GetAll().Where(e => input.Filter == null || e.FundTitle.Contains(input.Filter)
-                                   || e.FundName.Contains(input.Filter))
-                                   .Where(e => input.IsPayFee == null || e.IsPayFee == input.IsPayFee)
-                                   .Where(e => input.CreatedDate == null || e.FundRaisingDay == input.CreatedDate)
-                                  select new GetFundRaisingViewForAdminDto
-                                  {
-                                      Id = (int)fundRaising.Id,
-                                      FundName = fundRaising.FundName,
-                                      FundFinishDay = fundRaising.FundRaisingDay,
-                                      FundRaisingDay = fundRaising.FundRaisingDay,
-                                      AmountOfMoney = fundRaising.AmountOfMoney,
-                                      Status = fundRaising.Status == 3 ? "Đã đóng" : "Đang hoạt động",
-                                      ListImageUrl = _mstSleFundImageRepo.GetAll().Where(e => e.FundId == fundRaising.Id).Select(e => e.ImageUrl).ToList(),
-                                      FundStartDate = fundRaising.FundRaisingDay,
-                                      FundTitle = fundRaising.FundTitle,
-                                      Unit = "Coin"
-                                  };
+        //public async Task<PagedResultDto<GetFundRaisingViewForAdminDto>> getListFundRaising(FundRaisingInputDto input)
+        //{
+        //    var listFundRaising = from fundRaising in _mstSleFundRepo.GetAll().Where(e => input.Filter == null || e.FundTitle.Contains(input.Filter)
+        //                           || e.FundName.Contains(input.Filter))
+        //                           .Where(e => input.IsPayFee == null || e.IsPayFee == input.IsPayFee)
+        //                           .Where(e => input.CreatedDate == null || e.FundRaisingDay == input.CreatedDate)
+        //                          select new GetFundRaisingViewForAdminDto
+        //                          {
+        //                              Id = (int)fundRaising.Id,
+        //                              FundName = fundRaising.FundName,
+        //                              FundFinishDay = fundRaising.FundRaisingDay,
+        //                              FundRaisingDay = fundRaising.FundRaisingDay,
+        //                              AmountOfMoney = fundRaising.AmountOfMoney,
+        //                              Status = fundRaising.Status == 3 ? "Đã đóng" : "Đang hoạt động",
+        //                              ListImageUrl = _mstSleFundImageRepo.GetAll().Where(e => e.FundId == fundRaising.Id).Select(e => e.ImageUrl).ToList(),
+        //                              FundStartDate = fundRaising.FundRaisingDay,
+        //                              FundTitle = fundRaising.FundTitle,
+        //                              Unit = "Coin"
+        //                          };
 
-            var totalCount = await listFundRaising.CountAsync();
-            var result = await listFundRaising.PageBy(input).ToListAsync();
-            return new PagedResultDto<GetFundRaisingViewForAdminDto>(
-               totalCount,
-               result);
-        }
+        //    var totalCount = await listFundRaising.CountAsync();
+        //    var result = await listFundRaising.PageBy(input).ToListAsync();
+        //    return new PagedResultDto<GetFundRaisingViewForAdminDto>(
+        //       totalCount,
+        //       result);
+        //}
 
         public async Task<PagedResultDto<TransactionOfFundForDto>> getListTransactionForFund(TransactionForFundInputDto input)
         {
