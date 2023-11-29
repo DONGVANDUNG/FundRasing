@@ -58,6 +58,7 @@ namespace esign.EntityFrameworkCore
         public virtual DbSet<AuctionImages> AuctionImages { get; set; }
         public virtual DbSet<InformationReceiveAuction> InformationReceiveAuctions { get; set; }
         public virtual DbSet<RequestToFundRaiser> RequestToFundRaiser { get; set; }
+        public virtual DbSet<FundRaiserPost> FundRaiserPosts { get; set; }
 
         public esignDbContext(DbContextOptions<esignDbContext> options)
             : base(options)

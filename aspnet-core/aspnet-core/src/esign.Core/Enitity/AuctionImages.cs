@@ -11,7 +11,7 @@ namespace esign.Enitity
     [Table("AuctionImages")]
     public class AuctionImages : FullAuditedEntity<long>
     {
-        public long AuctionId { get; set; }
+        public long AuctionItemId { get; set; }
         public string ImageUrl { get; set; }
     }
 }

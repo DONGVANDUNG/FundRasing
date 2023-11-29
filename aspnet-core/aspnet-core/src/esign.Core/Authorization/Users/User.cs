@@ -36,6 +36,7 @@ namespace esign.Authorization.Users
         public float? Blances { get; set; }
         public DateTime? FundRaiserDate { get; set; }
         public long? FundPackageId { get; set; }
+        public string IntroduceOrganization { get; set; }
 
         public List<UserOrganizationUnit> OrganizationUnits { get; set; }
 

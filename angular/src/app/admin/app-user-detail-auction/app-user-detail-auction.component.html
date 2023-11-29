@@ -2,7 +2,7 @@
 <div class="block-auction">
     <p class="title-header">{{this.dataAuction.titleAuction}}</p>
     <div class="header-auction d-flex">
-        <div class="block-starting-price">{{this.dataAuction.startingPrice}} Coin</div>
+        <div class="block-starting-price">Khởi điểm:{{this.dataAuction.startingPrice}} Coin</div>
         <span class="name-user-created">{{this.dataAuction.isPublic == true ? this.dataAuction.userName :
             "Anonymous"}}</span>
     </div>
@@ -10,7 +10,7 @@
 
     <div class="block-content-auction d-flex justify-content-between">
         <div class="block-img-auction">
-            <!-- <img [src]="this.baseUrl + this.dataAuction?.listImage[0]" alt=""> -->
+            <img [src]="this.baseUrl + this.dataAuction?.listImage[0]" alt="">
         </div>
         <div class="form-auction">
             <div class="auction-content">
@@ -36,7 +36,8 @@
                 <button type="button" class="btn-place-bid" (click)="placeBid()">Đấu giá</button>
             </div>
             <div class="block-is-public">
-                <label for="is-public" class="is-public">Công khai</label>
+                <label for="is-public" class="is-public">Tôi muốn ủng hộ công khai
+                </label>
                 <input type="checkbox" id="is-public" [(ngModel)]="this.userAuction.isPublic">
             </div>
         </div>
