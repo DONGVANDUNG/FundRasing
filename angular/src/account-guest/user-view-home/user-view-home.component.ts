@@ -7,6 +7,7 @@ import { AppComponentBase } from '@shared/common/app-component-base';
     templateUrl: './user-view-home.component.html',
     styleUrls: ['./user-view-home.component.less']
 })
+
 export class UserViewHomeComponent extends AppComponentBase {
     selectedTabHome = true;
     selectedTabDonate: boolean = false;
@@ -16,6 +17,10 @@ export class UserViewHomeComponent extends AppComponentBase {
     selectedFunDetail: boolean = false;
     isLoading = false;
     blockDonateSuccess: boolean = false;
+
+    raisingArray = ['1','2','3'] // ARRAY NÀY BAO GỒM ẢNH, TITLE , CONTENT CỦA 1 DỰ ÁN ĐANG GÂY QUỸ, CÓ THỂ LÀ 1 RECORD
+
+
     constructor(injector: Injector, private router: Router) {
         super(injector);
         this.isLoading = true;
