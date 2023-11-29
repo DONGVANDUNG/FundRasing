@@ -12,5 +12,6 @@ namespace esign.FundRaising
         public string Duration { get; set; }
         public float PaymenFee { get; set; }
         public DateTime? CreatedTime { get; set; }
+        public float? Commission { get; set; }
     }
 }

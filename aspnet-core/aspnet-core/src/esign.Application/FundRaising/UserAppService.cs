@@ -112,21 +112,20 @@ namespace esign.FundRaising
             return listFundOutStanding;
         }
 
-        public async Task<PagedResultDto<GetListFundPackageDto>> GetListFundPackage(FundPackageInputDto input)
+        public async Task<List<GetListFundPackageDto>> GetListFundPackage(FundPackageInputDto input)
         {
             var listFundPackage = from funPackage in _mstSleFundPackageRepo.GetAll().Where(e => e.Status == true)
                                   select new GetListFundPackageDto
                                   {
                                       Id = funPackage.Id,
                                       //Discount = funPackage.Discount,
+                                      Commission = funPackage.Commission,
                                       PaymenFee = funPackage.PaymenFee,
                                       Description = funPackage.Description,
                                       Duration = funPackage.Duration,
                                       CreatedTime = funPackage.CreationTime
                                   };
-            var totalCount = await listFundPackage.CountAsync();
-            return new PagedResultDto<GetListFundPackageDto>
-                (totalCount, await listFundPackage.PageBy(input).ToListAsync());
+            return await listFundPackage.ToListAsync();
         }
         public async Task DonateForFund(DataDonateForFundInput input)
         {
