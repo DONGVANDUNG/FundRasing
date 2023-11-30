@@ -6,8 +6,8 @@ namespace esign.FundRaising.UserFundRaising.Dto
 {
     public class ListUserDonateForFundDto
     {
-        public string UrlImage { get; set; }
-        public string UserName { get; set; }
+        public DateTime? CreatedDonate { get; set; }
+        public string UserNameDonate { get; set; }
         public float AmountOfMoney { get; set; }
     }
 }

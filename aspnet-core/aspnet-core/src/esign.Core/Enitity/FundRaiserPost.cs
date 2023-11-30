@@ -12,6 +12,7 @@ namespace esign.Enitity
     public class FundRaiserPost :FullAuditedEntity<long>
     {
         public string PostTitle { get; set; }
+        public string PostTopic { get; set; }
         public long? UserId { get; set; }
         //public string ImageUrl { get; set; }
         public DateTime? FinishDay { get; set; }

@@ -36,30 +36,32 @@ namespace esign.FundRaising
     {
         private readonly IRepository<Funds, long> _mstSleFundRepo;
         //private readonly IRepository<FundRaiser, long> _mstSleFundRaiserRepo;
-        private readonly IRepository<FundDetailContent, long> _mstSleFundDetailContentRepo;
+        private readonly IRepository<FundDetails, long> _mstSleFundDetailRepo;
         private readonly IRepository<FundRaisingTopic, int> _mstSleFundTopictRepo;
         private readonly IRepository<FundPackage, int> _mstSleFundPackageRepo;
-        private readonly IRepository<FundTransactions, int> _mstSleFundTransactionRepo;
+        private readonly IRepository<FundTransactions, long> _mstSleFundTransactionRepo;
         private readonly IRepository<User, long> _mstSleUserRepo;
         private readonly IRepository<FundImage, long> _mstSleFundImageRepo;
         private readonly IRepository<BankAccount, long> _mstBankRepo;
         private readonly IRepository<RequestToFundRaiser, long> _mstRequestToFundRaiserRepo;
+        private readonly IRepository<FundRaiserPost, long> _mstFundRaiserPostRepo;
+        private readonly IRepository<FundImage, long> _mstFundImageRepo;
         private readonly IConfigurationRoot _appConfiguration;
 
 
         public UserAppService(IRepository<Funds, long> mstSleFundRepo,
             //IRepository<FundRaiser, long>
             // mstSleFundRaiserRepo,
-            IRepository<FundDetailContent, long> mstSleFundDetailContentRepo,
+            IRepository<FundDetails, long> mstSleFundDetailRepo,
             IWebHostEnvironment hostingEnvironment, IWebHostEnvironment env,
             IRepository<FundRaisingTopic, int> mstSleFundTopictRepo,
             IRepository<FundPackage, int> mstSleFundPackageRepo,
-            IRepository<FundTransactions, int> mstSleFundTransactionRepo,
-            IRepository<User, long> mstSleUserRepo, IRepository<FundImage, long> mstSleFundImageRepo, IRepository<BankAccount, long> mstBankRepo)
+            IRepository<FundTransactions, long> mstSleFundTransactionRepo,
+            IRepository<User, long> mstSleUserRepo, IRepository<FundImage, long> mstSleFundImageRepo, IRepository<BankAccount, long> mstBankRepo, IRepository<FundRaiserPost, long> mstFundRaiserPostRepo, IRepository<FundImage, long> mstFundImageRepo)
         {
             _mstSleFundRepo = mstSleFundRepo;
             /// _mstSleFundRaiserRepo = mstSleFundRaiserRepo;
-            _mstSleFundDetailContentRepo = mstSleFundDetailContentRepo;
+            _mstSleFundDetailRepo = mstSleFundDetailRepo;
             _mstSleFundTopictRepo = mstSleFundTopictRepo;
             _mstSleFundPackageRepo = mstSleFundPackageRepo;
             _mstSleFundTransactionRepo = mstSleFundTransactionRepo;
@@ -68,49 +70,51 @@ namespace esign.FundRaising
             _appConfiguration = hostingEnvironment.GetAppConfiguration();
             _mstSleFundImageRepo = mstSleFundImageRepo;
             _mstBankRepo = mstBankRepo;
+            _mstFundRaiserPostRepo = mstFundRaiserPostRepo;
+            _mstFundImageRepo = mstFundImageRepo;
         }
-        //public GetFundsDetailByIdForUser GetInforFundRaisingById(long Id)
-        //{
-        //    var fund = (from funds in _mstSleFundRepo.GetAll().Where(e => e.Id == Id && (e.Status == 1 || e.Status == 2))
-        //                join user in _mstSleUserRepo.GetAll().Where(e => e.TypeUser == 3)
-        //                on funds.FundRaiserId equals user.Id
-        //                join fundPackage in _mstSleFundPackageRepo.GetAll() on user.FundPackageId equals fundPackage.Id
-
-        //                join funContent in _mstSleFundDetailContentRepo.GetAll()
-        //                on funds.Id equals funContent.FundId
-        //                select new GetFundsDetailByIdForUser
-        //                {
-        //                    Id = funds.Id,
-        //                    TitleFund = funds.FundTitle,
-        //                    Created = user.Name,
-        //                    FundRaisingDay = funds.FundRaisingDay,
-        //                    FundName = funds.FundName,
-        //                    PayFee = funds.IsPayFee == true ? "Trả phí cho người quyên góp" : "Không trả phí cho người quyên góp",
-        //                    AmountOfMoney = funds.AmountOfMoney,
-        //                    FinishFundRaising = funds.FundEndDate,
-        //                    ReasonOfFund = funContent.ReasonCreatedFund,
-        //                    ListImageUrl = _mstSleFundImageRepo.GetAll().AsNoTracking().Where(im => im.FundId == funds.Id).Select(im => im.ImageUrl).ToList(),
-        //                    ContentFund = funContent.Content,
-        //                    PaymenFee = fundPackage.PaymenFee,
-        //                    IsPayeFee = funds.IsPayFee
-        //                }).FirstOrDefault();
-        //    return fund;
-        //}
-
-        public List<GetListFundOustandingDto> GetListFundOutStanding()
+        public async Task<List<GetFundsDetailByIdForUser>> GetInforFundRaisingById(long Id)
         {
-            var listFundOutStanding = (from funDetail in _mstSleFundRepo.GetAll().Where(e => e.Status == 1 || e.Status == 2)
-                                       join fundTopic in _mstSleFundTopictRepo.GetAll() on funDetail.Id equals fundTopic.FundId
-                                       select new GetListFundOustandingDto
+            var fundRaising = (from post in _mstFundRaiserPostRepo.GetAll().Where(e => e.IsClose == false)
+                                       join fund in _mstSleFundRepo.GetAll() on post.FundId equals fund.Id
+                                       //join postImage in _mstFundImageRepo.GetAll() on post.Id equals postImage.PostId
+                                       select new GetFundsDetailByIdForUser
                                        {
-                                           Id = (int)funDetail.Id,
-                                           ImageUrl = funDetail.FundImageUrl,
-                                           TopicOfFund = fundTopic.TopicName,
-                                           FundRaisingDay = funDetail.FundRaisingDay,
-                                           MainTitle = funDetail.FundTitle
-                                       }).ToList();
-            return listFundOutStanding;
+                                           Id = post.Id,
+                                           ListImageUrl = _mstFundImageRepo.GetAll().Where(e => e.PostId == post.Id).Select(re => re.ImageUrl).ToList(),
+                                           AmountDonatePresent = fund.AmountDonationPresent,
+                                           PercentAchieved = (fund.AmountDonationPresent / fund.AmountDonationTarget) * 100,
+                                           PostTitle = post.PostTitle,
+                                           AmountDonateTarget = fund.AmountDonationTarget,
+                                           PostTopic = post.PostTopic,
+                                           OrganizationName = _mstSleUserRepo.FirstOrDefault(e => e.Id == fund.UserId).IntroduceOrganization
+                                       }).ToListAsync();
+            return await fundRaising;
         }
+        public async Task<List<GetListFundRasingDto>> GetAllFundRaising()
+        {
+            var listFundOutStanding = (from post in _mstFundRaiserPostRepo.GetAll().Where(e=>e.IsClose == false)
+                                       join fund in _mstSleFundRepo.GetAll() on post.FundId equals fund.Id
+                                       join postImage in _mstFundImageRepo.GetAll() on post.Id equals postImage.PostId
+                                       join fundDetail in _mstSleFundDetailRepo.GetAll() on fund.Id equals fundDetail.FundId    
+                                       select new GetListFundRasingDto
+                                       {
+                                           Id = post.Id,
+                                           ImageUrl = postImage.ImageUrl.Take(1).ToString(),
+                                           AmountDonatePresent = fund.AmountDonationPresent,
+                                           PercentAchieved = (fund.AmountDonationPresent / fund.AmountDonationTarget)*100,
+                                           PostTitle = post.PostTitle,
+                                           AmountDonateTarget = fund.AmountDonationTarget,
+                                           PostTopic = post.PostTopic,
+                                           OrganizationName = _mstSleUserRepo.FirstOrDefault(e=>e.Id == fund.UserId).IntroduceOrganization,
+                                           //FundDetail
+                                           Purpose = fundDetail.Purpose,
+                                           Note = fundDetail.Note,
+                                           Target = fundDetail.Target,
+                                       }).ToListAsync();
+            return await listFundOutStanding;
+        }
+
 
         public async Task<List<GetListFundPackageDto>> GetListFundPackage(FundPackageInputDto input)
         {
@@ -131,7 +135,7 @@ namespace esign.FundRaising
         {
             try
             {
-                var userCreatedFundId = _mstSleFundRepo.FirstOrDefault(e => e.Id == input.FundId).FundRaiserId;
+                var userCreatedFundId = _mstSleFundRepo.FirstOrDefault(e => e.Id == input.FundId).UserId;
                 var fundPackageId = _mstSleUserRepo.FirstOrDefault(e => e.Id == userCreatedFundId).FundPackageId;
                 var commission = _mstSleFundPackageRepo.FirstOrDefault(e=>e.Id == fundPackageId).Commission;
 
@@ -140,7 +144,7 @@ namespace esign.FundRaising
                 accountUserDonate.Balance -= input.AmountOfMoney;
                 await _mstBankRepo.UpdateAsync(accountUserDonate);
 
-                var fundRaiserId = _mstSleFundRepo.FirstOrDefault(e => e.Id == input.FundId).FundRaiserId;
+                var fundRaiserId = _mstSleFundRepo.FirstOrDefault(e => e.Id == input.FundId).UserId;
                 var fundRaiserReceive = _mstSleUserRepo.FirstOrDefault(e => e.Id == fundRaiserId).UserName;
                 var userSend = _mstSleUserRepo.FirstOrDefault(e => e.Id == AbpSession.UserId).UserName;
 
@@ -208,27 +212,24 @@ namespace esign.FundRaising
                            join user in _mstSleUserRepo.GetAll() on transaction.UserId equals user.Id
                            select new ListUserDonateForFundDto
                            {
-                               //UserName = userAccount.UserNameLogin,
-                               UrlImage = user.ImageUrl,
-                               AmountOfMoney = transaction.AmountOfMoney
+                               UserNameDonate = user.Surname + user.Name,
+                               AmountOfMoney = transaction.AmountOfMoney,
+                               CreatedDonate = transaction.CreationTime
                            };
             return listUser.ToList();
         }
-        public async Task<List<ListFundPackageDto>> getListFundPackageForUserDonation()
+        public List<ListUserDonateForFundDto> GetUserDonateForFund(int fundId,string userName)
         {
-            var result = from fundPackage in _mstSleFundPackageRepo.GetAll().Where(e => e.Status == true)
-                         select new ListFundPackageDto
-                         {
-                             Id = fundPackage.Id,
-                             Name = fundPackage.PaymenFee.ToString() + fundPackage.Unit + "/" + fundPackage.Duration
-                         };
-            return await result.ToListAsync();
-        }
-        public async Task RegisterFundPackage(int fundPackage)
-        {
-            //var userCurrent = await _mstSleUserRepo.FirstOrDefaultAsync(e => e.Id == AbpSession.UserId);
-            //userCurrent.FundPackageId = fundPackage;
-            //await _mstSleUserRepo.UpdateAsync(userCurrent);
+            var listUser = from transaction in _mstSleFundTransactionRepo.GetAll().Where(e => e.FundId == fundId)
+                           join user in _mstSleUserRepo.GetAll().Where(e=> userName == null || (e.Surname + e.Name).Contains(userName)) 
+                           on transaction.UserId equals user.Id
+                           select new ListUserDonateForFundDto
+                           {
+                               UserNameDonate = user.Surname + user.Name,
+                               AmountOfMoney = transaction.AmountOfMoney,
+                               CreatedDonate = transaction.CreationTime
+                           };
+            return listUser.ToList();
         }
         public void UpdatePermissionForFundRaiser(int userId)
         {
@@ -308,7 +309,6 @@ namespace esign.FundRaising
                 var user = _mstSleUserRepo.FirstOrDefault(e => e.Id == AbpSession.UserId);
                 user.Address = input.Address;
                 user.Company = input.Company;
-                user.Country = input.Country;
                 user.Phone = input.Phone;
                 user.FundPackageId = 1;
                 //user.TypeUser = 3;

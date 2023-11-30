@@ -13,9 +13,10 @@ namespace esign.FundRaising
 
     public class FundDetails : FullAuditedEntity<long>, IEntity<long>
     {
-        public int Id { get; set; }
         public int FundId { get; set; }
-        public string TitlePart { get; set; }
-        public string ContentPart { get; set; }
+        public string Purpose { get; set; }
+        public string Target { get; set; }
+        public string OrganizationName { get; set; }
+        public string Note { get; set; }
     }
 }

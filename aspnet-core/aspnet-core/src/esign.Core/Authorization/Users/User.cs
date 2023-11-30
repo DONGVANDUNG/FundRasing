@@ -28,11 +28,9 @@ namespace esign.Authorization.Users
         public string Address { get; set; }
         public string City { get; set; }
         public string Region { get; set; }
-        public string Country { get; set; }
         public string Position { get; set; }
         public string Phone { get; set; }
         public int? TypeUser { get; set; }
-        public string ImageUrl { get; set; }
         public float? Blances { get; set; }
         public DateTime? FundRaiserDate { get; set; }
         public long? FundPackageId { get; set; }
