@@ -2,7 +2,8 @@
     <div class="block-information">
         <div class="header d-flex justify-content-between align-items-center mt-3">
             <h3>Thông tin chi tiết tài khoản ngân hàng</h3>
-            <button class="btn-save" (click)="save()">Lưu</button>
+            <button class="btn-save" *ngIf="this.dataInforBankUser.id" (click)="save()">Lưu</button>
+            <button class="btn-save" *ngIf="!this.dataInforBankUser.id" (click)="save()">Đăng ký</button>
         </div>
         <hr class="itemPreviewView__separator">
         <div class="block-personal-information mt-5 mb-5">
@@ -10,7 +11,7 @@
                 <div class="col-4 d-flex align-items-center">
                     <label class="label">Ngân hàng:</label>
                     <p-dropdown [style]="{'width':'100%'}" [options]="listBank"
-                        [(ngModel)]="this.dataInforBankUser.bankName" optionLabel="name" optionValue="code"></p-dropdown>
+                        [(ngModel)]="this.dataInforBankUser.bankName" optionLabel="name"  optionValue="code"></p-dropdown>
                 </div>
                 <div class="col-4 d-flex align-items-center">
                     <label class="label">Số tài khoản:</label>

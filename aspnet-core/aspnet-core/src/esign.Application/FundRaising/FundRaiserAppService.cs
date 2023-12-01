@@ -195,6 +195,7 @@ namespace esign.FundRaising
                                        FundName = fund.FundName,
                                        CreatedTime = transaction.CreationTime,
                                        IsPublic = transaction.IsPublic
+
                                    }).ToListAsync();
             return await listTransaction;
         }

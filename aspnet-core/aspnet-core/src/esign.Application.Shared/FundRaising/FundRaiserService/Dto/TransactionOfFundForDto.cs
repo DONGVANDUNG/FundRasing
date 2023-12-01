@@ -6,7 +6,7 @@ namespace esign.FundRaising.FundRaiserService.Dto
 {
     public class TransactionOfFundForDto
     {
-        public int Id { get; set; }
+        public long? Id { get; set; }
         public float Amount { get; set; }
         public DateTime? CreatedTime { get; set; }
         public string Content { get; set; }
