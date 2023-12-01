@@ -6,8 +6,9 @@ using System.Text;
 
 namespace esign.FundRaising
 {
-    public class GetFundsDetailByIdForUser : EntityDto<long>
+    public class GetFundsDetailByIdForUser 
     {
+        public long? Id { get; set; }
         public string PostTitle { get; set; }
         public string FundName { get; set; }
         public string PostTopic { get; set; }

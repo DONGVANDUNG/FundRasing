@@ -11,7 +11,7 @@ namespace esign.FundRaising
 {
     [Table("FundDetails")]
 
-    public class FundDetails : FullAuditedEntity<long>, IEntity<long>
+    public class FundDetails : FullAuditedEntity<long>
     {
         public int FundId { get; set; }
         public string Purpose { get; set; }

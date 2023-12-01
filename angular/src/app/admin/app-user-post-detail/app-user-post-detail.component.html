@@ -1,7 +1,60 @@
-<div class="block-content-post">
-    <img [src]="this.imageUrl" alt="" class="block-img-post">
-    <div class="block-amount-of-money d-flex flex-column align-items-center">
-        <p>Raised So Far</p>
-        <p class="amnount-money">{{this.inforFundDetail.amountOfMoney}}</p>
+<div class="body-content-detail-post d-flex justify-content-between">
+    <div class="block-image">
+        <img src="assets/common/images/banner2.jpg" alt="" class="image-main">
+        <div class="post-topic"></div>
     </div>
+    <div class="block-content-post">
+        <p class="title-post">“Nhà thay áo mới” xuân Giáp Thìn – Chung tay giúp đỡ Cựu Thanh niên xung phong khó khăn
+        </p>
+        <div class="block-header d-flex justify-content-between">
+            <span class="orgnization-name">Huyện Đoàn Nghi Lộc</span>
+            <span class="amount-donate"> <i class="fa-regular fa-user"></i>35 lượt ủng hộ</span>
+        </div>
+        <div class="block-target-fund d-flex justify-content-between">
+            <p>Mục tiêu dự án</p>
+            <span class="amount-money-target">500.000đ</span>
+        </div>
+        <div class="progress">
+            <span></span>
+        </div>
+        <div class="block-achieved d-flex justify-content-between">
+            <p>Đã đạt được</p>
+            <span class="amount-money-achieved">200.000đ</span>
+        </div>
+    </div>
+</div>
+<div class="block-donate">
+    <div class="list-image-detail"></div>
+    <div class="donation d-flex justify-content-end">
+        <button class="btn-donate" (click)="activeIndex = 1">Ủng hộ ngay</button>
+        <button class="btn-raiser" (click)="activeIndex = 0">Trở thành sứ giả</button>
+    </div>
+</div>
+<div class="block-content-detail">
+    <p-tabView [(activeIndex)]="activeIndex">
+        <p-tabPanel header="Nội dung">
+
+        </p-tabPanel>
+        <p-tabPanel header="Danh sách ủng hộ">
+            <div class="list-donation">
+                <input type="text" class="input-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+            <table>
+                <tbody>
+                    <tr style="background-color: #dce2eb;font-size: 1.3rem;">
+                        <th class="spt-name">Người ủng hộ</th>
+                        <th>Số tiền</th>
+                        <th>Thời gian</th>
+                    </tr>
+                    <tr>
+                        <td class="spt-name-sib"><span class="banker-name"> BTV Đoàn xã Nghi Vạn</span></td>
+                        <td class="baker-donate-money"><span class="woocommerce-Price-amount amount"><bdi>400.000<span
+                                        class="woocommerce-Price-currencySymbol">đ</span></bdi></span></td>
+                        <td class="baker-donate-date">16:49:12 - 30/11/2023</td>
+                    </tr>
+                </tbody>
+            </table>
+        </p-tabPanel>
+    </p-tabView>
 </div>

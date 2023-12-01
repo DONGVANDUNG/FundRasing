@@ -31,7 +31,7 @@ namespace esign.FundRaising
     public class FundRaiserAppService : esignAppServiceBase, IFundRaiser
     {
         private readonly IRepository<Funds, long> _mstSleFundRepo;
-        private readonly IRepository<FundTransactions, int> _mstSleFundTransactionRepo;
+        private readonly IRepository<FundTransactions, long> _mstSleFundTransactionRepo;
         private readonly IRepository<User, long> _mstSleUserRepo;
         private readonly IRepository<FundDetailContent, long> _mstSleDetailConentRepo;
         private readonly IRepository<UserWarning, int> _mstSleUserWarningRepo;
@@ -42,7 +42,7 @@ namespace esign.FundRaising
         private readonly IRepository<FundImage, long> _mstSleFundImageRepo;
         private readonly IConfigurationRoot _appConfiguration;
         public FundRaiserAppService(IRepository<Funds, long> mstSleFundRepo,
-            IRepository<FundTransactions, int> mstSleFundTransactionRepo,
+            IRepository<FundTransactions, long> mstSleFundTransactionRepo,
             IRepository<User, long> mstSleUserRepo,
             IWebHostEnvironment hostingEnvironment,
             IWebHostEnvironment env,
@@ -85,57 +85,57 @@ namespace esign.FundRaising
         }
         [HttpPost]
         [Consumes("multipart/form-data")]
-        //public async Task CreateFundRaising([FromForm] CreateOrEditFundRaisingInputDto input)
-        //{
-        //    try
-        //    {
-        //        Funds fundInsert = new Funds();
-        //        fundInsert.FundRaiserId = AbpSession.UserId;
-        //        fundInsert.FundRaisingDay = input.FundStartDate;
-        //        fundInsert.FundEndDate = input.FundEndDate;
-        //        fundInsert.FundName = input.FundName;
-        //        fundInsert.FundTitle = input.FundTitle;
-        //        fundInsert.AmountOfMoney = input.AmountOfMoney;
-        //        fundInsert.Status = 1;
-        //        fundInsert.IsPayFee = input.IsPayFee;
-        //        var fundId = await _mstSleFundRepo.InsertAndGetIdAsync(fundInsert);
-        //        FundDetailContent fundDetail = new FundDetailContent();
-        //        fundDetail.FundId = (int)fundId;
-        //        fundDetail.Content = input.FundContent;
-        //        fundDetail.ReasonCreatedFund = input.ReasonCreateFund;
-        //        await _mstSleDetailConentRepo.InsertAsync(fundDetail);
-        //        if (input.File.Count() > 0)
-        //        {
-        //            foreach (var file in input.File)
-        //            {
-        //                if (file != null)
-        //                {
-        //                    var fileName = Path.GetFileName(file.FileName);
-        //                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", fileName);
+        public async Task CreateFundRaising([FromForm] CreateOrEditFundRaisingInputDto input)
+        {
+            try
+            {
+                Funds fundInsert = new Funds();
+               // fundInsert.FundRaiserId = AbpSession.UserId;
+                fundInsert.FundRaisingDay = input.FundStartDate;
+                fundInsert.FundEndDate = input.FundEndDate;
+                fundInsert.FundName = input.FundName;
+                fundInsert.FundTitle = input.FundTitle;
+                //fundInsert.AmountOfMoney = input.AmountOfMoney;
+                fundInsert.Status = 1;
+                fundInsert.IsPayFee = input.IsPayFee;
+                var fundId = await _mstSleFundRepo.InsertAndGetIdAsync(fundInsert);
+                FundDetailContent fundDetail = new FundDetailContent();
+                fundDetail.FundId = (int)fundId;
+                fundDetail.Content = input.FundContent;
+                fundDetail.ReasonCreatedFund = input.ReasonCreateFund;
+                await _mstSleDetailConentRepo.InsertAsync(fundDetail);
+                if (input.File.Count() > 0)
+                {
+                    foreach (var file in input.File)
+                    {
+                        if (file != null)
+                        {
+                            var fileName = Path.GetFileName(file.FileName);
+                            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", fileName);
 
-        //                    using (var stream = new FileStream(filePath, FileMode.Create))
-        //                    {
-        //                        await file.CopyToAsync(stream);
-        //                    }
-        //                    FundImage fundImage = new FundImage();
-        //                    fundImage.FundId = fundId;
+                            using (var stream = new FileStream(filePath, FileMode.Create))
+                            {
+                                await file.CopyToAsync(stream);
+                            }
+                            FundImage fundImage = new FundImage();
+                            //fundImage.PostId = fundId;
 
-        //                    fundImage.ImageUrl = Path.Combine("uploads", fileName);
-        //                    await _mstSleFundImageRepo.InsertAsync(fundImage);
-        //                }
-        //            }
-        //        }
-        //        else
-        //        {
-        //            throw new UserFriendlyException("Please select a file");
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Log the exception or handle it appropriately
-        //        throw new UserFriendlyException("Error uploading file");
-        //    }
-        //}
+                            fundImage.ImageUrl = Path.Combine("uploads", fileName);
+                            await _mstSleFundImageRepo.InsertAsync(fundImage);
+                        }
+                    }
+                }
+                else
+                {
+                    throw new UserFriendlyException("Please select a file");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it appropriately
+                throw new UserFriendlyException("Error uploading file");
+            }
+        }
         //public async Task<CreateOrEditFundRaisingInputDto> getFundRaisingForEdit(long fundId)
         //{
         //    var fundRaising = _mstSleFundRepo.FirstOrDefault(e => e.Id == fundId);
@@ -152,12 +152,12 @@ namespace esign.FundRaising
                 var fund = await _mstSleFundRepo.FirstOrDefaultAsync(e => e.Id == input.Id);
                 if (fund != null)
                 {
-                    fund.FundRaiserId = AbpSession.UserId;
+                    //fund.FundRaiserId = AbpSession.UserId;
                     fund.FundRaisingDay = DateTime.Now;
                     fund.FundName = input.FundName;
                     fund.FundImageUrl = input.ImageUrl;
                     fund.FundTitle = input.TitleFund;
-                    fund.AmountOfMoney = input.AmountOfMoney;
+                    //fund.AmountOfMoney = input.AmountOfMoney;
                     fund.FundEndDate = input.FundEndDate;
                     await _mstSleFundRepo.UpdateAsync(fund);
                     FundDetailContent detailContent = new FundDetailContent();
@@ -185,11 +185,11 @@ namespace esign.FundRaising
             var listTransaction = (from transaction in _mstSleFundTransactionRepo.GetAll().Where(e => e.FundId == fundId &&
                                    (e.IsAdmin == false || e.IsAdmin == null))
                                    join fund in _mstSleFundRepo.GetAll() on transaction.FundId equals fund.Id
-                                   join user in _mstSleUserRepo.GetAll() on fund.FundRaiserId equals user.Id
+                                   //join user in _mstSleUserRepo.GetAll() on fund.FundRaiserId equals user.Id
                                    select new TransactionOfFundForDto
                                    {
-                                       Id = transaction.Id,
-                                       Sender = user.Name,
+                                       //Id = transaction.Id,
+                                       ///Sender = user.Name,
                                        Amount = transaction.AmountOfMoney,
                                        Content = transaction.MessageToFund,
                                        FundName = fund.FundName,
@@ -215,53 +215,53 @@ namespace esign.FundRaising
 
         /// Auction
 
-        //[HttpPost]
-        //[Consumes("multipart/form-data")]
-        //public async Task CreateOrEditAuction([FromForm] CreateOrEditAuctionInputDto input)
-        //{
-        //    try
-        //    {
-        //        if (input.Id == null || input.Id == 0)
-        //        {
-        //            Auction auction = new Auction();
-        //            ObjectMapper.Map(input, auction);
-        //            auction.UserId = AbpSession.UserId;
-        //            var auctionId = await _mstAuctionRepo.InsertAndGetIdAsync(auction);
-        //            if (input.File.Count() > 0)
-        //            {
-        //                foreach (var file in input.File)
-        //                {
-        //                    if (file != null)
-        //                    {
-        //                        var fileName = Path.GetFileName(file.FileName);
-        //                        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", fileName);
+        [HttpPost]
+        [Consumes("multipart/form-data")]
+        public async Task CreateOrEditAuction([FromForm] CreateOrEditAuctionInputDto input)
+        {
+            try
+            {
+                if (input.Id == null || input.Id == 0)
+                {
+                    Auction auction = new Auction();
+                    ObjectMapper.Map(input, auction);
+                    auction.UserId = AbpSession.UserId;
+                    var auctionId = await _mstAuctionRepo.InsertAndGetIdAsync(auction);
+                    if (input.File.Count() > 0)
+                    {
+                        foreach (var file in input.File)
+                        {
+                            if (file != null)
+                            {
+                                var fileName = Path.GetFileName(file.FileName);
+                                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", fileName);
 
-        //                        using (var stream = new FileStream(filePath, FileMode.Create))
-        //                        {
-        //                            await file.CopyToAsync(stream);
-        //                        }
-        //                        AuctionImages auctionImage = new AuctionImages();
-        //                        auctionImage.AuctionId = auctionId;
+                                using (var stream = new FileStream(filePath, FileMode.Create))
+                                {
+                                    await file.CopyToAsync(stream);
+                                }
+                                AuctionImages auctionImage = new AuctionImages();
+                                //auctionImage.AuctionId = auctionId;
 
-        //                        auctionImage.ImageUrl = Path.Combine("uploads", fileName);
-        //                        await _mstAuctionImagesRepo.InsertAsync(auctionImage);
-        //                    }
-        //                }
-        //            }
-        //        }
-        //        else
-        //        {
+                                auctionImage.ImageUrl = Path.Combine("uploads", fileName);
+                                await _mstAuctionImagesRepo.InsertAsync(auctionImage);
+                            }
+                        }
+                    }
+                }
+                else
+                {
 
-        //            //Để sau
-        //            var auction = await _mstAuctionRepo.FirstOrDefaultAsync(e => e.Id == input.Id);
-        //            ObjectMapper.Map(input, auction);
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw new Exception("Đã xảy ra lỗi trong quá trình tạo phiên đấu giá");
-        //    }
-        //}
+                    //Để sau
+                    var auction = await _mstAuctionRepo.FirstOrDefaultAsync(e => e.Id == input.Id);
+                    ObjectMapper.Map(input, auction);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Đã xảy ra lỗi trong quá trình tạo phiên đấu giá");
+            }
+        }
         //public async Task UserAuction(UserAuction input)
         //{
         //    var auction = _mstAuctionRepo.FirstOrDefault(e => e.Id == input.AuctionId);
@@ -299,29 +299,29 @@ namespace esign.FundRaising
                                }).ToList();
             return listAuction;
         }
-        //public async Task<PagedResultDto<GetAllAuctionDto>> getAllAuctionAdmin(AuctionInputDto input)
-        //{
-        //    var query = from auction in _mstAuctionRepo.GetAll().Where(e => AbpSession.TenantId == null || e.UserId == AbpSession.UserId)
-        //                select new GetAllAuctionDto
-        //                {
-        //                    Id = auction.Id,
-        //                    ItemName = auction.ItemName,
-        //                    TitleAuction = auction.TitleAuction,
-        //                    AmountJumpMax = auction.AmountJumpMax,
-        //                    AmountJumpMin = auction.AmountJumpMin,
-        //                    EndDate = auction.EndDate,
-        //                    StartingPrice = auction.StartingPrice,
-        //                    StartDate = (DateTime)auction.StartDate,
-        //                    IntroduceItem = auction.IntroduceItem,
-        //                };
+        public async Task<PagedResultDto<GetAllAuctionDto>> getAllAuctionAdmin(AuctionInputDto input)
+        {
+            var query = from auction in _mstAuctionRepo.GetAll().Where(e => AbpSession.TenantId == null || e.UserId == AbpSession.UserId)
+                        select new GetAllAuctionDto
+                        {
+                            Id = auction.Id,
+                            //ItemName = auction.ItemName,
+                            //TitleAuction = auction.TitleAuction,
+                            //AmountJumpMax = auction.AmountJumpMax,
+                            //AmountJumpMin = auction.AmountJumpMin,
+                            //EndDate = auction.EndDate,
+                            //StartingPrice = auction.StartingPrice,
+                            StartDate = (DateTime)auction.StartDate,
+                            IntroduceItem = auction.IntroduceItem,
+                        };
 
-        //    var totalCount = await query.CountAsync();
-        //    var result = await query.PageBy(input).ToListAsync();
+            var totalCount = await query.CountAsync();
+            var result = await query.PageBy(input).ToListAsync();
 
-        //    return new PagedResultDto<GetAllAuctionDto>(
-        //        totalCount,
-        //        result);
-        //}
+            return new PagedResultDto<GetAllAuctionDto>(
+                totalCount,
+                result);
+        }
         public async Task DeleteAuction(long auctionId)
         {
             var auction = await _mstAuctionRepo.FirstOrDefaultAsync(e=>e.Id == auctionId);

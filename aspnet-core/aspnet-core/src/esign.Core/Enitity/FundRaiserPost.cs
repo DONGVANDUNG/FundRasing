@@ -25,6 +25,6 @@ namespace esign.Enitity
         //Mục tiêu
         public string TargetIntroduce { get; set; }
         //Tiến độ thực hiện
-        public string ImplementationProgress { get; set; }
+        //public string ImplementationProgress { get; set; }
     }
 }

@@ -73,21 +73,22 @@ namespace esign.FundRaising
             _mstFundRaiserPostRepo = mstFundRaiserPostRepo;
             _mstFundImageRepo = mstFundImageRepo;
         }
-        public async Task<List<GetFundsDetailByIdForUser>> GetInforFundRaisingById(long Id)
+        public async Task<List<GetFundsDetailByIdForUser>> GetInforPostById(long Id)
         {
-            var fundRaising = (from post in _mstFundRaiserPostRepo.GetAll().Where(e => e.IsClose == false)
-                                       join fund in _mstSleFundRepo.GetAll() on post.FundId equals fund.Id
+            var fundRaising = (from post in _mstFundRaiserPostRepo.GetAll().Where(e => e.IsClose == false && e.Id == Id)
+                                       join fund in _mstSleFundRepo.GetAll() on (long)post.FundId equals fund.Id
                                        //join postImage in _mstFundImageRepo.GetAll() on post.Id equals postImage.PostId
+                                       join user in _mstSleUserRepo.GetAll() on fund.UserId equals user.Id
                                        select new GetFundsDetailByIdForUser
                                        {
                                            Id = post.Id,
                                            ListImageUrl = _mstFundImageRepo.GetAll().Where(e => e.PostId == post.Id).Select(re => re.ImageUrl).ToList(),
-                                           AmountDonatePresent = fund.AmountDonationPresent,
-                                           PercentAchieved = (fund.AmountDonationPresent / fund.AmountDonationTarget) * 100,
+                                          // AmountDonatePresent = fund.AmountDonationPresent,
+                                          // PercentAchieved = (fund.AmountDonationPresent / fund.AmountDonationTarget) * 100,
                                            PostTitle = post.PostTitle,
-                                           AmountDonateTarget = fund.AmountDonationTarget,
+                                           //AmountDonateTarget = fund.AmountDonationTarget,
                                            PostTopic = post.PostTopic,
-                                           OrganizationName = _mstSleUserRepo.FirstOrDefault(e => e.Id == fund.UserId).IntroduceOrganization
+                                           OrganizationName = user.IntroduceOrganization
                                        }).ToListAsync();
             return await fundRaising;
         }
@@ -124,7 +125,7 @@ namespace esign.FundRaising
                                       Id = funPackage.Id,
                                       //Discount = funPackage.Discount,
                                       Commission = funPackage.Commission,
-                                      PaymenFee = funPackage.PaymenFee,
+                                      PaymentFee = funPackage.PaymentFee,
                                       Description = funPackage.Description,
                                       Duration = funPackage.Duration,
                                       CreatedTime = funPackage.CreationTime
@@ -371,24 +372,23 @@ namespace esign.FundRaising
             }
         }
 
-        //public async Task<List<GetFundRaisingViewForAdminDto>> getListFundRaising()
-        //{
-        //    var listFundRaising = (from fundRaising in _mstSleFundRepo.GetAll()
-        //                           join user in _mstSleUserRepo.GetAll() on fundRaising.FundRaiserId equals user.Id
-        //                           select new GetFundRaisingViewForAdminDto
-        //                           {
-        //                               Id = (int)fundRaising.Id,
-        //                               FundName = fundRaising.FundName,
-        //                               FundFinishDay = fundRaising.FundRaisingDay,
-        //                               FundRaisingDay = fundRaising.FundRaisingDay,
-        //                               AmountOfMoney = fundRaising.AmountOfMoney,
-        //                               Status = fundRaising.Status == 3 ? "Đã đóng" : "Đang hoạt động",
-        //                               ListImageUrl = _mstSleFundImageRepo.GetAll().Where(e => e.FundId == fundRaising.Id).Select(e => e.ImageUrl).ToList(),
-        //                               FundStartDate = fundRaising.FundRaisingDay,
-        //                               FundTitle = fundRaising.FundTitle,
-        //                               FundRaiser = user.UserName
-        //                           }).ToListAsync();
-        //    return await listFundRaising;
-        //}
+        public async Task<List<GetFundRaisingViewForAdminDto>> getListPostOfFundRaising()
+        {
+            var listPost = (from post in _mstFundRaiserPostRepo.GetAll()
+                                   join fund in _mstSleFundRepo.GetAll() on post.FundId equals fund.Id
+                                   join user in _mstSleUserRepo.GetAll() on fund.UserId equals user.Id
+                                   select new GetFundRaisingViewForAdminDto
+                                   {
+                                       Id = post.Id,
+                                       OrganizationName = user.Company,
+                                       PostTitle = post.PostTitle,
+                                       AmountDonatePresent = fund.AmountDonationPresent,
+                                       AmountDonateTarget = fund.AmountDonationTarget,
+                                       PercentAchieved = fund.PercentAchieved,
+                                       PostTopic = post.PostTopic,
+                                       ListImageUrl = _mstFundImageRepo.GetAll().Where(e => e.PostId == post.Id).Select(re => re.ImageUrl).ToList()
+                                   }).ToListAsync();
+            return await listPost;
+        }
     }
 }

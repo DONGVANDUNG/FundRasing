@@ -7,15 +7,14 @@ namespace esign.FundRaising.Admin.Dto
 {
     public class GetFundRaisingViewForAdminDto
     {
-        public int Id { get; set; }
+        public long? Id { get; set; }
+        public string PostTitle { get; set; }
         public string FundRaiser { get; set; }
-        public string FundName { get; set; }
-        public float AmountOfMoney { get; set; }
-        public DateTime? FundRaisingDay { get; set; }
-        public DateTime? FundFinishDay { get; set; }
-        public string Status { get; set; }
-        public string FundTitle { get; set; }
-        public DateTime FundStartDate { get; set; }
+        public string OrganizationName { get; set; }
+        public float? AmountDonatePresent { get; set; }
+        public float? AmountDonateTarget { get; set; }
+        public float? PercentAchieved { get; set; }
+        public string PostTopic { get; set; }
         public List<string> ListImageUrl { get; set; }
         public string Unit { get; set; }
     }

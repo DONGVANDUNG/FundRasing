@@ -31,7 +31,7 @@ namespace esign.Authorization.Users
         public string Position { get; set; }
         public string Phone { get; set; }
         public int? TypeUser { get; set; }
-        public float? Blances { get; set; }
+        public float? Balances { get; set; }
         public DateTime? FundRaiserDate { get; set; }
         public long? FundPackageId { get; set; }
         public string IntroduceOrganization { get; set; }

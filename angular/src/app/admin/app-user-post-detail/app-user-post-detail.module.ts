@@ -6,10 +6,10 @@ import { AdminSharedModule } from '../shared/admin-shared.module';
 import { SliderModule } from 'primeng/slider';
 import { LoadingAdminComponent } from '../app-admin-post/loadingAdmin';
 import { AccordionModule } from 'primeng/accordion';
-
+import { TabViewModule } from 'primeng/tabview';
 @NgModule({
   imports: [
-    CommonModule,AppUserPostDetailRoutingModule,AdminSharedModule,AccordionModule,SliderModule
+    CommonModule,AppUserPostDetailRoutingModule,AdminSharedModule,AccordionModule,SliderModule,TabViewModule
   ],
   declarations: [AppUserPostDetailComponent,LoadingAdminComponent]
 })

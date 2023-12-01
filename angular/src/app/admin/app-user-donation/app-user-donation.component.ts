@@ -34,10 +34,9 @@ export class AppUserDonationComponent extends AppComponentBase implements OnInit
         this._fundRaiser.getListTransactionForFund(this.fundId).subscribe(result=>{
             this.listTransaction = result;
         })
-        this._userServiceProxy.getInforFundRaisingById(this.fundId).subscribe(result => {
-            this.inforFundDetail = result;
-            this.imageUrl = this.baseUrl + result.listImageUrl[0];
-        })
+        // this._userServiceProxy.getInforFundRaisingById(this.fundId).subscribe(result => {
+        //     this.inforFundDetail = result;
+        // })
     }
 
     limitedCharacter() {

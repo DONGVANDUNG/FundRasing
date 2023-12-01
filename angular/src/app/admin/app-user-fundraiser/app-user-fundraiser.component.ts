@@ -19,9 +19,9 @@ export class AppUserFundraiserComponent extends AppComponentBase implements OnIn
 
   ngOnInit() {
     this.dataFundRaiser = new RegisterInforFundRaiserDto();
-    this._userServiceProxy.getListFundPackageForUserDonation().subscribe(rs=>{
-        this.listPackage = rs;
-    })
+    // this._userServiceProxy.getListFundPackageForUserDonation().subscribe(rs=>{
+    //     this.listPackage = rs;
+    // })
     this._userServiceProxy.getForEditFundRaiser().subscribe(result => {
       this.dataFundRaiser = result;
       if(!this.dataFundRaiser.id){

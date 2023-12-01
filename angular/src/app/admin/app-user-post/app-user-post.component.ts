@@ -28,7 +28,7 @@ export class AppUserPostComponent implements OnInit {
     this.getAllFundRaising();
   }
   getAllFundRaising() {
-    this._userServiceProxy.getListFundRaising().subscribe((result) => {
+    this._userServiceProxy.getListPostOfFundRaising().subscribe((result) => {
       this.listFundRaising = result;
     })
   }

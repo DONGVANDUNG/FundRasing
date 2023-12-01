@@ -22,7 +22,7 @@ import {
     MenuComponent,
     ScrollComponent,
 } from '@metronic/app/kt/components';
-import { AuctionService } from './shared/layout/chat/auction-hub.service';
+// import { AuctionService } from './shared/layout/chat/auction-hub.service';
 
 @Component({
     templateUrl: './app.component.html',
@@ -49,7 +49,7 @@ export class AppComponent extends AppComponentBase implements OnInit {
     public constructor(
         injector: Injector,
         private _chatSignalrService: ChatSignalrService,
-        private _auctionService: AuctionService,
+        // private _auctionService: AuctionService,
         private _userNotificationHelper: UserNotificationHelper,
         private _dateTimeService: DateTimeService
     ) {
@@ -66,7 +66,7 @@ export class AppComponent extends AppComponentBase implements OnInit {
         if (this.appSession.application) {
             SignalRHelper.initSignalR(() => {
                 this._chatSignalrService.init();
-                this._auctionService.init();
+                //this._auctionService.init();
             });
         }
 

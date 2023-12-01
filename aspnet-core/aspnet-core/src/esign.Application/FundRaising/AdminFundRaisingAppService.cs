@@ -34,7 +34,7 @@ namespace esign.FundRaising
         private readonly IRepository<FundRaisingTopic, int> _mstSleFundTopictRepo;
         private readonly IRepository<FundPackage, int> _mstSleFundPackageRepo;
         private readonly IRepository<User, long> _mstSleUserRepo;
-        private readonly IRepository<FundTransactions, int> _mstSleTransactionRepo;
+        private readonly IRepository<FundTransactions, long> _mstSleTransactionRepo;
         private readonly IRepository<UserWarning, int> _mstSleUserWarningRepo;
         private readonly IRepository<GuestAccount, int> _mstSleGuestAccountRepo;
         private readonly IRepository<FundImage, long> _mstSleFundImageRepo;
@@ -48,7 +48,7 @@ namespace esign.FundRaising
             IRepository<FundRaisingTopic, int> mstSleFundTopictRepo,
             IRepository<FundPackage, int> mstSleFundPackageRepo,
             IRepository<User, long> mstSleUserRepo,
-            IRepository<FundTransactions, int> mstSleTransactionRepo,
+            IRepository<FundTransactions, long> mstSleTransactionRepo,
             IRepository<GuestAccount, int> mstSleGuestAccountRepo,
             IRepository<FundImage, long> mstSleFundImageRepo,
             IRepository<RequestToFundRaiser, long> mstRequestToFundraiserRepo,
@@ -73,7 +73,7 @@ namespace esign.FundRaising
                                join fund in _mstSleFundRepo.GetAll() on trans.FundId equals fund.Id
                                select new TransactionOfFundForDto
                                {
-                                   Id = trans.Id,
+                                   //Id = trans.Id,
                                    Content = trans.MessageToFund,
                                    Amount = trans.AmountOfMoney,
                                    FundName = fund.FundName,
@@ -109,32 +109,32 @@ namespace esign.FundRaising
                 result);
         }
 
-        //public async Task<PagedResultDto<GetFundRaisingViewForAdminDto>> getListFundRaising(FundRaisingInputDto input)
-        //{
-        //    var listFundRaising = from fundRaising in _mstSleFundRepo.GetAll().Where(e => input.Filter == null || e.FundTitle.Contains(input.Filter)
-        //                           || e.FundName.Contains(input.Filter))
-        //                           .Where(e => input.IsPayFee == null || e.IsPayFee == input.IsPayFee)
-        //                           .Where(e => input.CreatedDate == null || e.FundRaisingDay == input.CreatedDate)
-        //                          select new GetFundRaisingViewForAdminDto
-        //                          {
-        //                              Id = (int)fundRaising.Id,
-        //                              FundName = fundRaising.FundName,
-        //                              FundFinishDay = fundRaising.FundRaisingDay,
-        //                              FundRaisingDay = fundRaising.FundRaisingDay,
-        //                              AmountOfMoney = fundRaising.AmountOfMoney,
-        //                              Status = fundRaising.Status == 3 ? "Đã đóng" : "Đang hoạt động",
-        //                              ListImageUrl = _mstSleFundImageRepo.GetAll().Where(e => e.FundId == fundRaising.Id).Select(e => e.ImageUrl).ToList(),
-        //                              FundStartDate = fundRaising.FundRaisingDay,
-        //                              FundTitle = fundRaising.FundTitle,
-        //                              Unit = "Coin"
-        //                          };
+        public async Task<PagedResultDto<GetFundRaisingViewForAdminDto>> getListFundRaising(FundRaisingInputDto input)
+        {
+            var listFundRaising = from fundRaising in _mstSleFundRepo.GetAll().Where(e => input.Filter == null || e.FundTitle.Contains(input.Filter)
+                                   || e.FundName.Contains(input.Filter))
+                                   .Where(e => input.IsPayFee == null || e.IsPayFee == input.IsPayFee)
+                                   .Where(e => input.CreatedDate == null || e.FundRaisingDay == input.CreatedDate)
+                                  select new GetFundRaisingViewForAdminDto
+                                  {
+                                      //Id = (int)fundRaising.Id,
+                                      //FundName = fundRaising.FundName,
+                                      //FundFinishDay = fundRaising.FundRaisingDay,
+                                      //FundRaisingDay = fundRaising.FundRaisingDay,
+                                      //AmountOfMoney = fundRaising.AmountOfMoney,
+                                      //Status = fundRaising.Status == 3 ? "Đã đóng" : "Đang hoạt động",
+                                      //ListImageUrl = _mstSleFundImageRepo.GetAll().Where(e => e.FundId == fundRaising.Id).Select(e => e.ImageUrl).ToList(),
+                                      //FundStartDate = fundRaising.FundRaisingDay,
+                                      //FundTitle = fundRaising.FundTitle,
+                                      Unit = "Coin"
+                                  };
 
-        //    var totalCount = await listFundRaising.CountAsync();
-        //    var result = await listFundRaising.PageBy(input).ToListAsync();
-        //    return new PagedResultDto<GetFundRaisingViewForAdminDto>(
-        //       totalCount,
-        //       result);
-        //}
+            var totalCount = await listFundRaising.CountAsync();
+            var result = await listFundRaising.PageBy(input).ToListAsync();
+            return new PagedResultDto<GetFundRaisingViewForAdminDto>(
+               totalCount,
+               result);
+        }
 
         public async Task<PagedResultDto<TransactionOfFundForDto>> getListTransactionForFund(TransactionForFundInputDto input)
         {
@@ -143,7 +143,7 @@ namespace esign.FundRaising
                                   //join fund in _mstSleFundRepo.GetAll() on transaction.FundId equals fund.Id
                                   select new TransactionOfFundForDto
                                   {
-                                      Id = transaction.Id,
+                                      //Id = transaction.Id,
                                       Amount = transaction.AmountOfMoney,
                                       Content = transaction.MessageToFund,
                                       //FundName = fund.FundName,
@@ -192,7 +192,7 @@ namespace esign.FundRaising
                                   {
                                       Id = funPackage.Id,
                                       //Discount = funPackage.Discount,
-                                      PaymenFee = funPackage.PaymenFee,
+                                      PaymentFee = funPackage.PaymentFee,
                                       Description = funPackage.Description,
                                       Duration = funPackage.Duration,
                                       CreatedTime = funPackage.CreationTime
@@ -211,7 +211,7 @@ namespace esign.FundRaising
         }
         public async Task CreateFundPackage(CreateOrEditFundPackageDto input)
         {
-            var checkExisted = _mstSleFundPackageRepo.GetAll().Where(e => e.PaymenFee == input.PaymenFee);
+            var checkExisted = _mstSleFundPackageRepo.GetAll().Where(e => e.PaymentFee == input.PaymenFee);
             if (checkExisted.Count() >= 1)
             {
                 throw new UserFriendlyException("Đã tồn tại gói quỹ");
@@ -220,7 +220,7 @@ namespace esign.FundRaising
             {
                 var fundPackage = new FundPackage();
                 //fundPackage.UserId = (int)AbpSession.UserId;
-                fundPackage.PaymenFee = input.PaymenFee;
+                fundPackage.PaymentFee = input.PaymenFee;
                 //fundPackage.Discount = input.Discount;
                 fundPackage.Duration = input.Duration;
                 fundPackage.Description = input.Description;
@@ -234,7 +234,7 @@ namespace esign.FundRaising
             if (fund == null)
             {
                 //fund.UserId = (int)AbpSession.UserId;
-                fund.PaymenFee = input.PaymenFee;
+                fund.PaymentFee = input.PaymenFee;
                 //fund.Discount = input.Discount;
                 fund.Duration = input.Duration;
                 fund.Description = input.Description;

@@ -15,5 +15,6 @@ namespace esign.Enitity
         public string Address { get; set; }
         public int? PaymentType { get; set; }
         public string Note { get; set; }
+        public long? AuctionItemId { get; set; }
     }
 }

@@ -37,9 +37,9 @@ export class AppUserPostDetailComponent extends AppComponentBase implements OnIn
   }
   ngOnInit(): void {
     this.postId = this.route.snapshot.params['postId'];
-    this._userServiceProxy.getInforFundRaisingById(this.postId).subscribe(result => {
+    this._userServiceProxy.getInforPostById(this.postId).subscribe(result => {
         this.inforFundDetail = result;
-        this.imageUrl = this.baseUrl + result.listImageUrl[0];
+        this.imageUrl = this.baseUrl  + this.inforFundDetail.listImageUrl[0];
     })
   }
 //   show(fundId) {
@@ -72,26 +72,26 @@ export class AppUserPostDetailComponent extends AppComponentBase implements OnIn
       //     this.textButton = 'Hủy';
       // }
   }
-  donateToFund() {
-      this.inputData.amountOfMoney = this.amountOfMoney;
-      this.inputData.fundId = this.fundId;
-      this.inputData.noteTransaction = this.noteTransaction;
-      if (this.amountOfMoney == null) {
-          this.notify.warn("Nhập số tiền cần quyên góp");
-          return;
-      }
-      this.isLoading = true;
-      this._userServiceProxy.donateForFund(this.inputData).subscribe(
-          () => {
-              this.notify.success("Quyên góp thành công");
-              this.isLoading = false;
-              this.modal.hide();
-          },
-          (error => {
-              this.notify.error(error);
-              this.isLoading = false;
-          }
-          )
-      )
-  }
+//   donateToFund() {
+//       this.inputData.amountOfMoney = this.amountOfMoney;
+//       this.inputData.fundId = this.fundId;
+//       this.inputData.noteTransaction = this.noteTransaction;
+//       if (this.amountOfMoney == null) {
+//           this.notify.warn("Nhập số tiền cần quyên góp");
+//           return;
+//       }
+//       this.isLoading = true;
+//       this._userServiceProxy.donateForFund(this.inputData).subscribe(
+//           () => {
+//               this.notify.success("Quyên góp thành công");
+//               this.isLoading = false;
+//               this.modal.hide();
+//           },
+//           (error => {
+//               this.notify.error(error);
+//               this.isLoading = false;
+//           }
+//           )
+//       )
+//   }
 }
