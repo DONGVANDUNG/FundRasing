@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using esign.EntityFrameworkCore;
 
@@ -11,9 +12,11 @@ using esign.EntityFrameworkCore;
 namespace esign.Migrations
 {
     [DbContext(typeof(esignDbContext))]
-    partial class esignDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231130160531_update-database-30-11")]
+    partial class updatedatabase3011
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1602,7 +1605,7 @@ namespace esign.Migrations
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
 
-                    b.Property<float?>("Balances")
+                    b.Property<float?>("Blances")
                         .HasColumnType("real");
 
                     b.Property<string>("City")
@@ -1863,9 +1866,6 @@ namespace esign.Migrations
                     b.Property<long?>("LastModifierUserId")
                         .HasColumnType("bigint");
 
-                    b.Property<int?>("NumberOfParticipants")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("StartDate")
                         .HasColumnType("datetime2");
 
@@ -2096,6 +2096,9 @@ namespace esign.Migrations
                     b.Property<long?>("FundId")
                         .HasColumnType("bigint");
 
+                    b.Property<string>("ImplementationProgress")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool?>("IsClose")
                         .HasColumnType("bit");
 
@@ -2228,9 +2231,6 @@ namespace esign.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long?>("AuctionItemId")
-                        .HasColumnType("bigint");
-
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2");
 
@@ -2344,9 +2344,6 @@ namespace esign.Migrations
                     b.Property<int?>("DonateAmount")
                         .HasColumnType("int");
 
-                    b.Property<float?>("DonateSuggestAmount")
-                        .HasColumnType("real");
-
                     b.Property<DateTime>("FundEndDate")
                         .HasColumnType("datetime2");
 
@@ -2376,9 +2373,6 @@ namespace esign.Migrations
 
                     b.Property<long?>("LastModifierUserId")
                         .HasColumnType("bigint");
-
-                    b.Property<float?>("PercentAchieved")
-                        .HasColumnType("real");
 
                     b.Property<int?>("Status")
                         .HasColumnType("int");
@@ -2574,7 +2568,7 @@ namespace esign.Migrations
                     b.Property<long?>("LastModifierUserId")
                         .HasColumnType("bigint");
 
-                    b.Property<float>("PaymentFee")
+                    b.Property<float>("PaymenFee")
                         .HasColumnType("real");
 
                     b.Property<bool>("Status")
