@@ -243,3 +243,118 @@
 .navbar-expand-xl{
     margin-top: 10px;
 }
+
+//FOOTER
+.container-fotter {
+    .footer-section-top {
+        height: 150px;
+        padding: 30px 0px 10px 0px;
+        border-bottom: white 1px solid;
+
+        .section-top-logo {
+            text-align: right;
+        }
+
+        .section-top-title {
+            display: flex;
+            align-items: center;
+
+            p {
+                line-height: 1.6;
+                font-size: 16px;
+            }
+        }
+
+        .section-top-widdget {}
+    }
+
+    .footer-section-middle {
+        .section-middle-mid {
+            ul {
+                li {
+                    color: white;
+                    margin-right: 10px;
+                }
+
+                li:hover {
+                    color: gray;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+
+    .footer-section-bottom {
+        width: 30%;
+        // height: 500px;
+        padding-bottom: 50px;
+
+        .section-bottom-mid {
+            ul {
+                li {
+                    color: white;
+
+                    i {
+                        color: white;
+                        margin-right: 5px;
+                    }
+
+                    span {
+                        color: red;
+                    }
+                }
+
+                li:last-child {
+                    margin-top: 20px;
+                }
+            }
+        }
+
+        .section-bottom-right {
+            .frame-poster {
+                display: flex;
+                justify-content: space-between;
+                position: relative;
+
+                .poster-contact {
+                    width: 100px;
+                    height: 30px;
+                    background-color: white;
+                    color: black;
+                    position: absolute;
+                    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+                    filter: drop-shadow();
+                    cursor: pointer;
+                    i{
+                        margin-right: 5px;
+                    }
+                }
+
+                .follow-page {
+                    left: 5px;
+                    bottom: 5px;
+                }
+
+                .contac-us {                   
+                    right: 5px;
+                    bottom: 5px;                   
+                }
+            }
+        }
+    }
+
+}
+
+.footer-section-layout-1 {
+    width: 30%;
+    text-align: right;
+}
+
+.footer-section-layout-2 {
+    width: 40%;
+    margin-left: 40px;
+}
+
+.footer-section-layout-3 {
+    width: 30%;
+}
