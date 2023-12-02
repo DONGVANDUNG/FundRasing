@@ -7,7 +7,7 @@ namespace esign.FundRaising
     public class GetListFundRasingDto
     {
         public long? Id { get; set; }
-        public string ImageUrl { get; set; }
+        public List<string> ListImageUrl { get; set; }
         public string PostTitle { get; set; }
         public float? AmountDonatePresent { get; set; }
         public float? AmountDonateTarget { get; set; }
@@ -20,6 +20,8 @@ namespace esign.FundRaising
         public string Purpose { get; set; }
         public string Target { get; set; }
         public string Note { get; set; }
+
+        // 
 
     }
 }

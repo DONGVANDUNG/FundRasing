@@ -6,22 +6,11 @@
         </div>
         <hr class="itemPreviewView__separator">
         <div class="block-personal-information mt-5 mb-2">
-            <h6 class="mb-5">Thông tin chi tiết của tổ chức</h6>
             <div class="row mb-5 d-flex justify-content-between mt-5">
                 <div class="col-4 d-flex align-items-center">
                     <label class="label">Tên tổ chức:</label>
                     <input type="text" [(ngModel)]="dataFundRaiser.company" name="company" class="input">
                 </div>
-                <div class="col-4 d-flex align-items-center">
-                    <label class="label">Quốc gia:</label>
-                    <input type="text" [(ngModel)]="dataFundRaiser.country" name="introduce" class="input">
-                </div>
-                <div class="col-4 d-flex align-items-center">
-                    <label for="fund-name" class="label">Địa chỉ:</label>
-                    <input type="text" [(ngModel)]="dataFundRaiser.address" name="address" id="fund-name" class="input">
-                </div>
-            </div>
-            <div class="row mb-5 d-flex justify-content-start mt-5">
                 <div class="col-4 d-flex align-items-center">
                     <label class="label">Số điện thoại:</label>
                     <input type="text" [(ngModel)]="dataFundRaiser.phone" name="phone" class="input">
@@ -32,35 +21,16 @@
                         [(ngModel)]="dataFundRaiser.fundPackage" optionLabel="name" optionValue="id"></p-dropdown>
                 </div>
             </div>
-            <hr class="itemPreviewView__separator">
-            <div class="row mb-5 d-flex justify-content-between mt-5">
-                <h6 class="mb-5">Thông tin tài khoản ngân hàng</h6>
-                <div class="col-4 d-flex align-items-center">
-                    <label class="label">Email:</label>
-                    <input type="text" [(ngModel)]="dataFundRaiser.emailAddress" name="email" [disabled]="!isChangeBankInfo"
-                        class="input-bank input-disable">
-                </div>
-                <div class="col-4 d-flex align-items-center">
-                    <label class="label">Ngân hàng:</label>
-                    <input type="text" [(ngModel)]="this.dataInforBankUser.bankName" name="bankName"
-                        [disabled]="!isChangeBankInfo" class="input-bank input-disable">
-                </div>
-                <div class="col-4 d-flex align-items-center">
-                    <label class="label">Số tài khoản:</label>
-                    <input type="text" [(ngModel)]="this.dataInforBankUser.bankNumber" name="bankNumber"
-                        [disabled]="!isChangeBankInfo" class="input-bank input-disable">
+            <div class="row mb-5 d-flex justify-content-start mt-5">
+                <div class="col-12 d-flex align-items-center">
+                    <label for="fund-name" class="label-add">Địa chỉ:</label>
+                    <input type="text" [(ngModel)]="dataFundRaiser.address" name="address" id="fund-name" class="input">
                 </div>
             </div>
             <div class="row mb-5 d-flex justify-content-start mt-5">
-                <div class="col-4 d-flex align-items-center">
-                    <label class="label">Số dư:</label>
-                    <input type="text" disabled [(ngModel)]="this.dataInforBankUser.balance" name="surplus"
-                        class="input input-disable">
-                </div>
-                <div class="col-4 d-flex align-items-center">
-                    <label class="label">Đơn vị:</label>
-                    <input type="text" disabled [(ngModel)]="this.dataInforBankUser.unit" name="unit"
-                        class="input input-disable">
+                <div class="col-12 d-flex align-items-center">
+                    <label for="fund-name" class="label-add">Giới thiệu:</label>
+                    <textarea name="intro-orgnization" id="" cols="110" rows="10"></textarea>
                 </div>
             </div>
         </div>

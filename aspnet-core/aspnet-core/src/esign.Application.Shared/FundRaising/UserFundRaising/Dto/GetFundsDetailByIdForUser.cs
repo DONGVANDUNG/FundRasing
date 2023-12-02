@@ -13,6 +13,7 @@ namespace esign.FundRaising
         public string FundName { get; set; }
         public string PostTopic { get; set; }
         public string OrganizationName { get; set; }
+        public string OrganizationIntroduce { get; set; }
         public string PayFee { get; set; }
         public DateTime? FundRaisingDay { get; set; }
         public DateTime? FinishFundRaising { get; set; }
@@ -26,5 +27,12 @@ namespace esign.FundRaising
         public float? PaymenFee { get; set; }
         public bool? IsPayeFee { get; set; }
         public int? DonateAmount{ get; set; }
+        public string Purpose { get; set; }
+        public string Note { get; set; }
+        public string Target { get; set; }
+        public string AddressOrgnization { get; set; }
+        public string Phone { get; set; }
+        public string Email { get; set; }
+        public long? FundId { get; set; }
     }
 }

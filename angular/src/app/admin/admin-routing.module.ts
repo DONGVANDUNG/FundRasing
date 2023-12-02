@@ -32,11 +32,11 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
                         loadChildren: () => import('./app-admin-fund-transaction/app-admin-fund-transaction.module').then((m) => m.AppAdminFundTransactionModule),
                         // data: { permission: 'Pages.Administration.Users' },
                     },
-                    {
-                        path: 'donation/:fundId',
-                        loadChildren: () => import('./app-user-donation/app-user-donation.module').then((m) => m.AppUserDonationModule),
-                        // data: { permission: 'Pages.Administration.Users' },
-                    },
+                    // {
+                    //     path: 'donation/:fundId',
+                    //     loadChildren: () => import('./app-user-post-detail/app-user-donation/app-user-donation.module').then((m) => m.AppUserDonationModule),
+                    //     // data: { permission: 'Pages.Administration.Users' },
+                    // },
                     {
                         path: 'fund-detail',
                         loadChildren: () => import('./app-user-fund-detail/app-user-fund-detail.module').then((m) => m.AppUserFundDetailModule  ),

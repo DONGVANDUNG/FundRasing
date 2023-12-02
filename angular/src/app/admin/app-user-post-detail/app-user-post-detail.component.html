@@ -26,14 +26,37 @@
 <div class="block-donate">
     <div class="list-image-detail"></div>
     <div class="donation d-flex justify-content-end">
-        <button class="btn-donate" (click)="activeIndex = 1">Ủng hộ ngay</button>
-        <button class="btn-raiser" (click)="activeIndex = 0">Trở thành sứ giả</button>
+        <button class="btn-donate" (click)="donateFundRaiser()">Ủng hộ ngay</button>
+        <button class="btn-raiser">Trở thành sứ giả</button>
     </div>
 </div>
 <div class="block-content-detail">
     <p-tabView [(activeIndex)]="activeIndex">
         <p-tabPanel header="Nội dung">
-
+            <div class="block-content d-flex justify-content-between">
+                <div class="content">
+                    <p><strong>*Mục đích:&nbsp;</strong><span>{{this.inforFundDetail.purpose}}</span></p>
+                    <p><strong>*Mục tiêu:&nbsp;</strong><span>{{this.inforFundDetail.target}}</span></p>
+                    <p><strong>*</strong><span>{{this.inforFundDetail.note}}</span></p>
+                </div>
+                <div class="intro-orgnization">
+                    <p class="text-infor">Thông tin tổ chức gây quỹ</p>
+                    <h1 class="orgnization-name">{{this.inforFundDetail.organizationName}}</h1>
+                    <p class="intro-org">{{this.inforFundDetail.organizationIntroduce}}</p>
+                    <div class="block-address d-flex align-items-center mt-3 mb-3">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <span class="text-address">{{this.inforFundDetail.addressOrgnization}}</span>
+                    </div>
+                    <div class="block-phone mt-3 mb-3">
+                        <i class="fa-solid fa-phone"></i>
+                        <span class="text-phone">Hotline: <span style="color:red">{{this.inforFundDetail.phone}}</span></span>
+                    </div>
+                    <div>
+                        <i class="fa-regular fa-envelope"></i>
+                        <span class="text-phone">Email: &nbsp;{{this.inforFundDetail.email}}</span>
+                    </div>
+                </div>
+            </div>
         </p-tabPanel>
         <p-tabPanel header="Danh sách ủng hộ">
             <div class="list-donation">
@@ -58,3 +81,4 @@
         </p-tabPanel>
     </p-tabView>
 </div>
+<app-user-donation #donate></app-user-donation>

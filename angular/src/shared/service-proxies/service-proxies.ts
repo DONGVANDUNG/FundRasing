@@ -15014,10 +15014,68 @@ export class UserServiceProxy {
     }
 
     /**
+     * @return Success
+     */
+    getHistoryDonationForFund(): Observable<GetListFundRasingDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/User/getHistoryDonationForFund";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetHistoryDonationForFund(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetHistoryDonationForFund(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GetListFundRasingDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GetListFundRasingDto[]>;
+        }));
+    }
+
+    protected processGetHistoryDonationForFund(response: HttpResponseBase): Observable<GetListFundRasingDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(GetListFundRasingDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param id (optional) 
      * @return Success
      */
-    getInforPostById(id: number | undefined): Observable<GetFundsDetailByIdForUser[]> {
+    getInforPostById(id: number | undefined): Observable<GetFundsDetailByIdForUser> {
         let url_ = this.baseUrl + "/api/services/app/User/GetInforPostById?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
@@ -15040,14 +15098,14 @@ export class UserServiceProxy {
                 try {
                     return this.processGetInforPostById(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<GetFundsDetailByIdForUser[]>;
+                    return _observableThrow(e) as any as Observable<GetFundsDetailByIdForUser>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<GetFundsDetailByIdForUser[]>;
+                return _observableThrow(response_) as any as Observable<GetFundsDetailByIdForUser>;
         }));
     }
 
-    protected processGetInforPostById(response: HttpResponseBase): Observable<GetFundsDetailByIdForUser[]> {
+    protected processGetInforPostById(response: HttpResponseBase): Observable<GetFundsDetailByIdForUser> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -15058,14 +15116,7 @@ export class UserServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(GetFundsDetailByIdForUser.fromJS(item));
-            }
-            else {
-                result200 = <any>null;
-            }
+            result200 = GetFundsDetailByIdForUser.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -23208,6 +23259,7 @@ export class GetFundsDetailByIdForUser implements IGetFundsDetailByIdForUser {
     fundName!: string | undefined;
     postTopic!: string | undefined;
     organizationName!: string | undefined;
+    organizationIntroduce!: string | undefined;
     payFee!: string | undefined;
     fundRaisingDay!: DateTime | undefined;
     finishFundRaising!: DateTime | undefined;
@@ -23221,6 +23273,13 @@ export class GetFundsDetailByIdForUser implements IGetFundsDetailByIdForUser {
     paymenFee!: number | undefined;
     isPayeFee!: boolean | undefined;
     donateAmount!: number | undefined;
+    purpose!: string | undefined;
+    note!: string | undefined;
+    target!: string | undefined;
+    addressOrgnization!: string | undefined;
+    phone!: string | undefined;
+    email!: string | undefined;
+    fundId!: number | undefined;
 
     constructor(data?: IGetFundsDetailByIdForUser) {
         if (data) {
@@ -23238,6 +23297,7 @@ export class GetFundsDetailByIdForUser implements IGetFundsDetailByIdForUser {
             this.fundName = _data["fundName"];
             this.postTopic = _data["postTopic"];
             this.organizationName = _data["organizationName"];
+            this.organizationIntroduce = _data["organizationIntroduce"];
             this.payFee = _data["payFee"];
             this.fundRaisingDay = _data["fundRaisingDay"] ? DateTime.fromISO(_data["fundRaisingDay"].toString()) : <any>undefined;
             this.finishFundRaising = _data["finishFundRaising"] ? DateTime.fromISO(_data["finishFundRaising"].toString()) : <any>undefined;
@@ -23255,6 +23315,13 @@ export class GetFundsDetailByIdForUser implements IGetFundsDetailByIdForUser {
             this.paymenFee = _data["paymenFee"];
             this.isPayeFee = _data["isPayeFee"];
             this.donateAmount = _data["donateAmount"];
+            this.purpose = _data["purpose"];
+            this.note = _data["note"];
+            this.target = _data["target"];
+            this.addressOrgnization = _data["addressOrgnization"];
+            this.phone = _data["phone"];
+            this.email = _data["email"];
+            this.fundId = _data["fundId"];
         }
     }
 
@@ -23272,6 +23339,7 @@ export class GetFundsDetailByIdForUser implements IGetFundsDetailByIdForUser {
         data["fundName"] = this.fundName;
         data["postTopic"] = this.postTopic;
         data["organizationName"] = this.organizationName;
+        data["organizationIntroduce"] = this.organizationIntroduce;
         data["payFee"] = this.payFee;
         data["fundRaisingDay"] = this.fundRaisingDay ? this.fundRaisingDay.toString() : <any>undefined;
         data["finishFundRaising"] = this.finishFundRaising ? this.finishFundRaising.toString() : <any>undefined;
@@ -23289,6 +23357,13 @@ export class GetFundsDetailByIdForUser implements IGetFundsDetailByIdForUser {
         data["paymenFee"] = this.paymenFee;
         data["isPayeFee"] = this.isPayeFee;
         data["donateAmount"] = this.donateAmount;
+        data["purpose"] = this.purpose;
+        data["note"] = this.note;
+        data["target"] = this.target;
+        data["addressOrgnization"] = this.addressOrgnization;
+        data["phone"] = this.phone;
+        data["email"] = this.email;
+        data["fundId"] = this.fundId;
         return data;
     }
 }
@@ -23299,6 +23374,7 @@ export interface IGetFundsDetailByIdForUser {
     fundName: string | undefined;
     postTopic: string | undefined;
     organizationName: string | undefined;
+    organizationIntroduce: string | undefined;
     payFee: string | undefined;
     fundRaisingDay: DateTime | undefined;
     finishFundRaising: DateTime | undefined;
@@ -23312,6 +23388,13 @@ export interface IGetFundsDetailByIdForUser {
     paymenFee: number | undefined;
     isPayeFee: boolean | undefined;
     donateAmount: number | undefined;
+    purpose: string | undefined;
+    note: string | undefined;
+    target: string | undefined;
+    addressOrgnization: string | undefined;
+    phone: string | undefined;
+    email: string | undefined;
+    fundId: number | undefined;
 }
 
 export class GetGeneralStatsOutput implements IGetGeneralStatsOutput {
@@ -23736,7 +23819,7 @@ export interface IGetListFundPackageDto {
 
 export class GetListFundRasingDto implements IGetListFundRasingDto {
     id!: number | undefined;
-    imageUrl!: string | undefined;
+    listImageUrl!: string[] | undefined;
     postTitle!: string | undefined;
     amountDonatePresent!: number | undefined;
     amountDonateTarget!: number | undefined;
@@ -23759,7 +23842,11 @@ export class GetListFundRasingDto implements IGetListFundRasingDto {
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"];
-            this.imageUrl = _data["imageUrl"];
+            if (Array.isArray(_data["listImageUrl"])) {
+                this.listImageUrl = [] as any;
+                for (let item of _data["listImageUrl"])
+                    this.listImageUrl!.push(item);
+            }
             this.postTitle = _data["postTitle"];
             this.amountDonatePresent = _data["amountDonatePresent"];
             this.amountDonateTarget = _data["amountDonateTarget"];
@@ -23782,7 +23869,11 @@ export class GetListFundRasingDto implements IGetListFundRasingDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
-        data["imageUrl"] = this.imageUrl;
+        if (Array.isArray(this.listImageUrl)) {
+            data["listImageUrl"] = [];
+            for (let item of this.listImageUrl)
+                data["listImageUrl"].push(item);
+        }
         data["postTitle"] = this.postTitle;
         data["amountDonatePresent"] = this.amountDonatePresent;
         data["amountDonateTarget"] = this.amountDonateTarget;
@@ -23798,7 +23889,7 @@ export class GetListFundRasingDto implements IGetListFundRasingDto {
 
 export interface IGetListFundRasingDto {
     id: number | undefined;
-    imageUrl: string | undefined;
+    listImageUrl: string[] | undefined;
     postTitle: string | undefined;
     amountDonatePresent: number | undefined;
     amountDonateTarget: number | undefined;
@@ -32001,7 +32092,7 @@ export interface ITopStatsData {
 }
 
 export class TransactionOfFundForDto implements ITransactionOfFundForDto {
-    id!: number;
+    id!: number | undefined;
     amount!: number;
     createdTime!: DateTime | undefined;
     content!: string | undefined;
@@ -32054,7 +32145,7 @@ export class TransactionOfFundForDto implements ITransactionOfFundForDto {
 }
 
 export interface ITransactionOfFundForDto {
-    id: number;
+    id: number | undefined;
     amount: number;
     createdTime: DateTime | undefined;
     content: string | undefined;

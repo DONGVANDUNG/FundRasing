@@ -73,10 +73,34 @@ namespace esign.FundRaising
             _mstFundRaiserPostRepo = mstFundRaiserPostRepo;
             _mstFundImageRepo = mstFundImageRepo;
         }
-        public async Task<List<GetFundsDetailByIdForUser>> GetInforPostById(long Id)
+        public async Task<List<GetListFundRasingDto>> getHistoryDonationForFund()
+        {
+            var listFund = (from transaction in _mstSleFundTransactionRepo.GetAll()
+                                       join fund in _mstSleFundRepo.GetAll() on transaction.FundId equals fund.Id
+                                       join post in _mstFundRaiserPostRepo.GetAll() on fund.Id equals post.FundId
+                                       join postImage in _mstFundImageRepo.GetAll() on post.Id equals postImage.PostId
+
+                                       //join fundDetail in _mstSleFundDetailRepo.GetAll() on fund.Id equals fundDetail.FundId    
+                                       select new GetListFundRasingDto
+                                       {
+                                           Id = post.Id,
+                                           ListImageUrl = _mstFundImageRepo.GetAll().Where(e => e.PostId == post.Id).Select(re => re.ImageUrl).ToList(),
+                                           AmountDonatePresent = fund.AmountDonationPresent,
+                                           PercentAchieved = (fund.AmountDonationPresent / fund.AmountDonationTarget) * 100,
+                                           PostTitle = post.PostTitle,
+                                           AmountDonateTarget = fund.AmountDonationTarget,
+                                           PostTopic = post.PostTopic,
+                                           //OrganizationName = _mstSleUserRepo.FirstOrDefault(e => e.Id == fund.UserId).IntroduceOrganization,
+                                           //FundDetail
+                                       }).ToListAsync();
+            return await listFund;
+        }
+        public GetFundsDetailByIdForUser GetInforPostById(long Id)
         {
             var fundRaising = (from post in _mstFundRaiserPostRepo.GetAll().Where(e => e.IsClose == false && e.Id == Id)
                                        join fund in _mstSleFundRepo.GetAll() on (long)post.FundId equals fund.Id
+                                       join fundDetail in _mstSleFundDetailRepo.GetAll() on fund.Id equals (long)fundDetail.FundId    
+
                                        //join postImage in _mstFundImageRepo.GetAll() on post.Id equals postImage.PostId
                                        join user in _mstSleUserRepo.GetAll() on fund.UserId equals user.Id
                                        select new GetFundsDetailByIdForUser
@@ -88,20 +112,29 @@ namespace esign.FundRaising
                                            PostTitle = post.PostTitle,
                                            //AmountDonateTarget = fund.AmountDonationTarget,
                                            PostTopic = post.PostTopic,
-                                           OrganizationName = user.IntroduceOrganization
-                                       }).ToListAsync();
-            return await fundRaising;
+                                           OrganizationName = user.Company,
+                                           Purpose = fundDetail.Purpose,
+                                           Note = fundDetail.Note,
+                                           Target = fundDetail.Target,
+                                           FundName = fund.FundName,
+                                           OrganizationIntroduce = user.IntroduceOrganization,
+                                           AddressOrgnization = user.Address,
+                                           Phone = user.Phone,
+                                           Email = user.EmailAddress,
+                                           FundId = fund.Id
+                                       }).FirstOrDefault();
+            return fundRaising;
         }
         public async Task<List<GetListFundRasingDto>> GetAllFundRaising()
         {
             var listFundOutStanding = (from post in _mstFundRaiserPostRepo.GetAll().Where(e=>e.IsClose == false)
                                        join fund in _mstSleFundRepo.GetAll() on post.FundId equals fund.Id
                                        join postImage in _mstFundImageRepo.GetAll() on post.Id equals postImage.PostId
-                                       join fundDetail in _mstSleFundDetailRepo.GetAll() on fund.Id equals fundDetail.FundId    
+                                       //join fundDetail in _mstSleFundDetailRepo.GetAll() on fund.Id equals fundDetail.FundId    
                                        select new GetListFundRasingDto
                                        {
                                            Id = post.Id,
-                                           ImageUrl = postImage.ImageUrl.Take(1).ToString(),
+                                           ListImageUrl = _mstFundImageRepo.GetAll().Where(e => e.PostId == post.Id).Select(re => re.ImageUrl).ToList(),
                                            AmountDonatePresent = fund.AmountDonationPresent,
                                            PercentAchieved = (fund.AmountDonationPresent / fund.AmountDonationTarget)*100,
                                            PostTitle = post.PostTitle,
@@ -109,9 +142,6 @@ namespace esign.FundRaising
                                            PostTopic = post.PostTopic,
                                            OrganizationName = _mstSleUserRepo.FirstOrDefault(e=>e.Id == fund.UserId).IntroduceOrganization,
                                            //FundDetail
-                                           Purpose = fundDetail.Purpose,
-                                           Note = fundDetail.Note,
-                                           Target = fundDetail.Target,
                                        }).ToListAsync();
             return await listFundOutStanding;
         }
@@ -152,6 +182,10 @@ namespace esign.FundRaising
                 
                 //Nhận tiền
                 var accountUserRaiseFund = await _mstBankRepo.FirstOrDefaultAsync(e => e.UserId == fundRaiserId);
+                if(accountUserRaiseFund == null)
+                {
+                    throw new UserFriendlyException("Bạn chưa đăng ký tài khoản ngân hàng");
+                }
                 accountUserRaiseFund.Balance += input.AmountOfMoney;
                 await _mstBankRepo.UpdateAsync(accountUserRaiseFund);
 

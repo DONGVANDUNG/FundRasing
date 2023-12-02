@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 namespace esign.FundRaising
 {
     [Table("FundDetails")]
-
+                            
     public class FundDetails : FullAuditedEntity<long>
     {
-        public int FundId { get; set; }
+        public long? FundId { get; set; }
         public string Purpose { get; set; }
         public string Target { get; set; }
         public string OrganizationName { get; set; }
