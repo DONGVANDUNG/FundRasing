@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using esign.EntityFrameworkCore;
 
@@ -11,9 +12,11 @@ using esign.EntityFrameworkCore;
 namespace esign.Migrations
 {
     [DbContext(typeof(esignDbContext))]
-    partial class esignDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231202130920_12-02")]
+    partial class _1202
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2321,12 +2324,6 @@ namespace esign.Migrations
                         .HasColumnType("real");
 
                     b.Property<float?>("AmountDonationTarget")
-                        .HasColumnType("real");
-
-                    b.Property<float?>("AmountOfMoney")
-                        .HasColumnType("real");
-
-                    b.Property<float?>("Commission")
                         .HasColumnType("real");
 
                     b.Property<DateTime>("CreationTime")
