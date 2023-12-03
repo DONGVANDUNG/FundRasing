@@ -7,32 +7,25 @@
             style="display:none;visibility:hidden"></iframe></noscript>
     <div class="page">
         <header class="container-fluid pr-0 pl-0 top-header fixed-top ticker-bottom-padding">
-            <div class="top-ticker pt-2 pb-2">
-                <p>$0 Up-Front – pay commission only! <a href="/us/flexible-pricing/">Click here to learn more</a> or
-                    speak to one
-                    of our consultants at <span class="emphasis">+84 865&nbsp;228&nbsp;973</span></p>
-            </div>
-            <div class="row pt-3 pb-3 pl-3 pr-3 h-100 bg-white d-flex justify-content-between">
-                <div class="col-7 col-md-7 col-lg-6 top-logo my-auto d-flex justify-content-between">
-                    <a onclick="trackAction('goToHome', 'Logo')" href="/us/"><img
-                            src="https://x3f3b2w2.stackpathcdn.com/wp-content/uploads/assets/logo-with-b-corp.png"
-                            data-src="https://x3f3b2w2.stackpathcdn.com/wp-content/uploads/assets/logo-with-b-corp.png"
-                            width="200" class="ml-17 img-fluid lazy loaded" alt="" data-was-processed="true"></a>
-                    <ul class="list-navigation d-flex">
-                        <li class="item-nav" (click)="redirectLink(1)">Home</li>
-                        <li class="item-nav" (click)="redirectLink(2)">Donation</li>
-                        <li class="item-nav" (click)="redirectLink(3)">Packages</li>
-                        <li class="item-nav" (click)="redirectLink(4)">About me</li>
-                    </ul>
+            <div class="row pt-3 pb-3 pl-3 h-100 bg-white d-flex justify-content-between">
+              <div class="col-7 col-md-7 col-lg-6 top-logo my-auto d-flex justify-content-between">
+                <img src="/assets/common/images/logo-header.png" alt="" class="h-100">
+                <ul class="list-navigation d-flex">
+                  <li class="item-nav" (click)="redirectLink(1)">Trang chủ</li>
+                  <li class="item-nav" (click)="redirectLink(2)">Dự án</li>
+                  <li class="item-nav" (click)="redirectLink(4)">Về chúng tôi</li>
+                  <li class="item-nav" (click)="redirectLink(3)">Hướng dẫn</li>
+                  <!-- <li class="item-nav" (click)="redirectLink(3)">Ủng hộ Fundraising</li> -->
+                </ul>
+              </div>
+              <div class="col-12 col-md-4 col-lg-2 top-right-nav my-auto text-right d-none d-lg-block">
+                <div class="navbar-expand-xl pr-3 float-right d-flex justify-content-end align-items-center">
+                  <a routerLink="/account/login" class="mr-4 text-login">Login</a>
+                  <a class="ml-5 btn btn-blue float-right m-neg-6 pl-24 pr-24">Get in Touch</a>
                 </div>
-                <div class="col-12 col-md-4 col-lg-2 top-right-nav my-auto text-right d-none d-lg-block">
-                    <div class="navbar-expand-xl pr-3 float-right d-flex justify-content-end align-items-center">
-                        <a routerLink="/account/login" class="mr-4 text-login">Login</a>
-                        <a class="ml-5 btn btn-blue float-right m-neg-6 pl-24 pr-24">Get in Touch</a>
-                    </div>
-                </div>
+              </div>
             </div>
-        </header>
+          </header>
         <div id="main-body" class="body-contact-us">
             <div class="contact-widdget w-100">
                 <div class="logo-widdget w-50"></div>
@@ -56,48 +49,52 @@
 
         
         <footer class="container-fluid footer">
-            <div class="container pt-5 pb-5">
-                <div class="row">
-                    <div class="col-12 col-md-6">
-                        <h3>Fundraising</h3>
-                        <div class="row">
-                            <div class="col-6">
-                                <ul>
-                                    <li><a onclick="trackMenuClick('goToFundraising', 'Footer', 'Silent Auctions')"
-                                            href="/us/fundraising/silent-auctions/" target="">Silent Auctions</a></li>
-                                    <li><a onclick="trackMenuClick('goToFundraising', 'Footer', 'Pledging')"
-                                            href="/us/fundraising/pledging/" target="">Pledging</a></li>
-                                    <li><a onclick="trackMenuClick('goToFundraising', 'Footer', 'Prize Draws')"
-                                            href="/us/fundraising/prize-draws/" target="">Prize Draws</a></li>
-                                    <li><a onclick="trackMenuClick('goToFundraising', 'Footer', 'Ticketing')"
-                                            href="/us/fundraising/event-ticketing/" target="">Ticketing</a></li>
-                                    <li><a onclick="trackMenuClick('goToFundraising', 'Footer', 'Payment Processing')"
-                                            href="/us/fundraising/payment-processing/" target="">Payment Processing</a>
-                                    </li>
-                                    <li><a onclick="trackMenuClick('goToFundraising', 'Footer', 'Event Check-In')"
-                                            href="/us/fundraising/event-check-in/" target="">Event Check-In</a></li>
-                                    <li><a onclick="trackMenuClick('goToFundraising', 'Footer', 'Sealed Bidding')"
-                                            href="/us/fundraising/sealed-bidding/" target="">Sealed Bidding</a></li>
-                                    <li><a onclick="trackMenuClick('goToFundraising', 'Footer', 'Guest Messaging')"
-                                            href="/us/fundraising/guest-messaging/" target="">Guest Messaging</a></li>
-                                    <li><a onclick="trackMenuClick('goToFundraising', 'Footer', 'Live Auctions')"
-                                            href="/us/fundraising/live-auctions/" target="">Live Auctions</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6">
-                        <h3>Join our newsletter</h3>
-                        <!--<input type="text" class="form-control form-control-sm mb-3" placeholder="First Name">
-                    <input type="text" class="form-control form-control-sm mb-3" placeholder="Last Name">
-                    <input type="text" class="form-control form-control-sm mb-3" placeholder="Email Address">
-                    <button class="btn btn-sm btn-blue">Submit</button>-->
-
-                        <iframe class="no-border m-neg-15" src="https://e.givergy.com/l/852183/2020-06-02/wqqy"
-                            width="100%" height="300"></iframe>
-                    </div>
+            <div class="container-fotter">
+              <div class="footer-section-top  w-100 d-flex">
+                <div class="section-top-logo footer-section-layout-1 h-100">
+                  <img src="/assets/common/images/logo.jpg" alt="" class="h-100">
                 </div>
+                <div class="section-top-title footer-section-layout-2 h-100">
+                  <p>Nền tảng gây quỹ cộng đồng trực tuyến <br>
+                    tiện lợi, tin cậy và minh bạch.</p>
+                </div>
+                <div class="section-top-widdget footer-section-layout-3 h-100"></div>
+              </div>
+              <div class="footer-section-middle w-100 d-flex">
+                <div class="section-middle-left footer-section-layout-1 h-100"></div>
+                <div class="section-middle-mid footer-section-layout-2 h-100">
+                  <ul class="d-flex">
+                    <li>Giới thiệu</li>
+                    <li>Điều khoản và điều kiện</li>
+                    <li>Tin Tức</li>
+                    <li>Báo Chí</li>
+                  </ul>
+                </div>
+                <div class="section-middle-right footer-section-layout-3 h-100"></div>
+              </div>
+              <div class="footer-section-bottom w-100 d-flex">
+                <div class="section-bottom-left footer-section-layout-1 h-100"></div>
+                <div class="section-bottom-mid footer-section-layout-2 h-100">
+                  <ul>
+                    <li><i class="fa fa-phone" aria-hidden="true"></i>Hotline: <span>0345627105</span></li>
+                    <li><i class="fa fa-envelope" aria-hidden="true"></i>FundRaising@gmail.com/li>
+                    <li><i class="fa fa-map-marker" aria-hidden="true"></i>Số 71 , phố Trần Thái Tông, Cầu Giấy, Hà Nội.</li>
+                    <li>© Givenow.vn – All Rights Reserved</li>
+                  </ul>
+                </div>
+                <div class="section-bottom-right footer-section-layout-3 h-100">
+                  <div class="frame-poster w-50 h-100">
+                    <div class="follow-page poster-contact d-flex justify-content-center align-items-center">
+                      <i class="fa fa-facebook-square" aria-hidden="true"></i> Follow Page
+                    </div>
+                    <div class="contac-us poster-contact d-flex justify-content-center align-items-center">
+                      <i class="fa fa-envelope" aria-hidden="true"></i>Contact Us
+                    </div>
+                    <img src="/assets/common/images/poster.png" alt="" class="w-100 h-100">
+                  </div>
+                </div>
+              </div>
             </div>
-        </footer>
+          </footer>
     </div>
 </body>

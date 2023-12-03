@@ -10,12 +10,13 @@
   <header class="container-fluid pr-0 pl-0 top-header fixed-top ticker-bottom-padding">
     <div class="row pt-3 pb-3 pl-3 h-100 bg-white d-flex justify-content-between">
       <div class="col-7 col-md-7 col-lg-6 top-logo my-auto d-flex justify-content-between">
-        <a href="/assets/common/images/logo.jpg"></a>
+        <img src="/assets/common/images/logo-header.png" alt="" class="h-100">
         <ul class="list-navigation d-flex">
           <li class="item-nav" (click)="redirectLink(1)">Trang chủ</li>
           <li class="item-nav" (click)="redirectLink(2)">Dự án</li>
           <li class="item-nav" (click)="redirectLink(4)">Về chúng tôi</li>
           <li class="item-nav" (click)="redirectLink(3)">Hướng dẫn</li>
+          <!-- <li class="item-nav" (click)="redirectLink(3)">Ủng hộ Fundraising</li> -->
         </ul>
       </div>
       <div class="col-12 col-md-4 col-lg-2 top-right-nav my-auto text-right d-none d-lg-block">
@@ -54,7 +55,7 @@
                 <div class="item-tag">Giáo dục</div>
               </div>
               <div class="item-content">
-                <a>Quỹ từ thiện Nâng bước tuổi thơ</a>
+                <a (click)="goToFundraisingDetail(item)">Quỹ từ thiện Nâng bước tuổi thơ</a>
                 <h2>Chung tay hỗ trợ sinh oạt phí cho 3 thiếu niên cùng tiếp bước đến trường</h2>
                 <div class="progress-bar">
                   <span></span>
