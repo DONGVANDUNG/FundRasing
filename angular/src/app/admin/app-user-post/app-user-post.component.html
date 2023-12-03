@@ -19,7 +19,7 @@
     </div> -->
     <div class="list-fund-raising">
         <div class="slide-item" *ngFor="let item of listFundRaising">
-            <img [src]="baseUrl + item.listImageUrl[0]" alt="" class="item-image" [routerLink]="['../user-post-detail',item.id]">
+            <img [src]="baseUrl + item.listImageUrl[0]" alt="" class="item-image" [routerLink]="['../user-post-detail',item.id,item.fundId]">
             <div class="item-tag">{{item.postTopic}}</div>
             <div class="item-content">
                 <a>{{item.organizationName}}</a>

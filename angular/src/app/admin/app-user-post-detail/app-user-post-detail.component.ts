@@ -2,8 +2,7 @@ import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AppConsts } from '@shared/AppConsts';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { DataDonateForFundInput, FundRaiserServiceProxy, UserServiceProxy } from '@shared/service-proxies/service-proxies';
-import { ModalDirective } from 'ngx-bootstrap/modal';
+import { DataDonateForFundInput, FundRaiserServiceProxy, TransactionOfFundForDto, UserServiceProxy } from '@shared/service-proxies/service-proxies';
 import { AppUserDonationComponent } from './app-user-donation/app-user-donation.component';
 
 @Component({
@@ -26,6 +25,7 @@ export class AppUserPostDetailComponent extends AppComponentBase implements OnIn
     fundId;
     feeFund;
     totalAmount;
+    listTransaction;
     amountOfMoney;
     noteTransaction;
     isDonate: boolean = false;
@@ -38,9 +38,13 @@ export class AppUserPostDetailComponent extends AppComponentBase implements OnIn
     }
     ngOnInit(): void {
         this.postId = this.route.snapshot.params['postId'];
+        this.fundId = this.route.snapshot.params['fundId'];
         this._userServiceProxy.getInforPostById(this.postId).subscribe(result => {
             this.inforFundDetail = result;
             this.imageUrl = this.baseUrl + this.inforFundDetail.listImageUrl[0];
+        })
+        this._userServiceProxy.getListTransactionForFund(this.fundId).subscribe(rs=>{
+            this.listTransaction = rs;
         })
     }
     donateFundRaiser() {

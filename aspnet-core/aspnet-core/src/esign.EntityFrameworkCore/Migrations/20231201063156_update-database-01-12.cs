@@ -26,30 +26,12 @@ namespace esign.Migrations
                 name: "ImageUrl",
                 table: "AbpUsers");
 
-            migrationBuilder.RenameColumn(
-                name: "FundRaiserId",
-                table: "Funds",
-                newName: "UserId");
-
-            migrationBuilder.RenameColumn(
-                name: "ImplementationProgress",
-                table: "FundRaiserPost",
-                newName: "PostTopic");
 
             migrationBuilder.RenameColumn(
                 name: "PaymenFee",
                 table: "FundPackage",
                 newName: "PaymentFee");
 
-            migrationBuilder.RenameColumn(
-                name: "TitlePart",
-                table: "FundDetails",
-                newName: "Target");
-
-            migrationBuilder.RenameColumn(
-                name: "ContentPart",
-                table: "FundDetails",
-                newName: "Purpose");
 
             migrationBuilder.RenameColumn(
                 name: "Blances",
@@ -96,29 +78,6 @@ namespace esign.Migrations
                 oldClrType: typeof(bool),
                 oldType: "bit");
 
-            migrationBuilder.AddColumn<float>(
-                name: "AmountDonationPresent",
-                table: "Funds",
-                type: "real",
-                nullable: true);
-
-            migrationBuilder.AddColumn<float>(
-                name: "AmountDonationTarget",
-                table: "Funds",
-                type: "real",
-                nullable: true);
-
-            migrationBuilder.AddColumn<int>(
-                name: "DonateAmount",
-                table: "Funds",
-                type: "int",
-                nullable: true);
-
-            migrationBuilder.AddColumn<float>(
-                name: "DonateSuggestAmount",
-                table: "Funds",
-                type: "real",
-                nullable: true);
 
             migrationBuilder.AddColumn<float>(
                 name: "PercentAchieved",
@@ -135,17 +94,10 @@ namespace esign.Migrations
                 oldType: "int")
                 .Annotation("SqlServer:Identity", "1, 1")
                 .OldAnnotation("SqlServer:Identity", "1, 1");
-
-            migrationBuilder.AddColumn<string>(
-                name: "Note",
-                table: "FundDetails",
-                type: "nvarchar(max)",
-                nullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "OrganizationName",
-                table: "FundDetails",
-                type: "nvarchar(max)",
+            migrationBuilder.AddColumn<float>(
+                name: "DonateSuggestAmount",
+                table: "Funds",
+                type: "real",
                 nullable: true);
 
             migrationBuilder.AddColumn<int>(
@@ -163,22 +115,6 @@ namespace esign.Migrations
                 table: "InformationReceiveAuction");
 
             migrationBuilder.DropColumn(
-                name: "AmountDonationPresent",
-                table: "Funds");
-
-            migrationBuilder.DropColumn(
-                name: "AmountDonationTarget",
-                table: "Funds");
-
-            migrationBuilder.DropColumn(
-                name: "DonateAmount",
-                table: "Funds");
-
-            migrationBuilder.DropColumn(
-                name: "DonateSuggestAmount",
-                table: "Funds");
-
-            migrationBuilder.DropColumn(
                 name: "PercentAchieved",
                 table: "Funds");
 
@@ -194,30 +130,12 @@ namespace esign.Migrations
                 name: "NumberOfParticipants",
                 table: "Auction");
 
-            migrationBuilder.RenameColumn(
-                name: "UserId",
-                table: "Funds",
-                newName: "FundRaiserId");
-
-            migrationBuilder.RenameColumn(
-                name: "PostTopic",
-                table: "FundRaiserPost",
-                newName: "ImplementationProgress");
 
             migrationBuilder.RenameColumn(
                 name: "PaymentFee",
                 table: "FundPackage",
                 newName: "PaymenFee");
 
-            migrationBuilder.RenameColumn(
-                name: "Target",
-                table: "FundDetails",
-                newName: "TitlePart");
-
-            migrationBuilder.RenameColumn(
-                name: "Purpose",
-                table: "FundDetails",
-                newName: "ContentPart");
 
             migrationBuilder.RenameColumn(
                 name: "Balances",
@@ -270,6 +188,9 @@ namespace esign.Migrations
                 type: "real",
                 nullable: false,
                 defaultValue: 0f);
+            migrationBuilder.DropColumn(
+                name: "DonateSuggestAmount",
+                table: "Funds");
 
             migrationBuilder.AddColumn<float>(
                 name: "Commission",

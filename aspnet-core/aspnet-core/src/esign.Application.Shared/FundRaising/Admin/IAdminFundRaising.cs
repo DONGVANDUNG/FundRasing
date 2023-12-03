@@ -23,7 +23,7 @@ namespace esign.FundRaising.Admin
         //Lấy ra thông tin tất cả các quỹ
         //Task<PagedResultDto<GetFundRaisingViewForAdminDto>> getListFundRaising(FundRaisingInputDto input);
         //Lấy ra thông tin tất cả các giao dịch theo quỹ
-        Task<PagedResultDto<TransactionOfFundForDto>> getListTransactionForFund(TransactionForFundInputDto input);
+        //Task<PagedResultDto<TransactionOfFundForDto>> getListTransactionForFund(TransactionForFundInputDto input);
         //lấy ra thông tin chi tiết của 1 giao dịch
         Task<TransactionOfFundForDto> getInforTransactionById(int transactionId);
 

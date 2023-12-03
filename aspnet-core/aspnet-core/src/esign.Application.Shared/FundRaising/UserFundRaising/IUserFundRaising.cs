@@ -1,6 +1,7 @@
 ﻿using Abp.Application.Services;
 using Abp.Application.Services.Dto;
 using esign.FundRaising.UserFundRaising.Dto;
+using esign.FundRaising.UserFundRaising.Dto.Auction;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -28,5 +29,6 @@ namespace esign.FundRaising
 
         //void UpdatePermissionForFundRaiser(int userId);
         //Task<InforDetailBankAcountDto> GetInforBankUser();
+        Task UserAuction(UserAuction input);
     }
 }

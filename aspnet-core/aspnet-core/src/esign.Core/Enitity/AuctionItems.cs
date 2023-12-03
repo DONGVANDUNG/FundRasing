@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace esign.Enitity
 {
     [Table("AuctionItems")]
-    public class AuctionItems :FullAuditedEntity<long?>
+    public class AuctionItems :FullAuditedEntity<long>
     {
         public string ItemName { get; set; }
         public long? AuctionId { get; set; }

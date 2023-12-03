@@ -93,7 +93,7 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
                         //data: { permission: 'Pages.UserDonate.FundRaising' },
                     },
                     {
-                        path: 'user-post-detail/:postId',
+                        path: 'user-post-detail/:postId/:fundId',
                         loadChildren: () => import('./app-user-post-detail/app-user-post-detail.module').then((m) => m.AppUserPostDetailModule),
                         //data: { permission: 'Pages.UserDonate.FundRaising' },
                     },

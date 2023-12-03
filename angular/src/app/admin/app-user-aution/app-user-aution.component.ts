@@ -17,9 +17,9 @@ export class AppUserAutionComponent extends AppComponentBase implements OnInit {
     }
 
     ngOnInit() {
-        // this._fundRaiser.getAllAuctionUser().subscribe(result=>{
-        //     this.dataAution = result;
-        // })
+        this._fundRaiser.getAllAuctionUser().subscribe(result=>{
+            this.dataAution = result;
+        })
     }
     showFundDetail(){}
 }

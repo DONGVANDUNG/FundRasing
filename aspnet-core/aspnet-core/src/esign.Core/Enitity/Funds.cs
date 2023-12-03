@@ -18,7 +18,7 @@ namespace esign.Entity
         public string FundImageUrl { get; set; }
         public string FundTitle { get; set; }
        // public string FundReason { get; set; }
-        public float? DonateSuggestAmount { get; set; }
+        //public float? DonateSuggestAmount { get; set; }
         public DateTime FundEndDate { get; set; }
         public int? Status { get; set; } /// 1: Đã phát hành; 2: Đã được gia hạn; 3: Đã đóng
         public bool? IsOutStanding { get; set; }

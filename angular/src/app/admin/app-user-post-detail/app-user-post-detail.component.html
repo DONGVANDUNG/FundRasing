@@ -70,11 +70,11 @@
                         <th>Số tiền</th>
                         <th>Thời gian</th>
                     </tr>
-                    <tr>
-                        <td class="spt-name-sib"><span class="banker-name"> BTV Đoàn xã Nghi Vạn</span></td>
-                        <td class="baker-donate-money"><span class="woocommerce-Price-amount amount"><bdi>400.000<span
-                                        class="woocommerce-Price-currencySymbol">đ</span></bdi></span></td>
-                        <td class="baker-donate-date">16:49:12 - 30/11/2023</td>
+                    <tr *ngFor="let transaction of this.listTransaction[0]">
+                        <!-- <td class="spt-name-sib"><span class="banker-name">{{transaction.isPublic == true ? transaction.userDonate ? "Người dùng ẩn danh"}}</span></td>
+                        <td class="baker-donate-money"><span class="woocommerce-Price-amount amount"><bdi>{{transaction.amount}}<span
+                                        class="woocommerce-Price-currencySymbol">đ</span></bdi></span></td> -->
+                        <td class="baker-donate-date" [innerHTML]="transaction.createdTime"></td>
                     </tr>
                 </tbody>
             </table>

@@ -17,5 +17,6 @@ namespace esign.FundRaising.Admin.Dto
         public string PostTopic { get; set; }
         public List<string> ListImageUrl { get; set; }
         public string Unit { get; set; }
+        public long? FundId { get; set; }
     }
 }

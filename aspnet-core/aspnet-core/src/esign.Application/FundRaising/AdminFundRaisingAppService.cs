@@ -79,7 +79,7 @@ namespace esign.FundRaising
                                    FundName = fund.FundName,
                                    CreatedTime = trans.CreationTime,
                                    Receiver = trans.Receiver,
-                                   Sender = trans.Sender,
+                                   UserDonate = trans.Sender,
                                }).FirstOrDefaultAsync();
             return await transaction;
         }
@@ -136,26 +136,26 @@ namespace esign.FundRaising
                result);
         }
 
-        public async Task<PagedResultDto<TransactionOfFundForDto>> getListTransactionForFund(TransactionForFundInputDto input)
-        {
-            var listTransaction = from transaction in _mstSleTransactionRepo.GetAll().Where(e => e.FundId == input.FundId)
-                                  join user in _mstSleUserRepo.GetAll() on transaction.Sender equals user.Email
-                                  //join fund in _mstSleFundRepo.GetAll() on transaction.FundId equals fund.Id
-                                  select new TransactionOfFundForDto
-                                  {
-                                      //Id = transaction.Id,
-                                      Amount = transaction.AmountOfMoney,
-                                      Content = transaction.MessageToFund,
-                                      //FundName = fund.FundName,
-                                      Receiver = user.UserName,
-                                      Sender = user.UserLogin,
-                                      CreatedTime = transaction.CreationTime
-                                  };
-            var totalCount = await listTransaction.CountAsync();
-            return new PagedResultDto<TransactionOfFundForDto>(
-              totalCount,
-              await listTransaction.PageBy(input).ToListAsync());
-        }
+        //public async Task<PagedResultDto<TransactionOfFundForDto>> getListTransactionForFund(TransactionForFundInputDto input)
+        //{
+        //    var listTransaction = from transaction in _mstSleTransactionRepo.GetAll().Where(e => e.FundId == input.FundId)
+        //                          join user in _mstSleUserRepo.GetAll() on transaction.Sender equals user.Email
+        //                          //join fund in _mstSleFundRepo.GetAll() on transaction.FundId equals fund.Id
+        //                          select new TransactionOfFundForDto
+        //                          {
+        //                              //Id = transaction.Id,
+        //                              Amount = transaction.AmountOfMoney,
+        //                              Content = transaction.MessageToFund,
+        //                              //FundName = fund.FundName,
+        //                              Receiver = user.UserName,
+        //                              UserDonate = user.UserLogin,
+        //                              CreatedTime = transaction.CreationTime
+        //                          };
+        //    var totalCount = await listTransaction.CountAsync();
+        //    return new PagedResultDto<TransactionOfFundForDto>(
+        //      totalCount,
+        //      await listTransaction.PageBy(input).ToListAsync());
+        //}
 
 
         //public async Task<List<UserAccountForViewDto>> getListUserAccount()

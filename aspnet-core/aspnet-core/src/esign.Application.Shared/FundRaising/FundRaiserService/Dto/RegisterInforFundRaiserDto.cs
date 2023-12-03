@@ -7,15 +7,14 @@ namespace esign.FundRaising.FundRaiserService.Dto
     public class RegisterInforFundRaiserDto
     {
         public int Id { get; set; }
+        public long? FundPackageId { get; set; }
 
-        public string Company { get; set; }
+        public string Orgnization { get; set; }
         public string Address { get; set; }
-        public string City { get; set; }
         public long? FundPackage { get; set; }
         public string Phone { get; set; }
-        public string Description { get; set; }
-        public string Country { get; set; }
-        public string EmailAddress { get; set; }
+        public string OrgnizationIntro { get; set; }
+        public string Email { get; set; }
 
     }
 }

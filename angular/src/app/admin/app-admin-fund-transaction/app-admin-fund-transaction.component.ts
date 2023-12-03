@@ -232,13 +232,13 @@ export class AppAdminFundTransactionComponent extends AppComponentBase implement
         this.paginationParamsTransaction = paginationParams;
         this.paginationParamsTransaction.skipCount = (paginationParams.pageNum - 1) * paginationParams.pageSize;
         this.maxResultCountTransaction = paginationParams.pageSize;
-        this.getAllTransaction(this.paginationParamsTransaction).subscribe((result) => {
-            this.rowDataTransaction = result;
-            this.paginationParamsTransaction.totalPage = ceil(result.totalCount / this.maxResultCountTransaction);
-            this.paginationParamsTransaction.totalCount = result.totalCount;
-            this.paramsTransaction.api.setRowData(this.rowDataTransaction);
-            this.selectedTransaction = null;
-        });
+        // this.getAllTransaction(this.paginationParamsTransaction).subscribe((result) => {
+        //     this.rowDataTransaction = result;
+        //     this.paginationParamsTransaction.totalPage = ceil(result.totalCount / this.maxResultCountTransaction);
+        //     this.paginationParamsTransaction.totalCount = result.totalCount;
+        //     this.paramsTransaction.api.setRowData(this.rowDataTransaction);
+        //     this.selectedTransaction = null;
+        // });
     }
     eventEnter(event) {
         if (event.keyCode === 13) {
@@ -251,12 +251,12 @@ export class AppAdminFundTransactionComponent extends AppComponentBase implement
     }
 
     getAllTransaction(paginationParams: PaginationParamsModel) {
-        return this.fundRaising.getListTransactionForFund(
-            this.selectedFundRaising,
-            this.sorting ?? null,
-            paginationParams ? paginationParams.skipCount : 0,
-            paginationParams ? paginationParams.pageSize : 20
-        );
+        // return this.fundRaising.getListTransactionForFund(
+        //     this.selectedFundRaising,
+        //     this.sorting ?? null,
+        //     paginationParams ? paginationParams.skipCount : 0,
+        //     paginationParams ? paginationParams.pageSize : 20
+        // );
     }
     onChangeSelectionTransaction(paginationParams) {
         const selected = paginationParams.api.getSelectedRows()[0];

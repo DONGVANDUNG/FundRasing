@@ -10,7 +10,7 @@ namespace esign.FundRaising.FundRaiserService.Dto
         public float Amount { get; set; }
         public DateTime? CreatedTime { get; set; }
         public string Content { get; set; }
-        public string Sender { get; set; }
+        public string UserDonate { get; set; }
         public string FundName { get; set; }
         public string Receiver { get; set; }
         public bool? IsPublic { get; set; }

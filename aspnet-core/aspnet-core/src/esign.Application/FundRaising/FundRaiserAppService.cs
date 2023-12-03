@@ -25,6 +25,7 @@ using Abp.Application.Services.Dto;
 using Abp.Linq.Extensions;
 using Microsoft.AspNetCore.SignalR;
 using Abp.RealTime;
+using NPOI.HSSF.Record;
 
 namespace esign.FundRaising
 {
@@ -40,6 +41,8 @@ namespace esign.FundRaising
         private readonly IRepository<AuctionImages, long> _mstAuctionImagesRepo;
         ///private readonly IRepository<FundRaiser, long> _mstSleFundRaiserRepo;
         private readonly IRepository<FundImage, long> _mstSleFundImageRepo;
+        private readonly IRepository<AuctionItems, long> _mstSleAuctionItemsRepo;
+        private readonly IRepository<AuctionDeposit, long> _mstSleAuctionDepositRepo;
         private readonly IConfigurationRoot _appConfiguration;
         public FundRaiserAppService(IRepository<Funds, long> mstSleFundRepo,
             IRepository<FundTransactions, long> mstSleFundTransactionRepo,
@@ -52,7 +55,9 @@ namespace esign.FundRaising
             IRepository<FundImage, long> mstSleFundImageRepo,
             IRepository<Auction, long> mstAuctionRepo,
             IRepository<AuctionTransactions, long> mstAuctionTransactionRepo,
-            IRepository<AuctionImages, long> mstAuctionImagesRepo)
+            IRepository<AuctionImages, long> mstAuctionImagesRepo,
+            IRepository<AuctionItems, long> mstSleAuctionItemsRepo,
+            IRepository<AuctionDeposit, long> mstSleAuctionDepositRepo)
         {
             _mstSleFundRepo = mstSleFundRepo;
             _mstSleFundTransactionRepo = mstSleFundTransactionRepo;
@@ -66,6 +71,8 @@ namespace esign.FundRaising
             _mstAuctionRepo = mstAuctionRepo;
             _mstAuctionTransactionRepo = mstAuctionTransactionRepo;
             _mstAuctionImagesRepo = mstAuctionImagesRepo;
+            _mstSleAuctionItemsRepo = mstSleAuctionItemsRepo;
+            _mstSleAuctionDepositRepo = mstSleAuctionDepositRepo;
         }
         public async Task CloseFundRaising(int fundId)
         {
@@ -136,13 +143,6 @@ namespace esign.FundRaising
                 throw new UserFriendlyException("Error uploading file");
             }
         }
-        //public async Task<CreateOrEditFundRaisingInputDto> getFundRaisingForEdit(long fundId)
-        //{
-        //    var fundRaising = _mstSleFundRepo.FirstOrDefault(e => e.Id == fundId);
-        //    CreateOrEditFundRaisingInputDto fundResult = new CreateOrEditFundRaisingInputDto();
-        //    ObjectMapper.Map(fundRaising, fundResult);
-        //    fundResult.List
-        //}
 
         public async Task UpdateFundRaising(CreateOrEditFundRaisingDto input)
         {
@@ -180,25 +180,25 @@ namespace esign.FundRaising
             }
         }
 
-        public async Task<List<TransactionOfFundForDto>> getListTransactionForFund(int fundId)
-        {
-            var listTransaction = (from transaction in _mstSleFundTransactionRepo.GetAll().Where(e => e.FundId == fundId &&
-                                   (e.IsAdmin == false || e.IsAdmin == null))
-                                   join fund in _mstSleFundRepo.GetAll() on transaction.FundId equals fund.Id
-                                   //join user in _mstSleUserRepo.GetAll() on fund.FundRaiserId equals user.Id
-                                   select new TransactionOfFundForDto
-                                   {
-                                       //Id = transaction.Id,
-                                       ///Sender = user.Name,
-                                       Amount = transaction.AmountOfMoney,
-                                       Content = transaction.MessageToFund,
-                                       FundName = fund.FundName,
-                                       CreatedTime = transaction.CreationTime,
-                                       IsPublic = transaction.IsPublic
+        //public async Task<List<TransactionOfFundForDto>> getListTransactionForFund(int fundId)
+        //{
+        //    var listTransaction = (from transaction in _mstSleFundTransactionRepo.GetAll().Where(e => e.FundId == fundId &&
+        //                           (e.IsAdmin == false || e.IsAdmin == null))
+        //                           join fund in _mstSleFundRepo.GetAll() on transaction.FundId equals fund.Id
+        //                           //join user in _mstSleUserRepo.GetAll() on fund.FundRaiserId equals user.Id
+        //                           select new TransactionOfFundForDto
+        //                           {
+        //                               //Id = transaction.Id,
+        //                               ///Sender = user.Name,
+        //                               Amount = transaction.AmountOfMoney,
+        //                               Content = transaction.MessageToFund,
+        //                               FundName = fund.FundName,
+        //                               CreatedTime = transaction.CreationTime,
+        //                               IsPublic = transaction.IsPublic
 
-                                   }).ToListAsync();
-            return await listTransaction;
-        }
+        //                           }).ToListAsync();
+        //    return await listTransaction;
+        //}
 
         public async Task<List<UserWarningForDto>> getListWarningOfUser()
         {
@@ -339,41 +339,48 @@ namespace esign.FundRaising
                 throw new Exception("Không tồn tại phiên đấu giá");
             }
         }
-        //public List<GetAllAuctionDto> getAllAuctionUser()
-        //{
-        //    var listAuction = (from auction in _mstAuctionRepo.GetAll().Where(e => AbpSession.TenantId == null
-        //                       || e.UserId != AbpSession.UserId)
-        //                       join image in _mstAuctionImagesRepo.GetAll()
-        //                       on auction.Id equals image.AuctionId
-        //                       select new GetAllAuctionDto
-        //                       {
-        //                           Id = auction.Id,
-        //                           ItemName = auction.ItemName,
-        //                           TitleAuction = auction.TitleAuction,
-        //                           AmountJumpMax = auction.AmountJumpMax,
-        //                           AmountJumpMin = auction.AmountJumpMin,
-        //                           EndDate = auction.EndDate,
-        //                           StartingPrice = auction.StartingPrice,
-        //                           StartDate = (DateTime)auction.StartDate,
-        //                           IntroduceItem = auction.IntroduceItem,
-        //                           ListImage = _mstAuctionImagesRepo.GetAll().Where(e => e.AuctionId == auction.Id).Select(re => re.ImageUrl).ToList()
-        //                       }).ToList();
+        public List<GetAllAuctionDto> getAllAuctionUser()
+        {
+            var listAuction = (from auction in _mstAuctionRepo.GetAll()
+                               //|| e.UserId != AbpSession.UserId)
+                               join item in _mstSleAuctionItemsRepo.GetAll()
+                               on auction.Id equals item.AuctionId
+                               select new GetAllAuctionDto
+                               {
+                                   Id = auction.Id,
+                                   ItemName = item.ItemName,
+                                   TitleAuction = auction.TitleAuction,
+                                   AmountJumpMax = item.AmountJumpMax,
+                                   AmountJumpMin = item.AmountJumpMin,
+                                   EndDate = auction.EndDate,
+                                   StartingPrice = item.StartingPrice,
+                                   StartDate = (DateTime)auction.StartDate,
+                                   IntroduceItem = auction.IntroduceItem,
+                                   NextMinimumBid = item.AuctionPresentAmount + item.AmountJumpMin,
+                                   NextMaximumBid = item.AuctionPresentAmount + item.AmountJumpMax,
+                                   ListImage = _mstAuctionImagesRepo.GetAll().Where(e => e.AuctionItemId == auction.Id).Select(re => re.ImageUrl).ToList()
+                               }).ToList();
 
 
-        //    return listAuction;
-        //}
-        //public GetAllAuctionDto getAuctionById(long? auctionId)
-        //{
-        //    var auction =_mstAuctionRepo.FirstOrDefault(e => e.Id == auctionId);
-        //    var auctionResult = new GetAllAuctionDto();
-        //    ObjectMapper.Map(auction, auctionResult);
-        //    auctionResult.ListImage = _mstAuctionImagesRepo.GetAll().Where(e=>e.AuctionId == auctionId).Select(re=>re.ImageUrl).ToList();
-        //    auctionResult.NextMaximumBid = auctionResult.AuctionPresentAmount + auction.AmountJumpMax;
-        //    auctionResult.NextMinimumBid = auctionResult.AuctionPresentAmount + auction.AmountJumpMin;
-        //    TimeSpan timeSpan = DateTime.Now - auctionResult.StartDate;
-        //    auctionResult.TimeLeft = (int?)timeSpan.TotalDays;
-        //    auctionResult.UserName = _mstSleUserRepo.FirstOrDefault(e=>e.Id == auction.UserId).UserName;
-        //    return auctionResult;
-        //}
+            return listAuction;
+        }
+        public GetAuctionDetailDto getAuctionById(long? auctionId)
+        {
+            var auctionItem = _mstSleAuctionItemsRepo.FirstOrDefault(e => e.AuctionId == auctionId);
+            var auctionResult = new GetAuctionDetailDto();
+            ObjectMapper.Map(auctionItem, auctionResult);
+            auctionResult.ListImage = _mstAuctionImagesRepo.GetAll().Where(e => e.AuctionItemId == auctionItem.Id).Select(re => re.ImageUrl).ToList();
+            auctionResult.NextMaximumBid = auctionResult.AuctionPresentAmount + auctionItem.AmountJumpMax;
+            auctionResult.NextMinimumBid = auctionResult.AuctionPresentAmount + auctionItem.AmountJumpMin;
+            TimeSpan timeSpan = DateTime.Now - auctionItem.CreationTime;
+            auctionResult.TimeLeft = (int?)timeSpan.TotalDays;
+            //auctionResult.UserName = _mstSleUserRepo.FirstOrDefault(e => e.Id == auction.UserId).UserName;
+            return auctionResult;
+        }
+        public bool CheckUserDepositAuction()
+        {
+            var deposit = _mstSleAuctionDepositRepo.FirstOrDefault(e => e.UserId == AbpSession.UserId);
+            return deposit != null;
+        }
     }
 }
