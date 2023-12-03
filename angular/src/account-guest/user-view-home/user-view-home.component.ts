@@ -106,4 +106,8 @@ export class UserViewHomeComponent extends AppComponentBase {
             bannerContent.classList.remove('zoomOutAnimation');
         }, 1000);
     }
+
+    goToFundraisingDetail(id): void{
+        this.router.navigate(['/guest/fund-raising-detail', id]);
+    }
 }
