@@ -18,7 +18,7 @@ export class UserViewHomeComponent extends AppComponentBase {
     isLoading = false;
     blockDonateSuccess: boolean = false;
 
-    raisingArray = ['1','2','3'] // ARRAY NÀY BAO GỒM ẢNH, TITLE , CONTENT CỦA 1 DỰ ÁN ĐANG GÂY QUỸ, CÓ THỂ LÀ 1 RECORD
+    raisingArray = ['1','2','3','4','5'] // ARRAY NÀY BAO GỒM ẢNH, TITLE , CONTENT CỦA 1 DỰ ÁN ĐANG GÂY QUỸ, CÓ THỂ LÀ 1 RECORD
 
 
     constructor(injector: Injector, private router: Router) {
