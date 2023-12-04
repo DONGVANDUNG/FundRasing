@@ -6092,64 +6092,158 @@ export class FundRaiserServiceProxy {
     }
 
     /**
+     * @param fundId (optional) 
      * @param file (optional) 
-     * @param fundName (optional) 
-     * @param fundTitle (optional) 
-     * @param amountOfMoney (optional) 
-     * @param fundStartDate (optional) 
-     * @param fundEndDate (optional) 
-     * @param fundContent (optional) 
-     * @param reasonCreateFund (optional) 
-     * @param isPayFee (optional) 
+     * @param postTitle (optional) 
+     * @param targetIntroduce (optional) 
+     * @param postTopic (optional) 
+     * @param purpose (optional) 
+     * @param note (optional) 
      * @return Success
      */
-    createFundRaising(file: FileParameter[] | undefined, fundName: string | undefined, fundTitle: string | undefined, amountOfMoney: number | undefined, fundStartDate: DateTime | undefined, fundEndDate: DateTime | undefined, fundContent: string | undefined, reasonCreateFund: string | undefined, isPayFee: boolean | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/FundRaiser/CreateFundRaising";
+    createPostOfFundRaising(fundId: number | undefined, file: FileParameter[] | undefined, postTitle: string | undefined, targetIntroduce: string | undefined, postTopic: string | undefined, purpose: string | undefined, note: string | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/FundRaiser/CreatePostOfFundRaising";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = new FormData();
+        if (fundId === null || fundId === undefined)
+            throw new Error("The parameter 'fundId' cannot be null.");
+        else
+            content_.append("FundId", fundId.toString());
         if (file === null || file === undefined)
             throw new Error("The parameter 'file' cannot be null.");
         else
             file.forEach(item_ => content_.append("File", item_.data, item_.fileName ? item_.fileName : "File") );
-        if (fundName === null || fundName === undefined)
-            throw new Error("The parameter 'fundName' cannot be null.");
+        if (postTitle === null || postTitle === undefined)
+            throw new Error("The parameter 'postTitle' cannot be null.");
         else
-            content_.append("FundName", fundName.toString());
-        if (fundTitle === null || fundTitle === undefined)
-            throw new Error("The parameter 'fundTitle' cannot be null.");
+            content_.append("PostTitle", postTitle.toString());
+        if (targetIntroduce === null || targetIntroduce === undefined)
+            throw new Error("The parameter 'targetIntroduce' cannot be null.");
         else
-            content_.append("FundTitle", fundTitle.toString());
-        if (amountOfMoney === null || amountOfMoney === undefined)
-            throw new Error("The parameter 'amountOfMoney' cannot be null.");
+            content_.append("TargetIntroduce", targetIntroduce.toString());
+        if (postTopic === null || postTopic === undefined)
+            throw new Error("The parameter 'postTopic' cannot be null.");
         else
-            content_.append("AmountOfMoney", amountOfMoney.toString());
-        if (fundStartDate === null || fundStartDate === undefined)
-            throw new Error("The parameter 'fundStartDate' cannot be null.");
+            content_.append("PostTopic", postTopic.toString());
+        if (purpose === null || purpose === undefined)
+            throw new Error("The parameter 'purpose' cannot be null.");
         else
-            content_.append("FundStartDate", fundStartDate.toJSON());
-        if (fundEndDate === null || fundEndDate === undefined)
-            throw new Error("The parameter 'fundEndDate' cannot be null.");
+            content_.append("Purpose", purpose.toString());
+        if (note === null || note === undefined)
+            throw new Error("The parameter 'note' cannot be null.");
         else
-            content_.append("FundEndDate", fundEndDate.toJSON());
-        if (fundContent === null || fundContent === undefined)
-            throw new Error("The parameter 'fundContent' cannot be null.");
-        else
-            content_.append("FundContent", fundContent.toString());
-        if (reasonCreateFund === null || reasonCreateFund === undefined)
-            throw new Error("The parameter 'reasonCreateFund' cannot be null.");
-        else
-            content_.append("ReasonCreateFund", reasonCreateFund.toString());
-        if (isPayFee === null || isPayFee === undefined)
-            throw new Error("The parameter 'isPayFee' cannot be null.");
-        else
-            content_.append("IsPayFee", isPayFee.toString());
+            content_.append("Note", note.toString());
 
         let options_ : any = {
             body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreatePostOfFundRaising(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreatePostOfFundRaising(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processCreatePostOfFundRaising(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    createOrEditFundRaising(body: CreateOrEditFundRaisingDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/FundRaiser/CreateOrEditFundRaising";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateOrEditFundRaising(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateOrEditFundRaising(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processCreateOrEditFundRaising(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    createFundRaising(body: CreateOrEditFundRaisingDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/FundRaiser/CreateFundRaising";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
             })
         };
 
@@ -6239,63 +6333,6 @@ export class FundRaiserServiceProxy {
     }
 
     /**
-     * @param timeExtend (optional) 
-     * @param fundId (optional) 
-     * @return Success
-     */
-    extendTimeOfFundRaising(timeExtend: DateTime | undefined, fundId: number | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/FundRaiser/ExtendTimeOfFundRaising?";
-        if (timeExtend === null)
-            throw new Error("The parameter 'timeExtend' cannot be null.");
-        else if (timeExtend !== undefined)
-            url_ += "timeExtend=" + encodeURIComponent(timeExtend ? "" + timeExtend.toString() : "") + "&";
-        if (fundId === null)
-            throw new Error("The parameter 'fundId' cannot be null.");
-        else if (fundId !== undefined)
-            url_ += "fundId=" + encodeURIComponent("" + fundId) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processExtendTimeOfFundRaising(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processExtendTimeOfFundRaising(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<void>;
-        }));
-    }
-
-    protected processExtendTimeOfFundRaising(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
      * @return Success
      */
     getListWarningOfUser(): Observable<UserWarningForDto[]> {
@@ -6343,6 +6380,77 @@ export class FundRaiserServiceProxy {
             else {
                 result200 = <any>null;
             }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param fundId (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getListPostByFundRaisingId(fundId: number | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetListPostByFundRaisingDto> {
+        let url_ = this.baseUrl + "/api/services/app/FundRaiser/getListPostByFundRaisingId?";
+        if (fundId === null)
+            throw new Error("The parameter 'fundId' cannot be null.");
+        else if (fundId !== undefined)
+            url_ += "FundId=" + encodeURIComponent("" + fundId) + "&";
+        if (sorting === null)
+            throw new Error("The parameter 'sorting' cannot be null.");
+        else if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&";
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetListPostByFundRaisingId(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetListPostByFundRaisingId(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfGetListPostByFundRaisingDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfGetListPostByFundRaisingDto>;
+        }));
+    }
+
+    protected processGetListPostByFundRaisingId(response: HttpResponseBase): Observable<PagedResultDtoOfGetListPostByFundRaisingDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfGetListPostByFundRaisingDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -6795,6 +6903,87 @@ export class FundRaiserServiceProxy {
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
                 result200 = resultData200 !== undefined ? resultData200 : <any>null;
     
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param filter (optional) 
+     * @param isPayFee (optional) 
+     * @param createdDate (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getListFundRaising(filter: string | undefined, isPayFee: boolean | undefined, createdDate: DateTime | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetListFundRaisingDto> {
+        let url_ = this.baseUrl + "/api/services/app/FundRaiser/getListFundRaising?";
+        if (filter === null)
+            throw new Error("The parameter 'filter' cannot be null.");
+        else if (filter !== undefined)
+            url_ += "Filter=" + encodeURIComponent("" + filter) + "&";
+        if (isPayFee === null)
+            throw new Error("The parameter 'isPayFee' cannot be null.");
+        else if (isPayFee !== undefined)
+            url_ += "IsPayFee=" + encodeURIComponent("" + isPayFee) + "&";
+        if (createdDate === null)
+            throw new Error("The parameter 'createdDate' cannot be null.");
+        else if (createdDate !== undefined)
+            url_ += "CreatedDate=" + encodeURIComponent(createdDate ? "" + createdDate.toString() : "") + "&";
+        if (sorting === null)
+            throw new Error("The parameter 'sorting' cannot be null.");
+        else if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&";
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetListFundRaising(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetListFundRaising(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfGetListFundRaisingDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfGetListFundRaisingDto>;
+        }));
+    }
+
+    protected processGetListFundRaising(response: HttpResponseBase): Observable<PagedResultDtoOfGetListFundRaisingDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfGetListFundRaisingDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -15046,1103 +15235,6 @@ export class UserServiceProxy {
     }
 
     /**
-     * @return Success
-     */
-    getHistoryDonationForFund(): Observable<GetListFundRasingDto[]> {
-        let url_ = this.baseUrl + "/api/services/app/User/getHistoryDonationForFund";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetHistoryDonationForFund(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetHistoryDonationForFund(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<GetListFundRasingDto[]>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<GetListFundRasingDto[]>;
-        }));
-    }
-
-    protected processGetHistoryDonationForFund(response: HttpResponseBase): Observable<GetListFundRasingDto[]> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(GetListFundRasingDto.fromJS(item));
-            }
-            else {
-                result200 = <any>null;
-            }
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @param id (optional) 
-     * @return Success
-     */
-    getInforPostById(id: number | undefined): Observable<GetFundsDetailByIdForUser> {
-        let url_ = this.baseUrl + "/api/services/app/User/GetInforPostById?";
-        if (id === null)
-            throw new Error("The parameter 'id' cannot be null.");
-        else if (id !== undefined)
-            url_ += "Id=" + encodeURIComponent("" + id) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetInforPostById(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetInforPostById(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<GetFundsDetailByIdForUser>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<GetFundsDetailByIdForUser>;
-        }));
-    }
-
-    protected processGetInforPostById(response: HttpResponseBase): Observable<GetFundsDetailByIdForUser> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GetFundsDetailByIdForUser.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @return Success
-     */
-    getAllFundRaising(): Observable<GetListFundRasingDto[]> {
-        let url_ = this.baseUrl + "/api/services/app/User/GetAllFundRaising";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetAllFundRaising(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetAllFundRaising(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<GetListFundRasingDto[]>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<GetListFundRasingDto[]>;
-        }));
-    }
-
-    protected processGetAllFundRaising(response: HttpResponseBase): Observable<GetListFundRasingDto[]> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(GetListFundRasingDto.fromJS(item));
-            }
-            else {
-                result200 = <any>null;
-            }
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @param createdDate (optional) 
-     * @param typePackage (optional) 
-     * @param sorting (optional) 
-     * @param skipCount (optional) 
-     * @param maxResultCount (optional) 
-     * @return Success
-     */
-    getListFundPackage(createdDate: DateTime | undefined, typePackage: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<GetListFundPackageDto[]> {
-        let url_ = this.baseUrl + "/api/services/app/User/GetListFundPackage?";
-        if (createdDate === null)
-            throw new Error("The parameter 'createdDate' cannot be null.");
-        else if (createdDate !== undefined)
-            url_ += "CreatedDate=" + encodeURIComponent(createdDate ? "" + createdDate.toString() : "") + "&";
-        if (typePackage === null)
-            throw new Error("The parameter 'typePackage' cannot be null.");
-        else if (typePackage !== undefined)
-            url_ += "TypePackage=" + encodeURIComponent("" + typePackage) + "&";
-        if (sorting === null)
-            throw new Error("The parameter 'sorting' cannot be null.");
-        else if (sorting !== undefined)
-            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&";
-        if (skipCount === null)
-            throw new Error("The parameter 'skipCount' cannot be null.");
-        else if (skipCount !== undefined)
-            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
-        if (maxResultCount === null)
-            throw new Error("The parameter 'maxResultCount' cannot be null.");
-        else if (maxResultCount !== undefined)
-            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetListFundPackage(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetListFundPackage(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<GetListFundPackageDto[]>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<GetListFundPackageDto[]>;
-        }));
-    }
-
-    protected processGetListFundPackage(response: HttpResponseBase): Observable<GetListFundPackageDto[]> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(GetListFundPackageDto.fromJS(item));
-            }
-            else {
-                result200 = <any>null;
-            }
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @param body (optional) 
-     * @return Success
-     */
-    donateForFund(body: DataDonateForFundInput | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/User/DonateForFund";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json-patch+json",
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processDonateForFund(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processDonateForFund(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<void>;
-        }));
-    }
-
-    protected processDonateForFund(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @param fundId (optional) 
-     * @return Success
-     */
-    getTotalAmountDonateOfFund(fundId: number | undefined): Observable<number> {
-        let url_ = this.baseUrl + "/api/services/app/User/getTotalAmountDonateOfFund?";
-        if (fundId === null)
-            throw new Error("The parameter 'fundId' cannot be null.");
-        else if (fundId !== undefined)
-            url_ += "fundId=" + encodeURIComponent("" + fundId) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetTotalAmountDonateOfFund(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetTotalAmountDonateOfFund(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<number>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<number>;
-        }));
-    }
-
-    protected processGetTotalAmountDonateOfFund(response: HttpResponseBase): Observable<number> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = resultData200 !== undefined ? resultData200 : <any>null;
-    
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @param fundId (optional) 
-     * @return Success
-     */
-    getListUserDonateForFund(fundId: number | undefined): Observable<ListUserDonateForFundDto[]> {
-        let url_ = this.baseUrl + "/api/services/app/User/GetListUserDonateForFund?";
-        if (fundId === null)
-            throw new Error("The parameter 'fundId' cannot be null.");
-        else if (fundId !== undefined)
-            url_ += "fundId=" + encodeURIComponent("" + fundId) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetListUserDonateForFund(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetListUserDonateForFund(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<ListUserDonateForFundDto[]>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<ListUserDonateForFundDto[]>;
-        }));
-    }
-
-    protected processGetListUserDonateForFund(response: HttpResponseBase): Observable<ListUserDonateForFundDto[]> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(ListUserDonateForFundDto.fromJS(item));
-            }
-            else {
-                result200 = <any>null;
-            }
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @param fundId (optional) 
-     * @param userName (optional) 
-     * @return Success
-     */
-    getUserDonateForFund(fundId: number | undefined, userName: string | undefined): Observable<ListUserDonateForFundDto[]> {
-        let url_ = this.baseUrl + "/api/services/app/User/GetUserDonateForFund?";
-        if (fundId === null)
-            throw new Error("The parameter 'fundId' cannot be null.");
-        else if (fundId !== undefined)
-            url_ += "fundId=" + encodeURIComponent("" + fundId) + "&";
-        if (userName === null)
-            throw new Error("The parameter 'userName' cannot be null.");
-        else if (userName !== undefined)
-            url_ += "userName=" + encodeURIComponent("" + userName) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetUserDonateForFund(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetUserDonateForFund(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<ListUserDonateForFundDto[]>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<ListUserDonateForFundDto[]>;
-        }));
-    }
-
-    protected processGetUserDonateForFund(response: HttpResponseBase): Observable<ListUserDonateForFundDto[]> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(ListUserDonateForFundDto.fromJS(item));
-            }
-            else {
-                result200 = <any>null;
-            }
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @param userId (optional) 
-     * @return Success
-     */
-    updatePermissionForFundRaiser(userId: number | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/User/UpdatePermissionForFundRaiser?";
-        if (userId === null)
-            throw new Error("The parameter 'userId' cannot be null.");
-        else if (userId !== undefined)
-            url_ += "userId=" + encodeURIComponent("" + userId) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-            })
-        };
-
-        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processUpdatePermissionForFundRaiser(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processUpdatePermissionForFundRaiser(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<void>;
-        }));
-    }
-
-    protected processUpdatePermissionForFundRaiser(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @return Success
-     */
-    getForEditFundRaiser(): Observable<RegisterInforFundRaiserDto> {
-        let url_ = this.baseUrl + "/api/services/app/User/GetForEditFundRaiser";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetForEditFundRaiser(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetForEditFundRaiser(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<RegisterInforFundRaiserDto>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<RegisterInforFundRaiserDto>;
-        }));
-    }
-
-    protected processGetForEditFundRaiser(response: HttpResponseBase): Observable<RegisterInforFundRaiserDto> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = RegisterInforFundRaiserDto.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @return Success
-     */
-    getListFundPackageCombobox(): Observable<ListComboboxDto[]> {
-        let url_ = this.baseUrl + "/api/services/app/User/getListFundPackageCombobox";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetListFundPackageCombobox(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetListFundPackageCombobox(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<ListComboboxDto[]>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<ListComboboxDto[]>;
-        }));
-    }
-
-    protected processGetListFundPackageCombobox(response: HttpResponseBase): Observable<ListComboboxDto[]> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(ListComboboxDto.fromJS(item));
-            }
-            else {
-                result200 = <any>null;
-            }
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @return Success
-     */
-    getInforBankUser(): Observable<InforDetailBankAcountDto> {
-        let url_ = this.baseUrl + "/api/services/app/User/GetInforBankUser";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetInforBankUser(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetInforBankUser(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<InforDetailBankAcountDto>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<InforDetailBankAcountDto>;
-        }));
-    }
-
-    protected processGetInforBankUser(response: HttpResponseBase): Observable<InforDetailBankAcountDto> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = InforDetailBankAcountDto.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @param body (optional) 
-     * @return Success
-     */
-    registerFundRaiser(body: RegisterInforFundRaiserDto | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/User/RegisterFundRaiser";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json-patch+json",
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processRegisterFundRaiser(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processRegisterFundRaiser(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<void>;
-        }));
-    }
-
-    protected processRegisterFundRaiser(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @param body (optional) 
-     * @return Success
-     */
-    createOrEditAccountBank(body: InforDetailBankAcountDto | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/User/CreateOrEditAccountBank";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json-patch+json",
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processCreateOrEditAccountBank(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processCreateOrEditAccountBank(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<void>;
-        }));
-    }
-
-    protected processCreateOrEditAccountBank(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @return Success
-     */
-    getListPostOfFundRaising(): Observable<GetFundRaisingViewForAdminDto[]> {
-        let url_ = this.baseUrl + "/api/services/app/User/getListPostOfFundRaising";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetListPostOfFundRaising(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetListPostOfFundRaising(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<GetFundRaisingViewForAdminDto[]>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<GetFundRaisingViewForAdminDto[]>;
-        }));
-    }
-
-    protected processGetListPostOfFundRaising(response: HttpResponseBase): Observable<GetFundRaisingViewForAdminDto[]> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(GetFundRaisingViewForAdminDto.fromJS(item));
-            }
-            else {
-                result200 = <any>null;
-            }
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @param fundId (optional) 
-     * @return Success
-     */
-    getListTransactionForFund(fundId: number | undefined): Observable<TransactionOfFundForDto[]> {
-        let url_ = this.baseUrl + "/api/services/app/User/getListTransactionForFund?";
-        if (fundId === null)
-            throw new Error("The parameter 'fundId' cannot be null.");
-        else if (fundId !== undefined)
-            url_ += "fundId=" + encodeURIComponent("" + fundId) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetListTransactionForFund(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetListTransactionForFund(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<TransactionOfFundForDto[]>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<TransactionOfFundForDto[]>;
-        }));
-    }
-
-    protected processGetListTransactionForFund(response: HttpResponseBase): Observable<TransactionOfFundForDto[]> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(TransactionOfFundForDto.fromJS(item));
-            }
-            else {
-                result200 = <any>null;
-            }
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @param body (optional) 
-     * @return Success
-     */
-    userAuction(body: UserAuction | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/User/UserAuction";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json-patch+json",
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processUserAuction(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processUserAuction(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<void>;
-        }));
-    }
-
-    protected processUserAuction(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @param deposit (optional) 
-     * @param auctionId (optional) 
-     * @return Success
-     */
-    userDepositAuction(deposit: number | undefined, auctionId: number | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/User/UserDepositAuction?";
-        if (deposit === null)
-            throw new Error("The parameter 'deposit' cannot be null.");
-        else if (deposit !== undefined)
-            url_ += "deposit=" + encodeURIComponent("" + deposit) + "&";
-        if (auctionId === null)
-            throw new Error("The parameter 'auctionId' cannot be null.");
-        else if (auctionId !== undefined)
-            url_ += "auctionId=" + encodeURIComponent("" + auctionId) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processUserDepositAuction(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processUserDepositAuction(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<void>;
-        }));
-    }
-
-    protected processUserDepositAuction(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @param auctionId (optional) 
-     * @return Success
-     */
-    getInforAuctionDeposit(auctionId: number | undefined): Observable<InformationAuctionDepositDto> {
-        let url_ = this.baseUrl + "/api/services/app/User/GetInforAuctionDeposit?";
-        if (auctionId === null)
-            throw new Error("The parameter 'auctionId' cannot be null.");
-        else if (auctionId !== undefined)
-            url_ += "auctionId=" + encodeURIComponent("" + auctionId) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetInforAuctionDeposit(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetInforAuctionDeposit(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<InformationAuctionDepositDto>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<InformationAuctionDepositDto>;
-        }));
-    }
-
-    protected processGetInforAuctionDeposit(response: HttpResponseBase): Observable<InformationAuctionDepositDto> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = InformationAuctionDepositDto.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
      * @param body (optional) 
      * @return Success
      */
@@ -16648,6 +15740,70 @@ export class UserServiceProxy {
 }
 
 @Injectable()
+export class UserAuctionServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    userAuction(body: UserAuction | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/UserAuction/UserAuction";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUserAuction(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUserAuction(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processUserAuction(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class UserDelegationServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -16876,6 +16032,1115 @@ export class UserDelegationServiceProxy {
             else {
                 result200 = <any>null;
             }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class UserFundRaisingServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @return Success
+     */
+    getHistoryDonationForFund(): Observable<GetListFundRasingDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/UserFundRaising/getHistoryDonationForFund";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetHistoryDonationForFund(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetHistoryDonationForFund(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GetListFundRasingDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GetListFundRasingDto[]>;
+        }));
+    }
+
+    protected processGetHistoryDonationForFund(response: HttpResponseBase): Observable<GetListFundRasingDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(GetListFundRasingDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getInforPostById(id: number | undefined): Observable<GetFundsDetailByIdForUser> {
+        let url_ = this.baseUrl + "/api/services/app/UserFundRaising/GetInforPostById?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetInforPostById(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetInforPostById(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GetFundsDetailByIdForUser>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GetFundsDetailByIdForUser>;
+        }));
+    }
+
+    protected processGetInforPostById(response: HttpResponseBase): Observable<GetFundsDetailByIdForUser> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetFundsDetailByIdForUser.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    getAllFundRaising(): Observable<GetListFundRasingDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/UserFundRaising/GetAllFundRaising";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllFundRaising(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllFundRaising(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GetListFundRasingDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GetListFundRasingDto[]>;
+        }));
+    }
+
+    protected processGetAllFundRaising(response: HttpResponseBase): Observable<GetListFundRasingDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(GetListFundRasingDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param createdDate (optional) 
+     * @param typePackage (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getListFundPackage(createdDate: DateTime | undefined, typePackage: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<GetListFundPackageDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/UserFundRaising/GetListFundPackage?";
+        if (createdDate === null)
+            throw new Error("The parameter 'createdDate' cannot be null.");
+        else if (createdDate !== undefined)
+            url_ += "CreatedDate=" + encodeURIComponent(createdDate ? "" + createdDate.toString() : "") + "&";
+        if (typePackage === null)
+            throw new Error("The parameter 'typePackage' cannot be null.");
+        else if (typePackage !== undefined)
+            url_ += "TypePackage=" + encodeURIComponent("" + typePackage) + "&";
+        if (sorting === null)
+            throw new Error("The parameter 'sorting' cannot be null.");
+        else if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&";
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetListFundPackage(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetListFundPackage(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GetListFundPackageDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GetListFundPackageDto[]>;
+        }));
+    }
+
+    protected processGetListFundPackage(response: HttpResponseBase): Observable<GetListFundPackageDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(GetListFundPackageDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    donateForFund(body: DataDonateForFundInput | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/UserFundRaising/DonateForFund";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDonateForFund(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDonateForFund(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processDonateForFund(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param fundId (optional) 
+     * @return Success
+     */
+    getTotalAmountDonateOfFund(fundId: number | undefined): Observable<number> {
+        let url_ = this.baseUrl + "/api/services/app/UserFundRaising/getTotalAmountDonateOfFund?";
+        if (fundId === null)
+            throw new Error("The parameter 'fundId' cannot be null.");
+        else if (fundId !== undefined)
+            url_ += "fundId=" + encodeURIComponent("" + fundId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTotalAmountDonateOfFund(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTotalAmountDonateOfFund(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<number>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<number>;
+        }));
+    }
+
+    protected processGetTotalAmountDonateOfFund(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param fundId (optional) 
+     * @return Success
+     */
+    getListUserDonateForFund(fundId: number | undefined): Observable<ListUserDonateForFundDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/UserFundRaising/GetListUserDonateForFund?";
+        if (fundId === null)
+            throw new Error("The parameter 'fundId' cannot be null.");
+        else if (fundId !== undefined)
+            url_ += "fundId=" + encodeURIComponent("" + fundId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetListUserDonateForFund(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetListUserDonateForFund(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ListUserDonateForFundDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ListUserDonateForFundDto[]>;
+        }));
+    }
+
+    protected processGetListUserDonateForFund(response: HttpResponseBase): Observable<ListUserDonateForFundDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ListUserDonateForFundDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param fundId (optional) 
+     * @param userName (optional) 
+     * @return Success
+     */
+    getUserDonateForFund(fundId: number | undefined, userName: string | undefined): Observable<ListUserDonateForFundDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/UserFundRaising/GetUserDonateForFund?";
+        if (fundId === null)
+            throw new Error("The parameter 'fundId' cannot be null.");
+        else if (fundId !== undefined)
+            url_ += "fundId=" + encodeURIComponent("" + fundId) + "&";
+        if (userName === null)
+            throw new Error("The parameter 'userName' cannot be null.");
+        else if (userName !== undefined)
+            url_ += "userName=" + encodeURIComponent("" + userName) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetUserDonateForFund(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetUserDonateForFund(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ListUserDonateForFundDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ListUserDonateForFundDto[]>;
+        }));
+    }
+
+    protected processGetUserDonateForFund(response: HttpResponseBase): Observable<ListUserDonateForFundDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ListUserDonateForFundDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param userId (optional) 
+     * @return Success
+     */
+    updatePermissionForFundRaiser(userId: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/UserFundRaising/UpdatePermissionForFundRaiser?";
+        if (userId === null)
+            throw new Error("The parameter 'userId' cannot be null.");
+        else if (userId !== undefined)
+            url_ += "userId=" + encodeURIComponent("" + userId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdatePermissionForFundRaiser(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdatePermissionForFundRaiser(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processUpdatePermissionForFundRaiser(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    getForEditFundRaiser(): Observable<RegisterInforFundRaiserDto> {
+        let url_ = this.baseUrl + "/api/services/app/UserFundRaising/GetForEditFundRaiser";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetForEditFundRaiser(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetForEditFundRaiser(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<RegisterInforFundRaiserDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<RegisterInforFundRaiserDto>;
+        }));
+    }
+
+    protected processGetForEditFundRaiser(response: HttpResponseBase): Observable<RegisterInforFundRaiserDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = RegisterInforFundRaiserDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    getListFundPackageCombobox(): Observable<ListComboboxDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/UserFundRaising/getListFundPackageCombobox";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetListFundPackageCombobox(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetListFundPackageCombobox(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ListComboboxDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ListComboboxDto[]>;
+        }));
+    }
+
+    protected processGetListFundPackageCombobox(response: HttpResponseBase): Observable<ListComboboxDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(ListComboboxDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    getInforBankUser(): Observable<InforDetailBankAcountDto> {
+        let url_ = this.baseUrl + "/api/services/app/UserFundRaising/GetInforBankUser";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetInforBankUser(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetInforBankUser(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<InforDetailBankAcountDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<InforDetailBankAcountDto>;
+        }));
+    }
+
+    protected processGetInforBankUser(response: HttpResponseBase): Observable<InforDetailBankAcountDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = InforDetailBankAcountDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    registerFundRaiser(body: RegisterInforFundRaiserDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/UserFundRaising/RegisterFundRaiser";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRegisterFundRaiser(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRegisterFundRaiser(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processRegisterFundRaiser(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    createOrEditAccountBank(body: InforDetailBankAcountDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/UserFundRaising/CreateOrEditAccountBank";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateOrEditAccountBank(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateOrEditAccountBank(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processCreateOrEditAccountBank(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    getListPostOfFundRaising(): Observable<GetFundRaisingViewForAdminDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/UserFundRaising/getListPostOfFundRaising";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetListPostOfFundRaising(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetListPostOfFundRaising(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GetFundRaisingViewForAdminDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GetFundRaisingViewForAdminDto[]>;
+        }));
+    }
+
+    protected processGetListPostOfFundRaising(response: HttpResponseBase): Observable<GetFundRaisingViewForAdminDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(GetFundRaisingViewForAdminDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param fundId (optional) 
+     * @return Success
+     */
+    getListTransactionForFund(fundId: number | undefined): Observable<TransactionOfFundForDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/UserFundRaising/getListTransactionForFund?";
+        if (fundId === null)
+            throw new Error("The parameter 'fundId' cannot be null.");
+        else if (fundId !== undefined)
+            url_ += "fundId=" + encodeURIComponent("" + fundId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetListTransactionForFund(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetListTransactionForFund(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<TransactionOfFundForDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<TransactionOfFundForDto[]>;
+        }));
+    }
+
+    protected processGetListTransactionForFund(response: HttpResponseBase): Observable<TransactionOfFundForDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(TransactionOfFundForDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    userAuction(body: UserAuction | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/UserFundRaising/UserAuction";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUserAuction(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUserAuction(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processUserAuction(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param deposit (optional) 
+     * @param auctionId (optional) 
+     * @return Success
+     */
+    userDepositAuction(deposit: number | undefined, auctionId: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/UserFundRaising/UserDepositAuction?";
+        if (deposit === null)
+            throw new Error("The parameter 'deposit' cannot be null.");
+        else if (deposit !== undefined)
+            url_ += "deposit=" + encodeURIComponent("" + deposit) + "&";
+        if (auctionId === null)
+            throw new Error("The parameter 'auctionId' cannot be null.");
+        else if (auctionId !== undefined)
+            url_ += "auctionId=" + encodeURIComponent("" + auctionId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUserDepositAuction(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUserDepositAuction(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processUserDepositAuction(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param auctionId (optional) 
+     * @return Success
+     */
+    getInforAuctionDeposit(auctionId: number | undefined): Observable<InformationAuctionDepositDto> {
+        let url_ = this.baseUrl + "/api/services/app/UserFundRaising/GetInforAuctionDeposit?";
+        if (auctionId === null)
+            throw new Error("The parameter 'auctionId' cannot be null.");
+        else if (auctionId !== undefined)
+            url_ += "auctionId=" + encodeURIComponent("" + auctionId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetInforAuctionDeposit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetInforAuctionDeposit(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<InformationAuctionDepositDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<InformationAuctionDepositDto>;
+        }));
+    }
+
+    protected processGetInforAuctionDeposit(response: HttpResponseBase): Observable<InformationAuctionDepositDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = InformationAuctionDepositDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -19567,14 +19832,11 @@ export interface ICreateOrEditFundPackageDto {
 }
 
 export class CreateOrEditFundRaisingDto implements ICreateOrEditFundRaisingDto {
-    id!: number;
+    id!: number | undefined;
+    fundRaisingDay!: DateTime | undefined;
     fundName!: string | undefined;
-    titleFund!: string | undefined;
-    imageUrl!: string | undefined;
-    created!: string | undefined;
-    amountOfMoney!: number;
-    fundEndDate!: DateTime;
-    contentOfFund!: DetailFundContentDto;
+    fundEndDate!: DateTime | undefined;
+    amountDonationTarget!: number | undefined;
 
     constructor(data?: ICreateOrEditFundRaisingDto) {
         if (data) {
@@ -19588,13 +19850,10 @@ export class CreateOrEditFundRaisingDto implements ICreateOrEditFundRaisingDto {
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"];
+            this.fundRaisingDay = _data["fundRaisingDay"] ? DateTime.fromISO(_data["fundRaisingDay"].toString()) : <any>undefined;
             this.fundName = _data["fundName"];
-            this.titleFund = _data["titleFund"];
-            this.imageUrl = _data["imageUrl"];
-            this.created = _data["created"];
-            this.amountOfMoney = _data["amountOfMoney"];
             this.fundEndDate = _data["fundEndDate"] ? DateTime.fromISO(_data["fundEndDate"].toString()) : <any>undefined;
-            this.contentOfFund = _data["contentOfFund"] ? DetailFundContentDto.fromJS(_data["contentOfFund"]) : <any>undefined;
+            this.amountDonationTarget = _data["amountDonationTarget"];
         }
     }
 
@@ -19608,26 +19867,20 @@ export class CreateOrEditFundRaisingDto implements ICreateOrEditFundRaisingDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
+        data["fundRaisingDay"] = this.fundRaisingDay ? this.fundRaisingDay.toString() : <any>undefined;
         data["fundName"] = this.fundName;
-        data["titleFund"] = this.titleFund;
-        data["imageUrl"] = this.imageUrl;
-        data["created"] = this.created;
-        data["amountOfMoney"] = this.amountOfMoney;
         data["fundEndDate"] = this.fundEndDate ? this.fundEndDate.toString() : <any>undefined;
-        data["contentOfFund"] = this.contentOfFund ? this.contentOfFund.toJSON() : <any>undefined;
+        data["amountDonationTarget"] = this.amountDonationTarget;
         return data;
     }
 }
 
 export interface ICreateOrEditFundRaisingDto {
-    id: number;
+    id: number | undefined;
+    fundRaisingDay: DateTime | undefined;
     fundName: string | undefined;
-    titleFund: string | undefined;
-    imageUrl: string | undefined;
-    created: string | undefined;
-    amountOfMoney: number;
-    fundEndDate: DateTime;
-    contentOfFund: DetailFundContentDto;
+    fundEndDate: DateTime | undefined;
+    amountDonationTarget: number | undefined;
 }
 
 export class CreateOrUpdateLanguageInput implements ICreateOrUpdateLanguageInput {
@@ -20387,62 +20640,6 @@ export class DelegatedImpersonateInput implements IDelegatedImpersonateInput {
 
 export interface IDelegatedImpersonateInput {
     userDelegationId: number;
-}
-
-export class DetailFundContentDto implements IDetailFundContentDto {
-    id!: number;
-    fundId!: number;
-    header!: string | undefined;
-    reasonCreatedFund!: string | undefined;
-    ideaCreadtedFund!: string | undefined;
-    footer!: string | undefined;
-
-    constructor(data?: IDetailFundContentDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.fundId = _data["fundId"];
-            this.header = _data["header"];
-            this.reasonCreatedFund = _data["reasonCreatedFund"];
-            this.ideaCreadtedFund = _data["ideaCreadtedFund"];
-            this.footer = _data["footer"];
-        }
-    }
-
-    static fromJS(data: any): DetailFundContentDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new DetailFundContentDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["fundId"] = this.fundId;
-        data["header"] = this.header;
-        data["reasonCreatedFund"] = this.reasonCreatedFund;
-        data["ideaCreadtedFund"] = this.ideaCreadtedFund;
-        data["footer"] = this.footer;
-        return data;
-    }
-}
-
-export interface IDetailFundContentDto {
-    id: number;
-    fundId: number;
-    header: string | undefined;
-    reasonCreatedFund: string | undefined;
-    ideaCreadtedFund: string | undefined;
-    footer: string | undefined;
 }
 
 export class DynamicEntityPropertyDto implements IDynamicEntityPropertyDto {
@@ -24183,6 +24380,66 @@ export interface IGetListFundPackageDto {
     commission: number | undefined;
 }
 
+export class GetListFundRaisingDto implements IGetListFundRaisingDto {
+    id!: number | undefined;
+    fundRaisingDay!: DateTime | undefined;
+    fundName!: string | undefined;
+    fundEndDate!: DateTime | undefined;
+    amountDonationTarget!: number | undefined;
+    unit!: string | undefined;
+    status!: string | undefined;
+
+    constructor(data?: IGetListFundRaisingDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.fundRaisingDay = _data["fundRaisingDay"] ? DateTime.fromISO(_data["fundRaisingDay"].toString()) : <any>undefined;
+            this.fundName = _data["fundName"];
+            this.fundEndDate = _data["fundEndDate"] ? DateTime.fromISO(_data["fundEndDate"].toString()) : <any>undefined;
+            this.amountDonationTarget = _data["amountDonationTarget"];
+            this.unit = _data["unit"];
+            this.status = _data["status"];
+        }
+    }
+
+    static fromJS(data: any): GetListFundRaisingDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetListFundRaisingDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["fundRaisingDay"] = this.fundRaisingDay ? this.fundRaisingDay.toString() : <any>undefined;
+        data["fundName"] = this.fundName;
+        data["fundEndDate"] = this.fundEndDate ? this.fundEndDate.toString() : <any>undefined;
+        data["amountDonationTarget"] = this.amountDonationTarget;
+        data["unit"] = this.unit;
+        data["status"] = this.status;
+        return data;
+    }
+}
+
+export interface IGetListFundRaisingDto {
+    id: number | undefined;
+    fundRaisingDay: DateTime | undefined;
+    fundName: string | undefined;
+    fundEndDate: DateTime | undefined;
+    amountDonationTarget: number | undefined;
+    unit: string | undefined;
+    status: string | undefined;
+}
+
 export class GetListFundRasingDto implements IGetListFundRasingDto {
     id!: number | undefined;
     listImageUrl!: string[] | undefined;
@@ -24264,6 +24521,62 @@ export interface IGetListFundRasingDto {
     postTopic: string | undefined;
     purpose: string | undefined;
     target: string | undefined;
+    note: string | undefined;
+}
+
+export class GetListPostByFundRaisingDto implements IGetListPostByFundRaisingDto {
+    id!: number | undefined;
+    postTitle!: string | undefined;
+    targetIntroduce!: string | undefined;
+    postTopic!: string | undefined;
+    purpose!: string | undefined;
+    note!: string | undefined;
+
+    constructor(data?: IGetListPostByFundRaisingDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.postTitle = _data["postTitle"];
+            this.targetIntroduce = _data["targetIntroduce"];
+            this.postTopic = _data["postTopic"];
+            this.purpose = _data["purpose"];
+            this.note = _data["note"];
+        }
+    }
+
+    static fromJS(data: any): GetListPostByFundRaisingDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetListPostByFundRaisingDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["postTitle"] = this.postTitle;
+        data["targetIntroduce"] = this.targetIntroduce;
+        data["postTopic"] = this.postTopic;
+        data["purpose"] = this.purpose;
+        data["note"] = this.note;
+        return data;
+    }
+}
+
+export interface IGetListPostByFundRaisingDto {
+    id: number | undefined;
+    postTitle: string | undefined;
+    targetIntroduce: string | undefined;
+    postTopic: string | undefined;
+    purpose: string | undefined;
     note: string | undefined;
 }
 
@@ -28796,6 +29109,102 @@ export class PagedResultDtoOfGetListFundPackageDto implements IPagedResultDtoOfG
 export interface IPagedResultDtoOfGetListFundPackageDto {
     totalCount: number;
     items: GetListFundPackageDto[] | undefined;
+}
+
+export class PagedResultDtoOfGetListFundRaisingDto implements IPagedResultDtoOfGetListFundRaisingDto {
+    totalCount!: number;
+    items!: GetListFundRaisingDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfGetListFundRaisingDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totalCount = _data["totalCount"];
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(GetListFundRaisingDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfGetListFundRaisingDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfGetListFundRaisingDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfGetListFundRaisingDto {
+    totalCount: number;
+    items: GetListFundRaisingDto[] | undefined;
+}
+
+export class PagedResultDtoOfGetListPostByFundRaisingDto implements IPagedResultDtoOfGetListPostByFundRaisingDto {
+    totalCount!: number;
+    items!: GetListPostByFundRaisingDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfGetListPostByFundRaisingDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totalCount = _data["totalCount"];
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(GetListPostByFundRaisingDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfGetListPostByFundRaisingDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfGetListPostByFundRaisingDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data;
+    }
+}
+
+export interface IPagedResultDtoOfGetListPostByFundRaisingDto {
+    totalCount: number;
+    items: GetListPostByFundRaisingDto[] | undefined;
 }
 
 export class PagedResultDtoOfLanguageTextListDto implements IPagedResultDtoOfLanguageTextListDto {

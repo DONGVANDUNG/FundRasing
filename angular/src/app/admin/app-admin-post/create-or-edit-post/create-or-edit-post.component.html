@@ -19,50 +19,40 @@
             </div>
             <div class="modal-body">
                 <div class="row mb-5 d-flex justify-content-between">
-                    <div class="col-5 d-flex align-items-center">
-                        <label for="fund-name" class="label">Tên quỹ:</label>
-                        <input type="text" [(ngModel)]="input.fundName" id="fund-name" class="input">
+                    <div class="col-7 d-flex align-items-center">
+                        <div class="col-6">
+                            <label for="fund-name" class="label">Tên quỹ:</label>
+                            <input type="text" [(ngModel)]="input.fundName" id="fund-name" class="input">
+                        </div>
+                        <div class="col-5">
+                            <label class="label">Chủ đề:</label>
+                            <input type="text" [(ngModel)]="input.fundTitle" class="input">
+                        </div>
                     </div>
-                    <div class="col-6 d-flex align-items-center">
+                    <div class="col-5 d-flex align-items-center">
                         <label class="label">Tiêu đề quỹ:</label>
                         <input type="text" [(ngModel)]="input.fundTitle" class="input">
                     </div>
                 </div>
                 <div class="row d-flex justify-content-between mb-5">
-                    <div class="col-5 d-flex align-items-center justify-content-between">
-                        <div class="col-6 d-flex align-items-center">
-                            <label class="label-amount">Trả phí gói:</label>
-                            <p-dropdown [style]="{'width':'100%'}" [options]="listOption" [(ngModel)]="input.isPayFee" optionLabel="name" optionValue="code"
-                            ></p-dropdown>
-                        </div>
-                        <div class="col-5 mr-3 d-flex align-items-center">
-                            <label class="label-amount">Số tiền:</label>
-                            <p-inputNumber [(ngModel)]="input.amountOfMoney" name="amountOfMoney" inputId="currency-us" mode="currency" currency="USD" locale="en-US"> </p-inputNumber>
-                        </div>
-                    </div>
                     <div class="col-6 d-flex justify-content-between">
-                        <div class="col-6 d-flex align-items-center">
-                            <label class="label-start">Ngày bắt đầu:</label>
-                            <p-calendar name="fundStartDate" [(ngModel)]="input.fundStartDate" (onSelect)="onChangeDate($event,'start')"
-                                dateFormat="dd/mm/yy"></p-calendar>
-                        </div>
-                        <div class="col-5 d-flex align-items-center">
-                            <label class="label-end">Ngày kết thúc:</label>
-                            <p-calendar name="fundEndDate" [(ngModel)]="input.fundEndDate" (onSelect)="onChangeDate($event,'end')"
-                                dateFormat="dd/mm/yy"></p-calendar>
+                        <div class="col-5">
+                            <form action="/upload" method="post" enctype="multipart/form-data" class="d-flex"
+                                id="form-add-image">
+                                <input type="file" [(ngModel)]="input.file" id="images" class="input" multiple
+                                    [ngModelOptions]="{standalone: true}" (change)="previewImages($event)">
+                            </form>
                         </div>
                     </div>
                 </div>
                 <div class="row d-flex justify-content-between mb-5">
-                    <div class="col-5">
-                        <form action="/upload" method="post" enctype="multipart/form-data" class="d-flex" id="form-add-image">
-                            <input type="file" [(ngModel)]="input.file" id="images" class="input" multiple [ngModelOptions]="{standalone: true}"
-                                (change)="previewImages($event)">
-                        </form>
+                    <div class="col-12 d-flex align-items-center justify-content-between">
+                        <label for="fund-name" class="label">Mục đích gây quỹ:</label>
+                        <input type="text" [(ngModel)]="input.fundName" id="fund-name" class="input">
                     </div>
-                    <div class="col-6 d-flex">
-                        <label class="label">Lý do tạo quỹ:</label>
-                        <textarea name="" class="textarea-reason" [(ngModel)]="input.reasonCreateFund" id="" cols="80" rows="12"></textarea>
+                    <div class="col-6 d-flex align-items-center">
+                        <label class="label">Tiêu đề quỹ:</label>
+                        <input type="text" [(ngModel)]="input.fundTitle" class="input">
                     </div>
                 </div>
                 <div class="row d-flex justify-content-between mb-5">

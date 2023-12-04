@@ -47,6 +47,7 @@ using esign.FundRaising.Admin.Dto;
 using esign.FundRaising.UserFundRaising.Dto;
 using esign.Enitity;
 using esign.FundRaising.UserFundRaising.Dto.Auction;
+using esign.Entity;
 
 namespace esign
 {
@@ -176,6 +177,7 @@ namespace esign
             configuration.CreateMap<Auction, CreateOrEditAuctionInputDto>().ReverseMap();
             configuration.CreateMap<AuctionItems, GetAllAuctionDto>().ReverseMap();
             configuration.CreateMap<AuctionItems, GetAuctionDetailDto>().ReverseMap();
+            configuration.CreateMap<Funds, CreateOrEditFundRaisingDto>().ReverseMap();
             //configuration.CreateMap<RegisterInforFundRaiserDto, FundRaiser>().ReverseMap();
         }
     }

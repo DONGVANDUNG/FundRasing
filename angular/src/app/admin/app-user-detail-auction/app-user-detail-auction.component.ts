@@ -17,7 +17,8 @@ import { AuctionService } from '@app/shared/layout/chat/auction-hub.service';
 export class AppUserDetailAuctionComponent extends AppComponentBase implements OnInit {
     @ViewChild("deposit") modalDeposit : AppUserDepositAuctionComponent;
     private hubConnection: signalR.HubConnection;
-    auctionId;
+    auctionId:number;
+    auctionItemId;
     isDeposit :boolean = false;
     baseUrl = AppConsts.remoteServiceBaseUrl + '/';
     dataAuction :GetAuctionDetailDto;
@@ -35,6 +36,7 @@ export class AppUserDetailAuctionComponent extends AppComponentBase implements O
         this.init();
         this.auctionId = this.route.snapshot.params['auctionId'];
         this.userAuction.auctionId = this.auctionId;
+        this.userAuction.isPublic = false;
         this._fundRaiser.getAuctionById(this.auctionId).subscribe(re => {
             this.dataAuction = re;
         })
@@ -50,7 +52,7 @@ export class AppUserDetailAuctionComponent extends AppComponentBase implements O
             this.notify.warn("Vui lòng nhập số tiền đấu giá");
             return;
         }
-        this.auctionService.updateAuction(this.userAuction.amountAuction,this.dataAuction.id,this.userAuction.isPublic, () => {
+        this.auctionService.updateAuction(this.userAuction.amountAuction,this.userAuction.auctionId,this.userAuction.isPublic, () => {
             this.notify.success("Đấu giá vật phẩm thành công");
         });
     }

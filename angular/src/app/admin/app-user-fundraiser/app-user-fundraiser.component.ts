@@ -1,6 +1,6 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { FundRaiserServiceProxy, InforDetailBankAcountDto, RegisterInforFundRaiserDto, UserServiceProxy } from '@shared/service-proxies/service-proxies';
+import { FundRaiserServiceProxy, InforDetailBankAcountDto, RegisterInforFundRaiserDto, UserFundRaisingServiceProxy, UserServiceProxy } from '@shared/service-proxies/service-proxies';
 import { error } from 'console';
 
 @Component({
@@ -13,7 +13,8 @@ export class AppUserFundraiserComponent extends AppComponentBase implements OnIn
   isChangeBankInfo: boolean = false;
   dataFundRaiser: RegisterInforFundRaiserDto = new RegisterInforFundRaiserDto;
   dataInforBankUser: InforDetailBankAcountDto = new InforDetailBankAcountDto;
-  constructor(injector: Injector, private fundRaisingRepo: FundRaiserServiceProxy, private _userServiceProxy: UserServiceProxy) {
+  constructor(injector: Injector, private fundRaisingRepo: FundRaiserServiceProxy,
+     private _userServiceProxy: UserFundRaisingServiceProxy) {
     super(injector);
   }
 

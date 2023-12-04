@@ -18,20 +18,8 @@ namespace esign.Migrations
                 name: "ImageUrl",
                 table: "AbpUsers");
 
-            migrationBuilder.RenameColumn(
-                name: "FundRaiserId",
-                table: "Funds",
-                newName: "UserId");
+           
 
-            migrationBuilder.RenameColumn(
-                name: "TitlePart",
-                table: "FundDetails",
-                newName: "Target");
-
-            migrationBuilder.RenameColumn(
-                name: "ContentPart",
-                table: "FundDetails",
-                newName: "Purpose");
 
             migrationBuilder.AlterColumn<long>(
                 name: "Id",
@@ -83,29 +71,6 @@ namespace esign.Migrations
                 oldClrType: typeof(float),
                 oldType: "real");
 
-            migrationBuilder.AddColumn<float>(
-                name: "AmountDonationPresent",
-                table: "Funds",
-                type: "real",
-                nullable: true);
-
-            migrationBuilder.AddColumn<float>(
-                name: "AmountDonationTarget",
-                table: "Funds",
-                type: "real",
-                nullable: true);
-
-            migrationBuilder.AddColumn<int>(
-                name: "DonateAmount",
-                table: "Funds",
-                type: "int",
-                nullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "PostTopic",
-                table: "FundRaiserPost",
-                type: "nvarchar(max)",
-                nullable: true);
 
             migrationBuilder.AlterColumn<long>(
                 name: "Id",
@@ -116,61 +81,11 @@ namespace esign.Migrations
                 oldType: "int")
                 .Annotation("SqlServer:Identity", "1, 1")
                 .OldAnnotation("SqlServer:Identity", "1, 1");
-
-            migrationBuilder.AddColumn<string>(
-                name: "Note",
-                table: "FundDetails",
-                type: "nvarchar(max)",
-                nullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "OrganizationName",
-                table: "FundDetails",
-                type: "nvarchar(max)",
-                nullable: true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "AmountDonationPresent",
-                table: "Funds");
-
-            migrationBuilder.DropColumn(
-                name: "AmountDonationTarget",
-                table: "Funds");
-
-            migrationBuilder.DropColumn(
-                name: "DonateAmount",
-                table: "Funds");
-
-            migrationBuilder.DropColumn(
-                name: "PostTopic",
-                table: "FundRaiserPost");
-
-            migrationBuilder.DropColumn(
-                name: "Note",
-                table: "FundDetails");
-
-            migrationBuilder.DropColumn(
-                name: "OrganizationName",
-                table: "FundDetails");
-
-            migrationBuilder.RenameColumn(
-                name: "UserId",
-                table: "Funds",
-                newName: "FundRaiserId");
-
-            migrationBuilder.RenameColumn(
-                name: "Target",
-                table: "FundDetails",
-                newName: "TitlePart");
-
-            migrationBuilder.RenameColumn(
-                name: "Purpose",
-                table: "FundDetails",
-                newName: "ContentPart");
 
             migrationBuilder.AlterColumn<int>(
                 name: "Id",

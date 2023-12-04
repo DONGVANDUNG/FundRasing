@@ -1,20 +1,17 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace esign.FundRaising.Admin.Dto
+namespace esign.FundRaising.FundRaiserService.Dto
 {
-    public class CreateOrEditFundRaisingInputDto
+    public class GetListPostByFundRaisingDto
     {
-        public long? FundId { get; set; }
-        public List<IFormFile> File {  get; set; }
+        public long? Id { get; set; }
         public string PostTitle { get; set; }
         public string TargetIntroduce { get; set; }
         public string PostTopic { get; set; }
         //post Detail
         public string Purpose { get; set; }
-        public string Note { get; set; }    
-
+        public string Note { get; set; }
     }
 }

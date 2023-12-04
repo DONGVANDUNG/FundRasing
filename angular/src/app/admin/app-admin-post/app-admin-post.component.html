@@ -3,7 +3,7 @@
         <div [class]="containerClass">
             <div class="kt-subheader__main">
                 <h3 class="kt-subheader__title">
-                    <span class="kt_subheader__desc">{{l("Quản lý gói quỹ")}}</span>
+                    <span class="kt_subheader__desc">{{l("Quản lý thông tin quỹ người dùng")}}</span>
                 </h3>
             </div>
         </div>
@@ -46,14 +46,30 @@
                             [defaultColDef]="defaultColDef"
                             (onGridReady)="onGridReady($event)"
                             (callBackEvent)="callBackGrid($event)"
+                            (onChangeSelection)="onChangeSelection($event)"
                             [paginationParams]="paginationParams"
-                            [rowData]="rowData" [height]="'530px'"></grid-table>
+                            [rowData]="rowData" [height]="'230px'"></grid-table>
                     </div>
                 </div>
             </div>
-            <button class="tmss-btn btn-outline-primary mr-0" (click)="createPost()">
-                <i class="fas fa-plus"></i> {{l("Add")}}
+            <button class="tmss-btn btn-outline-primary mr-0" (click)="createFund()">
+                <i class="fas fa-plus"></i> {{l("Thêm quỹ")}}
             </button>
+            <button class="tmss-btn btn-outline-primary mr-0" (click)="createPost()">
+                <i class="fas fa-plus"></i> {{l("Thêm bài đăng")}}
+            </button>
+            <!-- <div class="row align-items-center">
+                <div class="col-md-12">
+                    <div class="item col-12">
+                        <grid-table [columnDefs]="columnPostDefs"
+                            [defaultColDef]="defaultColDef"
+                            (onGridReady)="onGridReadyPost($event)"
+                            [paginationParams]="paginationParamsPost"
+                            [rowData]="rowDataPost" [height]="'230px'"></grid-table>
+                    </div>
+                </div>
+            </div> -->
         </div>
     </div>
-<app-create-or-edit-post #createOrEdit></app-create-or-edit-post>
+<app-create-or-edit-post #createOrEditPost></app-create-or-edit-post>
+<app-create-or-edit-fundraising #createOrEditFund (modalSave)="onGridReady(paginationParams)"></app-create-or-edit-fundraising>

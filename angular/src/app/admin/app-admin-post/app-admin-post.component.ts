@@ -2,9 +2,10 @@ import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { GridParams, PaginationParamsModel } from '@app/shared/common/models/base.model';
 import { DataFormatService } from '@app/shared/common/services/data-format.service';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { AdminFundRaisingServiceProxy, FundRaiserServiceProxy } from '@shared/service-proxies/service-proxies';
+import { AdminFundRaisingServiceProxy, FundRaiserServiceProxy, UserFundRaisingServiceProxy } from '@shared/service-proxies/service-proxies';
 import { ceil } from 'lodash-es';
 import { CreateOrEditPostComponent } from './create-or-edit-post/create-or-edit-post.component';
+import { CreateOrEditFundraisingComponent } from './create-or-edit-fundraising/create-or-edit-fundraising.component';
 
 @Component({
     selector: 'app-app-admin-post',
@@ -13,10 +14,13 @@ import { CreateOrEditPostComponent } from './create-or-edit-post/create-or-edit-
 })
 export class AppAdminPostComponent extends AppComponentBase implements OnInit {
 
-    @ViewChild("createOrEdit") modalCreate: CreateOrEditPostComponent;
+    @ViewChild("createOrEditPost") modalCreatePost: CreateOrEditPostComponent;
+    @ViewChild("createOrEditFund") modalCreateFund: CreateOrEditFundraisingComponent;
     columnDefs;
+    columnPostDefs;
     dateOfReport;
     rowData: any = [];
+    rowDataPost: any = [];
     defaultColDef;
     filter: string = '';
     isPayFee;
@@ -26,6 +30,7 @@ export class AppAdminPostComponent extends AppComponentBase implements OnInit {
     sorting: string = '';
     paginationParams: PaginationParamsModel;
     params: GridParams;
+
     advancedFiltersAreShown: boolean;
     createdDate;
     typePackage;
@@ -35,7 +40,7 @@ export class AppAdminPostComponent extends AppComponentBase implements OnInit {
         { label: 'Năm', value: 'Năm' },
 
     ]
-    selectedPost;
+    selectedFund;
     sideBar = {
         toolPanels: [
             {
@@ -57,7 +62,6 @@ export class AppAdminPostComponent extends AppComponentBase implements OnInit {
     };
     constructor(
         injector: Injector,
-        private _adminServiceProxy: AdminFundRaisingServiceProxy,
         private _funRaiser: FundRaiserServiceProxy,
         private dataFormatService: DataFormatService
     ) {
@@ -69,16 +73,8 @@ export class AppAdminPostComponent extends AppComponentBase implements OnInit {
                 cellRenderer: params => params.rowIndex + (this.paginationParams.pageNum! - 1) * this.paginationParams.pageSize! + 1,
                 field: 'no',
                 cellClass: ['text-left'],
-                minWidth: 50,
+                width: 80,
             },
-            // {
-            //     headerName: this.l('Tiêu đề bài đăng'),
-            //     headerTooltip: this.l('Tiêu đề bài đăng'),
-            //     field: 'fundTitle',
-            //     flex: 4,
-            //     width: 250,
-            //     cellClass: ['text-left'],
-            // },
             {
                 headerName: this.l('Tên quỹ'),
                 headerTooltip: this.l('Tên quỹ'),
@@ -87,32 +83,25 @@ export class AppAdminPostComponent extends AppComponentBase implements OnInit {
                 cellClass: ['text-left'],
             },
             {
-                headerName: this.l('Ngày tạo'),
-                headerTooltip: this.l('Ngày tạo'),
+                headerName: this.l('Ngày tạo quỹ'),
+                headerTooltip: this.l('Ngày tạo quỹ'),
                 field: 'fundRaisingDay',
                 valueGetter: params => this.dataFormatService.dateFormat(params.data.fundRaisingDay),
-                width: 250,
+                width: 150,
                 cellClass: ['text-left'],
             },
             {
                 headerName: this.l('Ngày kết thúc'),
                 headerTooltip: this.l('Ngày kết thúc'),
-                valueGetter: params => this.dataFormatService.dateFormat(params.data.fundFinishDay),
-                field: 'fundFinishDay',
-                flex: 4,
+                valueGetter: params => this.dataFormatService.dateFormat(params.data.fundEndDate),
+                field: 'fundEndDate',
+                width: 150,
                 cellClass: ['text-left'],
             },
             {
-                headerName: this.l('Mức ủng hộ'),
-                headerTooltip: this.l('Mức ủng hộ'),
-                field: 'amountOfMoney',
-                width:150,
-                cellClass: ['text-left'],
-            },
-            {
-                headerName: this.l('Đơn vị'),
-                headerTooltip: this.l('Đơn vị'),
-                field: 'unit',
+                headerName: this.l('Mục tiêu quỹ'),
+                headerTooltip: this.l('Mục tiêu quỹ'),
+                field: 'amountDonationTarget',
                 width:150,
                 cellClass: ['text-left'],
             },
@@ -120,7 +109,7 @@ export class AppAdminPostComponent extends AppComponentBase implements OnInit {
                 headerName: this.l('Trạng thái'),
                 headerTooltip: this.l('Trạng thái'),
                 field: 'status',
-                width:200,
+                width:120,
                 cellClass: ['text-left'],
             },
         ];
@@ -179,7 +168,7 @@ export class AppAdminPostComponent extends AppComponentBase implements OnInit {
     }
 
     getAll(paginationParams: PaginationParamsModel) {
-        return this._adminServiceProxy.getListFundRaising(
+        return this._funRaiser.getListFundRaising(
             this.filter,
             this.isPayFee,
             this.createdDateFilter,
@@ -191,14 +180,14 @@ export class AppAdminPostComponent extends AppComponentBase implements OnInit {
     onChangeSelection(paginationParams) {
         const selected = paginationParams.api.getSelectedRows()[0];
         if (selected) {
-            this.selectedPost = selected.id;
+            this.selectedFund = selected.id;
         }
     }
     deleteFundPackage() {
         this.message.confirm('', this.l('AreYouSure'), (isConfirmed) => {
             if (isConfirmed) {
-                this._adminServiceProxy
-                    .deleteFundPackage(this.selectedPost)
+                this._funRaiser
+                    .closeFundRaising(this.selectedFund)
                     .subscribe(() => {
                         this.onGridReady(this.paginationParams);
                         this.notify.success(this.l('SuccessfullyDeleted'));
@@ -207,6 +196,9 @@ export class AppAdminPostComponent extends AppComponentBase implements OnInit {
         })
     }
     createPost() {
-        this.modalCreate.show(this.selectedPost);
+        this.modalCreatePost.show(this.selectedFund);
+    }
+    createFund(){
+        this.modalCreateFund.show(this.selectedFund)
     }
 }

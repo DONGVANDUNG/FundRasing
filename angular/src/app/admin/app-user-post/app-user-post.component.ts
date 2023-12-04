@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DateTimeService } from '@app/shared/common/timing/date-time.service';
 import { AppConsts } from '@shared/AppConsts';
-import { AdminFundRaisingServiceProxy, UserServiceProxy } from '@shared/service-proxies/service-proxies';
+import { AdminFundRaisingServiceProxy, UserFundRaisingServiceProxy, UserServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CreateOrEditPostComponent } from '../app-admin-post/create-or-edit-post/create-or-edit-post.component';
 
 @Component({
@@ -11,7 +11,7 @@ import { CreateOrEditPostComponent } from '../app-admin-post/create-or-edit-post
 })
 export class AppUserPostComponent implements OnInit {
 
-  constructor(private _userServiceProxy: UserServiceProxy,
+  constructor(private _userServiceProxy: UserFundRaisingServiceProxy,
     private _dateTimeService: DateTimeService) { }
   listOption = [{
     code: true, name: 'Có'

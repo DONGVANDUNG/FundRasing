@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Injector, OnInit, Output, ViewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { InformationAuctionDepositDto, UserServiceProxy } from '@shared/service-proxies/service-proxies';
+import { InformationAuctionDepositDto, UserFundRaisingServiceProxy, UserServiceProxy } from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 
 @Component({
@@ -16,7 +16,7 @@ export class AppUserDepositAuctionComponent extends AppComponentBase implements 
   depositAmount;
   auctionId;
   inforDepost: InformationAuctionDepositDto = new InformationAuctionDepositDto();
-  constructor(injector: Injector,private userServiceProxy: UserServiceProxy) {
+  constructor(injector: Injector,private userServiceProxy: UserFundRaisingServiceProxy) {
     super(injector);
   }
 

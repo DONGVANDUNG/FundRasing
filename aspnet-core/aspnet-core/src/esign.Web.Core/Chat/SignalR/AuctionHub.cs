@@ -1,10 +1,7 @@
 ﻿using Abp.Domain.Repositories;
-using esign.Authorization.Users;
 using esign.Enitity;
 using esign.FundRaising;
-using esign.FundRaising.FundRaiserService;
 using esign.FundRaising.UserFundRaising.Dto.Auction;
-using esign.Web.Chat.SignalR;
 using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;
 
@@ -12,37 +9,31 @@ namespace esign.Web.Chat.SignalRNew
 {
     public class AuctionHub : Hub
     {
-        private readonly IHubContext<AuctionHub> _context;
-        private readonly IUserFundRaising _userAppService;
-        private readonly IRepository<Auction, long> _auctionRepo;
+        private readonly UserAuctionAppService _userAppService;
         private readonly IRepository<AuctionItems, long> _auctionItemsRepo;
-        private readonly IHubContext<ChatHub> _chatHub;
         public AuctionHub(
-            IRepository<Auction, long> auctionRepo,
-            IHubContext<ChatHub> chatHub,
-            IRepository<AuctionItems, long> auctionItemsRepo,
-            IUserFundRaising userAppService)
+           UserAuctionAppService userAppService
+, IRepository<AuctionItems, long> auctionItemsRepo)
         {
-            _auctionRepo = auctionRepo;
-            _chatHub = chatHub;
-            _auctionItemsRepo = auctionItemsRepo;
             _userAppService = userAppService;
+            _auctionItemsRepo = auctionItemsRepo;
         }
-        public async Task UpdateAmountOfAuction(float amountAuction, long auctionId, bool isPublic)
+        public async Task UpdateAmountOfAuction(float amountAuction, long? auctionItemId, bool isPublic)
         {
-            var auctionItem = await _auctionItemsRepo.FirstOrDefaultAsync(e => e.AuctionId == auctionId);
-            auctionItem.AuctionPresentAmount = amountAuction;
-            await _auctionItemsRepo.UpdateAsync(auctionItem);
-            UserAuction userAuction = new UserAuction
-            {
-                AmountAuction = amountAuction,
-                AuctionId = auctionId,
-                IsPublic = isPublic
-            };
-            var amountJumnpMin = auctionItem.AmountJumpMin + auctionItem.AuctionPresentAmount;
-            var amountJumnpMax = auctionItem.AmountJumpMax + auctionItem.AuctionPresentAmount;
-            await _userAppService.UserAuction(userAuction);
-            await Clients.All.SendAsync("updateAuction", auctionItem.AuctionPresentAmount, amountJumnpMin, amountJumnpMax);
+            //var auctionItem = _auctionItemsRepo.FirstOrDefault(e => e.AuctionId == auctionItemId);
+           // auctionItem.AuctionPresentAmount = amountAuction;
+            await Clients.All.SendAsync("updateAuction", 60000, 800000, 200000);
+            //await _auctionItemsRepo.UpdateAsync(auctionItem);
+            //UserAuction userAuction = new UserAuction
+            //{
+            //    AmountAuction = amountAuction,
+            //    AuctionId = auctionItemId,
+            //    IsPublic = isPublic
+            //};
+            //var amountJumnpMin = auctionItem.AmountJumpMin + auctionItem.AuctionPresentAmount;
+            //var amountJumnpMax = auctionItem.AmountJumpMax + auctionItem.AuctionPresentAmount;
+            //await _userAppService.UserAuction(userAuction);
         }
+
     }
 }

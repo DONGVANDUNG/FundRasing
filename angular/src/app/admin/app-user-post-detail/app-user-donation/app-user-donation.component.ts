@@ -2,7 +2,7 @@ import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { AppConsts } from '@shared/AppConsts';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { DataDonateForFundInput, FundRaiserServiceProxy, TransactionOfFundForDto, UserServiceProxy } from '@shared/service-proxies/service-proxies';
+import { DataDonateForFundInput, FundRaiserServiceProxy, TransactionOfFundForDto, UserFundRaisingServiceProxy, UserServiceProxy } from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 
 @Component({
@@ -24,7 +24,7 @@ export class AppUserDonationComponent extends AppComponentBase implements OnInit
     inputData: DataDonateForFundInput = new DataDonateForFundInput();
     constructor(injector: Injector,
         private _fundRaiser: FundRaiserServiceProxy,
-        private _userServiceProxy: UserServiceProxy,
+        private _userServiceProxy: UserFundRaisingServiceProxy,
         private route: ActivatedRoute,
         private router: Router) {
         super(injector)

@@ -1,6 +1,4 @@
-﻿using Abp.Application.Services.Dto;
-using Abp.Domain.Repositories;
-using Abp.Linq.Extensions;
+﻿using Abp.Domain.Repositories;
 using Abp.UI;
 using Dapper;
 using esign.Authorization.Users;
@@ -8,32 +6,21 @@ using esign.Configuration;
 using esign.Enitity;
 using esign.Entity;
 using esign.FundRaising.Admin.Dto;
-using esign.FundRaising.FundRaiserService;
 using esign.FundRaising.FundRaiserService.Dto;
 using esign.FundRaising.UserFundRaising.Dto;
 using esign.FundRaising.UserFundRaising.Dto.Auction;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting.Internal;
-using Newtonsoft.Json;
-using NPOI.SS.Formula.Functions;
-using NUglify.Html;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
-using System.Transactions;
-using Twilio.Rest.Trunking.V1;
 
 namespace esign.FundRaising
 {
-    public class UserAppService : esignAppServiceBase, IUserFundRaising
+    public class UserFundRaisingAppService : esignAppServiceBase, IUsersFundRaisingAppService
     {
         private readonly IRepository<Funds, long> _mstSleFundRepo;
         //private readonly IRepository<FundRaiser, long> _mstSleFundRaiserRepo;
@@ -54,7 +41,7 @@ namespace esign.FundRaising
         private readonly IConfigurationRoot _appConfiguration;
 
 
-        public UserAppService(IRepository<Funds, long> mstSleFundRepo,
+        public UserFundRaisingAppService(IRepository<Funds, long> mstSleFundRepo,
             //IRepository<FundRaiser, long>
             // mstSleFundRaiserRepo,
             IRepository<FundDetails, long> mstSleFundDetailRepo,

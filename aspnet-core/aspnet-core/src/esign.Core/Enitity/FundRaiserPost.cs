@@ -18,12 +18,12 @@ namespace esign.Enitity
         public DateTime? FinishDay { get; set; }
         public bool? IsClose { get; set; }
         //Số tiền mục tiêu
-        public float? AmountOfMoneyTarget { get; set; }
         public long? FundId { get; set; }
         //Số tiền hiện tại
-        public float? AmountOfMoneyPresent { get; set; }
         //Mục tiêu
         public string TargetIntroduce { get; set; }
+        public string Purpose { get; set; }
+        public string Note { get; set; }
         //Tiến độ thực hiện
         //public string ImplementationProgress { get; set; }
     }

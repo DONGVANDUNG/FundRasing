@@ -2,7 +2,7 @@ import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AppConsts } from '@shared/AppConsts';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { DataDonateForFundInput, FundRaiserServiceProxy, TransactionOfFundForDto, UserServiceProxy } from '@shared/service-proxies/service-proxies';
+import { DataDonateForFundInput, FundRaiserServiceProxy, TransactionOfFundForDto, UserFundRaisingServiceProxy, UserServiceProxy } from '@shared/service-proxies/service-proxies';
 import { AppUserDonationComponent } from './app-user-donation/app-user-donation.component';
 
 @Component({
@@ -32,7 +32,7 @@ export class AppUserPostDetailComponent extends AppComponentBase implements OnIn
     textButton = 'Quyên góp';
     constructor(injector: Injector,
         private _fundRaiser: FundRaiserServiceProxy,
-        private _userServiceProxy: UserServiceProxy,
+        private _userServiceProxy: UserFundRaisingServiceProxy,
         private route: ActivatedRoute) {
         super(injector)
     }

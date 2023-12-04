@@ -52,7 +52,7 @@ export class CreateOrEditPostComponent extends AppComponentBase {
     constructor(injector: Injector, private _fundRaiser: FundRaiserServiceProxy) {
         super(injector)
     }
-    show(postId) {
+    show(postId?) {
         this.modal.show();
         this.input = {
             file: [],
@@ -121,25 +121,25 @@ export class CreateOrEditPostComponent extends AppComponentBase {
         this.modal.hide();
     }
     save() {
-        this._fundRaiser.createFundRaising(
-            this.input.file,
-            this.input.fundName,
-            this.input.fundTitle,
-            this.input.amountOfMoney,
-            this.input.fundStartDate,
-            this.input.fundEndDate,
-            this.input.fundContent,
-            this.input.reasonCreateFund,
-            this.input.isPayFee,
-        ).subscribe(
-            () => {
-                this.notify.success("Thêm bài đăng quỹ thành công");
-                this.modalSave.emit(null);
+        // this._fundRaiser.createFundRaising(
+        //     this.input.file,
+        //     this.input.fundName,
+        //     this.input.fundTitle,
+        //     this.input.amountOfMoney,
+        //     this.input.fundStartDate,
+        //     this.input.fundEndDate,
+        //     this.input.fundContent,
+        //     this.input.reasonCreateFund,
+        //     this.input.isPayFee,
+        // ).subscribe(
+        //     () => {
+        //         this.notify.success("Thêm bài đăng quỹ thành công");
+        //         this.modalSave.emit(null);
 
-                this.modal.hide();
-            }, (error) => {
-                this.notify.error("Đã xảy ra lỗi")
-            })
+        //         this.modal.hide();
+        //     }, (error) => {
+        //         this.notify.error("Đã xảy ra lỗi")
+        //     })
     }
     onChangeDate(event, type) {
         if (type === 'start') {

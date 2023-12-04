@@ -1,0 +1,46 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" Cert="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop:'static'}">
+    <div class="modal-dialog fund-modal-edit-md">
+        <div class="modal-content">
+            <div class="modal-header redline-header">
+                <h4 class="modal-title">
+                    <span>{{l("Thêm mới quỹ")}}</span>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-5">
+                    <div class="col-6 d-flex align-items-center">
+                        <label for="fund-name" class="label">Tên quỹ:</label>
+                        <input type="text" id="fund-name" name="fundName" [(ngModel)]="inputData.fundName" class="input">
+                    </div>
+                    <div class="col-6 d-flex align-items-center">
+                        <label class="label">Mục tiêu quỹ:</label>
+                        <input type="number" name="target" [(ngModel)]="inputData.amountDonationTarget" class="input">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6 d-flex align-items-center">
+                        <label class="label">Ngày bắt đầu:</label>
+                        <p-calendar name="fundStartDate" name="startDate" [(ngModel)]="inputData.fundRaisingDay" (onSelect)="onChangeDate($event,'start')"
+                            dateFormat="dd/mm/yy"></p-calendar>
+                    </div>
+                    <div class="col-6 d-flex align-items-center">
+                        <label class="label">Ngày kết thúc:</label>
+                        <p-calendar name="fundEndDate" name="endDate" [(ngModel)]="inputData.fundEndDate" (onSelect)="onChangeDate($event,'end')"
+                            dateFormat="dd/mm/yy"></p-calendar>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="tmss-btn btn-outline-primary" (click)="save()">
+                    {{"Lưu" }}
+                    <i class="fa fa-save"></i>
+                </button>
+                <button type="button" class="tmss-btn btn-outline-primary btn-secondary" (click)="close()">
+                    {{ "Hủy" }}
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

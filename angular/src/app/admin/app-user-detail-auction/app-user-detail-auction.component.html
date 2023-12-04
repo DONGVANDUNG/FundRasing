@@ -1,50 +1,50 @@
 <div class="block-header-color"></div>
 <div class="block-auction">
-    <p class="title-header">{{this.dataAuction.itemName}}</p>
+    <p class="title-header">{{dataAuction?.itemName}}</p>
     <div class="header-auction d-flex">
-        <div class="block-starting-price font-weight-bold">Khởi điểm:{{this.dataAuction.startingPrice}} VND</div>
-        <span class="name-user-created">{{this.dataAuction.isPublic == true ? this.dataAuction.userName :
+        <div class="block-starting-price font-weight-bold">Khởi điểm:{{dataAuction?.startingPrice}} VND</div>
+        <span class="name-user-created">{{dataAuction?.isPublic == true ? dataAuction?.userName :
             "Ẩn danh"}}</span>
     </div>
     <hr class="itemPreviewView__separator">
 
     <div class="block-content-auction d-flex justify-content-between">
         <div class="block-img-auction">
-            <img [src]="this.baseUrl + this.dataAuction?.listImage[0]" alt="">
+            <img [src]="baseUrl + dataAuction?.listImage[0]" alt="">
         </div>
         <div class="form-auction">
             <div class="auction-content">
                 <div class="item-content">
                     <p>Thời gian còn lại:</p>
-                    <span>{{this.dataAuction.timeLeft +" ngày"}}</span>
+                    <span>{{dataAuction?.timeLeft +" ngày"}}</span>
                 </div>
                 <div class="item-content">
                     <p>Giá thầu hiện tại:</p>
-                    <span>{{this.dataAuction.auctionPresentAmount +" VND"}}</span>
+                    <span>{{dataAuction?.auctionPresentAmount +" VND"}}</span>
                 </div>
                 <div class="item-content">
                     <p>Giá thầu tối thiểu tiếp theo:</p>
-                    <span>{{this.dataAuction.nextMinimumBid +" VND"}}</span>
+                    <span>{{dataAuction?.nextMinimumBid +" VND"}}</span>
                 </div>
                 <div class="item-content">
                     <p>Giá thầu tối đa tiếp theo:</p>
-                    <span>{{this.dataAuction.nextMaximumBid +" VND"}}</span>
+                    <span>{{dataAuction?.nextMaximumBid +" VND"}}</span>
                 </div>
             </div>
             <div class="block-fill-auction">
-                <input type="number" placeholder="Nhập giá(VND)" name="fill-auction" class="input-fill-auction" [(ngModel)]="this.userAuction.amountAuction">
+                <input type="number" placeholder="Nhập giá(VND)" name="fill-auction" class="input-fill-auction" [(ngModel)]="userAuction.amountAuction">
                 <button type="button" class="btn-place-bid" *ngIf="isDeposit" (click)="placeBid()">Đấu giá</button>
                 <button type="button" class="btn-place-bid" *ngIf="!isDeposit" (click)="depositAuction()">Tham gia đấu giá</button>
             </div>
             <div class="block-is-public">
                 <label for="is-public" class="is-public">Tôi muốn ủng hộ công khai
                 </label>
-                <input type="checkbox" id="is-public" [(ngModel)]="this.userAuction.isPublic">
+                <input type="checkbox" id="is-public" [(ngModel)]="userAuction.isPublic">
             </div>
-            <p class="content-intro-auction mt-5">{{this.dataAuction.introduceItem}}</p>
+            <p class="content-intro-auction mt-5">{{dataAuction?.introduceItem}}</p>
         </div>
     </div>
 </div>
 <hr class="itemPreviewView__separator">
 <!-- <div class="block-footer-color">Được tạo bởi Givergy</div> -->
-<app-user-deposit-auction #deposit (modalSave)="this.checkUserDeposit()"></app-user-deposit-auction>
+<app-user-deposit-auction #deposit (modalSave)="checkUserDeposit()"></app-user-deposit-auction>

@@ -2,7 +2,7 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AppConsts } from '@shared/AppConsts';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { GetListFundRasingDto, UserServiceProxy } from '@shared/service-proxies/service-proxies';
+import { GetListFundRasingDto, UserFundRaisingServiceProxy, UserServiceProxy } from '@shared/service-proxies/service-proxies';
 
 @Component({
     selector: 'app-user-checkout',
@@ -14,7 +14,7 @@ export class AppUserCheckoutComponent extends AppComponentBase implements OnInit
     imageUrl
     baseUrl = AppConsts.remoteServiceBaseUrl + '/';
     listFundRaisingHistory = [];
-    constructor(injector: Injector, private _userServiceProxy: UserServiceProxy,
+    constructor(injector: Injector, private _userServiceProxy: UserFundRaisingServiceProxy,
         private route: ActivatedRoute) {
         super(injector);
     }

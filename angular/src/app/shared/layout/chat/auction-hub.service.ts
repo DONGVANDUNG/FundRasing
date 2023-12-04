@@ -68,9 +68,9 @@ export class AuctionService extends AppComponentBase {
     }
 
     registerChatEvents(connection): void {
-        connection.on('updateAmountOfAuction', (message) => {
-            abp.event.trigger('app.chat.updateAuction', message);
-        });
+        // connection.on('updateAmountOfAuction', (message) => {
+        //     abp.event.trigger('app.chat.updateAuction', message);
+        // });
 
         connection.on("updateAuction", (amountPresent, amountJumnpMin, amountJumnpMax) => {
             this.amountPresent = amountPresent;
@@ -89,7 +89,7 @@ export class AuctionService extends AppComponentBase {
         return this.amountJumnpMax;
     }
 
-    updateAuction(amountPresent, amountJumnpMin, amountJumnpMax, callback): void {
+    updateAuction(amountPresent:number, auctionId, isPublic:boolean, callback): void {
         if (!this.isChatConnected) {
             if (callback) {
                 callback();
@@ -99,7 +99,8 @@ export class AuctionService extends AppComponentBase {
             return;
         }
         this.chatHub
-            .invoke('updateAmountOfAuction', amountPresent, amountJumnpMin, amountJumnpMax)
+             .invoke('updateAmountOfAuction', amountPresent, parseInt(auctionId), isPublic)
+            //.invoke('updateAmountOfAuction',1)
             .then((result) => {
                 if (result) {
                     abp.notify.warn(result);

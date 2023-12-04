@@ -26,6 +26,7 @@ using Abp.Linq.Extensions;
 using Microsoft.AspNetCore.SignalR;
 using Abp.RealTime;
 using NPOI.HSSF.Record;
+using esign.FundRaising.UserFundRaising.Dto;
 
 namespace esign.FundRaising
 {
@@ -34,7 +35,7 @@ namespace esign.FundRaising
         private readonly IRepository<Funds, long> _mstSleFundRepo;
         private readonly IRepository<FundTransactions, long> _mstSleFundTransactionRepo;
         private readonly IRepository<User, long> _mstSleUserRepo;
-        private readonly IRepository<FundDetailContent, long> _mstSleDetailConentRepo;
+        private readonly IRepository<FundDetails, long> _mstSleDetailsRepo;
         private readonly IRepository<UserWarning, int> _mstSleUserWarningRepo;
         private readonly IRepository<Auction, long> _mstAuctionRepo;
         private readonly IRepository<AuctionTransactions, long> _mstAuctionTransactionRepo;
@@ -43,13 +44,14 @@ namespace esign.FundRaising
         private readonly IRepository<FundImage, long> _mstSleFundImageRepo;
         private readonly IRepository<AuctionItems, long> _mstSleAuctionItemsRepo;
         private readonly IRepository<AuctionDeposit, long> _mstSleAuctionDepositRepo;
+        private readonly IRepository<FundRaiserPost, long> _mstFundRaiserPostRepo;
         private readonly IConfigurationRoot _appConfiguration;
         public FundRaiserAppService(IRepository<Funds, long> mstSleFundRepo,
             IRepository<FundTransactions, long> mstSleFundTransactionRepo,
             IRepository<User, long> mstSleUserRepo,
             IWebHostEnvironment hostingEnvironment,
             IWebHostEnvironment env,
-            IRepository<FundDetailContent, long> mstSleDetailConentRepo,
+            IRepository<FundDetails, long> mstSleDetailsRepo,
             IRepository<UserWarning, int> mstSleUserWarningRepo,
             //IRepository<FundRaiser, long> mstSleFundRaiserRepo,
             IRepository<FundImage, long> mstSleFundImageRepo,
@@ -57,12 +59,13 @@ namespace esign.FundRaising
             IRepository<AuctionTransactions, long> mstAuctionTransactionRepo,
             IRepository<AuctionImages, long> mstAuctionImagesRepo,
             IRepository<AuctionItems, long> mstSleAuctionItemsRepo,
-            IRepository<AuctionDeposit, long> mstSleAuctionDepositRepo)
+            IRepository<AuctionDeposit, long> mstSleAuctionDepositRepo,
+            IRepository<FundRaiserPost, long> mstFundRaiserPostRepo)
         {
             _mstSleFundRepo = mstSleFundRepo;
             _mstSleFundTransactionRepo = mstSleFundTransactionRepo;
             _mstSleUserRepo = mstSleUserRepo;
-            _mstSleDetailConentRepo = mstSleDetailConentRepo;
+            _mstSleDetailsRepo = mstSleDetailsRepo;
             _mstSleUserWarningRepo = mstSleUserWarningRepo;
             //_mstSleFundRaiserRepo = mstSleFundRaiserRepo;
             _mstSleFundImageRepo = mstSleFundImageRepo;
@@ -73,44 +76,42 @@ namespace esign.FundRaising
             _mstAuctionImagesRepo = mstAuctionImagesRepo;
             _mstSleAuctionItemsRepo = mstSleAuctionItemsRepo;
             _mstSleAuctionDepositRepo = mstSleAuctionDepositRepo;
+            _mstFundRaiserPostRepo = mstFundRaiserPostRepo;
         }
-        public async Task CloseFundRaising(int fundId)
+        public async Task CloseFundRaising(long fundId)
         {
             try
             {
                 var fund = await _mstSleFundRepo.FirstOrDefaultAsync(s => s.Id == fundId);
                 if (fund != null)
                 {
-                    fund.Status = 3;
+                    fund.Status = 2;
                 }
                 await _mstSleFundRepo.UpdateAsync(fund);
             }
             catch (Exception ex)
             {
-                throw new UserFriendlyException("Có lỗi xảy ra trong quá trình thêm mới");
+                throw new UserFriendlyException("Có lỗi xảy ra trong quá trình đóng quỹ");
             }
         }
         [HttpPost]
         [Consumes("multipart/form-data")]
-        public async Task CreateFundRaising([FromForm] CreateOrEditFundRaisingInputDto input)
+        public async Task CreatePostOfFundRaising([FromForm] CreateOrEditFundRaisingInputDto input)
         {
             try
             {
-                Funds fundInsert = new Funds();
-               // fundInsert.FundRaiserId = AbpSession.UserId;
-                fundInsert.FundRaisingDay = input.FundStartDate;
-                fundInsert.FundEndDate = input.FundEndDate;
-                fundInsert.FundName = input.FundName;
-                fundInsert.FundTitle = input.FundTitle;
-                //fundInsert.AmountOfMoney = input.AmountOfMoney;
-                fundInsert.Status = 1;
-                fundInsert.IsPayFee = input.IsPayFee;
-                var fundId = await _mstSleFundRepo.InsertAndGetIdAsync(fundInsert);
-                FundDetailContent fundDetail = new FundDetailContent();
-                fundDetail.FundId = (int)fundId;
-                fundDetail.Content = input.FundContent;
-                fundDetail.ReasonCreatedFund = input.ReasonCreateFund;
-                await _mstSleDetailConentRepo.InsertAsync(fundDetail);
+                FundRaiserPost post = new FundRaiserPost();
+                post.FundId = input.FundId;
+                post.PostTitle = input.PostTitle;
+                post.UserId = AbpSession.UserId;
+                post.TargetIntroduce = input.TargetIntroduce;
+                post.Note = input.Note;
+                post.PostTopic = input.PostTopic;
+                post.IsClose = false;
+                post.Purpose = input.Purpose;
+                var postId = await _mstFundRaiserPostRepo.InsertAndGetIdAsync(post);
+               
+                
                 if (input.File.Count() > 0)
                 {
                     foreach (var file in input.File)
@@ -125,7 +126,7 @@ namespace esign.FundRaising
                                 await file.CopyToAsync(stream);
                             }
                             FundImage fundImage = new FundImage();
-                            //fundImage.PostId = fundId;
+                            fundImage.PostId = postId;
 
                             fundImage.ImageUrl = Path.Combine("uploads", fileName);
                             await _mstSleFundImageRepo.InsertAsync(fundImage);
@@ -144,41 +145,41 @@ namespace esign.FundRaising
             }
         }
 
-        public async Task UpdateFundRaising(CreateOrEditFundRaisingDto input)
-        {
+        //public async Task UpdateFundRaising(CreateOrEditFundRaisingDto input)
+        //{
 
-            try
-            {
-                var fund = await _mstSleFundRepo.FirstOrDefaultAsync(e => e.Id == input.Id);
-                if (fund != null)
-                {
-                    //fund.FundRaiserId = AbpSession.UserId;
-                    fund.FundRaisingDay = DateTime.Now;
-                    fund.FundName = input.FundName;
-                    fund.FundImageUrl = input.ImageUrl;
-                    fund.FundTitle = input.TitleFund;
-                    //fund.AmountOfMoney = input.AmountOfMoney;
-                    fund.FundEndDate = input.FundEndDate;
-                    await _mstSleFundRepo.UpdateAsync(fund);
-                    FundDetailContent detailContent = new FundDetailContent();
-                    ObjectMapper.Map(input.ContentOfFund, detailContent);
-                    detailContent.FundId = (int)fund.Id;
-                    await _mstSleDetailConentRepo.UpdateAsync(detailContent);
-                }
-            }
-            catch (Exception e) { }
-        }
+        //    try
+        //    {
+        //        var fund = await _mstSleFundRepo.FirstOrDefaultAsync(e => e.Id == input.Id);
+        //        if (fund != null)
+        //        {
+        //            //fund.FundRaiserId = AbpSession.UserId;
+        //            fund.FundRaisingDay = DateTime.Now;
+        //            fund.FundName = input.FundName;
+        //            fund.FundImageUrl = input.ImageUrl;
+        //            fund.FundTitle = input.TitleFund;
+        //            //fund.AmountOfMoney = input.AmountOfMoney;
+        //            fund.FundEndDate = input.FundEndDate;
+        //            await _mstSleFundRepo.UpdateAsync(fund);
+        //            FundDetailContent detailContent = new FundDetailContent();
+        //            ObjectMapper.Map(input.ContentOfFund, detailContent);
+        //            detailContent.FundId = (int)fund.Id;
+        //            await _mstSleDetailConentRepo.UpdateAsync(detailContent);
+        //        }
+        //    }
+        //    catch (Exception e) { }
+        //}
 
-        public async Task ExtendTimeOfFundRaising(DateTime timeExtend, int fundId)
-        {
-            var fund = await _mstSleFundRepo.FirstOrDefaultAsync(e => e.Id == fundId);
-            if (fund != null)
-            {
-                fund.FundEndDate = timeExtend;
-                fund.Status = 2;
-                await _mstSleFundRepo.UpdateAsync(fund);
-            }
-        }
+        //public async Task ExtendTimeOfFundRaising(DateTime timeExtend, int fundId)
+        //{
+        //    var fund = await _mstSleFundRepo.FirstOrDefaultAsync(e => e.Id == fundId);
+        //    if (fund != null)
+        //    {
+        //        fund.FundEndDate = timeExtend;
+        //        fund.Status = 2;
+        //        await _mstSleFundRepo.UpdateAsync(fund);
+        //    }
+        //}
 
         //public async Task<List<TransactionOfFundForDto>> getListTransactionForFund(int fundId)
         //{
@@ -199,7 +200,30 @@ namespace esign.FundRaising
         //                           }).ToListAsync();
         //    return await listTransaction;
         //}
-
+        public void CreateOrEditFundRaising(CreateOrEditFundRaisingDto input)
+        {
+            if (input.Id == null || input.Id == 0)
+            {
+                CreateFundRaising(input);
+            }
+            else
+                UpdateFundRaising(input);
+        }
+        public async Task CreateFundRaising(CreateOrEditFundRaisingDto input)
+        {
+            Funds fundCreate = new Funds();
+            ObjectMapper.Map(input, fundCreate);
+            fundCreate.UserId = AbpSession.UserId;
+            fundCreate.Status = 1;
+            fundCreate.DonateAmount = 0;
+            fundCreate.AmountDonationPresent = 0;
+            await _mstSleFundRepo.InsertAsync(fundCreate);
+        }
+        public async Task UpdateFundRaising(CreateOrEditFundRaisingDto input)
+        {
+            var fundRaising = await _mstSleFundRepo.FirstOrDefaultAsync(e => e.Id == input.Id);
+            ObjectMapper.Map(input, fundRaising);
+        }
         public async Task<List<UserWarningForDto>> getListWarningOfUser()
         {
             var listWarning = (from userWarning in _mstSleUserWarningRepo.GetAll()
@@ -214,6 +238,24 @@ namespace esign.FundRaising
             return await listWarning;
         }
 
+        public async Task<PagedResultDto<GetListPostByFundRaisingDto>> getListPostByFundRaisingId(GetListPostByFundRaisingInputDto input)
+        {
+            var listPost = from post in _mstFundRaiserPostRepo.GetAll().Where(e => e.FundId == input.FundId)
+                            select new GetListPostByFundRaisingDto
+                            {
+                                Id = post.Id,
+                                TargetIntroduce = post.TargetIntroduce,
+                                Note = post.Note,
+                                PostTitle = post.PostTitle,
+                                PostTopic = post.PostTopic,
+                                Purpose = post.Purpose
+                            };
+            var totalCount = await listPost.CountAsync();
+            var result = await listPost.PageBy(input).ToListAsync();
+            return new PagedResultDto<GetListPostByFundRaisingDto>(
+               totalCount,
+               result);
+        }
         /// Auction
 
         [HttpPost]
@@ -263,28 +305,6 @@ namespace esign.FundRaising
                 throw new Exception("Đã xảy ra lỗi trong quá trình tạo phiên đấu giá");
             }
         }
-        //public async Task UserAuction(UserAuction input)
-        //{
-        //    var auction = _mstAuctionRepo.FirstOrDefault(e => e.Id == input.AuctionId);
-        //    var auctionTransaction = new AuctionTransactions();
-        //    auctionTransaction.OldAmount = auction.AuctionPresentAmount != null ? auction.AuctionPresentAmount : auction.StartingPrice;
-        //    if(input.AmountAuction < auction.AuctionPresentAmount || input.AmountAuction > auction.AuctionPresentAmount + auction.AmountJumpMax)
-        //    {
-        //        throw new UserFriendlyException("Mức đấu thầu không hợp lệ");
-        //    }
-        //    if (auction != null)
-        //    {
-        //        auction.AuctionPresentAmount = input.AmountAuction;
-        //    }
-
-        //    await _mstAuctionRepo.UpdateAsync(auction);
-        //    auctionTransaction.NewAmount = auction.AuctionPresentAmount;
-        //    auctionTransaction.AuctionId = input.AuctionId;
-        //    auctionTransaction.AuctionDate = DateTime.Now;
-        //    auctionTransaction.AuctioneerId = AbpSession.UserId;
-        //    auctionTransaction.IsPublic = input.IsPublic;
-        //    await _mstAuctionTransactionRepo.InsertAsync(auctionTransaction);
-        //}
         public async Task<List<GetListTransactionForAuctionDto>> GetListTransactionAuction(long auctionId)
         {
             var listAuction = (from transactionAuction in _mstAuctionTransactionRepo.GetAll().Where(e => e.AuctionId == auctionId)
@@ -358,7 +378,7 @@ namespace esign.FundRaising
                                    IntroduceItem = auction.IntroduceItem,
                                    NextMinimumBid = item.AuctionPresentAmount + item.AmountJumpMin,
                                    NextMaximumBid = item.AuctionPresentAmount + item.AmountJumpMax,
-                                   ListImage = _mstAuctionImagesRepo.GetAll().Where(e => e.AuctionItemId == auction.Id).Select(re => re.ImageUrl).ToList()
+                                   ListImage = _mstAuctionImagesRepo.GetAll().Where(e => e.AuctionItemId == auction.Id).Select(re => re.ImageUrl).ToList(),
                                }).ToList();
 
 
@@ -374,6 +394,7 @@ namespace esign.FundRaising
             auctionResult.NextMinimumBid = auctionResult.AuctionPresentAmount + auctionItem.AmountJumpMin;
             TimeSpan timeSpan = DateTime.Now - auctionItem.CreationTime;
             auctionResult.TimeLeft = (int?)timeSpan.TotalDays;
+            auctionResult.ListImage = _mstAuctionImagesRepo.GetAll().Where(e=>e.AuctionItemId == auctionItem.Id).Select(re=>re.ImageUrl).ToList();
             //auctionResult.UserName = _mstSleUserRepo.FirstOrDefault(e => e.Id == auction.UserId).UserName;
             return auctionResult;
         }
@@ -381,6 +402,24 @@ namespace esign.FundRaising
         {
             var deposit = _mstSleAuctionDepositRepo.FirstOrDefault(e => e.UserId == AbpSession.UserId);
             return deposit != null;
+        }
+        public async Task<PagedResultDto<GetListFundRaisingDto>> getListFundRaising(FundRaisingInputDto input) { 
+           var listFundRaising = from funds in _mstSleFundRepo.GetAll().Where(e=>e.UserId == AbpSession.UserId)
+                                 select new GetListFundRaisingDto
+                                 {
+                                     Id = funds.Id,
+                                     FundName = funds.FundName,
+                                     FundRaisingDay = funds.FundRaisingDay,
+                                     FundEndDate = funds.FundEndDate,
+                                     AmountDonationTarget = funds.AmountDonationTarget,
+                                     Status = funds.Status == 1 ? "Đang hoạt động" : "Đã đóng"
+                                 };
+            var totalCount = await listFundRaising.CountAsync();
+            var result = await listFundRaising.PageBy(input).ToListAsync();
+
+            return new PagedResultDto<GetListFundRaisingDto>(
+                totalCount,
+                result);
         }
     }
 }
