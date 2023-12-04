@@ -257,19 +257,47 @@ namespace esign.FundRaising
                result);
         }
         /// Auction
-
+        public async Task CreateOrEditAuction(CreateOrEditAuction input)
+        {
+            if(input.Id == null || input.Id == 0)
+            {
+                var auction = new Auction();
+                auction.TitleAuction = input.TitleAuction;
+                auction.StartDate = input.StartDate;
+                auction.EndDate = input.EndDate;
+                auction.LimitedOfNumber = auction.LimitedOfNumber;
+                auction.UserId = AbpSession.UserId;
+                auction.AmountTargetOfMoney = input.AmountTargetOfMoney;
+                auction.AuctionPresentAmount = 0;
+                await _mstAuctionRepo.InsertAsync(auction);
+            }
+            else
+            {
+                var auction = await _mstAuctionRepo.FirstOrDefaultAsync(e => e.Id == input.Id);
+                auction.TitleAuction = input.TitleAuction;
+                auction.StartDate = input.StartDate;
+                auction.EndDate = input.EndDate;
+                auction.LimitedOfNumber = auction.LimitedOfNumber;
+                auction.AmountTargetOfMoney = input.AmountTargetOfMoney;
+                await _mstAuctionRepo.UpdateAsync(auction);
+            }
+        }
         [HttpPost]
         [Consumes("multipart/form-data")]
-        public async Task CreateOrEditAuction([FromForm] CreateOrEditAuctionInputDto input)
+        public async Task CreateOrEditItemAuction([FromForm] CreateOrEditAuctionInputDto input)
         {
             try
             {
                 if (input.Id == null || input.Id == 0)
                 {
-                    Auction auction = new Auction();
-                    ObjectMapper.Map(input, auction);
-                    auction.UserId = AbpSession.UserId;
-                    var auctionId = await _mstAuctionRepo.InsertAndGetIdAsync(auction);
+                    AuctionItems auctionItem = new AuctionItems();
+                    auctionItem.AuctionId = input.Id;
+                    auctionItem.ItemName = input.ItemName;
+                    auctionItem.AmountJumpMax = input.AmountJumpMax;
+                    auctionItem.AmountJumpMin = input.AmountJumpMin;
+                    auctionItem.IntroduceItem = input.IntroduceItem;
+                    auctionItem.StartingPrice = input.StartingPrice;
+                    var auctionItemId = await _mstSleAuctionItemsRepo.InsertAndGetIdAsync(auctionItem);
                     if (input.File.Count() > 0)
                     {
                         foreach (var file in input.File)
@@ -284,7 +312,7 @@ namespace esign.FundRaising
                                     await file.CopyToAsync(stream);
                                 }
                                 AuctionImages auctionImage = new AuctionImages();
-                                //auctionImage.AuctionId = auctionId;
+                                auctionImage.AuctionItemId = auctionItemId;
 
                                 auctionImage.ImageUrl = Path.Combine("uploads", fileName);
                                 await _mstAuctionImagesRepo.InsertAsync(auctionImage);

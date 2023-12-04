@@ -40,9 +40,9 @@ export class AppNavigationService {
             //     ]
             // ),
             //new AppMenuItem('Trang chủ', 'Pages.UserDonate', 'flaticon-app', '/app/admin/post'),
-            new AppMenuItem('Đăng bài gây quỹ', 'Pages.FundRaising', 'flaticon-app', '/app/admin/admin-post'),
+            new AppMenuItem('Đăng bài gây quỹ', '', 'flaticon-app', '/app/admin/admin-post'),
             //new AppMenuItem('Quyên góp từ thiện', 'Pages.UserDonate', 'flaticon-app', '/app/admin/user-post'),
-            new AppMenuItem('Tham gia đấu giá', '', 'flaticon-app', '/app/admin/auction-user'),
+            //new AppMenuItem('Tham gia đấu giá', '', 'flaticon-app', '/app/admin/auction-user'),
             //new AppMenuItem('Đăng bài đấu giá', '', 'flaticon-app', '/app/admin/auction-admin'),
             //new AppMenuItem('Đăng ký gây quỹ', 'Pages.UserDonate', 'flaticon-app', '/app/admin/register-fundraiser'),
             ///new AppMenuItem('Đăng ký tài khoản ngân hàng', 'Pages.UserDonate', 'flaticon-app', '/app/admin/register-bank'),

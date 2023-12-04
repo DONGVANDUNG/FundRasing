@@ -21,12 +21,12 @@
                 <div class="row">
                     <div class="col-6 d-flex align-items-center">
                         <label class="label">Ngày bắt đầu:</label>
-                        <p-calendar name="fundStartDate" name="startDate" [(ngModel)]="inputData.fundRaisingDay" (onSelect)="onChangeDate($event,'start')"
+                        <p-calendar name="fundStartDate" name="startDate" [(ngModel)]="inputData.fundRaisingDay" 
                             dateFormat="dd/mm/yy"></p-calendar>
                     </div>
                     <div class="col-6 d-flex align-items-center">
                         <label class="label">Ngày kết thúc:</label>
-                        <p-calendar name="fundEndDate" name="endDate" [(ngModel)]="inputData.fundEndDate" (onSelect)="onChangeDate($event,'end')"
+                        <p-calendar name="fundEndDate" name="endDate" [(ngModel)]="inputData.fundEndDate"
                             dateFormat="dd/mm/yy"></p-calendar>
                     </div>
                 </div>

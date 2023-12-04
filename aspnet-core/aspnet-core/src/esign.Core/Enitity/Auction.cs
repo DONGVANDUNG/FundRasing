@@ -23,5 +23,7 @@ namespace esign.Enitity
         public float? AuctionPresentAmount { get; set; }
         public bool? IsPublic { get; set; }
         public int? NumberOfParticipants { get; set; }
+        public float? AmountTargetOfMoney { get; set; }
+        public int? LimitedOfNumber { get; set; }
     }
 }
