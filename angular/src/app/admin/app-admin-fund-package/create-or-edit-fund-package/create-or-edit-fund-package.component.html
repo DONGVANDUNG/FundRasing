@@ -5,10 +5,10 @@
             <form *ngIf="active" autocomplete="off">
                 <div class="modal-header">
                     <h4 class="modal-title">
-                        <span (click)="close()" *ngIf="!this.inputFundPackage.id">{{l("Thêm mới gói quỹ")}}</span>
-                        <span (click)="close()" *ngIf="this.inputFundPackage.id">{{l("Sửa thông tin gói quỹ")}}</span>
+                        <span *ngIf="!this.inputFundPackage.id">{{l("Thêm mới gói quỹ")}}</span>
+                        <span *ngIf="this.inputFundPackage.id">{{l("Sửa thông tin gói quỹ")}}</span>
                     </h4>
-                    <i class="fa-solid fa-xmark"></i>
+                    <i (click)="close()" class="fa-solid fa-xmark"></i>
                 </div>
 
                 <div class="modal-body">
@@ -18,23 +18,27 @@
                                 <div class="row mb-5">
                                     <div class="col-6 d-flex align-items-center">
                                         <label for="fund-name" class="label">Loại quỹ:</label>
-                                        <p-dropdown name="duration" [options]="listTypePackage" [(ngModel)]="inputFundPackage.duration" optionLabel="label" optionValue="value"></p-dropdown>
+                                        <p-dropdown name="duration" [options]="listTypePackage"
+                                            [(ngModel)]="inputFundPackage.duration" optionLabel="label"
+                                            optionValue="value"></p-dropdown>
                                     </div>
                                     <div class="col-6 d-flex align-items-center">
                                         <label for="fund-name" class="label">Phí quỹ:</label>
-                                        <input type="number" id="fund-name" [disabled]="inputFundPackage.id" name="paymentFee"
-                                            [(ngModel)]="inputFundPackage.paymentFee" class="input">
+                                        <p-inputNumber name="paymentFee" [(ngModel)]="inputFundPackage.paymentFee" inputId="locale-german" mode="decimal"
+                                            locale="de-DE" [minFractionDigits]="0" currency="VND" mode="currency"></p-inputNumber>
                                     </div>
                                 </div>
                                 <div class="row mb-3 mt-3">
                                     <div class="col-6 d-flex align-items-center">
                                         <label for="fund-name" class="label">Trạng thái:</label>
-                                        <p-dropdown name="status" [options]="listStatus" [(ngModel)]="inputFundPackage.status" optionLabel="label" optionValue="value"></p-dropdown>
+                                        <p-dropdown name="status" [options]="listStatus"
+                                            [(ngModel)]="inputFundPackage.status" optionLabel="label"
+                                            optionValue="value"></p-dropdown>
                                     </div>
                                     <div class="col-6 d-flex align-items-center">
                                         <label for="fund-name" class="label">Hoa hồng:</label>
-                                        <input type="number" id="fund-name" [disabled]="inputFundPackage.id" name="commission"
-                                            [(ngModel)]="inputFundPackage.commission" class="input">
+                                        <input type="number" id="fund-name" [disabled]="inputFundPackage.id"
+                                            name="commission" [(ngModel)]="inputFundPackage.commission" class="input">
                                     </div>
                                 </div>
                                 <div class="row mt-1">

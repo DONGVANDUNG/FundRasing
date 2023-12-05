@@ -7,6 +7,8 @@ using esign.Enitity;
 using esign.Entity;
 using esign.FundRaising.Admin.Dto;
 using esign.FundRaising.FundRaiserService.Dto;
+using esign.FundRaising.SendEmail.Dto;
+using esign.FundRaising.SendEmail;
 using esign.FundRaising.UserFundRaising.Dto;
 using esign.FundRaising.UserFundRaising.Dto.Auction;
 using Microsoft.AspNetCore.Hosting;
@@ -39,6 +41,7 @@ namespace esign.FundRaising
         private readonly IRepository<AuctionItems, long> _mstAuctionItemsRepo;
         private readonly IRepository<AuctionDeposit, long> _mstAuctionDepositRepo;
         private readonly IConfigurationRoot _appConfiguration;
+        private readonly ISendEmail _sendEmail;
 
 
         public UserFundRaisingAppService(IRepository<Funds, long> mstSleFundRepo,
@@ -49,7 +52,7 @@ namespace esign.FundRaising
             IRepository<FundRaisingTopic, int> mstSleFundTopictRepo,
             IRepository<FundPackage, int> mstSleFundPackageRepo,
             IRepository<FundTransactions, long> mstSleFundTransactionRepo,
-            IRepository<User, long> mstSleUserRepo, IRepository<FundImage, long> mstSleFundImageRepo, IRepository<BankAccount, long> mstBankRepo, IRepository<FundRaiserPost, long> mstFundRaiserPostRepo, IRepository<FundImage, long> mstFundImageRepo, IRepository<RequestToFundRaiser, long> mstRequestToFundRaiserRepo, IRepository<Auction, long> mstAuctionRepo, IRepository<AuctionTransactions, long> mstAuctionTransactionRepo, IRepository<AuctionItems, long> mstAuctionItemsRepo, IRepository<AuctionDeposit, long> mstAuctionDepositRepo)
+            IRepository<User, long> mstSleUserRepo, IRepository<FundImage, long> mstSleFundImageRepo, IRepository<BankAccount, long> mstBankRepo, IRepository<FundRaiserPost, long> mstFundRaiserPostRepo, IRepository<FundImage, long> mstFundImageRepo, IRepository<RequestToFundRaiser, long> mstRequestToFundRaiserRepo, IRepository<Auction, long> mstAuctionRepo, IRepository<AuctionTransactions, long> mstAuctionTransactionRepo, IRepository<AuctionItems, long> mstAuctionItemsRepo, IRepository<AuctionDeposit, long> mstAuctionDepositRepo, ISendEmail sendEmail)
         {
             _mstSleFundRepo = mstSleFundRepo;
             /// _mstSleFundRaiserRepo = mstSleFundRaiserRepo;
@@ -69,6 +72,7 @@ namespace esign.FundRaising
             _mstAuctionTransactionRepo = mstAuctionTransactionRepo;
             _mstAuctionItemsRepo = mstAuctionItemsRepo;
             _mstAuctionDepositRepo = mstAuctionDepositRepo;
+            _sendEmail = sendEmail;
         }
         public async Task<List<GetListFundRasingDto>> getHistoryDonationForFund()
         {
@@ -231,6 +235,19 @@ namespace esign.FundRaising
             transactionAdmin.IsAdmin = true;
 
             await _mstSleFundTransactionRepo.InsertAsync(transactionAdmin);
+            var userDonateCurrent = await _mstSleUserRepo.FirstOrDefaultAsync(e => e.Id == AbpSession.UserId);
+            SendEmailInputDto sendEmailInput = new SendEmailInputDto
+            {
+                EmailReceive = userDonateCurrent.EmailAddress,
+                //Body = "Xin chúc mừng bạn đã trở thành người gây quỹ trên hệ thống của chúng tôi, bạn có thể bắt đầu ngay vào việc gây quỹ.",
+                Body = "<p style='font-weight:bold;font-size:18px'>Hệ thống gây quỹ trực tuyến FundRaising.</p>" +
+                          "<p>Cảm ơn bạn đã đóng góp " + input.AmountOfMoney +" VND " + "cho quỹ "+ userCreatedFundId.FundName + " vào lúc "+DateTime.Now+ "</p>"+
+                          "<p>Chúng tôi cam kết sẽ sử dụng số tiền của bạn để hỗ trợ những hoàn cảnh khó khăn một cách công khai, kịp thời, hiệu quả!</p>"+
+                          "<i style='color:red'>Cảm ơn bạn đã tin tưởng vào sử dụng hệ thống.Chúng tôi cam kết tạo ra một môi trường gây quỹ công bằng, hợp pháp." +
+                          "Chúc cho những dự án của bạn sẽ hoàn thành tốt đẹp giúp đỡ cho những hoàn cảnh khó khăn kịp thời, nâng cao chất lượng xã hội.</i>",
+                Subject = "Thông báo trở thành người gây quỹ",
+            };
+            _sendEmail.SendEmail(sendEmailInput);
         }
 
         public float getTotalAmountDonateOfFund(int fundId)

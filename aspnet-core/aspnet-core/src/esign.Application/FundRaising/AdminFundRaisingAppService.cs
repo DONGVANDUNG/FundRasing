@@ -299,7 +299,14 @@ namespace esign.FundRaising
                 SendEmailInputDto sendEmailInput = new SendEmailInputDto
                 {
                     EmailReceive = user.EmailAddress,
-                    Body = "Xin chúc mừng bạn đã trở thành người gây quỹ trên hệ thống của chúng tôi, bạn có thể bắt đầu ngay vào việc gây quỹ.",
+                    //Body = "Xin chúc mừng bạn đã trở thành người gây quỹ trên hệ thống của chúng tôi, bạn có thể bắt đầu ngay vào việc gây quỹ.",
+                    Body = "<p style='font-weight:bold;font-size:18px'>Hệ thống gây quỹ trực tuyến FundRaising.</p>" +
+                           "<p>Xin chúc mừng bạn đã trở thành thành viên trong cộng đồng của chúng tôi. Hãy bắt tay ngay vào thực hiện những dự án" +
+                           " mà bạn đang có dự định thực hiện thông qua việc:</p>" +
+                           "<p style='font-weight:bold'>1. Gây quỹ từ thiện</p>" +
+                           "<p style='font-weight:bold'>2. Tạo phiên đấu giá từ thiện<p>" +
+                           "<i style='color:red'>Cảm ơn bạn đã tin tưởng vào sử dụng hệ thống.Chúng tôi cam kết tạo ra một môi trường gây quỹ công bằng, hợp pháp." +
+                           "Chúc cho những dự án của bạn sẽ hoàn thành tốt đẹp giúp đỡ cho những hoàn cảnh khó khăn kịp thời, nâng cao chất lượng xã hội.</i>",
                     Subject = "Thông báo trở thành người gây quỹ",
                 };
                 _sendEmail.SendEmail(sendEmailInput);
