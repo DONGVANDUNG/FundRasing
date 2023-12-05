@@ -13,6 +13,8 @@ namespace esign.Enitity
     {
         public long? UserId { get; set; }
         public DateTime? RequestTime { get; set; }
+        public long? FundPackageId { get; set; }
+        public DateTime? ApproveDate { get; set; }
         public bool? IsApprove { get; set; }
     }
 }

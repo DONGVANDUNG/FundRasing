@@ -80,26 +80,26 @@ export class CreateOrEditAuctionComponent extends AppComponentBase implements On
     save() {
         console.log(123)
         this.active = true;
-        this._fundRaiser.createOrEditAuction(
-            0,
-            this.input.file,
-            this.input.titleAuction,
-            this.input.itemName,
-            this.input.introduceItem,
-            this.input.amountJumpMin,
-            this.input.amountJumpMax,
-            this.input.startingPrice,
-            this.input.amount,
-            this.input.startDate,
-            this.input.endDate,
-        )
-            .pipe(finalize(() => this.saving = false))
-            .subscribe(() => {
-                this.notify.info(this.l("SavedSuccessfully"));
-                this.close();
-                this.modalSave.emit(null);
-                this.saving = false;
-            })
+        // this._fundRaiser.createOrEditAuction(
+        //     0,
+        //     this.input.file,
+        //     this.input.titleAuction,
+        //     this.input.itemName,
+        //     this.input.introduceItem,
+        //     this.input.amountJumpMin,
+        //     this.input.amountJumpMax,
+        //     this.input.startingPrice,
+        //     this.input.amount,
+        //     this.input.startDate,
+        //     this.input.endDate,
+        // )
+        //     .pipe(finalize(() => this.saving = false))
+        //     .subscribe(() => {
+        //         this.notify.info(this.l("SavedSuccessfully"));
+        //         this.close();
+        //         this.modalSave.emit(null);
+        //         this.saving = false;
+        //     })
     }
     close(): void {
         this.active = false;

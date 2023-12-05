@@ -5,10 +5,10 @@ import { AppAdminFundPackageRouteModule } from './app-admin-fund-package-routing
 import { AppSharedModule } from '@app/shared/app-shared.module';
 import { AdminSharedModule } from '../shared/admin-shared.module';
 import { CreateOrEditFundPackageComponent } from './create-or-edit-fund-package/create-or-edit-fund-package.component';
-
+import { DropdownModule } from 'primeng/dropdown';
 @NgModule({
   imports: [
-    CommonModule,AppAdminFundPackageRouteModule,AdminSharedModule
+    CommonModule,AppAdminFundPackageRouteModule,AdminSharedModule,DropdownModule
   ],
   declarations: [AppAdminFundPackageComponent,CreateOrEditFundPackageComponent]
 })

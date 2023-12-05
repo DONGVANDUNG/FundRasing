@@ -159,14 +159,15 @@ export class AppAdminAccountGuestComponent extends AppComponentBase implements O
     }
 
     getAll(paginationParams: PaginationParamsModel) {
-        return this.fundRaising.getAllListAccount(
-            this.createdDate,
-            this.status,
-            this.email,
-            this.sorting ?? null,
-            paginationParams ? paginationParams.skipCount : 0,
-            paginationParams ? paginationParams.pageSize : 20
-        );
+
+      return null  // return this.fundRaising.getAllListAccount(
+        //     this.createdDate,
+        //     this.status,
+        //     this.email,
+        //     this.sorting ?? null,
+        //     paginationParams ? paginationParams.skipCount : 0,
+        //     paginationParams ? paginationParams.pageSize : 20
+        // );
     }
     onChangeSelection(paginationParams) {
         const selected = paginationParams.api.getSelectedRows()[0];

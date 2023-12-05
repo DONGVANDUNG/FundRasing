@@ -136,42 +136,27 @@ namespace esign.FundRaising
                result);
         }
 
-        //public async Task<PagedResultDto<TransactionOfFundForDto>> getListTransactionForFund(TransactionForFundInputDto input)
-        //{
-        //    var listTransaction = from transaction in _mstSleTransactionRepo.GetAll().Where(e => e.FundId == input.FundId)
-        //                          join user in _mstSleUserRepo.GetAll() on transaction.Sender equals user.Email
-        //                          //join fund in _mstSleFundRepo.GetAll() on transaction.FundId equals fund.Id
-        //                          select new TransactionOfFundForDto
-        //                          {
-        //                              //Id = transaction.Id,
-        //                              Amount = transaction.AmountOfMoney,
-        //                              Content = transaction.MessageToFund,
-        //                              //FundName = fund.FundName,
-        //                              Receiver = user.UserName,
-        //                              UserDonate = user.UserLogin,
-        //                              CreatedTime = transaction.CreationTime
-        //                          };
-        //    var totalCount = await listTransaction.CountAsync();
-        //    return new PagedResultDto<TransactionOfFundForDto>(
-        //      totalCount,
-        //      await listTransaction.PageBy(input).ToListAsync());
-        //}
+        public async Task<PagedResultDto<TransactionOfFundForDto>> getListTransactionForFund(TransactionForFundInputDto input)
+        {
+            var listTransaction = from transaction in _mstSleTransactionRepo.GetAll().Where(e => e.FundId == input.FundId)
+                                  join user in _mstSleUserRepo.GetAll() on transaction.Sender equals user.Email
+                                  join fund in _mstSleFundRepo.GetAll() on transaction.FundId equals fund.Id
+                                  select new TransactionOfFundForDto
+                                  {
+                                      Id = transaction.Id,
+                                      Amount = transaction.AmountOfMoney,
+                                      Content = transaction.MessageToFund,
+                                      FundName = fund.FundName,
+                                      Receiver = user.UserName,
+                                      UserDonate = user.UserLogin,
+                                      CreatedTime = transaction.CreationTime
+                                  };
+            var totalCount = await listTransaction.CountAsync();
+            return new PagedResultDto<TransactionOfFundForDto>(
+              totalCount,
+              await listTransaction.PageBy(input).ToListAsync());
+        }
 
-
-        //public async Task<List<UserAccountForViewDto>> getListUserAccount()
-        //{
-        //    var listAccount = (from account in _mstSleUserAccountRepo.GetAll()
-        //                       join user in _mstSleUserRepo.GetAll() on account.FundRaiserId equals user.Id
-        //                       select new UserAccountForViewDto
-        //                       {
-        //                           Id = account.Id,
-        //                           Email = user.Email,
-        //                           LevelWarning = account.LevelWarning == 1 ? "Cảnh cáo" : account.LevelWarning == 2 ? "Báo động" : "Khóa",
-        //                           UserName = user.UserName,
-        //                           UserNameLogin = user.UserLogin
-        //                       }).ToListAsync();
-        //    return await listAccount;
-        //}
 
         //public async void WarningAccountUser(string contentWarning, int userId)
         //{
@@ -192,10 +177,11 @@ namespace esign.FundRaising
                                   {
                                       Id = funPackage.Id,
                                       //Discount = funPackage.Discount,
-                                      PaymentFee = funPackage.PaymentFee,
+                                      PaymentFee = funPackage.PaymentFee.ToString() + "VND",
                                       Description = funPackage.Description,
                                       Duration = funPackage.Duration,
-                                      CreatedTime = funPackage.CreationTime
+                                      CreatedTime = funPackage.CreationTime,
+                                      Commission = funPackage.Commission.ToString() + "%/giao dịch"
                                   };
             var totalCount = await listFundPackage.CountAsync();
             return new PagedResultDto<GetListFundPackageDto>
@@ -204,14 +190,18 @@ namespace esign.FundRaising
 
         public async Task CreateOrEditFundPackage(CreateOrEditFundPackageDto input)
         {
-            if (input.Id == null)
+            if (input.Id == null || input.Id == 0)
             {
                 await CreateFundPackage(input);
+            }
+            else
+            {
+                await UpdateFundPackage(input);
             }
         }
         public async Task CreateFundPackage(CreateOrEditFundPackageDto input)
         {
-            var checkExisted = _mstSleFundPackageRepo.GetAll().Where(e => e.PaymentFee == input.PaymenFee);
+            var checkExisted = _mstSleFundPackageRepo.GetAll().Where(e => e.PaymentFee == input.PaymentFee && e.Duration == input.Duration);
             if (checkExisted.Count() >= 1)
             {
                 throw new UserFriendlyException("Đã tồn tại gói quỹ");
@@ -219,11 +209,10 @@ namespace esign.FundRaising
             else
             {
                 var fundPackage = new FundPackage();
-                //fundPackage.UserId = (int)AbpSession.UserId;
-                fundPackage.PaymentFee = input.PaymenFee;
-                //fundPackage.Discount = input.Discount;
+                fundPackage.PaymentFee = (float)input.PaymentFee;
                 fundPackage.Duration = input.Duration;
                 fundPackage.Description = input.Description;
+                fundPackage.Commission = (float)input.Commission;
                 fundPackage.Status = input.Status;
                 await _mstSleFundPackageRepo.InsertAsync(fundPackage);
             }
@@ -231,10 +220,11 @@ namespace esign.FundRaising
         public async Task UpdateFundPackage(CreateOrEditFundPackageDto input)
         {
             var fund = await _mstSleFundPackageRepo.FirstOrDefaultAsync(e => e.Id == input.Id && e.Status == true);
-            if (fund == null)
+            var user = await _mstSleUserRepo.GetAll().Where(e => e.FundPackageId == input.Id).Select(re => re.Id).ToListAsync();
+            if (fund != null && user.Count() == 0)
             {
                 //fund.UserId = (int)AbpSession.UserId;
-                fund.PaymentFee = input.PaymenFee;
+                fund.PaymentFee = (float)input.PaymentFee;
                 //fund.Discount = input.Discount;
                 fund.Duration = input.Duration;
                 fund.Description = input.Description;
@@ -246,43 +236,34 @@ namespace esign.FundRaising
                 throw new UserFriendlyException("Gói quỹ hiện tại đang được sử dụng bởi người dùng");
             }
         }
-        public async Task DeleteFundPackage(int fundPackageId)
+        public async Task<CreateOrEditFundPackageDto> getForEditFundPackage(int fundPackageId)
         {
-            //var fundPackage = await _mstSleFundPackageRepo.FirstOrDefaultAsync(e => e.Id == fundPackageId);
-
-            //var checkUsed = await _mstSleFundRaiserRepo.FirstOrDefaultAsync(e => e.FundPackageId == fundPackageId);
-            //if (checkUsed == null)
-            //{
-            //    await _mstSleFundPackageRepo.DeleteAsync(fundPackage);
-            //}
-            //else
-            //    throw new UserFriendlyException("Gói quỹ hiện tại đang được sử dụng bởi người dùng");
-        }
-        public FundPackageGetForEditDto getForEditFundPackage(int fundPackageId)
-        {
-            var fundPackage = _mstSleFundPackageRepo.FirstOrDefaultAsync(e => e.Id == fundPackageId);
-            FundPackageGetForEditDto fundEdit = new FundPackageGetForEditDto();
+            var fundPackage = await _mstSleFundPackageRepo.FirstOrDefaultAsync(e => e.Id == fundPackageId);
+            CreateOrEditFundPackageDto fundEdit = new CreateOrEditFundPackageDto();
             ObjectMapper.Map(fundPackage, fundEdit);
             return fundEdit;
         }
-        public async Task<PagedResultDto<GetListAccountUserDto>> getAllListAccount(GuestAccountForInputDto input)
+        public async Task<PagedResultDto<GetListAccountUserDto>> getAllListFundRaiser(GuestAccountForInputDto input)
         {
-            var guestAccount = from account in _mstSleGuestAccountRepo.GetAll()
-                               .Where(e => input.Email == null || e.Email.Contains(input.Email))
+            var listFundRaiser = from user in _mstSleUserRepo.GetAll().Where(e=>e.TypeUser == 3)
                                .Where(e => input.CreatedDate == null || e.CreationTime == input.CreatedDate)
-                               .Where(e => input.Status == null || e.Status == input.Status)
+                               .Where(e => input.Status == null || e.IsActive == input.Status)
+                               join fundPackage in _mstSleFundPackageRepo.GetAll() on user.FundPackageId equals fundPackage.Id
                                select new GetListAccountUserDto
                                {
-                                   Id = account.Id,
-                                   UserName = account.UserName,
-                                   Email = account.Email,
-                                   Status = account.Status == true ? "Đang hoạt động" : "Ngừng hoạt động",
-                                   Created = account.CreationTime
+                                   Id = user.Id,
+                                   UserName = user.UserName,
+                                   Email = user.EmailAddress,
+                                   Status = user.IsActive == true ? "Đang hoạt động" : "Ngừng hoạt động",
+                                   Created = user.CreationTime,
+                                   FundEndDate = user.FundRaiserDate,
+                                   FundRaiserDate = user.FundRaiserDate,
+                                   FundPackage = fundPackage.PaymentFee +"VND / "+fundPackage.Duration
                                };
-            var totalCount = await guestAccount.CountAsync();
+            var totalCount = await listFundRaiser.CountAsync();
             return new PagedResultDto<GetListAccountUserDto>(
                 totalCount,
-                await guestAccount.PageBy(input).ToListAsync()
+                await listFundRaiser.PageBy(input).ToListAsync()
                 );
         }
         public async Task<PagedResultDto<GetAllRequestToFundRaiserDto>> getAllRequestToFundRaiser(RequestToFundRaiserInputDto input)
@@ -309,15 +290,17 @@ namespace esign.FundRaising
             if(user!= null)
             {
                 user.TypeUser = 3;
+                user.FundRaiserDate = DateTime.Now;
                 await _mstSleUserRepo.UpdateAsync(user);
                 var request = await _mstRequestToFundraiserRepo.FirstOrDefaultAsync(e => e.UserId == userId);
                 request.IsApprove = true;
                 await _mstRequestToFundraiserRepo.UpdateAsync(request);
 
-                SendEmailInputDto sendEmailInput = new SendEmailInputDto {
-                        EmailReceive = user.EmailAddress,
-                        Body = "Xin chúc mừng bạn đã trở thành người gây quỹ trên hệ thống của chúng tôi, bạn có thể bắt đầu ngay vào việc gây quỹ.",
-                        Subject = "Thông báo trở thành người gây quỹ",
+                SendEmailInputDto sendEmailInput = new SendEmailInputDto
+                {
+                    EmailReceive = user.EmailAddress,
+                    Body = "Xin chúc mừng bạn đã trở thành người gây quỹ trên hệ thống của chúng tôi, bạn có thể bắt đầu ngay vào việc gây quỹ.",
+                    Subject = "Thông báo trở thành người gây quỹ",
                 };
                 _sendEmail.SendEmail(sendEmailInput);
             }

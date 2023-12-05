@@ -1,53 +1,25 @@
 <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
     <div class="kt-subheader kt-grid__item redline-header">
         <div [class]="containerClass">
-            <div class="kt-subheader__main">
+            <div class="kt-subheader__main d-flex justify-content-between align-items-center mb-2">
                 <h3 class="kt-subheader__title">
-                    <span class="kt_subheader__desc">{{l("Quản lý gói quỹ")}}</span>
+                    <span class="kt_subheader__desc">{{l("Quản lý yêu cầu gây quỹ")}}</span>
                 </h3>
+                <button class="tmss-btn  btn-outline-primary tmss-override" (click)="approve()">
+                    <i class="fa fa-add" aria-hidden="true"></i>
+                    {{l("Phê duyệt")}}
+                </button>
             </div>
         </div>
     </div>
-    <div
-        [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+    <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
         <div class="kt-portlet kt-portlet--mobile">
-            <div>
-                <div class="row align-items-center mt-2 mb-2">
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <tmss-combobox [(ngModel)]="typePackage"
-                             [label]="'label'" [key]="'value'"  [text]="l('Loại quỹ')" name="typePackage">
-                            </tmss-combobox>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <tmss-datepicker [(ngModel)]="createdDate" [dateInputFormat]="'DD-MM-YYYY'" [text]="l('Ngày tạo gói')" name="createdDate"></tmss-datepicker>
-                        </div>
-                    </div>
-                    <div class="col-md-5">
-                    </div>
-                    <div class="col-md-3">
-                        <button class="tmss-btn  btn-outline-primary tmss-override" [disabled]="this.isApprove" (click)="approve()">
-                            <i class="fa-solid fa-check"></i>
-                            {{l("Search")}}
-                          </button>
-                        <button class="tmss-btn  btn-outline-primary tmss-override" (click)="clearValueFilter()">
-                          <i class="fa fa-redo" aria-hidden="true"></i>
-                          {{l("Refresh")}}
-                        </button>
-                    </div>
-                </div>
-            </div>
             <div class="row align-items-center">
                 <div class="col-md-12">
                     <div class="item col-12">
-                        <grid-table [columnDefs]="columnDefs"
-                            [defaultColDef]="defaultColDef"
-                            (onGridReady)="onGridReady($event)"
-                            (callBackEvent)="callBackGrid($event)"
-                            (onChangeSelection)="onChangeSelection($event)"
-                            [paginationParams]="paginationParams"
+                        <grid-table [columnDefs]="columnDefs" [defaultColDef]="defaultColDef"
+                            (onGridReady)="onGridReady($event)" (callBackEvent)="callBackGrid($event)"
+                            (onChangeSelection)="onChangeSelection($event)" [paginationParams]="paginationParams"
                             [rowData]="rowData" [height]="'530px'"></grid-table>
                     </div>
                 </div>

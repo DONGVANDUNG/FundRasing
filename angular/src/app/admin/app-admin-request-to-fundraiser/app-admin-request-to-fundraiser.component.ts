@@ -62,8 +62,8 @@ export class AppAdminRequestToFundraiserComponent extends AppComponentBase imple
                 minWidth: 100,
             },
             {
-                headerName: this.l('Người yêu cầu'),
-                headerTooltip: this.l('Người yêu cầu'),
+                headerName: this.l('Tài khoản yêu cầu'),
+                headerTooltip: this.l('Tài khoản yêu cầu'),
                 field: 'userName',
                 flex: 3,
                 width: 130,
@@ -81,7 +81,7 @@ export class AppAdminRequestToFundraiserComponent extends AppComponentBase imple
                 headerName: this.l('Trạng thái'),
                 headerTooltip: this.l('Trạng thái'),
                 field: 'isApprove',
-                valueGetter: params => params.data.createdTime ? " Đã phê duyệt" : "Chưa phê duyệt",
+                valueGetter: params => params.data.isApprove === true ? " Đã phê duyệt" : "Chưa phê duyệt",
                 flex: 3,
                 cellClass: ['text-left'],
             },
@@ -155,10 +155,18 @@ export class AppAdminRequestToFundraiserComponent extends AppComponentBase imple
             this.userId = selected.userId;
         }
     }
-    approve(){
-        this._adminServiceProxy.approveFundRaiser(this.userId).subscribe(()=>{
-            this.notify.success("Phê duyệt thành công")
-            this.onGridReady(this.paginationParams);
-        })
+    approve() {
+        if (this.selectedRequest) {
+            if (this.isApprove !== true) {
+                this._adminServiceProxy.approveFundRaiser(this.userId).subscribe(() => {
+                    this.notify.success("Phê duyệt thành công")
+                    this.onGridReady(this.paginationParams);
+                })
+            }
+            else
+                this.notify.warn("Yêu cầu này đã được phê duyệt");
+        }
+        else
+            this.notify.warn("Vui lòng chọn một bản ghi phê duyệt");
     }
 }

@@ -178,6 +178,7 @@ namespace esign
             configuration.CreateMap<AuctionItems, GetAllAuctionDto>().ReverseMap();
             configuration.CreateMap<AuctionItems, GetAuctionDetailDto>().ReverseMap();
             configuration.CreateMap<Funds, CreateOrEditFundRaisingDto>().ReverseMap();
+            configuration.CreateMap<FundPackage, CreateOrEditFundPackageDto>().ReverseMap();
             //configuration.CreateMap<RegisterInforFundRaiserDto, FundRaiser>().ReverseMap();
         }
     }

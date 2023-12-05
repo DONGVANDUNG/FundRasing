@@ -12,7 +12,7 @@ namespace esign
     public class SendEmailAppService : ISendEmail
     {
         private static readonly string _from = "vandung030701@gmail.com"; // Email của Sender (của bạn)
-        private static readonly string _pass = "Vandung372001"; //Mật khẩu email
+        private static readonly string _pass = "bprssyykrrzoiwbp"; //Mật khẩu email
         public SendEmailAppService() { }
 
         public void SendEmail(SendEmailInputDto input)
@@ -28,6 +28,7 @@ namespace esign
                 mailMessage.Body = input.Body;
                 mailMessage.To.Add(input.EmailReceive);
                 mailMessage.Priority = MailPriority.High;
+                mailMessage.IsBodyHtml = true;
 
                 SmtpServer.EnableSsl = true;
                 SmtpServer.UseDefaultCredentials = false;

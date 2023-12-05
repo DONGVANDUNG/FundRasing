@@ -6,15 +6,17 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 import { finalize } from 'rxjs';
 
 @Component({
-  selector: 'app-create-or-edit-fund-package',
-  templateUrl: './create-or-edit-fund-package.component.html',
-  styleUrls: ['./create-or-edit-fund-package.component.less']
+    selector: 'app-create-or-edit-fund-package',
+    templateUrl: './create-or-edit-fund-package.component.html',
+    styleUrls: ['./create-or-edit-fund-package.component.less']
 })
 export class CreateOrEditFundPackageComponent extends AppComponentBase implements OnInit {
 
     @ViewChild("createOrEditModal", { static: true }) modal: ModalDirective;
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
-    listStatus = [];
+    listStatus = [{
+        label: 'Hoạt động', value: true
+    }, { label: 'Không hoạt động', value: false }];
     listDepartment = [];
     typeReport = 1;
     paginationParams: PaginationParamsModel;
@@ -26,6 +28,15 @@ export class CreateOrEditFundPackageComponent extends AppComponentBase implement
     rowDataRepreson = [];
     active: boolean = false;
     saving: boolean = false;
+    listTypePackage = [
+        {
+            label: 'Tuần', value: 'Tuần'
+        }, {
+            label: 'Tháng', value: 'Tháng'
+        }, {
+            label: 'Năm', value: 'Năm'
+        }
+    ]
     inputFundPackage: CreateOrEditFundPackageDto = new CreateOrEditFundPackageDto();
     response: any;
     constructor(
@@ -54,17 +65,17 @@ export class CreateOrEditFundPackageComponent extends AppComponentBase implement
                 });
         }
     }
-    save(){
+    save() {
         this.active = true;
         this._adminServiceProxy.createOrEditFundPackage(this.inputFundPackage)
-          .pipe(finalize(() => this.saving = false))
-          .subscribe(() => {
-            this.notify.info(this.l("SavedSuccessfully"));
-            this.close();
-            this.modalSave.emit(null);
-            this.saving = false;
-        })
-      }
+            .pipe(finalize(() => this.saving = false))
+            .subscribe(() => {
+                this.notify.info(this.l("SavedSuccessfully"));
+                this.close();
+                this.modalSave.emit(null);
+                this.saving = false;
+            })
+    }
     close(): void {
         this.active = false;
         this.modal.hide();

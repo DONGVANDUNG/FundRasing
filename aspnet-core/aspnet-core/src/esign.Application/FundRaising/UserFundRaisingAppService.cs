@@ -151,8 +151,8 @@ namespace esign.FundRaising
                                   {
                                       Id = funPackage.Id,
                                       //Discount = funPackage.Discount,
-                                      Commission = funPackage.Commission,
-                                      PaymentFee = funPackage.PaymentFee,
+                                      Commission = funPackage.Commission.ToString() + "%/giao dịch",
+                                      PaymentFee = funPackage.PaymentFee.ToString() + "VND",
                                       Description = funPackage.Description,
                                       Duration = funPackage.Duration,
                                       CreatedTime = funPackage.CreationTime

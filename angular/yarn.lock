@@ -7389,6 +7389,13 @@ ngx-bootstrap@^9.0.0:
   dependencies:
     tslib "^2.3.0"
 
+ngx-currency@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/ngx-currency/-/ngx-currency-4.0.0.tgz#18a224c2c76ebb40da8982e0361999d3a3390a65"
+  integrity sha512-1p+ojSOO/DieJwuvhjPlhIT5oHMqYWRjS/fypOShtRKcCwzQ2a9sXmDkrR2h7jT6VPdheCU6TgpJh1D5iy+l6w==
+  dependencies:
+    tslib "^2.5.0"
+
 ngx-image-cropper@^6.3.1:
   version "6.3.1"
   resolved "https://registry.npmjs.org/ngx-image-cropper/-/ngx-image-cropper-6.3.1.tgz"
@@ -9771,6 +9778,11 @@ tslib@^1.10.0, tslib@^1.13.0, tslib@^1.8.1, tslib@^1.9.0:
   version "1.14.1"
   resolved "https://registry.npmjs.org/tslib/-/tslib-1.14.1.tgz"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
+
+tslib@^2.5.0:
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.6.2.tgz#703ac29425e7b37cd6fd456e92404d46d1f3e4ae"
+  integrity sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==
 
 tslint-config-prettier@^1.18.0:
   version "1.18.0"

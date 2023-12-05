@@ -224,6 +224,13 @@ namespace esign.FundRaising
             var fundRaising = await _mstSleFundRepo.FirstOrDefaultAsync(e => e.Id == input.Id);
             ObjectMapper.Map(input, fundRaising);
         }
+        public async Task<CreateOrEditFundRaisingDto> GetForEditFundRaising(long? fundId)
+        {
+            var fundRaising = await _mstSleFundRepo.FirstOrDefaultAsync(e => e.Id == fundId);
+            var resultForEdit = new CreateOrEditFundRaisingDto();
+            ObjectMapper.Map(fundRaising, resultForEdit);
+            return resultForEdit;
+        }
         public async Task<List<UserWarningForDto>> getListWarningOfUser()
         {
             var listWarning = (from userWarning in _mstSleUserWarningRepo.GetAll()

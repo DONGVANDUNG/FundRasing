@@ -8,33 +8,6 @@
             </div>
             <div class="kt-subheader__toolbar">
                 <div class="kt-subheader__wrapper">
-                    <!-- <button type="button" class="tmss-btn btn-outline-primary" (click)="clearValueFilter()">
-                        <i class="tmss-fa fas fa-redo mr-1"></i>{{l("SalesPersonResetFilter")}}
-                    </button>
-                    <button (click)="onChangeFilterShown()" *ngIf="!advancedFiltersAreShown"
-                        class="tmss-btn btn-outline-primary">
-                        <i class="fa fa-search"></i> {{l("ShowAdvancedFilters")}}
-                    </button>
-                    <button (click)="onChangeFilterShown()" *ngIf="advancedFiltersAreShown"
-                        class="tmss-btn btn-outline-primary">
-                        <i class="fa fa-search"></i> {{l("HideAdvancedFilters")}}
-                    </button>
-                    <button type="button" *ngIf="'Pages.VOD.VodReportTmv.Create' | permission"
-                    class="tmss-btn btn-outline-primary" (click)="createDepartment()">
-                    <i class="fa fa-plus"></i>{{l("Add")}}
-                </button>
-                <button type="button"
-                    class="tmss-btn btn-outline-primary" [disabled]="!selectedReport"
-                    *ngIf="'Pages.VOD.VodReportTmv.Edit' | permission"
-                    (click)="editDepartment()">
-                    <i class="fa fa-edit"></i>{{l("Edit")}}
-                </button>
-                <button type="button"
-                class="tmss-btn btn-outline-danger" [disabled]="!selectedReport"
-                    *ngIf="'Pages.VOD.VodReportTmv.Delete' | permission"
-                    (click)="deleteDepartment()">
-                    <i class="fa fa-trash"></i>{{l("Delete")}}
-                </button> -->
                 </div>
             </div>
         </div>
@@ -42,7 +15,7 @@
     <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
         <div class="kt-portlet kt-portlet--mobile">
             <div>
-                <div class="row align-items-center mt-4 mb-2">
+                <div class="row align-items-center mt-5 mb-3">
                     <div class="col-md-3 ml-2">
                         <div class="form-group">
                             <tmss-combobox [items]="listStatusAccount" [(ngModel)]="status"
@@ -50,18 +23,13 @@
                             </tmss-combobox>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-5">
                         <div class="form-group">
-                            <tmss-datepicker [(ngModel)]="createdJoin" [text]="l('Ngày tham gia')"
+                            <tmss-datepicker [(ngModel)]="createdJoin" [text]="l('Ngày gây quỹ')"
                                 name="createdJoin"></tmss-datepicker>
                         </div>
                     </div>
-                    <div class="col-md-3 ml-4">
-                        <div class="form-group">
-                            <tmss-text-input [(ngModel)]="email" [text]="l('Email')"
-                                name="email"></tmss-text-input>
-                        </div>
-                    </div>
+                    <div class="col-md-1"></div>
                     <div class="col-md-3 d-flex justify-content-end">
                         <div class="form-group float-right">
                             <button type="button" class="tmss-btn btn-outline-primary"

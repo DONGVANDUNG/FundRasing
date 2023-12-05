@@ -12,7 +12,7 @@
         [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
         <div class="kt-portlet kt-portlet--mobile">
             <div>
-                <div class="row align-items-center mt-2 mb-2">
+                <div class="row align-items-center mt-5 mb-2">
                     <div class="col-md-2">
                         <div class="form-group">
                             <tmss-combobox [items]="listTypePackage" [(ngModel)]="typePackage"
@@ -25,9 +25,9 @@
                             <tmss-datepicker [(ngModel)]="createdDate" [dateInputFormat]="'DD-MM-YYYY'" [text]="l('Ngày tạo gói')" name="createdDate"></tmss-datepicker>
                         </div>
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-4">
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3 d-flex justify-content-end">
                         <button class="tmss-btn  btn-outline-primary tmss-override" (click)="search()">
                             <i class="fa fa-search" aria-hidden="true"></i>
                             {{l("Search")}}
@@ -39,7 +39,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row align-items-center">
+            <div class="row align-items-center mb-2">
                 <div class="col-md-12">
                     <div class="item col-12">
                         <grid-table [columnDefs]="columnDefs"
@@ -58,17 +58,9 @@
             <button class="tmss-btn btn-outline-primary mr-0" (click)="createPost()">
                 <i class="fas fa-plus"></i> {{l("Thêm bài đăng")}}
             </button>
-            <!-- <div class="row align-items-center">
-                <div class="col-md-12">
-                    <div class="item col-12">
-                        <grid-table [columnDefs]="columnPostDefs"
-                            [defaultColDef]="defaultColDef"
-                            (onGridReady)="onGridReadyPost($event)"
-                            [paginationParams]="paginationParamsPost"
-                            [rowData]="rowDataPost" [height]="'230px'"></grid-table>
-                    </div>
-                </div>
-            </div> -->
+            <button class="tmss-btn btn-outline-primary mr-0" [disabled]="!this.selectedFund" (click)="editFund()">
+                <i class="fas fa-edit"></i>{{l("Sửa quỹ")}}
+            </button>
         </div>
     </div>
 <app-create-or-edit-post #createOrEditPost></app-create-or-edit-post>

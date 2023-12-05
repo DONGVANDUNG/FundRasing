@@ -196,9 +196,15 @@ export class AppAdminPostComponent extends AppComponentBase implements OnInit {
         })
     }
     createPost() {
-        this.modalCreatePost.show(this.selectedFund);
+        this.modalCreatePost.show();
     }
     createFund(){
+        this.modalCreateFund.show()
+    }
+    editFund(){
         this.modalCreateFund.show(this.selectedFund)
+    }
+    editPost(){
+
     }
 }

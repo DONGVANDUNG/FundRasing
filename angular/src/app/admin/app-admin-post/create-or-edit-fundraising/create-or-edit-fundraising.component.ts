@@ -17,22 +17,45 @@ export class CreateOrEditFundraisingComponent extends AppComponentBase {
     isLoading;
     text;
     selectedCity;
+    fundRaisingDate;
+    fundRaisingEndDate;
     inputData: CreateOrEditFundRaisingDto = new CreateOrEditFundRaisingDto();
     listOption = [{
         code: true, name: 'Có'
     }, {
         code: false, name: 'Không'
     }]
-    saving
+    saving;
+    // options = {
+    //     precision: 0,
+    //     align: "left",
+    //     prefix: '',
+    //     thousands: ',',
+    //     inputMode: CurrencyMaskInputMode.FINANCIAL,
+    // };
     constructor(injector: Injector, private _fundRaiser: FundRaiserServiceProxy) {
         super(injector)
     }
-    show(postId?) {
+    show(fundId?) {
+        if (!fundId) {
+            this.modal.show();
+            this.inputData.fundName = '';
+            this.inputData.fundEndDate = null;
+            this.inputData.fundRaisingDay = null;
+            this.inputData.amountDonationTarget = null;
+            this.fundRaisingDate = null;
+            this.fundRaisingEndDate = null;
+        }
+        else
+            this._fundRaiser.getForEditFundRaising(fundId).subscribe(re => {
+                this.inputData = re;
+                this.fundRaisingDate = re.fundRaisingDay;
+                this.fundRaisingEndDate = re.fundEndDate;
+                this.fundRaisingDate = new Date(this.fundRaisingDate);
+                this.fundRaisingEndDate = new Date(this.fundRaisingEndDate);
+
+            });
         this.modal.show();
-        this.inputData.fundName = '';
-        this.inputData.fundEndDate = null;
-        this.inputData.fundRaisingDay = null;
-        this.inputData.amountDonationTarget = 0;
     }
     close() {
         this.modal.hide();
@@ -43,11 +66,18 @@ export class CreateOrEditFundraisingComponent extends AppComponentBase {
         // input.fundEndDate = this.inputData.fundEndDate;
         // input.fundRaisingDay = this.inputData.fundRaisingDay;
         // input.amountDonationTarget = this.inputData.amountDonationTarget;
-        this._fundRaiser.createFundRaising(
+        this.inputData.fundRaisingDay = DateTime.fromJSDate(this.fundRaisingDate);
+        this.inputData.fundEndDate = DateTime.fromJSDate(this.fundRaisingEndDate);
+        this._fundRaiser.createOrEditFundRaising(
             this.inputData
         ).subscribe(
             () => {
-                this.notify.success("Thêm quỹ thành công");
+                if (this.inputData.id) {
+                    this.notify.success("Sửa thông tin quỹ thành công");
+                }
+                else {
+                    this.notify.success("Thêm thông tin quỹ thành công");
+                }
                 this.modalSave.emit(null);
 
                 this.modal.hide();

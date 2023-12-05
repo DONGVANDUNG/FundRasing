@@ -25,11 +25,11 @@ export class AppNavigationService {
             //     [
             //         new AppMenuItem('Thông báo', 'Pages.Administration', 'flaticon-app', '/app/notifications'),
             //         new AppMenuItem('Quỹ', 'Pages.Administration', 'flaticon-app', '/app/admin/fund-detail'),
-            //         new AppMenuItem('Người gây quỹ', 'Pages.Administration', 'flaticon-app', '/app/admin/fundRaiser'),
+                 //    new AppMenuItem('Người gây quỹ', '', 'flaticon-app', '/app/admin/fundRaiser'),
             //         new AppMenuItem('Giao dịch', 'Pages.Administration', 'flaticon-app', '/app/admin/transaction'),
-            //         new AppMenuItem('Gói quỹ', 'Pages.Administration', 'flaticon-app', '/app/admin/fundPackage'),
+                     new AppMenuItem('Gói quỹ', '', 'flaticon-app', '/app/admin/fundPackage'),
             //         new AppMenuItem('Tài khoản khách', 'Pages.Administration', 'flaticon-app', '/app/admin/accountGuest'),
-            //         new AppMenuItem('Yêu cầu gây quỹ', '', 'flaticon-app', '/app/admin/request-to-fundraiser'),
+                     //new AppMenuItem('Yêu cầu gây quỹ', '', 'flaticon-app', '/app/admin/request-to-fundraiser'),
             //         new AppMenuItem('Roles', 'Pages.Administration', 'flaticon-suitcase', '/app/admin/roles'),
             //         new AppMenuItem(
             //             'Settings',

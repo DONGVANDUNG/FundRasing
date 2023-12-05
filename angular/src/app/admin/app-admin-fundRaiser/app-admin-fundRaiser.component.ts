@@ -5,6 +5,7 @@ import { GridParams, PaginationParamsModel } from '@app/shared/common/models/bas
 import { ceil } from 'lodash-es';
 import * as moment from 'moment';
 import { AdminFundRaisingServiceProxy } from '@shared/service-proxies/service-proxies';
+import { DataFormatService } from '@app/shared/common/services/data-format.service';
 @Component({
   selector: 'app-admin-fundRaiser',
   templateUrl: './app-admin-fundRaiser.component.html',
@@ -61,7 +62,7 @@ export class AppAdminFundRaiserComponent extends AppComponentBase implements OnI
     constructor(
         injector: Injector,
         private fundRaising: AdminFundRaisingServiceProxy,
-        // private dataFormatService: DataFormatService
+        private dataFormatService: DataFormatService
     ) {
         super(injector);
         this.columnDefs = [
@@ -71,47 +72,55 @@ export class AppAdminFundRaiserComponent extends AppComponentBase implements OnI
                 cellRenderer: params => params.rowIndex + (this.paginationParams.pageNum! - 1) * this.paginationParams.pageSize! + 1,
                 field: 'no',
                 cellClass: ['text-left'],
-                minWidth: 100,
+                width: 80,
             },
             {
-                headerName: this.l('Họ tên'),
-                headerTooltip: this.l('Họ tên'),
-                field: 'name',
-                flex: 2,
+                headerName: this.l('Tên đăng nhập'),
+                headerTooltip: this.l('Tên đăng nhập'),
+                field: 'userName',
+                width: 200,
                 cellClass: ['text-left'],
             },
             {
-                headerName: this.l('Chức vụ'),
-                headerTooltip: this.l('Chức vụ'),
-                field: 'position',
-                flex: 3,
+                headerName: this.l('Ngày tạo tài khoản'),
+                headerTooltip: this.l('Ngày tạo tài khoản'),
+                field: 'created',
+                valueGetter: params => this.dataFormatService.dateFormat(params.data.created),
+                width: 160,
                 cellClass: ['text-left'],
             },
             {
                 headerName: this.l('Email'),
                 headerTooltip: this.l('Email'),
                 field: 'email',
-                flex: 3,
+                width: 210,
                 cellClass: ['text-left'],
             },
             {
-                headerName: this.l('Trạng thái tài khoản'),
-                headerTooltip: this.l('Trạng thái tài khoản'),
-                field: 'statusAccount',
-                flex: 4,
+                headerName: this.l('Ngày tham gia gây quỹ'),
+                headerTooltip: this.l('Ngày tham gia gây quỹ'),
+                field: 'fundRaiserDate',
+                width: 180,
+                valueGetter: params => this.dataFormatService.dateFormat(params.data.fundRaiserDate),
                 cellClass: ['text-left'],
             },
             {
-                headerName: this.l('Mô tả'),
-                headerTooltip: this.l('Mô tả'),
-                field: 'description',
-                flex: 3,
-                width: 130,
+                headerName: this.l('Trạng thái'),
+                headerTooltip: this.l('Trạng thái'),
+                field: 'status',
+                width: 150,
+                cellClass: ['text-left'],
+            },
+            {
+                headerName: this.l('Gói quỹ'),
+                headerTooltip: this.l('Gói quỹ'),
+                field: 'fundPackage',
+                width: 180,
                 cellClass: ['text-left'],
             },
         ];
         this.defaultColDef = {
-            flex: 1,
+            minwidth: 100,
             floatingFilter: false,
             filter: 'agTextColumnFilter',
             resizable: true,
@@ -173,10 +182,9 @@ export class AppAdminFundRaiserComponent extends AppComponentBase implements OnI
     }
 
     getAll(paginationParams: PaginationParamsModel) {
-        return this.fundRaising.getListFundRaiser(
+        return this.fundRaising.getAllListFundRaiser(
             this.createdJoin,
             this.status,
-            this.email,
             this.sorting ?? null,
             paginationParams ? paginationParams.skipCount : 0,
             paginationParams ? paginationParams.pageSize : 20

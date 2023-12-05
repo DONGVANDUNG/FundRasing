@@ -10,8 +10,8 @@ namespace esign.FundRaising
         public float Discount { get; set; }
         public string Description { get; set; }
         public string Duration { get; set; }
-        public float PaymentFee { get; set; }
+        public string PaymentFee { get; set; }
         public DateTime? CreatedTime { get; set; }
-        public float? Commission { get; set; }
+        public string Commission { get; set; }
     }
 }

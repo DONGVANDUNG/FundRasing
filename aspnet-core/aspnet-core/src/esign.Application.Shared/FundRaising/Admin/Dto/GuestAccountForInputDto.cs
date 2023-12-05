@@ -9,6 +9,5 @@ namespace esign.FundRaising.Admin.Dto
     {
         public DateTime? CreatedDate { get; set; }
         public bool? Status { get; set; }
-        public string Email { get; set; }
     }
 }

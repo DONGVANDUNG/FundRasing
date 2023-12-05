@@ -35,7 +35,6 @@ namespace esign.Authorization.Users
         public DateTime? FundRaiserDate { get; set; }
         public long? FundPackageId { get; set; }
         public string IntroduceOrganization { get; set; }
-
         public List<UserOrganizationUnit> OrganizationUnits { get; set; }
 
         //Can add application specific user properties here

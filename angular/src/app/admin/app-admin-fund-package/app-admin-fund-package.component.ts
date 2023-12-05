@@ -79,19 +79,16 @@ export class AppAdminFundPackageComponent extends AppComponentBase implements On
             {
                 headerName: this.l('Phí tham gia'),
                 headerTooltip: this.l('Phí tham gia'),
-                field: 'paymenFee',
-                flex: 2,
+                field: 'paymentFee',
+                flex: 3,
                 cellClass: ['text-left'],
             },
             {
                 headerName: this.l('Chiết khấu'),
                 headerTooltip: this.l('Chiết khấu'),
-                field: 'discount',
+                field: 'commission',
                 flex: 3,
                 cellClass: ['text-left'],
-                // valueFormatter: (params) => {
-                //     return this.dataFormatService.dateFormat(params.value)
-                // },
             },
             {
                 headerName: this.l('Ngày tạo gói'),
@@ -178,19 +175,10 @@ export class AppAdminFundPackageComponent extends AppComponentBase implements On
             this.selectedPackage = selected.id;
         }
     }
-    deleteFundPackage() {
-        this.message.confirm('', this.l('AreYouSure'), (isConfirmed) => {
-            if (isConfirmed) {
-                this._adminServiceProxy
-                    .deleteFundPackage(this.selectedPackage)
-                    .subscribe(() => {
-                        this.onGridReady(this.paginationParams);
-                        this.notify.success(this.l('SuccessfullyDeleted'));
-                    });
-            }
-        })
+    createFundPackage() {
+        this.modalCreate.show();
     }
-    createOrEdit() {
+    editFundPackage(){
         this.modalCreate.show(this.selectedPackage);
     }
 }

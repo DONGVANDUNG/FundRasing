@@ -12,5 +12,8 @@ namespace esign.FundRaising.Admin.Dto
         public string Password { get; set; }
         public DateTime? Created { get; set; }
         public string Status { get; set; }
+        public DateTime? FundEndDate { get; set; }
+        public string FundPackage { get; set; }
+        public DateTime? FundRaiserDate { get; set; }
     }
 }
