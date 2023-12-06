@@ -111,7 +111,13 @@ namespace esign.FundRaising
                 post.Purpose = input.Purpose;
                 var postId = await _mstFundRaiserPostRepo.InsertAndGetIdAsync(post);
 
-
+                foreach (var image in input.File)
+                {
+                    FundImage fundImage = new FundImage();
+                    fundImage.PostId = postId;
+                    fundImage.ImageUrl = Path.Combine("uploads", image);
+                    await _mstSleFundImageRepo.InsertAsync(fundImage);
+                }
                 //if (input.File.Count() > 0)
                 //{
                 //    foreach (var file in input.File)
