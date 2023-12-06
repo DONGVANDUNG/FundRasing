@@ -227,9 +227,9 @@ namespace esign.FundRaising
         }
         public async Task UpdateFundRaising(CreateOrEditFundRaisingDto input)
         {
-            var fundRaising = _mstSleFundRepo.FirstOrDefault(e => e.Id == input.Id);
-            var postFund = await _mstFundRaiserPostRepo.GetAll().Where(e => e.FundId == input.Id).ToListAsync();
-            if (postFund.Count > 0)
+            var fundRaising = await _mstSleFundRepo.FirstOrDefaultAsync(e => e.Id == input.Id);
+            var postFund = _mstFundRaiserPostRepo.GetAll().Where(e => e.FundId == input.Id);
+            if (postFund != null)
             {
                 throw new UserFriendlyException("Không thể sửa do quỹ đang được kêu gọi");
             }
@@ -463,16 +463,41 @@ namespace esign.FundRaising
                                   select new GetListFundRaisingDto
                                   {
                                       Id = funds.Id,
+                                      FundTitle = funds.FundTitle,
                                       FundName = funds.FundName,
                                       FundRaisingDay = funds.FundRaisingDay,
                                       FundEndDate = funds.FundEndDate,
                                       AmountDonationTarget = funds.AmountDonationTarget,
                                       Status = funds.Status == 1 ? "Đang hoạt động" : "Đã đóng",
+                                      TotalPost = _mstFundRaiserPostRepo.GetAll().Where(e => e.FundId == funds.Id).Count(),
+                                      TotalDonate = _mstSleFundTransactionRepo.GetAll().Where(e=>e.FundId == funds.Id && e.IsAdmin == false || e.IsAdmin == null).Count(),
                                   };
             var totalCount = await listFundRaising.CountAsync();
             var result = await listFundRaising.PageBy(input).ToListAsync();
 
             return new PagedResultDto<GetListFundRaisingDto>(
+                totalCount,
+                result);
+        }
+        public async Task<PagedResultDto<GetListPostByFundRaisingDto>> getAllFundRaiserPost(GetListFundRaiserPostInputDto input)
+        {
+            var listPost = from post in _mstFundRaiserPostRepo.GetAll().Where(e => e.UserId == AbpSession.UserId)
+                           join fund in _mstSleFundRepo.GetAll() on post.FundId equals fund.Id
+                           select new GetListPostByFundRaisingDto
+                           {
+                               Id = post.Id,
+                               FundName = fund.FundName,
+                               PostTopic =post.PostTopic,
+                               PostCreated = post.CreationTime,
+                               PostTitle = post.PostTitle,
+                               AmountOfTarget = fund.AmountDonationTarget,
+                               FundEndDate = fund.FundEndDate,
+                               Status = fund.Status == 1 ? "Đang hoạt động" : "Đã đóng"
+                           };
+            var totalCount = await listPost.CountAsync();
+            var result = await listPost.PageBy(input).ToListAsync();
+
+            return new PagedResultDto<GetListPostByFundRaisingDto>(
                 totalCount,
                 result);
         }

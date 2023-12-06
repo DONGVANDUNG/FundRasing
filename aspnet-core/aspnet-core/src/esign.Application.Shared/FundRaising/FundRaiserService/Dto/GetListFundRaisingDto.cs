@@ -14,5 +14,8 @@ namespace esign.FundRaising.FundRaiserService.Dto
         public string Unit { get; set; }
         public string Status { get; set; }
         public string FundRaiser { get; set; }
+        public string FundTitle { get; set; }
+        public int TotalPost { get; set; }
+        public int TotalDonate { get; set; }
     }
 }

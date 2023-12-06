@@ -8,12 +8,11 @@ import { CarouselModule } from 'primeng/carousel';
 import { AccordionModule } from 'primeng/accordion';
 import { SliderModule } from 'primeng/slider';
 
-import { CreateOrEditFundraisingComponent } from './create-or-edit-fundraising/create-or-edit-fundraising.component';
 @NgModule({
   imports: [
     CarouselModule,
     CommonModule,AppAdminPostRoutingModule,AdminSharedModule,AccordionModule,SliderModule,
   ],
-  declarations: [AppAdminPostComponent,CreateOrEditPostComponent,CreateOrEditFundraisingComponent]
+  declarations: [AppAdminPostComponent,CreateOrEditPostComponent]
 })
 export class AppAdminPostModule { }

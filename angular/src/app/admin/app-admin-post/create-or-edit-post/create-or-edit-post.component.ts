@@ -1,4 +1,4 @@
-import { CreateOrEditFundRaisingDto, CreateOrEditFundRaisingInputDto, FileParameter } from './../../../../shared/service-proxies/service-proxies';
+import { CreateOrEditFundRaisingDto, CreateOrEditFundRaisingInputDto } from './../../../../shared/service-proxies/service-proxies';
 import { Component, EventEmitter, Injector, Output, ViewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { FundRaiserServiceProxy } from '@shared/service-proxies/service-proxies';

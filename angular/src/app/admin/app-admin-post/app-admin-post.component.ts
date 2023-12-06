@@ -5,7 +5,7 @@ import { AppComponentBase } from '@shared/common/app-component-base';
 import { AdminFundRaisingServiceProxy, FundRaiserServiceProxy, UserFundRaisingServiceProxy } from '@shared/service-proxies/service-proxies';
 import { ceil } from 'lodash-es';
 import { CreateOrEditPostComponent } from './create-or-edit-post/create-or-edit-post.component';
-import { CreateOrEditFundraisingComponent } from './create-or-edit-fundraising/create-or-edit-fundraising.component';
+import { CreateOrEditFundraisingComponent } from '../app-admin-fundraising/create-or-edit-fundraising/create-or-edit-fundraising.component';
 
 @Component({
     selector: 'app-app-admin-post',
@@ -76,6 +76,21 @@ export class AppAdminPostComponent extends AppComponentBase implements OnInit {
                 width: 80,
             },
             {
+                headerName: this.l('Chủ đề bài đăng'),
+                headerTooltip: this.l('Chủ đề bài đăng'),
+                field: 'postTopic',
+                width: 250,
+                cellClass: ['text-left'],
+            },
+            {
+                headerName: this.l('Ngày tạo bài đăng'),
+                headerTooltip: this.l('Ngày tạo bài đăng'),
+                field: 'postCreated',
+                valueGetter: params => this.dataFormatService.dateFormat(params.data.postCreated),
+                width: 250,
+                cellClass: ['text-left'],
+            },
+            {
                 headerName: this.l('Tên quỹ'),
                 headerTooltip: this.l('Tên quỹ'),
                 field: 'fundName',
@@ -101,8 +116,8 @@ export class AppAdminPostComponent extends AppComponentBase implements OnInit {
             {
                 headerName: this.l('Mục tiêu quỹ'),
                 headerTooltip: this.l('Mục tiêu quỹ'),
-                field: 'amountDonationTarget',
-                valueGetter: params => this.dataFormatService.moneyFormat(params.data.amountDonationTarget) + " VND",
+                field: 'amountOfTarget',
+                valueGetter: params => this.dataFormatService.moneyFormat(params.data.amountOfTarget) + " VND",
                 width:150,
                 cellClass: ['text-left'],
             },
@@ -169,8 +184,7 @@ export class AppAdminPostComponent extends AppComponentBase implements OnInit {
     }
 
     getAll(paginationParams: PaginationParamsModel) {
-        return this._funRaiser.getListFundRaising(
-            this.createdDateFilter,
+        return this._funRaiser.getAllFundRaiserPost(
             this.sorting ?? null,
             paginationParams ? paginationParams.skipCount : 0,
             paginationParams ? paginationParams.pageSize : 20
@@ -195,7 +209,11 @@ export class AppAdminPostComponent extends AppComponentBase implements OnInit {
         })
     }
     createPost() {
-        this.modalCreatePost.show();
+        // if(!this.selectedFund){
+        //     this.notify.warn("Vui lòng chọn một bản ghi gây quỹ");
+        //     return;
+        // }
+        this.modalCreatePost.show(this.selectedFund);
     }
     createFund(){
         this.modalCreateFund.show()

@@ -52,16 +52,12 @@
                     </div>
                 </div>
             </div>
-            <button class="tmss-btn btn-outline-primary mr-0" (click)="createFund()">
-                <i class="fas fa-plus"></i> {{l("Thêm quỹ")}}
-            </button>
             <button class="tmss-btn btn-outline-primary mr-0" (click)="createPost()">
                 <i class="fas fa-plus"></i> {{l("Thêm bài đăng")}}
             </button>
             <button class="tmss-btn btn-outline-primary mr-0" [disabled]="!this.selectedFund" (click)="editFund()">
-                <i class="fas fa-edit"></i>{{l("Sửa quỹ")}}
+                <i class="fas fa-edit"></i>{{l("Sửa bài đăng")}}
             </button>
         </div>
     </div>
 <app-create-or-edit-post #createOrEditPost></app-create-or-edit-post>
-<app-create-or-edit-fundraising #createOrEditFund (modalSave)="onGridReady(paginationParams)"></app-create-or-edit-fundraising>

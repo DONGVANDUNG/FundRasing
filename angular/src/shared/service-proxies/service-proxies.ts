@@ -7047,6 +7047,72 @@ export class FundRaiserServiceProxy {
         }
         return _observableOf(null as any);
     }
+
+    /**
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getAllFundRaiserPost(sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetListPostByFundRaisingDto> {
+        let url_ = this.baseUrl + "/api/services/app/FundRaiser/getAllFundRaiserPost?";
+        if (sorting === null)
+            throw new Error("The parameter 'sorting' cannot be null.");
+        else if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&";
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllFundRaiserPost(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllFundRaiserPost(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PagedResultDtoOfGetListPostByFundRaisingDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PagedResultDtoOfGetListPostByFundRaisingDto>;
+        }));
+    }
+
+    protected processGetAllFundRaiserPost(response: HttpResponseBase): Observable<PagedResultDtoOfGetListPostByFundRaisingDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PagedResultDtoOfGetListPostByFundRaisingDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
 }
 
 @Injectable()
@@ -24523,6 +24589,9 @@ export class GetListFundRaisingDto implements IGetListFundRaisingDto {
     unit!: string | undefined;
     status!: string | undefined;
     fundRaiser!: string | undefined;
+    fundTitle!: string | undefined;
+    totalPost!: number;
+    totalDonate!: number;
 
     constructor(data?: IGetListFundRaisingDto) {
         if (data) {
@@ -24543,6 +24612,9 @@ export class GetListFundRaisingDto implements IGetListFundRaisingDto {
             this.unit = _data["unit"];
             this.status = _data["status"];
             this.fundRaiser = _data["fundRaiser"];
+            this.fundTitle = _data["fundTitle"];
+            this.totalPost = _data["totalPost"];
+            this.totalDonate = _data["totalDonate"];
         }
     }
 
@@ -24563,6 +24635,9 @@ export class GetListFundRaisingDto implements IGetListFundRaisingDto {
         data["unit"] = this.unit;
         data["status"] = this.status;
         data["fundRaiser"] = this.fundRaiser;
+        data["fundTitle"] = this.fundTitle;
+        data["totalPost"] = this.totalPost;
+        data["totalDonate"] = this.totalDonate;
         return data;
     }
 }
@@ -24576,6 +24651,9 @@ export interface IGetListFundRaisingDto {
     unit: string | undefined;
     status: string | undefined;
     fundRaiser: string | undefined;
+    fundTitle: string | undefined;
+    totalPost: number;
+    totalDonate: number;
 }
 
 export class GetListFundRasingDto implements IGetListFundRasingDto {
@@ -24667,8 +24745,13 @@ export class GetListPostByFundRaisingDto implements IGetListPostByFundRaisingDto
     postTitle!: string | undefined;
     targetIntroduce!: string | undefined;
     postTopic!: string | undefined;
+    postCreated!: DateTime | undefined;
     purpose!: string | undefined;
     note!: string | undefined;
+    fundName!: string | undefined;
+    amountOfTarget!: number | undefined;
+    fundEndDate!: DateTime | undefined;
+    status!: string | undefined;
 
     constructor(data?: IGetListPostByFundRaisingDto) {
         if (data) {
@@ -24685,8 +24768,13 @@ export class GetListPostByFundRaisingDto implements IGetListPostByFundRaisingDto
             this.postTitle = _data["postTitle"];
             this.targetIntroduce = _data["targetIntroduce"];
             this.postTopic = _data["postTopic"];
+            this.postCreated = _data["postCreated"] ? DateTime.fromISO(_data["postCreated"].toString()) : <any>undefined;
             this.purpose = _data["purpose"];
             this.note = _data["note"];
+            this.fundName = _data["fundName"];
+            this.amountOfTarget = _data["amountOfTarget"];
+            this.fundEndDate = _data["fundEndDate"] ? DateTime.fromISO(_data["fundEndDate"].toString()) : <any>undefined;
+            this.status = _data["status"];
         }
     }
 
@@ -24703,8 +24791,13 @@ export class GetListPostByFundRaisingDto implements IGetListPostByFundRaisingDto
         data["postTitle"] = this.postTitle;
         data["targetIntroduce"] = this.targetIntroduce;
         data["postTopic"] = this.postTopic;
+        data["postCreated"] = this.postCreated ? this.postCreated.toString() : <any>undefined;
         data["purpose"] = this.purpose;
         data["note"] = this.note;
+        data["fundName"] = this.fundName;
+        data["amountOfTarget"] = this.amountOfTarget;
+        data["fundEndDate"] = this.fundEndDate ? this.fundEndDate.toString() : <any>undefined;
+        data["status"] = this.status;
         return data;
     }
 }
@@ -24714,8 +24807,13 @@ export interface IGetListPostByFundRaisingDto {
     postTitle: string | undefined;
     targetIntroduce: string | undefined;
     postTopic: string | undefined;
+    postCreated: DateTime | undefined;
     purpose: string | undefined;
     note: string | undefined;
+    fundName: string | undefined;
+    amountOfTarget: number | undefined;
+    fundEndDate: DateTime | undefined;
+    status: string | undefined;
 }
 
 export class GetListTransactionForAuctionDto implements IGetListTransactionForAuctionDto {

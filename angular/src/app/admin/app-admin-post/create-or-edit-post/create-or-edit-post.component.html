@@ -18,36 +18,26 @@
                 </div>
             </div>
             <div class="modal-body">
-                <div class="row mb-5 d-flex justify-content-between">
-                    <div class="col-4 d-flex align-items-center">
-                        <label for="fund-name" class="label">Tên quỹ:</label>
-                        <input type="text" id="fund-name" class="input">
-                    </div>
-                    <div class="col-4 d-flex align-items-center">
-                        <label class="label">Chủ đề:</label>
-                        <input type="text" [(ngModel)]="input.postTopic" class="input">
-                    </div>
-                    <div class="col-4 d-flex align-items-center">
-                        <label class="label">Tiêu đề quỹ:</label>
-                        <input type="text" class="input">
-                    </div>
-                </div>
                 <div class="row mb-5">
-                    <div class="col-12 d-flex align-items-center">
-                        <label class="label-col-12">Tiêu đề quỹ:</label>
-                        <input type="text" class="input">
+                    <div class="col-8 d-flex align-items-center">
+                        <label class="label-col-12">Tiêu bài đăng:</label>
+                        <input type="text" class="input" [(ngModel)]="input.postTitle">
+                    </div>
+                    <div class="col-4 d-flex align-items-center">
+                        <label class="label">Chủ đề bài đăng:</label>
+                        <input type="text"  [(ngModel)]="input.postTopic" class="input">
                     </div>
                 </div>
                 <div class="row d-flex justify-content-between mb-5">
                     <div class="col-12 d-flex align-items-center justify-content-between">
                         <label for="fund-name" class="label-col-12">Mục đích gây quỹ:</label>
-                        <input type="text" id="fund-name" class="input">
+                        <input type="text" [(ngModel)]="input.purpose" id="fund-name" class="input">
                     </div>
                 </div>
                 <div class="row d-flex justify-content-between mb-5">
                     <div class="col-12">
                         <p>Nội dung:</p>
-                        <p-editor [style]="{ height: '140px' }"></p-editor>
+                        <p-editor [style]="{ height: '140px' }" [(ngModel)]="input.targetIntroduce"></p-editor>
                     </div>
                 </div>
                 <div class="row d-flex justify-content-between mb-5">
