@@ -80,6 +80,7 @@ export class AppAdminFundPackageComponent extends AppComponentBase implements On
                 headerName: this.l('Phí tham gia'),
                 headerTooltip: this.l('Phí tham gia'),
                 field: 'paymentFee',
+                valueGetter: params => this.dataFormatService.moneyFormat(params.data.paymentFee) + " VND",
                 flex: 3,
                 cellClass: ['text-left'],
             },

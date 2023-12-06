@@ -25,5 +25,6 @@ namespace esign.Enitity
         public int? NumberOfParticipants { get; set; }
         public float? AmountTargetOfMoney { get; set; }
         public int? LimitedOfNumber { get; set; }
+        public bool? IsStatus { get; set; }
     }
 }

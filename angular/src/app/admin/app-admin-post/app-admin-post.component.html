@@ -13,19 +13,19 @@
         <div class="kt-portlet kt-portlet--mobile">
             <div>
                 <div class="row align-items-center mt-5 mb-2">
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <tmss-combobox [items]="listTypePackage" [(ngModel)]="typePackage"
                              [label]="'label'" [key]="'value'"  [text]="l('Loại quỹ')" name="typePackage">
                             </tmss-combobox>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <tmss-datepicker [(ngModel)]="createdDate" [dateInputFormat]="'DD-MM-YYYY'" [text]="l('Ngày tạo gói')" name="createdDate"></tmss-datepicker>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                     </div>
                     <div class="col-md-3 d-flex justify-content-end">
                         <button class="tmss-btn  btn-outline-primary tmss-override" (click)="search()">

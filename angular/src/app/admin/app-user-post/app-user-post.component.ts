@@ -3,6 +3,7 @@ import { DateTimeService } from '@app/shared/common/timing/date-time.service';
 import { AppConsts } from '@shared/AppConsts';
 import { AdminFundRaisingServiceProxy, UserFundRaisingServiceProxy, UserServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CreateOrEditPostComponent } from '../app-admin-post/create-or-edit-post/create-or-edit-post.component';
+import { DataFormatService } from '@app/shared/common/services/data-format.service';
 
 @Component({
   selector: 'app-app-user-post',
@@ -12,7 +13,7 @@ import { CreateOrEditPostComponent } from '../app-admin-post/create-or-edit-post
 export class AppUserPostComponent implements OnInit {
 
   constructor(private _userServiceProxy: UserFundRaisingServiceProxy,
-    private _dateTimeService: DateTimeService) { }
+    private _dateTimeService: DateTimeService,private dataFormatService :DataFormatService) { }
   listOption = [{
     code: true, name: 'Có'
   }, {
@@ -30,6 +31,10 @@ export class AppUserPostComponent implements OnInit {
   getAllFundRaising() {
     this._userServiceProxy.getListPostOfFundRaising().subscribe((result) => {
       this.listFundRaising = result;
+      this.listFundRaising.forEach((item)=>{
+        item.amountDonateTarget = this.dataFormatService.moneyFormat(item.amountDonateTarget);
+        item.amountDonatePresent = this.dataFormatService.moneyFormat(item.amountDonatePresent);
+      })
     })
   }
   formatDateTime(input, format) {

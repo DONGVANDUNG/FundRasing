@@ -8,7 +8,7 @@ namespace esign.FundRaising.Admin.Dto
     public class CreateOrEditFundRaisingInputDto
     {
         public long? FundId { get; set; }
-        public List<IFormFile> File {  get; set; }
+        public List<string> File {  get; set; }
         public string PostTitle { get; set; }
         public string TargetIntroduce { get; set; }
         public string PostTopic { get; set; }

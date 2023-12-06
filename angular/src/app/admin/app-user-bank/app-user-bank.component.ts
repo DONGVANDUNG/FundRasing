@@ -1,4 +1,5 @@
 import { Component, Injector, OnInit } from '@angular/core';
+import { DataFormatService } from '@app/shared/common/services/data-format.service';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { InforDetailBankAcountDto, UserFundRaisingServiceProxy, UserServiceProxy } from '@shared/service-proxies/service-proxies';
 
@@ -18,14 +19,17 @@ export class AppUserBankComponent extends AppComponentBase implements OnInit {
         {name:'TechcomBank',code:'TechcomBank'},
     ];
     isChangeBankInfo: boolean = false;
-    dataInforBankUser: InforDetailBankAcountDto = new InforDetailBankAcountDto;
-    constructor(injector: Injector, private _userServiceProxy: UserFundRaisingServiceProxy) {
+    dataInforBankUser;
+    constructor(injector: Injector,
+         private _userServiceProxy: UserFundRaisingServiceProxy,
+         private dataFormatService: DataFormatService) {
         super(injector);
     }
 
     ngOnInit() {
         this._userServiceProxy.getInforBankUser().subscribe(result => {
             this.dataInforBankUser = result;
+            this.dataInforBankUser.balance = this.dataFormatService.moneyFormat(result.balance);
         })
     }
     changeInforBank() {

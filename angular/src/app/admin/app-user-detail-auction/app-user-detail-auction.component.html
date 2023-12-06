@@ -32,7 +32,8 @@
                 </div>
             </div>
             <div class="block-fill-auction">
-                <input type="number" placeholder="Nhập giá(VND)" name="fill-auction" class="input-fill-auction" [(ngModel)]="userAuction.amountAuction">
+                <p-inputNumber name="amountAuction" [(ngModel)]="userAuction.amountAuction"
+                                             currency="VND"></p-inputNumber>
                 <button type="button" class="btn-place-bid" *ngIf="isDeposit" (click)="placeBid()">Đấu giá</button>
                 <button type="button" class="btn-place-bid" *ngIf="!isDeposit" (click)="depositAuction()">Tham gia đấu giá</button>
             </div>

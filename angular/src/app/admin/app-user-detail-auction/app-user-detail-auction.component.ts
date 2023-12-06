@@ -8,6 +8,7 @@ import { FundRaiserServiceProxy, GetAllAuctionDto, GetAuctionDetailDto, UserAuct
 import { error } from 'console';
 import { AppUserDepositAuctionComponent } from './app-user-deposit-auction/app-user-deposit-auction.component';
 import { AuctionService } from '@app/shared/layout/chat/auction-hub.service';
+import { DataFormatService } from '@app/shared/common/services/data-format.service';
 
 @Component({
     selector: 'app-app-user-detail-auction',
@@ -21,13 +22,14 @@ export class AppUserDetailAuctionComponent extends AppComponentBase implements O
     auctionItemId;
     isDeposit :boolean = false;
     baseUrl = AppConsts.remoteServiceBaseUrl + '/';
-    dataAuction :GetAuctionDetailDto;
+    dataAuction;
     userAuction:UserAuction = new UserAuction();
     constructor(private route: ActivatedRoute,
         injector: Injector,
         private _fundRaiser: FundRaiserServiceProxy,
         private auctionService: AuctionService,
-        public _zone: NgZone
+        public _zone: NgZone,
+        private dataFormateService: DataFormatService
     ) {
         super(injector);
     }
@@ -39,6 +41,9 @@ export class AppUserDetailAuctionComponent extends AppComponentBase implements O
         this.userAuction.isPublic = false;
         this._fundRaiser.getAuctionById(this.auctionId).subscribe(re => {
             this.dataAuction = re;
+            this.dataAuction.nextMinimumBid = this.dataFormateService.moneyFormat(re.nextMinimumBid);
+            this.dataAuction.nextMaximumBid= this.dataFormateService.moneyFormat(re.nextMaximumBid);
+            this.dataAuction.auctionPresentAmount= this.dataFormateService.moneyFormat(re.auctionPresentAmount);
         })
         this.checkUserDeposit();
     }

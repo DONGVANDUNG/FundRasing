@@ -2,14 +2,16 @@
     <div class="kt-subheader kt-grid__item redline-header">
         <div [class]="containerClass">
             <div class="kt-subheader__main">
-                <h3 class="kt-subheader__title">
-                    <span class="kt_subheader__desc">{{l("Thông tin quỹ")}}</span>
-                </h3>
             </div>
             <div class="kt-subheader__toolbar">
                 <div class="kt-subheader__wrapper">
                     <div class="row mb-1">
-                        <div class="col-9"></div>
+                        <div class="col-3">
+                            <h3 class="kt-subheader__title">
+                                <span class="kt_subheader__desc">{{l("Thông tin quỹ")}}</span>
+                            </h3>
+                        </div>
+                        <div class="col-6"></div>
                         <div class="col-md-3 d-flex justify-content-end">
                             <div class="form-group float-right">
                                 <button type="button" class="tmss-btn btn-outline-primary"
@@ -29,64 +31,42 @@
     </div>
     <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
         <div class="kt-portlet kt-portlet--mobile">
-            <div [hidden]="!advancedFiltersAreShown">
-                <!-- <div class="row align-items-center mt-4 mb-4">
-                    <div class="col-md-4 ml-2">
-                        <div class="form-group">
-                            <tmss-combobox [items]="listVodTypeReport" [(ngModel)]="typeOfReport" [text]="l('Loại báo cáo')" name="typeOfReport">
-                            </tmss-combobox>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <tmss-datepicker [(ngModel)]="fromDate" [text]="l('Từ ngày')" name="fromDate"></tmss-datepicker>
-                        </div>
-                    </div>
-                    <div class="col-md-3 ml-4">
-                        <div class="form-group">
-                            <tmss-datepicker [(ngModel)]="toDate" [text]="l('Đến ngày')" name="toDate"></tmss-datepicker>
-                        </div>
-                    </div>
-                    <div class="col-md-1 ml-4">
-                        <button class="tmss-btn  btn-outline-primary tmss-override" (click)="search()">
-                          <i class="fa fa-search" aria-hidden="true"></i>
-                          {{l("Search")}}
-                        </button>
-                      </div>
-                </div> -->
-            </div>
             <div class="row align-items-center">
                 <div class="col-md-12">
                     <div class="item col-12">
                         <grid-table [columnDefs]="columnDefsFundRaising" [defaultColDef]="defaultColDef"
                             (onGridReady)="onGridReadyFundRaising($event)"
                             (callBackEvent)="callBackGridFundRaising($event)"
+                            (changePaginationParams)="changePageFundRaising($event)"
                             [paginationParams]="paginationParamsFundRaising"
-                            (onSelectionChanged)="onChangeSelectionFundRaising($event)" [rowData]="rowDataFundRaising"
+                            (onChangeSelection)="onChangeSelectionFundRaising($event)"
+                             [rowData]="rowDataFundRaising"
                             [height]="'260px'"></grid-table>
                     </div>
                 </div>
             </div>
-            <div class="row mt-1 mb-1 d-flex">
+            <!-- <div class="row mt-1 mb-1 d-flex">
                 <div class="col-10"></div>
                 <div class="col-2 d-flex justify-content-end">
                     <button class="tmss-btn btn-outline-primary" (click)="viewDetailsTransaction(selectionTransaction)">
                         <i class="fa fa-eye"></i> Xem chi tiết
                     </button>
                 </div>
-            </div>
-            <div class="row align-items-center">
+            </div> -->
+            <div class="row align-items-center mt-5">
                 <div class="col-md-12">
                     <div class="item col-12">
-                        <div class="tbContent">
-                            {{l("Thông tin giao dịch")}}
+                        <div class="tbContent mb-3">
+                           <h3>Thông tin giao dịch</h3>
                         </div>
                         <grid-table [columnDefs]="columnDefsTransaction"
                             [defaultColDef]="defaultColDef"
-                            [rowSelection] = "'single'"
+                            (callBackEvent)="callBackGridTransaction($event)"
                             (onGridReady)="onGridReadyTransaction($event)"
                             [paginationParams]="paginationParamsTransaction"
-                            (onSelectionChanged)="onChangeSelectionTransaction($event)" [rowData]="rowDataTransaction"
+                            (onSelectionChanged)="onChangeSelectionTransaction($event)"
+                             [rowData]="rowDataTransaction"
+                             (changePaginationParams)="changePageFundTransaction($event)"
                             [height]="'260px'"></grid-table>
                     </div>
                 </div>

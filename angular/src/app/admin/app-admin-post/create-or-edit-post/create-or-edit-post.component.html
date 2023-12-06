@@ -19,46 +19,53 @@
             </div>
             <div class="modal-body">
                 <div class="row mb-5 d-flex justify-content-between">
-                    <div class="col-7 d-flex align-items-center">
-                        <div class="col-6">
-                            <label for="fund-name" class="label">Tên quỹ:</label>
-                            <input type="text" [(ngModel)]="input.fundName" id="fund-name" class="input">
-                        </div>
-                        <div class="col-5">
-                            <label class="label">Chủ đề:</label>
-                            <input type="text" [(ngModel)]="input.fundTitle" class="input">
-                        </div>
+                    <div class="col-4 d-flex align-items-center">
+                        <label for="fund-name" class="label">Tên quỹ:</label>
+                        <input type="text" id="fund-name" class="input">
                     </div>
-                    <div class="col-5 d-flex align-items-center">
+                    <div class="col-4 d-flex align-items-center">
+                        <label class="label">Chủ đề:</label>
+                        <input type="text" [(ngModel)]="input.postTopic" class="input">
+                    </div>
+                    <div class="col-4 d-flex align-items-center">
                         <label class="label">Tiêu đề quỹ:</label>
-                        <input type="text" [(ngModel)]="input.fundTitle" class="input">
+                        <input type="text" class="input">
                     </div>
                 </div>
-                <div class="row d-flex justify-content-between mb-5">
-                    <div class="col-6 d-flex justify-content-between">
-                        <div class="col-5">
-                            <form action="/upload" method="post" enctype="multipart/form-data" class="d-flex"
-                                id="form-add-image">
-                                <input type="file" [(ngModel)]="input.file" id="images" class="input" multiple
-                                    [ngModelOptions]="{standalone: true}" (change)="previewImages($event)">
-                            </form>
-                        </div>
+                <div class="row mb-5">
+                    <div class="col-12 d-flex align-items-center">
+                        <label class="label-col-12">Tiêu đề quỹ:</label>
+                        <input type="text" class="input">
                     </div>
                 </div>
                 <div class="row d-flex justify-content-between mb-5">
                     <div class="col-12 d-flex align-items-center justify-content-between">
-                        <label for="fund-name" class="label">Mục đích gây quỹ:</label>
-                        <input type="text" [(ngModel)]="input.fundName" id="fund-name" class="input">
-                    </div>
-                    <div class="col-6 d-flex align-items-center">
-                        <label class="label">Tiêu đề quỹ:</label>
-                        <input type="text" [(ngModel)]="input.fundTitle" class="input">
+                        <label for="fund-name" class="label-col-12">Mục đích gây quỹ:</label>
+                        <input type="text" id="fund-name" class="input">
                     </div>
                 </div>
                 <div class="row d-flex justify-content-between mb-5">
                     <div class="col-12">
                         <p>Nội dung:</p>
-                        <p-editor [(ngModel)]="input.fundContent" [style]="{ height: '140px' }"></p-editor>
+                        <p-editor [style]="{ height: '140px' }"></p-editor>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-between mb-5">
+                    <div class="col-4">
+                        <!-- <form action="/upload" method="post" enctype="multipart/form-data" class="d-flex"
+                                id="form-add-image">
+                                <input type="file" [(ngModel)]="input.file" id="images" class="input" multiple
+                                    [ngModelOptions]="{standalone: true}" (change)="previewImages($event)">
+                            </form> -->
+                        <p-fileUpload name="demo[]" (onSelect)="onUpload($event)" [multiple]="true" accept="image/*"
+                            maxFileSize="1000000">
+                            <ng-template pTemplate="content">
+                                <ul *ngIf="uploadedFiles.length">
+                                    <li *ngFor="let file of uploadedFiles">
+                                    </li>
+                                </ul>
+                            </ng-template>
+                        </p-fileUpload>
                     </div>
                 </div>
             </div>

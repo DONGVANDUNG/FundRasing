@@ -8,8 +8,6 @@ namespace esign.FundRaising.UserFundRaising.Dto
 {
     public class FundRaisingInputDto : PagedAndSortedResultRequestDto
     {
-        public string Filter { get; set; }
-        public bool? IsPayFee { get; set; }
         public DateTime? CreatedDate { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { DataFormatService } from '@app/shared/common/services/data-format.service';
 import { AppConsts } from '@shared/AppConsts';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { GetListFundRasingDto, UserFundRaisingServiceProxy, UserServiceProxy } from '@shared/service-proxies/service-proxies';
@@ -14,7 +15,9 @@ export class AppUserCheckoutComponent extends AppComponentBase implements OnInit
     imageUrl
     baseUrl = AppConsts.remoteServiceBaseUrl + '/';
     listFundRaisingHistory = [];
-    constructor(injector: Injector, private _userServiceProxy: UserFundRaisingServiceProxy,
+    constructor(injector: Injector,
+        private _userServiceProxy: UserFundRaisingServiceProxy,
+        private dataFormatService: DataFormatService,
         private route: ActivatedRoute) {
         super(injector);
     }
@@ -25,6 +28,10 @@ export class AppUserCheckoutComponent extends AppComponentBase implements OnInit
     getAllFundRaising() {
         this._userServiceProxy.getHistoryDonationForFund().subscribe((result) => {
             this.listFundRaisingHistory = result;
+            this.listFundRaisingHistory.forEach((item) => {
+                item.amountDonatePresent = this.dataFormatService.moneyFormat(item.amountDonatePresent);
+                item.amountDonateTarget = this.dataFormatService.moneyFormat(item.amountDonateTarget);
+            })
         })
     }
 

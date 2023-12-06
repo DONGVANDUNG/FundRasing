@@ -24,10 +24,10 @@
                          class="input-bank">
                 </div>
             </div>
-            <div class="row mb-5 d-flex justify-content-start mt-5">
+            <div class="row mb-5 d-flex justify-content-start mt-5" *ngIf="dataInforBankUser.id">
                 <div class="col-4 d-flex align-items-center">
                     <label class="label">Số dư TK:</label>
-                    <input type="text"  [(ngModel)]="this.dataInforBankUser.balance" name="surplus" placeholder="200"
+                    <input type="text"  [(ngModel)]="this.dataInforBankUser.balance" name="surplus"
                         class="input" disabled>
                 </div>
                 <div class="col-4 d-flex align-items-center">

@@ -13,5 +13,6 @@ namespace esign.FundRaising.FundRaiserService.Dto
         public float? AmountDonationTarget { get; set; }
         public string Unit { get; set; }
         public string Status { get; set; }
+        public string FundRaiser { get; set; }
     }
 }

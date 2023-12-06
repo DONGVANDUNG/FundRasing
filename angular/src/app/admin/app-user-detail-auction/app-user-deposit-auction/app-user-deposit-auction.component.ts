@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Injector, OnInit, Output, ViewChild } from '@angular/core';
+import { DataFormatService } from '@app/shared/common/services/data-format.service';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { InformationAuctionDepositDto, UserFundRaisingServiceProxy, UserServiceProxy } from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap/modal';
@@ -15,8 +16,9 @@ export class AppUserDepositAuctionComponent extends AppComponentBase implements 
   active;
   depositAmount;
   auctionId;
-  inforDepost: InformationAuctionDepositDto = new InformationAuctionDepositDto();
-  constructor(injector: Injector,private userServiceProxy: UserFundRaisingServiceProxy) {
+  inforDepost;
+  constructor(injector: Injector,private userServiceProxy: UserFundRaisingServiceProxy,
+    private dataFormatService:DataFormatService) {
     super(injector);
   }
 
@@ -24,9 +26,12 @@ export class AppUserDepositAuctionComponent extends AppComponentBase implements 
   }
   show(autionId): void {
     this.modal.show();
+    this.inforDepost.auctionTitle = null;
     this.auctionId = autionId;
     this.userServiceProxy.getInforAuctionDeposit(autionId).subscribe(re=>{
       this.inforDepost = re;
+      this.inforDepost.maxAmountDepost = this.dataFormatService.moneyFormat(re.maxAmountDepost);
+      this.inforDepost.minAmountDepost = this.dataFormatService.moneyFormat(re.minAmountDepost);
     })
   }
   close() {

@@ -7,7 +7,6 @@ namespace esign.FundRaising.FundRaiserService.Dto
 {
     public class CreateOrEditFundRaisingDto
     {
-        //public int Id { get; set; }
         //public string FundName { get; set; }
         //public string TitleFund { get; set; }
         //public string ImageUrl { get; set; }

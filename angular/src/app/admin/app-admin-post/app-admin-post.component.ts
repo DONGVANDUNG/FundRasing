@@ -102,6 +102,7 @@ export class AppAdminPostComponent extends AppComponentBase implements OnInit {
                 headerName: this.l('Mục tiêu quỹ'),
                 headerTooltip: this.l('Mục tiêu quỹ'),
                 field: 'amountDonationTarget',
+                valueGetter: params => this.dataFormatService.moneyFormat(params.data.amountDonationTarget) + " VND",
                 width:150,
                 cellClass: ['text-left'],
             },
@@ -169,8 +170,6 @@ export class AppAdminPostComponent extends AppComponentBase implements OnInit {
 
     getAll(paginationParams: PaginationParamsModel) {
         return this._funRaiser.getListFundRaising(
-            this.filter,
-            this.isPayFee,
             this.createdDateFilter,
             this.sorting ?? null,
             paginationParams ? paginationParams.skipCount : 0,

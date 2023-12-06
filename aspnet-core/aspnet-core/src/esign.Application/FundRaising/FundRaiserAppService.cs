@@ -94,9 +94,9 @@ namespace esign.FundRaising
                 throw new UserFriendlyException("Có lỗi xảy ra trong quá trình đóng quỹ");
             }
         }
-        [HttpPost]
-        [Consumes("multipart/form-data")]
-        public async Task CreatePostOfFundRaising([FromForm] CreateOrEditFundRaisingInputDto input)
+        //[HttpPost]
+        //[Consumes("multipart/form-data")]
+        public async Task CreatePostOfFundRaising(CreateOrEditFundRaisingInputDto input)
         {
             try
             {
@@ -110,33 +110,33 @@ namespace esign.FundRaising
                 post.IsClose = false;
                 post.Purpose = input.Purpose;
                 var postId = await _mstFundRaiserPostRepo.InsertAndGetIdAsync(post);
-               
-                
-                if (input.File.Count() > 0)
-                {
-                    foreach (var file in input.File)
-                    {
-                        if (file != null)
-                        {
-                            var fileName = Path.GetFileName(file.FileName);
-                            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", fileName);
 
-                            using (var stream = new FileStream(filePath, FileMode.Create))
-                            {
-                                await file.CopyToAsync(stream);
-                            }
-                            FundImage fundImage = new FundImage();
-                            fundImage.PostId = postId;
 
-                            fundImage.ImageUrl = Path.Combine("uploads", fileName);
-                            await _mstSleFundImageRepo.InsertAsync(fundImage);
-                        }
-                    }
-                }
-                else
-                {
-                    throw new UserFriendlyException("Please select a file");
-                }
+                //if (input.File.Count() > 0)
+                //{
+                //    foreach (var file in input.File)
+                //    {
+                //        if (file != null)
+                //        {
+                //            var fileName = Path.GetFileName(file.FileName);
+                //            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", fileName);
+
+                //            using (var stream = new FileStream(filePath, FileMode.Create))
+                //            {
+                //                await file.CopyToAsync(stream);
+                //            }
+                //            FundImage fundImage = new FundImage();
+                //            fundImage.PostId = postId;
+
+                //            fundImage.ImageUrl = Path.Combine("uploads", fileName);
+                //            await _mstSleFundImageRepo.InsertAsync(fundImage);
+                //        }
+                //    }
+                //}
+                //else
+                //{
+                //    throw new UserFriendlyException("Please select a file");
+                //}
             }
             catch (Exception ex)
             {
@@ -221,8 +221,17 @@ namespace esign.FundRaising
         }
         public async Task UpdateFundRaising(CreateOrEditFundRaisingDto input)
         {
-            var fundRaising = await _mstSleFundRepo.FirstOrDefaultAsync(e => e.Id == input.Id);
-            ObjectMapper.Map(input, fundRaising);
+            var fundRaising = _mstSleFundRepo.FirstOrDefault(e => e.Id == input.Id);
+            var postFund = await _mstFundRaiserPostRepo.GetAll().Where(e => e.FundId == input.Id).ToListAsync();
+            if (postFund.Count > 0)
+            {
+                throw new UserFriendlyException("Không thể sửa do quỹ đang được kêu gọi");
+            }
+            fundRaising.FundName = input.FundName;
+            fundRaising.AmountDonationTarget = input.AmountDonationTarget;
+            fundRaising.FundRaisingDay = (DateTime)input.FundRaisingDay;
+            fundRaising.FundEndDate = (DateTime)input.FundEndDate;
+            await _mstSleFundRepo.UpdateAsync(fundRaising);
         }
         public async Task<CreateOrEditFundRaisingDto> GetForEditFundRaising(long? fundId)
         {
@@ -248,15 +257,15 @@ namespace esign.FundRaising
         public async Task<PagedResultDto<GetListPostByFundRaisingDto>> getListPostByFundRaisingId(GetListPostByFundRaisingInputDto input)
         {
             var listPost = from post in _mstFundRaiserPostRepo.GetAll().Where(e => e.FundId == input.FundId)
-                            select new GetListPostByFundRaisingDto
-                            {
-                                Id = post.Id,
-                                TargetIntroduce = post.TargetIntroduce,
-                                Note = post.Note,
-                                PostTitle = post.PostTitle,
-                                PostTopic = post.PostTopic,
-                                Purpose = post.Purpose
-                            };
+                           select new GetListPostByFundRaisingDto
+                           {
+                               Id = post.Id,
+                               TargetIntroduce = post.TargetIntroduce,
+                               Note = post.Note,
+                               PostTitle = post.PostTitle,
+                               PostTopic = post.PostTopic,
+                               Purpose = post.Purpose
+                           };
             var totalCount = await listPost.CountAsync();
             var result = await listPost.PageBy(input).ToListAsync();
             return new PagedResultDto<GetListPostByFundRaisingDto>(
@@ -266,7 +275,7 @@ namespace esign.FundRaising
         /// Auction
         public async Task CreateOrEditAuction(CreateOrEditAuction input)
         {
-            if(input.Id == null || input.Id == 0)
+            if (input.Id == null || input.Id == 0)
             {
                 var auction = new Auction();
                 auction.TitleAuction = input.TitleAuction;
@@ -358,17 +367,20 @@ namespace esign.FundRaising
         public async Task<PagedResultDto<GetAllAuctionDto>> getAllAuctionAdmin(AuctionInputDto input)
         {
             var query = from auction in _mstAuctionRepo.GetAll().Where(e => AbpSession.TenantId == null || e.UserId == AbpSession.UserId)
+                        join item in _mstSleAuctionItemsRepo.GetAll() on auction.Id equals item.AuctionId
                         select new GetAllAuctionDto
                         {
                             Id = auction.Id,
-                            //ItemName = auction.ItemName,
+                            ItemName = item.ItemName,
                             //TitleAuction = auction.TitleAuction,
-                            //AmountJumpMax = auction.AmountJumpMax,
-                            //AmountJumpMin = auction.AmountJumpMin,
-                            //EndDate = auction.EndDate,
-                            //StartingPrice = auction.StartingPrice,
+                            AmountJumpMax = item.AmountJumpMax,
+                            AmountJumpMin = item.AmountJumpMin,
+                            EndDate = auction.EndDate,
+                            StartingPrice = item.StartingPrice,
+                            AuctionPresentAmount = item.AuctionPresentAmount,
                             StartDate = (DateTime)auction.StartDate,
                             IntroduceItem = auction.IntroduceItem,
+                            Status = auction.IsStatus == true ? "Đang hoạt động" : "Đã đóng"
                         };
 
             var totalCount = await query.CountAsync();
@@ -380,8 +392,8 @@ namespace esign.FundRaising
         }
         public async Task DeleteAuction(long auctionId)
         {
-            var auction = await _mstAuctionRepo.FirstOrDefaultAsync(e=>e.Id == auctionId);
-            if(auction != null)
+            var auction = await _mstAuctionRepo.FirstOrDefaultAsync(e => e.Id == auctionId);
+            if (auction != null)
             {
                 if (DateTime.Now > auction.EndDate)
                 {
@@ -394,16 +406,17 @@ namespace esign.FundRaising
                 throw new Exception("Không tồn tại phiên đấu giá");
             }
         }
-        public List<GetAllAuctionDto> getAllAuctionUser()
+        public async Task<List<GetAllAuctionDto>> getAllAuctionUser()
         {
             var listAuction = (from auction in _mstAuctionRepo.GetAll()
-                               //|| e.UserId != AbpSession.UserId)
+                                   //|| e.UserId != AbpSession.UserId)
                                join item in _mstSleAuctionItemsRepo.GetAll()
                                on auction.Id equals item.AuctionId
                                select new GetAllAuctionDto
                                {
                                    Id = auction.Id,
                                    ItemName = item.ItemName,
+                                   AuctionPresentAmount = item.AuctionPresentAmount,
                                    TitleAuction = auction.TitleAuction,
                                    AmountJumpMax = item.AmountJumpMax,
                                    AmountJumpMin = item.AmountJumpMin,
@@ -414,10 +427,10 @@ namespace esign.FundRaising
                                    NextMinimumBid = item.AuctionPresentAmount + item.AmountJumpMin,
                                    NextMaximumBid = item.AuctionPresentAmount + item.AmountJumpMax,
                                    ListImage = _mstAuctionImagesRepo.GetAll().Where(e => e.AuctionItemId == auction.Id).Select(re => re.ImageUrl).ToList(),
-                               }).ToList();
+                               }).ToListAsync();
 
 
-            return listAuction;
+            return await listAuction;
         }
         public GetAuctionDetailDto getAuctionById(long? auctionId)
         {
@@ -429,7 +442,7 @@ namespace esign.FundRaising
             auctionResult.NextMinimumBid = auctionResult.AuctionPresentAmount + auctionItem.AmountJumpMin;
             TimeSpan timeSpan = DateTime.Now - auctionItem.CreationTime;
             auctionResult.TimeLeft = (int?)timeSpan.TotalDays;
-            auctionResult.ListImage = _mstAuctionImagesRepo.GetAll().Where(e=>e.AuctionItemId == auctionItem.Id).Select(re=>re.ImageUrl).ToList();
+            auctionResult.ListImage = _mstAuctionImagesRepo.GetAll().Where(e => e.AuctionItemId == auctionItem.Id).Select(re => re.ImageUrl).ToList();
             //auctionResult.UserName = _mstSleUserRepo.FirstOrDefault(e => e.Id == auction.UserId).UserName;
             return auctionResult;
         }
@@ -438,17 +451,18 @@ namespace esign.FundRaising
             var deposit = _mstSleAuctionDepositRepo.FirstOrDefault(e => e.UserId == AbpSession.UserId);
             return deposit != null;
         }
-        public async Task<PagedResultDto<GetListFundRaisingDto>> getListFundRaising(FundRaisingInputDto input) { 
-           var listFundRaising = from funds in _mstSleFundRepo.GetAll().Where(e=>e.UserId == AbpSession.UserId)
-                                 select new GetListFundRaisingDto
-                                 {
-                                     Id = funds.Id,
-                                     FundName = funds.FundName,
-                                     FundRaisingDay = funds.FundRaisingDay,
-                                     FundEndDate = funds.FundEndDate,
-                                     AmountDonationTarget = funds.AmountDonationTarget,
-                                     Status = funds.Status == 1 ? "Đang hoạt động" : "Đã đóng"
-                                 };
+        public async Task<PagedResultDto<GetListFundRaisingDto>> getListFundRaising(FundRaisingInputDto input)
+        {
+            var listFundRaising = from funds in _mstSleFundRepo.GetAll().Where(e => e.UserId == AbpSession.UserId)
+                                  select new GetListFundRaisingDto
+                                  {
+                                      Id = funds.Id,
+                                      FundName = funds.FundName,
+                                      FundRaisingDay = funds.FundRaisingDay,
+                                      FundEndDate = funds.FundEndDate,
+                                      AmountDonationTarget = funds.AmountDonationTarget,
+                                      Status = funds.Status == 1 ? "Đang hoạt động" : "Đã đóng",
+                                  };
             var totalCount = await listFundRaising.CountAsync();
             var result = await listFundRaising.PageBy(input).ToListAsync();
 

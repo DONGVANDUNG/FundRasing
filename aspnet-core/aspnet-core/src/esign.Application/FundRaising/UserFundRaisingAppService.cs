@@ -108,10 +108,10 @@ namespace esign.FundRaising
                                {
                                    Id = post.Id,
                                    ListImageUrl = _mstFundImageRepo.GetAll().Where(e => e.PostId == post.Id).Select(re => re.ImageUrl).ToList(),
-                                   // AmountDonatePresent = fund.AmountDonationPresent,
-                                   // PercentAchieved = (fund.AmountDonationPresent / fund.AmountDonationTarget) * 100,
+                                   AmountDonatePresent = fund.AmountDonationPresent,
+                                   PercentAchieved = (fund.AmountDonationPresent / fund.AmountDonationTarget) * 100,
                                    PostTitle = post.PostTitle,
-                                   //AmountDonateTarget = fund.AmountDonationTarget,
+                                   AmountDonateTarget = fund.AmountDonationTarget,
                                    PostTopic = post.PostTopic,
                                    OrganizationName = user.Company,
                                    Purpose = fundDetail.Purpose,
@@ -156,7 +156,7 @@ namespace esign.FundRaising
                                       Id = funPackage.Id,
                                       //Discount = funPackage.Discount,
                                       Commission = funPackage.Commission.ToString() + "%/giao dịch",
-                                      PaymentFee = funPackage.PaymentFee.ToString() + "VND",
+                                      PaymentFee = funPackage.PaymentFee,
                                       Description = funPackage.Description,
                                       Duration = funPackage.Duration,
                                       CreatedTime = funPackage.CreationTime
@@ -392,8 +392,8 @@ namespace esign.FundRaising
                 var bank = new BankAccount();
                 ObjectMapper.Map(input, bank);
                 bank.UserId = AbpSession.UserId;
-                bank.Balance = 200;
-                bank.Unit = "Coin";
+                bank.Balance = 1000000;
+                bank.Unit = "VND";
                 await _mstBankRepo.InsertAsync(bank);
             }
             else

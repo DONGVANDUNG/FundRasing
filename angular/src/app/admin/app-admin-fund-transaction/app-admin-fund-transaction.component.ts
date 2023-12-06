@@ -17,8 +17,7 @@ export class AppAdminFundTransactionComponent extends AppComponentBase implement
     @ViewChild("viewDetailTransaction")  viewDetail : ViewDetailTransactionComponent;
     columnDefsFundRaising;
     columnDefsTransaction;
-    typeOfReport = 0;
-    dateOfReport;
+    createdDate;
     rowDataFundRaising: any = [];
     rowDataTransaction: any = [];
     defaultColDef;
@@ -61,7 +60,8 @@ export class AppAdminFundTransactionComponent extends AppComponentBase implement
     constructor(
         injector: Injector,
         private fundRaising: AdminFundRaisingServiceProxy,
-        private dataFormatService: DataFormatService
+        private dataFormatService: DataFormatService,
+        private adminFundRaising :AdminFundRaisingServiceProxy
         // private dataFormatService: DataFormatService
     ) {
         super(injector);
@@ -101,22 +101,23 @@ export class AppAdminFundTransactionComponent extends AppComponentBase implement
             {
                 headerName: this.l('Mức donate'),
                 headerTooltip: this.l('Mức donate'),
-                field: 'amountOfMoney',
+                field: 'amountDonationTarget',
+                valueGetter: params => this.dataFormatService.moneyFormat(params.data.amountDonationTarget) + ' VND',
                 flex: 3,
+                cellClass: ['text-left'],
+            },
+            {
+                headerName: this.l('Ngày kết thúc quỹ'),
+                headerTooltip: this.l('Ngày kết thúc quỹ'),
+                field: 'fundEndDate',
+                valueGetter: params => this.dataFormatService.dateFormat(params.data.fundEndDate),
+                flex: 4,
                 cellClass: ['text-left'],
             },
             {
                 headerName: this.l('Trạng thái'),
                 headerTooltip: this.l('Trạng thái'),
                 field: 'status',
-                flex: 4,
-                cellClass: ['text-left'],
-            },
-            {
-                headerName: this.l('Ngày kết thúc quỹ'),
-                headerTooltip: this.l('Ngày kết thúc quỹ'),
-                field: 'fundFinishDay',
-                valueGetter: params => this.dataFormatService.dateFormat(params.data.fundFinishDay),
                 flex: 4,
                 cellClass: ['text-left'],
             },
@@ -149,6 +150,7 @@ export class AppAdminFundTransactionComponent extends AppComponentBase implement
                 headerName: this.l('Số tiền donate'),
                 headerTooltip: this.l('Số tiền donate'),
                 field: 'amount',
+                valueGetter: params => this.dataFormatService.moneyFormat(params.data.amount) + " VND",
                 flex: 3,
                 cellClass: ['text-left'],
             },
@@ -185,36 +187,37 @@ export class AppAdminFundTransactionComponent extends AppComponentBase implement
     ngOnInit() {
         this.paginationParamsFundRaising = { pageNum: 1, pageSize: 20, totalCount: 0 };
         this.onGridReadyFundRaising(this.paginationParamsFundRaising);
-
         this.paginationParamsTransaction = { pageNum: 1, pageSize: 20, totalCount: 0 };
-        //this.onGridReadyTransaction(this.paginationParamsTransaction);
     }
     callBackGridFundRaising(params) {
         this.paramsFundRaising = params;
         this.paramsFundRaising.api.paginationSetPageSize(this.paginationParamsFundRaising.pageSize);
     }
-
+    changePageFundRaising(paginationParams){
+        this.onGridReadyFundRaising(paginationParams)
+    }
     onGridReadyFundRaising(paginationParams) {
         this.rowDataFundRaising = [];
         this.paginationParamsFundRaising = paginationParams;
         this.paginationParamsFundRaising.skipCount = (paginationParams.pageNum - 1) * paginationParams.pageSize;
         this.maxResultCountFundRaising = paginationParams.pageSize;
-        // this.getAllFundRaising(this.paginationParamsFundRaising).subscribe((result) => {
-        //     this.rowDataFundRaising = result.items;
-        //     this.paginationParamsFundRaising.totalPage = ceil(result.totalCount / this.maxResultCountFundRaising);
-        //     this.paginationParamsFundRaising.totalCount = result.totalCount;
-        //     this.paramsFundRaising.api.setRowData(this.rowDataFundRaising);
-        //     this.selectedFundRaising = null;
-        //     this.onGridReadyTransaction(this.paginationParamsTransaction);
-        // });
+        this.getAllFundRaising(this.paginationParamsFundRaising).subscribe((result) => {
+            this.rowDataFundRaising = result.items;
+            this.paginationParamsFundRaising.totalPage = ceil(result.totalCount / this.maxResultCountFundRaising);
+            this.paginationParamsFundRaising.totalCount = result.totalCount;
+            this.paramsFundRaising.api.setRowData(this.rowDataFundRaising);
+            this.selectedFundRaising = null;
+            this.onGridReadyTransaction(this.paginationParamsTransaction);
+        });
     }
-    // getAllFundRaising(paginationParams: PaginationParamsModel) {
-    //     return this.fundRaising.getListFundRaising(
-    //         this.sorting ?? null,
-    //         paginationParams ? paginationParams.skipCount : 0,
-    //         paginationParams ? paginationParams.pageSize : 20
-    //     );
-    // }
+    getAllFundRaising(paginationParams: PaginationParamsModel) {
+        return this.adminFundRaising.getListFundRaising(
+            this.createdDate,
+            this.sorting ?? null,
+            paginationParams ? paginationParams.skipCount : 0,
+            paginationParams ? paginationParams.pageSize : 20
+        );
+    }
     onChangeSelectionFundRaising(paginationParams) {
         const selected = paginationParams.api.getSelectedRows()[0];
         if (selected) {
@@ -222,23 +225,23 @@ export class AppAdminFundTransactionComponent extends AppComponentBase implement
             this.onGridReadyTransaction(this.paginationParamsTransaction);
         }
     }
-    // callBackGridTransaction(params) {
-    //     this.paramsTransaction = params;
-    //     this.paramsTransaction.api.paginationSetPageSize(this.paginationParamsTransaction.pageSize);
-    //     this.onGridReadyTransaction(this.paginationParamsTransaction);
-    // }
+    callBackGridTransaction(params) {
+        this.paramsTransaction = params;
+        this.paramsTransaction.api.paginationSetPageSize(this.paginationParamsTransaction.pageSize);
+        this.onGridReadyTransaction(this.paginationParamsTransaction);
+    }
     onGridReadyTransaction(paginationParams) {
         this.rowDataTransaction = [];
         this.paginationParamsTransaction = paginationParams;
         this.paginationParamsTransaction.skipCount = (paginationParams.pageNum - 1) * paginationParams.pageSize;
         this.maxResultCountTransaction = paginationParams.pageSize;
-        // this.getAllTransaction(this.paginationParamsTransaction).subscribe((result) => {
-        //     this.rowDataTransaction = result;
-        //     this.paginationParamsTransaction.totalPage = ceil(result.totalCount / this.maxResultCountTransaction);
-        //     this.paginationParamsTransaction.totalCount = result.totalCount;
-        //     this.paramsTransaction.api.setRowData(this.rowDataTransaction);
-        //     this.selectedTransaction = null;
-        // });
+        this.getAllTransaction(this.paginationParamsTransaction).subscribe((result) => {
+            this.rowDataTransaction = result.items;
+            this.paginationParamsTransaction.totalPage = ceil(result.totalCount / this.maxResultCountTransaction);
+            this.paginationParamsTransaction.totalCount = result.totalCount;
+            this.paramsTransaction.api.setRowData(this.rowDataTransaction);
+            // this.selectedTransaction = null;
+        });
     }
     eventEnter(event) {
         if (event.keyCode === 13) {
@@ -249,14 +252,17 @@ export class AppAdminFundTransactionComponent extends AppComponentBase implement
     onChangeFilterShown() {
         this.advancedFiltersAreShown = !this.advancedFiltersAreShown
     }
+    changePageFundTransaction(paginationParamsTransaction){
+        this.onChangeSelectionTransaction(paginationParamsTransaction)
+    }
 
     getAllTransaction(paginationParams: PaginationParamsModel) {
-        // return this.fundRaising.getListTransactionForFund(
-        //     this.selectedFundRaising,
-        //     this.sorting ?? null,
-        //     paginationParams ? paginationParams.skipCount : 0,
-        //     paginationParams ? paginationParams.pageSize : 20
-        // );
+        return this.adminFundRaising.getListTransactionForFund(
+            this.selectionFundRaising,
+            this.sorting ?? null,
+            paginationParams ? paginationParams.skipCount : 0,
+            paginationParams ? paginationParams.pageSize : 20
+        );
     }
     onChangeSelectionTransaction(paginationParams) {
         const selected = paginationParams.api.getSelectedRows()[0];
@@ -266,6 +272,7 @@ export class AppAdminFundTransactionComponent extends AppComponentBase implement
     }
     search() {
         this.onGridReadyFundRaising(this.paginationParamsFundRaising);
+        this.onChangeSelectionTransaction(this.paginationParamsTransaction);
     }
     clearValueFilter() {
         this.onGridReadyFundRaising(this.paginationParamsFundRaising);

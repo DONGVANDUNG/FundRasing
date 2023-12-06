@@ -7,6 +7,7 @@ using esign.Enitity;
 using esign.Entity;
 using esign.FundRaising.Admin;
 using esign.FundRaising.Admin.Dto;
+using esign.FundRaising.FundRaiserService;
 using esign.FundRaising.FundRaiserService.Dto;
 using esign.FundRaising.SendEmail;
 using esign.FundRaising.SendEmail.Dto;
@@ -109,29 +110,26 @@ namespace esign.FundRaising
                 result);
         }
 
-        public async Task<PagedResultDto<GetFundRaisingViewForAdminDto>> getListFundRaising(FundRaisingInputDto input)
+        public async Task<PagedResultDto<GetListFundRaisingDto>> getListFundRaising(FundRaisingInputDto input)
         {
-            var listFundRaising = from fundRaising in _mstSleFundRepo.GetAll().Where(e => input.Filter == null || e.FundTitle.Contains(input.Filter)
-                                   || e.FundName.Contains(input.Filter))
-                                   .Where(e => input.IsPayFee == null || e.IsPayFee == input.IsPayFee)
+            var listFundRaising = from fundRaising in _mstSleFundRepo.GetAll()
                                    .Where(e => input.CreatedDate == null || e.FundRaisingDay == input.CreatedDate)
-                                  select new GetFundRaisingViewForAdminDto
+                                   join user in _mstSleUserRepo.GetAll()
+                                   on fundRaising.UserId equals user.Id
+                                  select new GetListFundRaisingDto
                                   {
-                                      //Id = (int)fundRaising.Id,
-                                      //FundName = fundRaising.FundName,
-                                      //FundFinishDay = fundRaising.FundRaisingDay,
-                                      //FundRaisingDay = fundRaising.FundRaisingDay,
-                                      //AmountOfMoney = fundRaising.AmountOfMoney,
-                                      //Status = fundRaising.Status == 3 ? "Đã đóng" : "Đang hoạt động",
-                                      //ListImageUrl = _mstSleFundImageRepo.GetAll().Where(e => e.FundId == fundRaising.Id).Select(e => e.ImageUrl).ToList(),
-                                      //FundStartDate = fundRaising.FundRaisingDay,
-                                      //FundTitle = fundRaising.FundTitle,
-                                      Unit = "Coin"
+                                      Id = fundRaising.Id,
+                                      FundName = fundRaising.FundName,
+                                      FundRaisingDay = fundRaising.FundRaisingDay,
+                                      FundEndDate = fundRaising.FundEndDate,
+                                      AmountDonationTarget = fundRaising.AmountDonationTarget,
+                                      Status = fundRaising.Status == 1 ? "Đang hoạt động" : "Đã đóng",
+                                      FundRaiser = user.Surname +" "+ user.Name
                                   };
 
             var totalCount = await listFundRaising.CountAsync();
             var result = await listFundRaising.PageBy(input).ToListAsync();
-            return new PagedResultDto<GetFundRaisingViewForAdminDto>(
+            return new PagedResultDto<GetListFundRaisingDto>(
                totalCount,
                result);
         }
@@ -139,7 +137,7 @@ namespace esign.FundRaising
         public async Task<PagedResultDto<TransactionOfFundForDto>> getListTransactionForFund(TransactionForFundInputDto input)
         {
             var listTransaction = from transaction in _mstSleTransactionRepo.GetAll().Where(e => e.FundId == input.FundId)
-                                  join user in _mstSleUserRepo.GetAll() on transaction.Sender equals user.Email
+                                  join user in _mstSleUserRepo.GetAll() on transaction.UserId equals user.Id
                                   join fund in _mstSleFundRepo.GetAll() on transaction.FundId equals fund.Id
                                   select new TransactionOfFundForDto
                                   {
@@ -177,7 +175,7 @@ namespace esign.FundRaising
                                   {
                                       Id = funPackage.Id,
                                       //Discount = funPackage.Discount,
-                                      PaymentFee = funPackage.PaymentFee.ToString() + "VND",
+                                      PaymentFee = funPackage.PaymentFee,
                                       Description = funPackage.Description,
                                       Duration = funPackage.Duration,
                                       CreatedTime = funPackage.CreationTime,
@@ -313,5 +311,6 @@ namespace esign.FundRaising
             }
 
         }
+
     }
 }
