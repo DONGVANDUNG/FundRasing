@@ -1,4 +1,4 @@
-import { CreateOrEditFundRaisingDto, CreateOrEditFundRaisingInputDto } from './../../../../shared/service-proxies/service-proxies';
+import { CreateOrEditFundRaisingDto, CreateOrEditFundRaisingInputDto, GetInforFileDto } from './../../../../shared/service-proxies/service-proxies';
 import { Component, EventEmitter, Injector, Output, ViewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { FundRaiserServiceProxy } from '@shared/service-proxies/service-proxies';
@@ -21,6 +21,8 @@ export class CreateOrEditPostComponent extends AppComponentBase {
     isLoading;
     text;
     uploadedFiles: any[] = [];
+    fileList: File[];
+    file: File;
     // input: {
     //     file: FileParameter[],
     //     postTitle: string,
@@ -36,10 +38,11 @@ export class CreateOrEditPostComponent extends AppComponentBase {
     //         purpose: null,
     //         note: null,
     //     };
-    input : CreateOrEditFundRaisingInputDto = new CreateOrEditFundRaisingInputDto();
+    input: CreateOrEditFundRaisingInputDto = new CreateOrEditFundRaisingInputDto();
     selectedCity;
     fundId;
     startDate;
+    postId;
     listImage;
     endingDate;
     amountOfMoney;
@@ -53,9 +56,20 @@ export class CreateOrEditPostComponent extends AppComponentBase {
     constructor(injector: Injector, private _fundRaiser: FundRaiserServiceProxy) {
         super(injector)
     }
-    show(fundId?) {
-        this.input.fundId = fundId;
-        this.input.file = [];
+    show(postId?) {
+        this.postId = postId;
+        this.uploadedFiles = [];
+        // if (postId) {
+        //     this._fundRaiser.getForEditPost(postId).subscribe(result => {
+        //         this.input = result
+        //         this.input.file.forEach(image => {
+        //             const uint8Array = new Uint8Array(image.size);
+        //             this.file = new File([new Blob([uint8Array], { type: 'image/png' })], image.imageUrl.slice(8, image.imageUrl.length));
+        //             this.uploadedFiles.push(this.file);
+        //         })
+        //         console.log(this.uploadedFiles)
+        //     })
+        // }
         this.modal.show();
         // this.input = {
         //     file: [],
@@ -124,9 +138,13 @@ export class CreateOrEditPostComponent extends AppComponentBase {
         this.modal.hide();
     }
     onUpload(event: UploadEvent) {
-        for (let file of event.files) {
-            this.input.file.push(file.name);
-        }
+        // for (let file of event.files) {
+        //     var image = new GetInforFileDto();
+        //     image.imageUrl = file.name;
+        //     image.size = file.size;
+        //     this.input.file.push(image);
+        //     this.uploadedFiles.push(file);
+        // }
     }
     save() {
         this._fundRaiser.createPostOfFundRaising(

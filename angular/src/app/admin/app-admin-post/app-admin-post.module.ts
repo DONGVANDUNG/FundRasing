@@ -7,12 +7,13 @@ import { AdminSharedModule } from '../shared/admin-shared.module';
 import { CarouselModule } from 'primeng/carousel';
 import { AccordionModule } from 'primeng/accordion';
 import { SliderModule } from 'primeng/slider';
+import { UploadComponent } from '../p-fileupload/upload-image.component';
 
 @NgModule({
   imports: [
     CarouselModule,
     CommonModule,AppAdminPostRoutingModule,AdminSharedModule,AccordionModule,SliderModule,
   ],
-  declarations: [AppAdminPostComponent,CreateOrEditPostComponent]
+  declarations: [AppAdminPostComponent,CreateOrEditPostComponent,UploadComponent]
 })
 export class AppAdminPostModule { }

@@ -25,7 +25,7 @@
                     </div>
                     <div class="col-4 d-flex align-items-center">
                         <label class="label">Chủ đề bài đăng:</label>
-                        <input type="text"  [(ngModel)]="input.postTopic" class="input">
+                        <input type="text" [(ngModel)]="input.postTopic" class="input">
                     </div>
                 </div>
                 <div class="row d-flex justify-content-between mb-5">
@@ -47,7 +47,7 @@
                                 <input type="file" [(ngModel)]="input.file" id="images" class="input" multiple
                                     [ngModelOptions]="{standalone: true}" (change)="previewImages($event)">
                             </form> -->
-                        <p-fileUpload name="demo[]" (onSelect)="onUpload($event)" [multiple]="true" accept="image/*"
+                        <!-- <p-fileUpload name="demo[]" (onSelect)="onUpload($event)" [multiple]="true" accept="image/*"
                             maxFileSize="1000000">
                             <ng-template pTemplate="content">
                                 <ul *ngIf="uploadedFiles.length">
@@ -55,9 +55,20 @@
                                     </li>
                                 </ul>
                             </ng-template>
-                        </p-fileUpload>
+                        </p-fileUpload> -->
+                        <p-upload></p-upload>
                     </div>
                 </div>
+                <!-- <div class="row" *ngIf="postId">
+                    <form action="/upload" method="post" enctype="multipart/form-data" class="d-flex"
+                        id="form-add-image">
+                        <input type="file" [(ngModel)]="input.file" id="images" class="input" multiple
+                            [ngModelOptions]="{standalone: true}" (change)="previewImages($event)">
+                    </form>
+                </div> -->
+                <!-- <div class="row">
+                    <div class="list-image" *ngFor=""></div>
+                </div> -->
             </div>
         </div>
     </div>

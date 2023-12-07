@@ -65,7 +65,7 @@ export class AppAdminAuctionComponent extends AppComponentBase implements OnInit
                 cellRenderer: params => params.rowIndex + (this.paginationParams.pageNum! - 1) * this.paginationParams.pageSize! + 1,
                 field: 'no',
                 cellClass: ['text-left'],
-                minWidth: 50,
+                width: 50,
             },
             // {
             //     headerName: this.l('Tiêu đề bài đăng'),
@@ -94,7 +94,7 @@ export class AppAdminAuctionComponent extends AppComponentBase implements OnInit
                 headerTooltip: this.l('Bước nhảy tối thiểu'),
                 field: 'amountJumpMin',
                 valueGetter: params => this.dataFormatService.moneyFormat(params.data.amountJumpMin) +" VND",
-                width: 200,
+                width: 150,
                 cellClass: ['text-left'],
             },
             {
@@ -102,7 +102,7 @@ export class AppAdminAuctionComponent extends AppComponentBase implements OnInit
                 headerTooltip: this.l('Bước nhảy tối đa'),
                 field: 'amountJumpMax',
                 valueGetter: params => this.dataFormatService.moneyFormat(params.data.amountJumpMax) +" VND",
-                width: 200,
+                width: 150,
                 cellClass: ['text-left'],
             },
             {
@@ -110,7 +110,7 @@ export class AppAdminAuctionComponent extends AppComponentBase implements OnInit
                 headerTooltip: this.l('Giá khởi điểm'),
                 field: 'startingPrice',
                 valueGetter: params => this.dataFormatService.moneyFormat(params.data.startingPrice) +" VND",
-                width: 180,
+                width: 150,
                 cellClass: ['text-left'],
             },
             {
@@ -118,7 +118,7 @@ export class AppAdminAuctionComponent extends AppComponentBase implements OnInit
                 headerTooltip: this.l('Giá hiện tại'),
                 field: 'auctionPresentAmount',
                 valueGetter: params => this.dataFormatService.moneyFormat(params.data.auctionPresentAmount) +" VND",
-                width: 180,
+                width: 150,
                 cellClass: ['text-left'],
             },
             {
@@ -126,7 +126,7 @@ export class AppAdminAuctionComponent extends AppComponentBase implements OnInit
                 headerTooltip: this.l('Ngày bắt đầu'),
                 field: 'startDate',
                 valueGetter: params => this.dataFormatService.dateFormat(params.data.startDate),
-                width: 180,
+                width: 130,
                 cellClass: ['text-left'],
             },
             {
@@ -134,19 +134,19 @@ export class AppAdminAuctionComponent extends AppComponentBase implements OnInit
                 headerTooltip: this.l('Ngày kết thúc'),
                 field: 'endDate',
                 valueGetter: params => this.dataFormatService.dateFormat(params.data.endDate),
-                width: 180,
+                width: 130,
                 cellClass: ['text-left'],
             },
             {
                 headerName: this.l('Trạng thái'),
                 headerTooltip: this.l('Trạng thái'),
                 field: 'status',
-                width: 180,
+                width: 130,
                 cellClass: ['text-left'],
             },
         ];
         this.defaultColDef = {
-            flex: 1,
+            minwidth:100,
             floatingFilter: false,
             filter: 'agTextColumnFilter',
             resizable: true,

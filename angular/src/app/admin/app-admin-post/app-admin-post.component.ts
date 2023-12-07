@@ -15,7 +15,6 @@ import { CreateOrEditFundraisingComponent } from '../app-admin-fundraising/creat
 export class AppAdminPostComponent extends AppComponentBase implements OnInit {
 
     @ViewChild("createOrEditPost") modalCreatePost: CreateOrEditPostComponent;
-    @ViewChild("createOrEditFund") modalCreateFund: CreateOrEditFundraisingComponent;
     columnDefs;
     columnPostDefs;
     dateOfReport;
@@ -40,7 +39,7 @@ export class AppAdminPostComponent extends AppComponentBase implements OnInit {
         { label: 'Năm', value: 'Năm' },
 
     ]
-    selectedFund;
+    seletedPost;
     sideBar = {
         toolPanels: [
             {
@@ -193,14 +192,14 @@ export class AppAdminPostComponent extends AppComponentBase implements OnInit {
     onChangeSelection(paginationParams) {
         const selected = paginationParams.api.getSelectedRows()[0];
         if (selected) {
-            this.selectedFund = selected.id;
+            this.seletedPost = selected.id;
         }
     }
     deleteFundPackage() {
         this.message.confirm('', this.l('AreYouSure'), (isConfirmed) => {
             if (isConfirmed) {
                 this._funRaiser
-                    .closeFundRaising(this.selectedFund)
+                    .closeFundRaising(this.seletedPost)
                     .subscribe(() => {
                         this.onGridReady(this.paginationParams);
                         this.notify.success(this.l('SuccessfullyDeleted'));
@@ -209,19 +208,14 @@ export class AppAdminPostComponent extends AppComponentBase implements OnInit {
         })
     }
     createPost() {
-        // if(!this.selectedFund){
-        //     this.notify.warn("Vui lòng chọn một bản ghi gây quỹ");
-        //     return;
-        // }
-        this.modalCreatePost.show(this.selectedFund);
+        this.modalCreatePost.show();
     }
-    createFund(){
-        this.modalCreateFund.show()
-    }
-    editFund(){
-        this.modalCreateFund.show(this.selectedFund)
-    }
-    editPost(){
 
+    editPost(){
+        if(!this.seletedPost){
+            this.notify.warn("Vui lòng chọn một bản ghi bài đăng");
+            return;
+        }
+        this.modalCreatePost.show(this.seletedPost)
     }
 }

@@ -6148,6 +6148,62 @@ export class FundRaiserServiceProxy {
     }
 
     /**
+     * @param postId (optional) 
+     * @return Success
+     */
+    getForEditPost(postId: number | undefined): Observable<CreateOrEditFundRaisingInputDto> {
+        let url_ = this.baseUrl + "/api/services/app/FundRaiser/getForEditPost?";
+        if (postId === null)
+            throw new Error("The parameter 'postId' cannot be null.");
+        else if (postId !== undefined)
+            url_ += "postId=" + encodeURIComponent("" + postId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetForEditPost(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetForEditPost(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<CreateOrEditFundRaisingInputDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<CreateOrEditFundRaisingInputDto>;
+        }));
+    }
+
+    protected processGetForEditPost(response: HttpResponseBase): Observable<CreateOrEditFundRaisingInputDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = CreateOrEditFundRaisingInputDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param body (optional) 
      * @return Success
      */
@@ -20013,6 +20069,7 @@ export class CreateOrEditFundRaisingDto implements ICreateOrEditFundRaisingDto {
     fundName!: string | undefined;
     fundEndDate!: DateTime | undefined;
     amountDonationTarget!: number | undefined;
+    listImage!: string[] | undefined;
 
     constructor(data?: ICreateOrEditFundRaisingDto) {
         if (data) {
@@ -20030,6 +20087,11 @@ export class CreateOrEditFundRaisingDto implements ICreateOrEditFundRaisingDto {
             this.fundName = _data["fundName"];
             this.fundEndDate = _data["fundEndDate"] ? DateTime.fromISO(_data["fundEndDate"].toString()) : <any>undefined;
             this.amountDonationTarget = _data["amountDonationTarget"];
+            if (Array.isArray(_data["listImage"])) {
+                this.listImage = [] as any;
+                for (let item of _data["listImage"])
+                    this.listImage!.push(item);
+            }
         }
     }
 
@@ -20047,6 +20109,11 @@ export class CreateOrEditFundRaisingDto implements ICreateOrEditFundRaisingDto {
         data["fundName"] = this.fundName;
         data["fundEndDate"] = this.fundEndDate ? this.fundEndDate.toString() : <any>undefined;
         data["amountDonationTarget"] = this.amountDonationTarget;
+        if (Array.isArray(this.listImage)) {
+            data["listImage"] = [];
+            for (let item of this.listImage)
+                data["listImage"].push(item);
+        }
         return data;
     }
 }
@@ -20057,11 +20124,12 @@ export interface ICreateOrEditFundRaisingDto {
     fundName: string | undefined;
     fundEndDate: DateTime | undefined;
     amountDonationTarget: number | undefined;
+    listImage: string[] | undefined;
 }
 
 export class CreateOrEditFundRaisingInputDto implements ICreateOrEditFundRaisingInputDto {
     fundId!: number | undefined;
-    file!: string[] | undefined;
+    file!: GetInforFileDto[] | undefined;
     postTitle!: string | undefined;
     targetIntroduce!: string | undefined;
     postTopic!: string | undefined;
@@ -20083,7 +20151,7 @@ export class CreateOrEditFundRaisingInputDto implements ICreateOrEditFundRaising
             if (Array.isArray(_data["file"])) {
                 this.file = [] as any;
                 for (let item of _data["file"])
-                    this.file!.push(item);
+                    this.file!.push(GetInforFileDto.fromJS(item));
             }
             this.postTitle = _data["postTitle"];
             this.targetIntroduce = _data["targetIntroduce"];
@@ -20106,7 +20174,7 @@ export class CreateOrEditFundRaisingInputDto implements ICreateOrEditFundRaising
         if (Array.isArray(this.file)) {
             data["file"] = [];
             for (let item of this.file)
-                data["file"].push(item);
+                data["file"].push(item.toJSON());
         }
         data["postTitle"] = this.postTitle;
         data["targetIntroduce"] = this.targetIntroduce;
@@ -20119,7 +20187,7 @@ export class CreateOrEditFundRaisingInputDto implements ICreateOrEditFundRaising
 
 export interface ICreateOrEditFundRaisingInputDto {
     fundId: number | undefined;
-    file: string[] | undefined;
+    file: GetInforFileDto[] | undefined;
     postTitle: string | undefined;
     targetIntroduce: string | undefined;
     postTopic: string | undefined;
@@ -24234,6 +24302,46 @@ export class GetIncomeStatisticsDataOutput implements IGetIncomeStatisticsDataOu
 
 export interface IGetIncomeStatisticsDataOutput {
     incomeStatistics: IncomeStastistic[] | undefined;
+}
+
+export class GetInforFileDto implements IGetInforFileDto {
+    imageUrl!: string | undefined;
+    size!: number | undefined;
+
+    constructor(data?: IGetInforFileDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.imageUrl = _data["imageUrl"];
+            this.size = _data["size"];
+        }
+    }
+
+    static fromJS(data: any): GetInforFileDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetInforFileDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["imageUrl"] = this.imageUrl;
+        data["size"] = this.size;
+        return data;
+    }
+}
+
+export interface IGetInforFileDto {
+    imageUrl: string | undefined;
+    size: number | undefined;
 }
 
 export class GetInformationFundRaiserDto implements IGetInformationFundRaiserDto {

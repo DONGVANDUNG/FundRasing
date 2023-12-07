@@ -13,5 +13,6 @@ namespace esign.Enitity
     {
         public long PostId { get; set; }
         public string ImageUrl { get; set; }
+        public int? Size { get; set; }
     }
 }
