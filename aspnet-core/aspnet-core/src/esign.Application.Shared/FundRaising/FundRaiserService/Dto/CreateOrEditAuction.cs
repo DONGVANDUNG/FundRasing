@@ -13,5 +13,6 @@ namespace esign.FundRaising.FundRaiserService.Dto
         public float? AmountTargetOfMoney { get; set; }
         public bool? IsPublic { get; set; }
         public int?  LimitedOfNumber { get; set; }
+        public List<string> ListImage { get; set; }
     }
 }

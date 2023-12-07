@@ -112,8 +112,7 @@ namespace esign.FundRaising
                 {
                     FundImage fundImage = new FundImage();
                     fundImage.PostId = postId;
-                    fundImage.ImageUrl = Path.Combine("uploads", image.ImageUrl);
-                    fundImage.Size = image.Size;
+                    fundImage.ImageUrl = Path.Combine("uploads", image);
                     await _mstSleFundImageRepo.InsertAsync(fundImage);
                 }
                 //if (input.File.Count() > 0)
@@ -154,12 +153,7 @@ namespace esign.FundRaising
             var post = await _mstFundRaiserPostRepo.FirstOrDefaultAsync(e => e.Id == postId);
             var postResultResponse = new CreateOrEditFundRaisingInputDto();
             ObjectMapper.Map(post, postResultResponse);
-            postResultResponse.File = await _mstSleFundImageRepo.GetAll().Where(e => e.PostId == postId).Select(re => new GetInforFileDto
-            {
-                ImageUrl = re.ImageUrl,
-                Size = re.Size
-            }
-            ).ToListAsync();
+            postResultResponse.File = await _mstSleFundImageRepo.GetAll().Where(e => e.PostId == postId).Select(re => re.ImageUrl).ToListAsync();
             return postResultResponse;
         }
 
@@ -184,9 +178,9 @@ namespace esign.FundRaising
         }
         public void UpdateFundRaising(CreateOrEditFundRaisingDto input)
         {
-            var fundRaising = _mstSleFundRepo.FirstOrDefault(e => e.Id == input.Id);
-            var postFund = _mstFundRaiserPostRepo.FirstOrDefault(e => e.FundId == input.Id);
-            if (postFund != null)
+            var fundRaising =  _mstSleFundRepo.FirstOrDefault(e => e.Id == input.Id);
+            var postFund = _mstFundRaiserPostRepo.GetAll().Where(e => e.FundId == input.Id);
+            if (postFund.Count() > 0)
             {
                 throw new UserFriendlyException("Không thể sửa do quỹ đang được kêu gọi");
             }
