@@ -98,11 +98,10 @@ namespace esign.FundRaising
             try
             {
                 FundRaiserPost post = new FundRaiserPost();
-                post.FundId = input.FundId;
+                post.FundId = (long)input.FundId;
                 post.PostTitle = input.PostTitle;
                 post.UserId = AbpSession.UserId;
                 post.TargetIntroduce = input.TargetIntroduce;
-                post.Note = input.Note;
                 post.PostTopic = input.PostTopic;
                 post.IsClose = false;
                 post.Purpose = input.Purpose;
@@ -112,7 +111,8 @@ namespace esign.FundRaising
                 {
                     FundImage fundImage = new FundImage();
                     fundImage.PostId = postId;
-                    fundImage.ImageUrl = Path.Combine("uploads", image);
+                    fundImage.ImageUrl = Path.Combine("uploads", image.ImageUrl);
+                    fundImage.Size = image.Size;
                     await _mstSleFundImageRepo.InsertAsync(fundImage);
                 }
                 //if (input.File.Count() > 0)
@@ -148,12 +148,60 @@ namespace esign.FundRaising
             }
         }
 
+        public async Task UpdatePostOfFundRaising(CreateOrEditFundRaisingInputDto input)
+        {
+            var post = await _mstFundRaiserPostRepo.FirstOrDefaultAsync(e => e.Id == input.Id);
+            if (post != null)
+            {
+                post.PostTitle = input.PostTitle;
+                post.TargetIntroduce = input.TargetIntroduce;
+                post.PostTopic = input.PostTopic;
+                post.Purpose = input.Purpose;
+                await _mstFundRaiserPostRepo.UpdateAsync(post);
+            }
+            var listImagePost = await _mstSleFundImageRepo.GetAll().Where(e => e.PostId == input.Id).Select(re => re.Id).ToListAsync();
+            foreach (var imagePost in input.File)
+            {
+                if (imagePost.Id == null)
+                {
+                    FundImage fundImage = new FundImage();
+                    fundImage.PostId = input.Id;
+                    fundImage.ImageUrl = Path.Combine("uploads", imagePost.ImageUrl);
+                    fundImage.Size = imagePost.Size;
+                    await _mstSleFundImageRepo.InsertAsync(fundImage);
+                   // input.File?.Remove(imagePost);
+                }
+            }
+            foreach (var imagePost in listImagePost)
+            {
+                bool check = false;
+                foreach (var imageInput in input?.File)
+                {
+                    if (imageInput.Id == imagePost)
+                    {
+                        check = true;
+                        break;
+                    };
+                }
+                if (check == false)
+                {
+                    await _mstSleFundImageRepo.DeleteAsync(imagePost);
+                }
+            }
+        }
+
         public async Task<CreateOrEditFundRaisingInputDto> getForEditPost(long? postId)
         {
             var post = await _mstFundRaiserPostRepo.FirstOrDefaultAsync(e => e.Id == postId);
             var postResultResponse = new CreateOrEditFundRaisingInputDto();
             ObjectMapper.Map(post, postResultResponse);
-            postResultResponse.File = await _mstSleFundImageRepo.GetAll().Where(e => e.PostId == postId).Select(re => re.ImageUrl).ToListAsync();
+            postResultResponse.File = await _mstSleFundImageRepo.GetAll().Where(e => e.PostId == postId).Select(re => new GetInforFileDto
+            {
+                Id = re.Id,
+                ImageUrl = re.ImageUrl,
+                Size = re.Size
+
+            }).ToListAsync();
             return postResultResponse;
         }
 
@@ -178,7 +226,7 @@ namespace esign.FundRaising
         }
         public void UpdateFundRaising(CreateOrEditFundRaisingDto input)
         {
-            var fundRaising =  _mstSleFundRepo.FirstOrDefault(e => e.Id == input.Id);
+            var fundRaising = _mstSleFundRepo.FirstOrDefault(e => e.Id == input.Id);
             var postFund = _mstFundRaiserPostRepo.GetAll().Where(e => e.FundId == input.Id);
             if (postFund.Count() > 0)
             {
@@ -218,7 +266,6 @@ namespace esign.FundRaising
                            {
                                Id = post.Id,
                                TargetIntroduce = post.TargetIntroduce,
-                               Note = post.Note,
                                PostTitle = post.PostTitle,
                                PostTopic = post.PostTopic,
                                Purpose = post.Purpose
@@ -451,6 +498,16 @@ namespace esign.FundRaising
             return new PagedResultDto<GetListPostByFundRaisingDto>(
                 totalCount,
                 result);
+        }
+        public List<GetListComboboxDto> getListFundName()
+        {
+            var listFundRaising = from fund in _mstSleFundRepo.GetAll().Where(e => e.Status == 1)
+                                  select new GetListComboboxDto
+                                  {
+                                      Id = fund.Id,
+                                      Name = fund.FundName
+                                  };
+            return listFundRaising.ToList();
         }
     }
 }

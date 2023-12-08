@@ -1,5 +1,6 @@
 import { CreateOrEditFundRaisingDto, CreateOrEditFundRaisingInputDto, GetInforFileDto } from './../../../../shared/service-proxies/service-proxies';
 import { Component, EventEmitter, Injector, Output, ViewChild } from '@angular/core';
+import { UploadComponent } from '@app/admin/p-fileupload/upload-image.component';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { FundRaiserServiceProxy } from '@shared/service-proxies/service-proxies';
 import { error } from 'console';
@@ -17,71 +18,75 @@ interface UploadEvent {
 })
 export class CreateOrEditPostComponent extends AppComponentBase {
     @ViewChild("createOrEditModal", { static: true }) modal: ModalDirective;
+    @ViewChild("uploadImage", { static: true }) modalUpload: UploadComponent;
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
     isLoading;
     text;
-    uploadedFiles: any[] = [];
+    uploadedFiles = [];
     fileList: File[];
     file: File;
-    // input: {
-    //     file: FileParameter[],
-    //     postTitle: string,
-    //     targetIntroduce: string,
-    //     postTopic: string,
-    //     purpose: string,
-    //     note: string,
-    // } = {
-    //         file: [],
-    //         postTitle: null,
-    //         targetIntroduce: null,
-    //         postTopic: null,
-    //         purpose: null,
-    //         note: null,
-    //     };
-    input: CreateOrEditFundRaisingInputDto = new CreateOrEditFundRaisingInputDto();
+    input: CreateOrEditFundRaisingInputDto = new CreateOrEditFundRaisingInputDto;
     selectedCity;
     fundId;
     startDate;
     postId;
-    listImage;
+    listFund = [];
+    listImage = [];
+
     endingDate;
     amountOfMoney;
+    listTopic = [
+        { label: "Trẻ em", value: "Trẻ em" },
+        { label: "Giáo dục", value: "Giáo dục" },
+        { label: "Hoàn cảnh khó khăn", value: "Hoàn cảnh khó khăn" },
+        { label: "Trẻ em", value: "Trẻ em" },
+        { label: "Y Tế", value: "Y Tế" },
+        { label: "Cộng đồng", value: "Cộng đồng" },
+    ];
     listOption = [{
         code: true, name: 'Có'
     }, {
         code: false, name: 'Không'
-    }]
+    }];
     date = moment(new Date());
     saving
     constructor(injector: Injector, private _fundRaiser: FundRaiserServiceProxy) {
         super(injector)
     }
     show(postId?) {
+        this._fundRaiser.getListFundName().subscribe(result => {
+            result.forEach(item => {
+                this.listFund.push({ label: item.name, value: item.id })
+            })
+        })
+        this.listFund = [];
         this.postId = postId;
         this.uploadedFiles = [];
-        // if (postId) {
-        //     this._fundRaiser.getForEditPost(postId).subscribe(result => {
-        //         this.input = result
-        //         this.input.file.forEach(image => {
-        //             const uint8Array = new Uint8Array(image.size);
-        //             this.file = new File([new Blob([uint8Array], { type: 'image/png' })], image.imageUrl.slice(8, image.imageUrl.length));
-        //             this.uploadedFiles.push(this.file);
-        //         })
-        //         console.log(this.uploadedFiles)
-        //     })
-        // }
+        if (postId) {
+            this._fundRaiser.getForEditPost(postId).subscribe(result => {
+                this.input = result;
+                this.input.file.forEach(image => {
+                    image.imageUrl = image.imageUrl.slice(8, image.imageUrl.length)
+                })
+            })
+        }
+        else {
+            this.input = new CreateOrEditFundRaisingInputDto();
+            this.input.file = [];
+        }
         this.modal.show();
-        // this.input = {
-        //     file: [],
-        //     fundName: null,
-        //     fundTitle: null,
-        //     amountOfMoney: null,
-        //     fundStartDate: null,
-        //     fundEndDate: null,
-        //     fundContent: null,
-        //     reasonCreateFund: null,
-        //     isPayFee: false,
-        // };
+    }
+    updateListImage(listImage) {
+        console.log(listImage);
+        this.input.file = [];
+        listImage.forEach(element => {
+            var node = new GetInforFileDto();
+            node.id = element.id;
+            node.imageUrl = element.imageUrl;
+            node.size = element.size;
+            this.input.file.push(node);
+        });
+
     }
     // previewImages(event) {
     //     this.input.file = [];
@@ -135,29 +140,62 @@ export class CreateOrEditPostComponent extends AppComponentBase {
     //     };
     // }
     close() {
+        this.postId = null;
+        this.modalUpload.clear();
         this.modal.hide();
     }
-    onUpload(event: UploadEvent) {
-        // for (let file of event.files) {
-        //     var image = new GetInforFileDto();
-        //     image.imageUrl = file.name;
-        //     image.size = file.size;
-        //     this.input.file.push(image);
-        //     this.uploadedFiles.push(file);
-        // }
-    }
     save() {
-        this._fundRaiser.createPostOfFundRaising(
-            this.input
-        ).subscribe(
-            () => {
-                this.notify.success("Thêm bài đăng quỹ thành công");
-                this.modalSave.emit(null);
+        if (!this.input.fundId) {
+            this.notify.warn("Vui lòng chọn quỹ");
+            return;
+        }
+        if (!this.input.postTopic) {
+            this.notify.warn("Vui lòng chủ đề bài đăng");
+            return;
+        }
+        if (!this.input.postTitle) {
+            this.notify.warn("Vui lòng tiêu đề bài đăng");
+            return;
+        }
+        if (!this.input.targetIntroduce) {
+            this.notify.warn("Vui nhập nội dung bài đăng");
+            return;
+        }
+        if (!this.input.purpose) {
+            this.notify.warn("Vui nhập mục đích gây quỹ");
+            return;
+        }
+        if (!this.input.file) {
+            this.notify.warn("Vui lòng chọn ảnh cho bài đăng");
+            return;
+        }
+        console.log(this.input);
+        if (!this.input.id) {
+            this._fundRaiser.createPostOfFundRaising(
+                this.input
+            ).subscribe(
+                () => {
+                    this.notify.success("Thêm bài đăng thành công");
+                    this.modalSave.emit(null);
 
-                this.modal.hide();
-            }, (error) => {
-                this.notify.error("Đã xảy ra lỗi")
-            })
+                    this.modal.hide();
+                }, (error) => {
+                    this.notify.error("Đã xảy ra lỗi")
+                })
+        }
+        else {
+            this._fundRaiser.updatePostOfFundRaising(
+                this.input
+            ).subscribe(
+                () => {
+                    this.notify.success("Thêm bài đăng thành công");
+                    this.modalSave.emit(null);
+
+                    this.modal.hide();
+                }, (error) => {
+                    this.notify.error("Đã xảy ra lỗi")
+                })
+        }
     }
     // onChangeDate(event, type) {
     //     if (type === 'start') {

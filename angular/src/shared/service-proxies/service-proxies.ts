@@ -6148,6 +6148,58 @@ export class FundRaiserServiceProxy {
     }
 
     /**
+     * @param body (optional) 
+     * @return Success
+     */
+    updatePostOfFundRaising(body: CreateOrEditFundRaisingInputDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/FundRaiser/UpdatePostOfFundRaising";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdatePostOfFundRaising(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdatePostOfFundRaising(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processUpdatePostOfFundRaising(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param postId (optional) 
      * @return Success
      */
@@ -7160,6 +7212,64 @@ export class FundRaiserServiceProxy {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result200 = PagedResultDtoOfGetListPostByFundRaisingDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    getListFundName(): Observable<GetListComboboxDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/FundRaiser/getListFundName";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetListFundName(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetListFundName(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GetListComboboxDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GetListComboboxDto[]>;
+        }));
+    }
+
+    protected processGetListFundName(response: HttpResponseBase): Observable<GetListComboboxDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(GetListComboboxDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -19955,6 +20065,7 @@ export class CreateOrEditAuction implements ICreateOrEditAuction {
     amountTargetOfMoney!: number | undefined;
     isPublic!: boolean | undefined;
     limitedOfNumber!: number | undefined;
+    listImage!: string[] | undefined;
 
     constructor(data?: ICreateOrEditAuction) {
         if (data) {
@@ -19974,6 +20085,11 @@ export class CreateOrEditAuction implements ICreateOrEditAuction {
             this.amountTargetOfMoney = _data["amountTargetOfMoney"];
             this.isPublic = _data["isPublic"];
             this.limitedOfNumber = _data["limitedOfNumber"];
+            if (Array.isArray(_data["listImage"])) {
+                this.listImage = [] as any;
+                for (let item of _data["listImage"])
+                    this.listImage!.push(item);
+            }
         }
     }
 
@@ -19993,6 +20109,11 @@ export class CreateOrEditAuction implements ICreateOrEditAuction {
         data["amountTargetOfMoney"] = this.amountTargetOfMoney;
         data["isPublic"] = this.isPublic;
         data["limitedOfNumber"] = this.limitedOfNumber;
+        if (Array.isArray(this.listImage)) {
+            data["listImage"] = [];
+            for (let item of this.listImage)
+                data["listImage"].push(item);
+        }
         return data;
     }
 }
@@ -20005,6 +20126,7 @@ export interface ICreateOrEditAuction {
     amountTargetOfMoney: number | undefined;
     isPublic: boolean | undefined;
     limitedOfNumber: number | undefined;
+    listImage: string[] | undefined;
 }
 
 export class CreateOrEditFundPackageDto implements ICreateOrEditFundPackageDto {
@@ -20129,12 +20251,12 @@ export interface ICreateOrEditFundRaisingDto {
 
 export class CreateOrEditFundRaisingInputDto implements ICreateOrEditFundRaisingInputDto {
     fundId!: number | undefined;
-    file!: GetInforFileDto[] | undefined;
     postTitle!: string | undefined;
     targetIntroduce!: string | undefined;
     postTopic!: string | undefined;
     purpose!: string | undefined;
-    note!: string | undefined;
+    file!: GetInforFileDto[] | undefined;
+    id!: number;
 
     constructor(data?: ICreateOrEditFundRaisingInputDto) {
         if (data) {
@@ -20148,16 +20270,16 @@ export class CreateOrEditFundRaisingInputDto implements ICreateOrEditFundRaising
     init(_data?: any) {
         if (_data) {
             this.fundId = _data["fundId"];
+            this.postTitle = _data["postTitle"];
+            this.targetIntroduce = _data["targetIntroduce"];
+            this.postTopic = _data["postTopic"];
+            this.purpose = _data["purpose"];
             if (Array.isArray(_data["file"])) {
                 this.file = [] as any;
                 for (let item of _data["file"])
                     this.file!.push(GetInforFileDto.fromJS(item));
             }
-            this.postTitle = _data["postTitle"];
-            this.targetIntroduce = _data["targetIntroduce"];
-            this.postTopic = _data["postTopic"];
-            this.purpose = _data["purpose"];
-            this.note = _data["note"];
+            this.id = _data["id"];
         }
     }
 
@@ -20171,28 +20293,28 @@ export class CreateOrEditFundRaisingInputDto implements ICreateOrEditFundRaising
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["fundId"] = this.fundId;
+        data["postTitle"] = this.postTitle;
+        data["targetIntroduce"] = this.targetIntroduce;
+        data["postTopic"] = this.postTopic;
+        data["purpose"] = this.purpose;
         if (Array.isArray(this.file)) {
             data["file"] = [];
             for (let item of this.file)
                 data["file"].push(item.toJSON());
         }
-        data["postTitle"] = this.postTitle;
-        data["targetIntroduce"] = this.targetIntroduce;
-        data["postTopic"] = this.postTopic;
-        data["purpose"] = this.purpose;
-        data["note"] = this.note;
+        data["id"] = this.id;
         return data;
     }
 }
 
 export interface ICreateOrEditFundRaisingInputDto {
     fundId: number | undefined;
-    file: GetInforFileDto[] | undefined;
     postTitle: string | undefined;
     targetIntroduce: string | undefined;
     postTopic: string | undefined;
     purpose: string | undefined;
-    note: string | undefined;
+    file: GetInforFileDto[] | undefined;
+    id: number;
 }
 
 export class CreateOrUpdateLanguageInput implements ICreateOrUpdateLanguageInput {
@@ -24307,6 +24429,7 @@ export interface IGetIncomeStatisticsDataOutput {
 export class GetInforFileDto implements IGetInforFileDto {
     imageUrl!: string | undefined;
     size!: number | undefined;
+    id!: number | undefined;
 
     constructor(data?: IGetInforFileDto) {
         if (data) {
@@ -24321,6 +24444,7 @@ export class GetInforFileDto implements IGetInforFileDto {
         if (_data) {
             this.imageUrl = _data["imageUrl"];
             this.size = _data["size"];
+            this.id = _data["id"];
         }
     }
 
@@ -24335,6 +24459,7 @@ export class GetInforFileDto implements IGetInforFileDto {
         data = typeof data === 'object' ? data : {};
         data["imageUrl"] = this.imageUrl;
         data["size"] = this.size;
+        data["id"] = this.id;
         return data;
     }
 }
@@ -24342,6 +24467,7 @@ export class GetInforFileDto implements IGetInforFileDto {
 export interface IGetInforFileDto {
     imageUrl: string | undefined;
     size: number | undefined;
+    id: number | undefined;
 }
 
 export class GetInformationFundRaiserDto implements IGetInformationFundRaiserDto {
@@ -24626,6 +24752,46 @@ export interface IGetListAccountUserDto {
     fundPackage: string | undefined;
     fundRaiserDate: DateTime | undefined;
     id: number;
+}
+
+export class GetListComboboxDto implements IGetListComboboxDto {
+    id!: number | undefined;
+    name!: string | undefined;
+
+    constructor(data?: IGetListComboboxDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"];
+        }
+    }
+
+    static fromJS(data: any): GetListComboboxDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetListComboboxDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        return data;
+    }
+}
+
+export interface IGetListComboboxDto {
+    id: number | undefined;
+    name: string | undefined;
 }
 
 export class GetListFundPackageDto implements IGetListFundPackageDto {
