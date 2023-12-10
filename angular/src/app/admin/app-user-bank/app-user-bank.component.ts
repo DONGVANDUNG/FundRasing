@@ -67,7 +67,7 @@ export class AppUserBankComponent extends AppComponentBase implements OnInit {
                 this.notify.success("Sửa thông tin gây quỹ thành công")
             }
             else
-                this.notify.success("Đăng ký thông tin tài khoản ngân hàng thành công")
+                this.notify.success("Đăng ký tài khoản ngân hàng thành công")
             this.dataInforBankUser= re;
             this.dataInforBankUser.balance = this.dataFormatService.moneyFormat(re.balance);
         },

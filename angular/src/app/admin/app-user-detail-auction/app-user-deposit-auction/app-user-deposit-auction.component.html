@@ -1,6 +1,6 @@
 <div bsModal #deposit="bs-modal" class="modal fade" tabindex="-1" Cert="dialog" aria-labelledby="deposit"
     aria-hidden="true" [config]="{backdrop:'static'}">
-    <div class="modal-dialog tmss-modal-md">
+    <div class="modal-dialog fund-modal-md">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">
@@ -23,7 +23,7 @@
                                     này mức đặt cọc hợp lệ từ {{this.inforDepost?.minAmountDepost}}VND đến
                                     {{this.inforDepost?.maxAmountDepost}}VND</p>
                                 <div class="col-12 d-flex align-items-center">
-                                    <label class="label">Số tiền đặt cọc</label>
+                                    <label class="label">Số tiền đặt cọc:</label>
                                     <p-inputNumber name="amountAuction" [(ngModel)]="depositAmount"
                                              currency="VND"></p-inputNumber>
                                 </div>

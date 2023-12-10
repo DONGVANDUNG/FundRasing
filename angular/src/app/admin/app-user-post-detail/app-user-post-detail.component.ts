@@ -1,5 +1,5 @@
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AppConsts } from '@shared/AppConsts';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { DataDonateForFundInput, FundRaiserServiceProxy, GetFundsDetailByIdForUser, TransactionOfFundForDto, UserFundRaisingServiceProxy, UserServiceProxy } from '@shared/service-proxies/service-proxies';
@@ -29,13 +29,15 @@ export class AppUserPostDetailComponent extends AppComponentBase implements OnIn
     listTransaction;
     amountOfMoney;
     noteTransaction;
+    isFundRaiser:boolean = false;
     isDonate: boolean = false;
     textButton = 'Quyên góp';
     constructor(injector: Injector,
         private _fundRaiser: FundRaiserServiceProxy,
         private dataFormatService: DataFormatService,
         private _userServiceProxy: UserFundRaisingServiceProxy,
-        private route: ActivatedRoute) {
+        private route: ActivatedRoute,
+        private router:Router) {
         super(injector)
     }
     ngOnInit(): void {
@@ -47,12 +49,19 @@ export class AppUserPostDetailComponent extends AppComponentBase implements OnIn
             this.inforFundDetail.amountDonateTarget = this.dataFormatService.moneyFormat(result.amountDonateTarget);
             this.imageUrl = this.baseUrl + this.inforFundDetail.listImageUrl[0];
         })
-        this._userServiceProxy.getListTransactionForFund(this.fundId).subscribe(rs=>{
+        this._userServiceProxy.getListTransactionForFund(this.fundId).subscribe(rs => {
             this.listTransaction = rs;
-            this.listTransaction.forEach((item)=>{
+            this.listTransaction.forEach(transaction => {
+                transaction.createdTime = this.dataFormatService.dateFormat(transaction.createdTime);
+                transaction.amount = this.dataFormatService.moneyFormat(transaction.amount);
+            })
+            this.listTransaction.forEach((item) => {
                 item.amount = this.dataFormatService.moneyFormat(item.amount)
             })
         });
+        this._userServiceProxy.checkUserIsFundRaiser().subscribe(result=>{
+            this.isFundRaiser = result;
+        })
         // const link = 'https://openjavascript.info/2022/08/22/using-json-in-javascript/';
         // const msg = encodeURIComponent('Hey');
         // const title = encodeURIComponent(document.querySelector('title').textContent);
@@ -63,14 +72,17 @@ export class AppUserPostDetailComponent extends AppComponentBase implements OnIn
         // console.log(buttonShare);
         this.init();
     }
-    init(){
+    init() {
         const buttonShare = document.querySelector<HTMLAnchorElement>('.button-share-fb');
         let postUrl = encodeURI(document.location.href);
         let postTitle = encodeURI("Hi");
-        buttonShare.setAttribute("href",`https://www.facebook.com/sharer.php?u=${postUrl}`)
+        buttonShare.setAttribute("href", `https://www.facebook.com/sharer.php?u=${postUrl}`)
     }
     donateFundRaiser() {
         this.modal.show(this.inforFundDetail.fundId);
+    }
+    requestToFundRaiser(){
+        this.router.navigateByUrl("app/admin/register-fundraiser")
     }
     //   show(fundId) {
     //       this.inforFundDetail = new DataDonateForFundInput;

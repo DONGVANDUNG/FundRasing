@@ -6,7 +6,7 @@ namespace esign.FundRaising.FundRaiserService.Dto
 {
     public class RegisterInforFundRaiserDto
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public long? FundPackageId { get; set; }
 
         public string Orgnization { get; set; }

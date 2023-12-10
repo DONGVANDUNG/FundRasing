@@ -14,19 +14,22 @@ export class AppUserFundraiserComponent extends AppComponentBase implements OnIn
   dataFundRaiser: RegisterInforFundRaiserDto = new RegisterInforFundRaiserDto;
   dataInforBankUser: InforDetailBankAcountDto = new InforDetailBankAcountDto;
   constructor(injector: Injector, private fundRaisingRepo: FundRaiserServiceProxy,
-     private _userServiceProxy: UserFundRaisingServiceProxy) {
+    private _userServiceProxy: UserFundRaisingServiceProxy) {
     super(injector);
   }
 
   ngOnInit() {
     this.dataFundRaiser = new RegisterInforFundRaiserDto();
-    this._userServiceProxy.getListFundPackageCombobox().subscribe(rs=>{
-        this.listPackage = rs;
+    this._userServiceProxy.getListFundPackageCombobox().subscribe(rs => {
+      this.listPackage = rs;
     })
     this._userServiceProxy.getForEditFundRaiser().subscribe(result => {
       this.dataFundRaiser = result;
-      if (!this.dataFundRaiser.id) {
+      if (result == null) {
         this.notify.warn("Vui lòng đăng ký thông tin để tham gia gây quỹ")
+      }
+      if (!this.dataFundRaiser.fundPackageId) {
+        this.dataFundRaiser.id = 0;
       }
     })
   }
@@ -44,11 +47,11 @@ export class AppUserFundraiserComponent extends AppComponentBase implements OnIn
   }
   save() {
     if (!this.dataFundRaiser.id) {
-      this._userServiceProxy.registerFundRaiser(this.dataFundRaiser).subscribe(() => { this.notify.success("Đăng ký thành công.Yêu cầu của bạn sẽ sớm được phê duyệt!") },
-        (error => { this.notify.error("Đã xảy ra lỗi") }));
-      this._userServiceProxy.getForEditFundRaiser().subscribe(result => {
+      this._userServiceProxy.registerFundRaiser(this.dataFundRaiser).subscribe((result) => {
+        this.notify.success("Đăng ký thành công.Yêu cầu của bạn sẽ sớm được phê duyệt!");
         this.dataFundRaiser = result;
-      })
+      },
+      );
     }
   }
 }

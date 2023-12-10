@@ -17,11 +17,8 @@
                                     </div>
                                     <div class="mb-5 mt-5 d-flex flex-column justify-content-between"
                                         style="width: 30%;">
-                                        <span class="p-input-icon-right">
-                                            <i class="fa-solid fa-dollar-sign"></i>
-                                            <input type="number" max="30" min="10" pInputText
-                                                [(ngModel)]="amountOfMoney" class="input-amount" />
-                                        </span>
+                                        <p-inputNumber name="amountAuction" [(ngModel)]="amountOfMoney"
+                                            currency="VND"></p-inputNumber>
                                         <!-- <input type="text" pInputText [(ngModel)]="amountOfMoney" class="input-amount" /> -->
                                         <p-slider [max]="30" [min]="10" [(ngModel)]="amountOfMoney"
                                             class="w-full"></p-slider>

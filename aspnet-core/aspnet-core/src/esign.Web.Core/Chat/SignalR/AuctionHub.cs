@@ -20,19 +20,19 @@ namespace esign.Web.Chat.SignalRNew
         }
         public async Task UpdateAmountOfAuction(float amountAuction, long? auctionItemId, bool isPublic)
         {
-            //var auctionItem = _auctionItemsRepo.FirstOrDefault(e => e.AuctionId == auctionItemId);
-           // auctionItem.AuctionPresentAmount = amountAuction;
+            var auctionItem = _auctionItemsRepo.FirstOrDefault(e => e.Id == auctionItemId);
+            auctionItem.AuctionPresentAmount = amountAuction;
+            await _auctionItemsRepo.UpdateAsync(auctionItem);
+            UserAuction userAuction = new UserAuction
+            {
+                AmountAuction = amountAuction,
+                AuctionItemId = auctionItemId,
+                IsPublic = isPublic
+            };
+            var amountJumnpMin = auctionItem.AmountJumpMin + auctionItem.AuctionPresentAmount;
+            var amountJumnpMax = auctionItem.AmountJumpMax + auctionItem.AuctionPresentAmount;
+            await _userAppService.UserAuction(userAuction);
             await Clients.All.SendAsync("updateAuction", 60000, 800000, 200000);
-            //await _auctionItemsRepo.UpdateAsync(auctionItem);
-            //UserAuction userAuction = new UserAuction
-            //{
-            //    AmountAuction = amountAuction,
-            //    AuctionId = auctionItemId,
-            //    IsPublic = isPublic
-            //};
-            //var amountJumnpMin = auctionItem.AmountJumpMin + auctionItem.AuctionPresentAmount;
-            //var amountJumnpMax = auctionItem.AmountJumpMax + auctionItem.AuctionPresentAmount;
-            //await _userAppService.UserAuction(userAuction);
         }
 
     }

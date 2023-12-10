@@ -313,6 +313,11 @@ namespace esign.FundRaising
         {
             try
             {
+                var request = await _mstRequestToFundRaiserRepo.FirstOrDefaultAsync(e => e.UserId == AbpSession.UserId);
+                if (request == null)
+                {
+                    return null;
+                }
                 var fundRaiser = await _mstSleUserRepo.FirstOrDefaultAsync(e => e.Id == AbpSession.UserId);
                 if (fundRaiser?.Id != null)
                 {
@@ -358,7 +363,7 @@ namespace esign.FundRaising
             }
             return null;
         }
-        public async Task RegisterFundRaiser(RegisterInforFundRaiserDto input)
+        public async Task<RegisterInforFundRaiserDto> RegisterFundRaiser(RegisterInforFundRaiserDto input)
         {
             var bankAccount = await _mstBankRepo.FirstOrDefaultAsync(e=>e.UserId == AbpSession.UserId);
             if(bankAccount == null)
@@ -386,10 +391,19 @@ namespace esign.FundRaising
             request.IsApprove = false;
             await _mstRequestToFundRaiserRepo.InsertAsync(request);
             // Trừ tiền tài khoản
-            bankAccount.Balance -= paymentFee;
-            await _mstBankRepo.UpdateAsync(bankAccount);
+            //bankAccount.Balance -= paymentFee;
+            //await _mstBankRepo.UpdateAsync(bankAccount);
 
             await _mstSleUserRepo.UpdateAsync(user);
+            RegisterInforFundRaiserDto userResult = new RegisterInforFundRaiserDto();
+            userResult.Phone = input.Phone;
+            userResult.Email = input.Email;
+            userResult.FundPackageId = input.FundPackageId;
+            userResult.OrgnizationIntro = input.OrgnizationIntro;
+            userResult.Address = input.Address;
+            userResult.Orgnization = input.Orgnization;
+            input.Id = user.Id;
+            return userResult;
         }
 
         public async Task<BankAccount> CreateOrEditAccountBank(InforDetailBankAcountDto input)
@@ -495,6 +509,15 @@ namespace esign.FundRaising
                                    MaxAmountDepost = auctionItems.StartingPrice * 15 / 100
                                }).FirstOrDefault();
             return auctionItem;
+        }
+        public bool CheckUserIsFundRaiser()
+        {
+            var user =  _mstSleUserRepo.FirstOrDefault(e => e.Id == AbpSession.UserId);
+            if(user.FundPackageId != null)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

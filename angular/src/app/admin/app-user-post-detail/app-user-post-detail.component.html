@@ -1,6 +1,6 @@
 <div class="body-content-detail-post d-flex justify-content-between">
     <div class="block-image">
-        <img src="assets/common/images/banner2.jpg" alt="" class="image-main">
+        <img [src]="baseUrl + inforFundDetail?.listImageUrl[0]" alt="" class="image-main">
         <div class="post-topic"></div>
     </div>
     <div class="block-content-post">
@@ -27,7 +27,7 @@
     <div class="list-image-detail"></div>
     <div class="donation d-flex justify-content-end">
         <button class="btn-donate" (click)="donateFundRaiser()">Ủng hộ ngay</button>
-        <button class="btn-raiser">Trở thành sứ giả</button>
+        <button class="btn-raiser" *ngIf ="!isFundRaiser" (click)="requestToFundRaiser()">Trở thành sứ giả</button>
         <a class="button-share-fb d-flex align-items-center">Chia sẻ<i class="fab fa-facebook ml-2"></i></a>
     </div>
 </div>
