@@ -17,6 +17,5 @@ namespace esign.FundRaising.Admin.Dto
         public string Purpose { get; set; }
         public List<GetInforFileDto> File { get; set; }
 
-
     }
 }

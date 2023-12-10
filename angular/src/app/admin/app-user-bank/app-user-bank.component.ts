@@ -28,8 +28,16 @@ export class AppUserBankComponent extends AppComponentBase implements OnInit {
 
     ngOnInit() {
         this._userServiceProxy.getInforBankUser().subscribe(result => {
-            this.dataInforBankUser = result;
-            this.dataInforBankUser.balance = this.dataFormatService.moneyFormat(result.balance);
+            if(result!= null){
+                this.dataInforBankUser = result;
+                this.dataInforBankUser.balance = this.dataFormatService.moneyFormat(result.balance);
+            }
+            else{
+                this.dataInforBankUser.id = 0;
+                this.dataInforBankUser.bankName = null;
+                this.dataInforBankUser.bankNumber = null;
+                this.dataInforBankUser.accountName = null;
+            }
         })
     }
     changeInforBank() {
@@ -45,13 +53,27 @@ export class AppUserBankComponent extends AppComponentBase implements OnInit {
         })
     }
     save() {
-        this._userServiceProxy.createOrEditAccountBank(this.dataInforBankUser).subscribe(() => {
+        if(this.dataInforBankUser.bankName){
+            this.notify.warn("Vui lòng chọn ngân hàng")
+        }
+        if(this.dataInforBankUser.bankNumber){
+            this.notify.warn("Vui lòng nhập số tài khoản")
+        }
+        if(this.dataInforBankUser.accountName){
+            this.notify.warn("Vui lòng nhập tên tài khoản")
+        }
+        this._userServiceProxy.createOrEditAccountBank(this.dataInforBankUser).subscribe((re) => {
             if(this.dataInforBankUser.id != null){
-            this.notify.success("Sửa thông tin gây quỹ thành công")
+                this.notify.success("Sửa thông tin gây quỹ thành công")
             }
             else
-                this.notify.success("Đăng ký thông tin gây quỹ thành công")
+                this.notify.success("Đăng ký thông tin tài khoản ngân hàng thành công")
+            this.dataInforBankUser= re;
+            this.dataInforBankUser.balance = this.dataFormatService.moneyFormat(re.balance);
         },
             (error => { this.notify.error("Đã xảy ra lỗi") }));
+    }
+    toUpperCase(){
+        this.dataInforBankUser.accountName = this.dataInforBankUser.accountName.toUpperCase();
     }
 }

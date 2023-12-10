@@ -12,12 +12,18 @@ namespace esign.Enitity
     public class AuctionItems :FullAuditedEntity<long>
     {
         public string ItemName { get; set; }
-        public long? AuctionId { get; set; }
+        public string TitleAuction { get; set; }
         public string IntroduceItem { get; set; }
         public float? AmountJumpMin { get; set; }
         public float? AmountJumpMax { get; set; }
         public float? StartingPrice { get; set; }
         public float? AuctionPresentAmount { get; set; }
         public float? TargetAmountOfMoney { get; set; }
+        public int? NumberOfParticipants { get; set; }
+        public long? UserId { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+        public bool? IsClose { get; set; }
+        public int? Amount { get; set; }
     }
 }

@@ -86,7 +86,6 @@ export class CreateOrEditPostComponent extends AppComponentBase {
             node.size = element.size;
             this.input.file.push(node);
         });
-
     }
     // previewImages(event) {
     //     this.input.file = [];

@@ -4,22 +4,22 @@
         <div class="post-topic"></div>
     </div>
     <div class="block-content-post">
-        <p class="title-post">{{inforFundDetail.postTitle}}
+        <p class="title-post">{{inforFundDetail?.postTitle}}
         </p>
         <div class="block-header d-flex justify-content-between">
-            <span class="orgnization-name">{{inforFundDetail.organizationName}}</span>
-            <span class="amount-donate"> <i class="fa-regular fa-user"></i>{{inforFundDetail.amountDonatePresent}}</span>
+            <span class="orgnization-name">{{inforFundDetail?.organizationName}}</span>
+            <span class="amount-donate"> <i class="fa-regular fa-user"></i>{{inforFundDetail?.amountDonatePresent}}</span>
         </div>
         <div class="block-target-fund d-flex justify-content-between">
             <p>Mục tiêu dự án</p>
-            <span class="amount-money-target">{{inforFundDetail.amountDonateTarget}} VND</span>
+            <span class="amount-money-target">{{inforFundDetail?.amountDonateTarget}} VND</span>
         </div>
         <div class="progress">
             <span></span>
         </div>
         <div class="block-achieved d-flex justify-content-between">
             <p>Đã đạt được</p>
-            <span class="amount-money-achieved">{{inforFundDetail.amountDonatePresent}} VND</span>
+            <span class="amount-money-achieved">{{inforFundDetail?.amountDonatePresent}} VND</span>
         </div>
     </div>
 </div>
@@ -28,6 +28,7 @@
     <div class="donation d-flex justify-content-end">
         <button class="btn-donate" (click)="donateFundRaiser()">Ủng hộ ngay</button>
         <button class="btn-raiser">Trở thành sứ giả</button>
+        <a class="button-share-fb d-flex align-items-center">Chia sẻ<i class="fab fa-facebook ml-2"></i></a>
     </div>
 </div>
 <div class="block-content-detail">
@@ -35,25 +36,25 @@
         <p-tabPanel header="Nội dung">
             <div class="block-content d-flex justify-content-between">
                 <div class="content">
-                    <p><strong>*Mục đích:&nbsp;</strong><span>{{this.inforFundDetail.purpose}}</span></p>
-                    <p><strong>*Mục tiêu:&nbsp;</strong><span>{{this.inforFundDetail.target}}</span></p>
-                    <p><strong>*</strong><span>{{this.inforFundDetail.note}}</span></p>
+                    <p><strong>*Mục đích:&nbsp;</strong><span>{{this.inforFundDetail?.purpose}}</span></p>
+                    <p><strong>*Mục tiêu:&nbsp;</strong><span>{{this.inforFundDetail?.target}}</span></p>
+                    <p><strong>*</strong><span>{{this.inforFundDetail?.note}}</span></p>
                 </div>
                 <div class="intro-orgnization">
                     <p class="text-infor">Thông tin tổ chức gây quỹ</p>
-                    <h1 class="orgnization-name">{{this.inforFundDetail.organizationName}}</h1>
-                    <p class="intro-org">{{this.inforFundDetail.organizationIntroduce}}</p>
+                    <h1 class="orgnization-name">{{this.inforFundDetail?.organizationName}}</h1>
+                    <p class="intro-org">{{this.inforFundDetail?.organizationIntroduce}}</p>
                     <div class="block-address d-flex align-items-center mt-3 mb-3">
                         <i class="fa-solid fa-location-dot"></i>
-                        <span class="text-address">{{this.inforFundDetail.addressOrgnization}}</span>
+                        <span class="text-address">{{this.inforFundDetail?.addressOrgnization}}</span>
                     </div>
                     <div class="block-phone mt-3 mb-3">
                         <i class="fa-solid fa-phone"></i>
-                        <span class="text-phone">Hotline: <span style="color:red">{{this.inforFundDetail.phone}}</span></span>
+                        <span class="text-phone">Hotline: <span style="color:red">{{this.inforFundDetail?.phone}}</span></span>
                     </div>
                     <div>
                         <i class="fa-regular fa-envelope"></i>
-                        <span class="text-phone">Email: &nbsp;{{this.inforFundDetail.email}}</span>
+                        <span class="text-phone">Email: &nbsp;{{this.inforFundDetail?.email}}</span>
                     </div>
                 </div>
             </div>

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using esign.EntityFrameworkCore;
 
@@ -11,9 +12,11 @@ using esign.EntityFrameworkCore;
 namespace esign.Migrations
 {
     [DbContext(typeof(esignDbContext))]
-    partial class esignDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231209035620_update-table-auctions")]
+    partial class updatetableauctions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1988,9 +1991,6 @@ namespace esign.Migrations
                         .HasColumnType("bigint");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<int?>("Amount")
-                        .HasColumnType("int");
 
                     b.Property<float?>("AmountJumpMax")
                         .HasColumnType("real");

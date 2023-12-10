@@ -169,7 +169,7 @@ namespace esign.FundRaising
                     fundImage.ImageUrl = Path.Combine("uploads", imagePost.ImageUrl);
                     fundImage.Size = imagePost.Size;
                     await _mstSleFundImageRepo.InsertAsync(fundImage);
-                   // input.File?.Remove(imagePost);
+                    // input.File?.Remove(imagePost);
                 }
             }
             foreach (var imagePost in listImagePost)
@@ -302,50 +302,82 @@ namespace esign.FundRaising
                 await _mstAuctionRepo.UpdateAsync(auction);
             }
         }
-        [HttpPost]
-        [Consumes("multipart/form-data")]
-        public async Task CreateOrEditItemAuction([FromForm] CreateOrEditAuctionInputDto input)
+        public async Task CreateOrEditItemAuction(CreateOrEditAuctionInputDto input)
         {
             try
             {
                 if (input.Id == null || input.Id == 0)
                 {
                     AuctionItems auctionItem = new AuctionItems();
-                    auctionItem.AuctionId = input.Id;
+                    auctionItem.TitleAuction = input.TitleAuction;
+                    auctionItem.StartDate = input.StartDate;
+                    auctionItem.EndDate = input.EndDate;
+                    auctionItem.UserId = AbpSession.UserId;
+                    auctionItem.IsClose = false;
+                    auctionItem.Amount = input.Amount;
+                    auctionItem.TargetAmountOfMoney = input.TargetAmountOfMoney;
                     auctionItem.ItemName = input.ItemName;
                     auctionItem.AmountJumpMax = input.AmountJumpMax;
                     auctionItem.AmountJumpMin = input.AmountJumpMin;
                     auctionItem.IntroduceItem = input.IntroduceItem;
                     auctionItem.StartingPrice = input.StartingPrice;
                     var auctionItemId = await _mstSleAuctionItemsRepo.InsertAndGetIdAsync(auctionItem);
-                    if (input.File.Count() > 0)
+
+
+                    foreach (var image in input.File)
                     {
-                        foreach (var file in input.File)
-                        {
-                            if (file != null)
-                            {
-                                var fileName = Path.GetFileName(file.FileName);
-                                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", fileName);
-
-                                using (var stream = new FileStream(filePath, FileMode.Create))
-                                {
-                                    await file.CopyToAsync(stream);
-                                }
-                                AuctionImages auctionImage = new AuctionImages();
-                                auctionImage.AuctionItemId = auctionItemId;
-
-                                auctionImage.ImageUrl = Path.Combine("uploads", fileName);
-                                await _mstAuctionImagesRepo.InsertAsync(auctionImage);
-                            }
-                        }
+                        AuctionImages auctionImage = new AuctionImages();
+                        auctionImage.AuctionItemId = auctionItemId;
+                        auctionImage.ImageUrl = Path.Combine("uploads", image.ImageUrl);
+                        auctionImage.Size = image.Size;
+                        await _mstAuctionImagesRepo.InsertAsync(auctionImage);
                     }
                 }
+                //Update
                 else
                 {
-
-                    //Để sau
-                    var auction = await _mstAuctionRepo.FirstOrDefaultAsync(e => e.Id == input.Id);
-                    ObjectMapper.Map(input, auction);
+                    var auctionItem = await _mstSleAuctionItemsRepo.FirstOrDefaultAsync(e => e.Id == input.Id);
+                    if (auctionItem != null)
+                    {
+                        auctionItem.TitleAuction = input.TitleAuction;
+                        auctionItem.StartDate = input.StartDate;
+                        auctionItem.EndDate = input.EndDate;
+                        auctionItem.TargetAmountOfMoney = input.TargetAmountOfMoney;
+                        auctionItem.ItemName = input.ItemName;
+                        auctionItem.AmountJumpMax = input.AmountJumpMax;
+                        auctionItem.AmountJumpMin = input.AmountJumpMin;
+                        auctionItem.IntroduceItem = input.IntroduceItem;
+                        auctionItem.StartingPrice = input.StartingPrice;
+                        await _mstSleAuctionItemsRepo.UpdateAsync(auctionItem);
+                    }
+                    var listImageAuction = await _mstAuctionImagesRepo.GetAll().Where(e => e.AuctionItemId == input.Id).Select(re => re.Id).ToListAsync();
+                    foreach (var imageAution in input.File)
+                    {
+                        if (imageAution.Id == null)
+                        {
+                            AuctionImages auctionImage = new AuctionImages();
+                            auctionImage.AuctionItemId = input.Id;
+                            auctionImage.ImageUrl = Path.Combine("uploads", imageAution.ImageUrl);
+                            auctionImage.Size = imageAution.Size;
+                            await _mstAuctionImagesRepo.InsertAsync(auctionImage);
+                        }
+                    }
+                    foreach (var imageAuction in listImageAuction)
+                    {
+                        bool check = false;
+                        foreach (var imageInput in input?.File)
+                        {
+                            if (imageInput.Id == imageAuction)
+                            {
+                                check = true;
+                                break;
+                            };
+                        }
+                        if (check == false)
+                        {
+                            await _mstAuctionImagesRepo.DeleteAsync(imageAuction);
+                        }
+                    }
                 }
             }
             catch (Exception ex)
@@ -353,9 +385,24 @@ namespace esign.FundRaising
                 throw new Exception("Đã xảy ra lỗi trong quá trình tạo phiên đấu giá");
             }
         }
+        public async Task<CreateOrEditAuctionInputDto> getForEditAuction(long? auctionItemId)
+        {
+            var auctionItem = await _mstSleAuctionItemsRepo.FirstOrDefaultAsync(e => e.Id == auctionItemId);
+            var auctionResultResponse = new CreateOrEditAuctionInputDto();
+            ObjectMapper.Map(auctionItem, auctionResultResponse);
+            auctionResultResponse.File = await _mstAuctionImagesRepo.GetAll().Where(e => e.AuctionItemId == auctionItemId).Select(re => new GetInforFileDto
+            {
+                Id = re.Id,
+                ImageUrl = re.ImageUrl,
+                Size = re.Size
+
+            }).ToListAsync();
+            return auctionResultResponse;
+        }
+
         public async Task<List<GetListTransactionForAuctionDto>> GetListTransactionAuction(long auctionId)
         {
-            var listAuction = (from transactionAuction in _mstAuctionTransactionRepo.GetAll().Where(e => e.AuctionId == auctionId)
+            var listAuction = (from transactionAuction in _mstAuctionTransactionRepo.GetAll().Where(e => e.AuctionItemId == auctionId)
                                join user in _mstSleUserRepo.GetAll() on transactionAuction.AuctioneerId equals user.Id
                                select new GetListTransactionForAuctionDto
                                {
@@ -370,21 +417,21 @@ namespace esign.FundRaising
         }
         public async Task<PagedResultDto<GetAllAuctionDto>> getAllAuctionAdmin(AuctionInputDto input)
         {
-            var query = from auction in _mstAuctionRepo.GetAll().Where(e => AbpSession.TenantId == null || e.UserId == AbpSession.UserId)
-                        join item in _mstSleAuctionItemsRepo.GetAll() on auction.Id equals item.AuctionId
+            var query = from item in _mstSleAuctionItemsRepo.GetAll().Where(e => AbpSession.TenantId == null || e.UserId == AbpSession.UserId)
                         select new GetAllAuctionDto
                         {
-                            Id = auction.Id,
+                            Id = item.Id,
                             ItemName = item.ItemName,
-                            //TitleAuction = auction.TitleAuction,
+                            TitleAuction = item.TitleAuction,
                             AmountJumpMax = item.AmountJumpMax,
                             AmountJumpMin = item.AmountJumpMin,
-                            EndDate = auction.EndDate,
+                            EndDate = item.EndDate,
                             StartingPrice = item.StartingPrice,
                             AuctionPresentAmount = item.AuctionPresentAmount,
-                            StartDate = (DateTime)auction.StartDate,
-                            IntroduceItem = auction.IntroduceItem,
-                            Status = auction.IsStatus == true ? "Đang hoạt động" : "Đã đóng"
+                            StartDate = (DateTime)item.StartDate,
+                            IntroduceItem = item.IntroduceItem,
+                            Status = item.IsClose == false ? "Đang hoạt động" : "Đã đóng",
+                            Amount = item.Amount
                         };
 
             var totalCount = await query.CountAsync();
@@ -412,25 +459,23 @@ namespace esign.FundRaising
         }
         public async Task<List<GetAllAuctionDto>> getAllAuctionUser()
         {
-            var listAuction = (from auction in _mstAuctionRepo.GetAll()
+            var listAuction = (from item in _mstSleAuctionItemsRepo.GetAll()
                                    //|| e.UserId != AbpSession.UserId)
-                               join item in _mstSleAuctionItemsRepo.GetAll()
-                               on auction.Id equals item.AuctionId
                                select new GetAllAuctionDto
                                {
-                                   Id = auction.Id,
+                                   Id = item.Id,
                                    ItemName = item.ItemName,
                                    AuctionPresentAmount = item.AuctionPresentAmount,
-                                   TitleAuction = auction.TitleAuction,
+                                   TitleAuction = item.TitleAuction,
                                    AmountJumpMax = item.AmountJumpMax,
                                    AmountJumpMin = item.AmountJumpMin,
-                                   EndDate = auction.EndDate,
+                                   EndDate = item.EndDate,
                                    StartingPrice = item.StartingPrice,
-                                   StartDate = (DateTime)auction.StartDate,
-                                   IntroduceItem = auction.IntroduceItem,
+                                   StartDate = (DateTime)item.StartDate,
+                                   IntroduceItem = item.IntroduceItem,
                                    NextMinimumBid = item.AuctionPresentAmount + item.AmountJumpMin,
                                    NextMaximumBid = item.AuctionPresentAmount + item.AmountJumpMax,
-                                   ListImage = _mstAuctionImagesRepo.GetAll().Where(e => e.AuctionItemId == auction.Id).Select(re => re.ImageUrl).ToList(),
+                                   ListImage = _mstAuctionImagesRepo.GetAll().Where(e => e.AuctionItemId == item.Id).Select(re => re.ImageUrl).ToList(),
                                }).ToListAsync();
 
 
@@ -438,7 +483,7 @@ namespace esign.FundRaising
         }
         public GetAuctionDetailDto getAuctionById(long? auctionId)
         {
-            var auctionItem = _mstSleAuctionItemsRepo.FirstOrDefault(e => e.AuctionId == auctionId);
+            var auctionItem = _mstSleAuctionItemsRepo.FirstOrDefault(e => e.Id == auctionId);
             var auctionResult = new GetAuctionDetailDto();
             ObjectMapper.Map(auctionItem, auctionResult);
             auctionResult.ListImage = _mstAuctionImagesRepo.GetAll().Where(e => e.AuctionItemId == auctionItem.Id).Select(re => re.ImageUrl).ToList();

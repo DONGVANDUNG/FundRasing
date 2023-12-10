@@ -1,7 +1,7 @@
 <div class="block-upload-image">
     <div class="block-button">
         <label for="file" class="label-input">Chọn ảnh</label>
-        <input type="file" id="file" (change)="onFileSelect($event)" multiple="true" [(ngModel)]="inputValue" />
+        <input type="file" id="file" (change)="onFileSelect($event)" multiple="true"/>
         <button type="button" class="button-cancel" (click)="clear()">Hủy</button>
     </div>
     <div class="block-list-file mt-3">

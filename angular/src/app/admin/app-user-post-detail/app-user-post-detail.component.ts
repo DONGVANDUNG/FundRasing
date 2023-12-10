@@ -2,7 +2,7 @@ import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AppConsts } from '@shared/AppConsts';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { DataDonateForFundInput, FundRaiserServiceProxy, TransactionOfFundForDto, UserFundRaisingServiceProxy, UserServiceProxy } from '@shared/service-proxies/service-proxies';
+import { DataDonateForFundInput, FundRaiserServiceProxy, GetFundsDetailByIdForUser, TransactionOfFundForDto, UserFundRaisingServiceProxy, UserServiceProxy } from '@shared/service-proxies/service-proxies';
 import { AppUserDonationComponent } from './app-user-donation/app-user-donation.component';
 import { DataFormatService } from '@app/shared/common/services/data-format.service';
 
@@ -52,7 +52,22 @@ export class AppUserPostDetailComponent extends AppComponentBase implements OnIn
             this.listTransaction.forEach((item)=>{
                 item.amount = this.dataFormatService.moneyFormat(item.amount)
             })
-        })
+        });
+        // const link = 'https://openjavascript.info/2022/08/22/using-json-in-javascript/';
+        // const msg = encodeURIComponent('Hey');
+        // const title = encodeURIComponent(document.querySelector('title').textContent);
+        // console.log([link,msg,title])
+
+        // const buttonShare = document.querySelector<HTMLAnchorElement>('.button-share-fb');
+        // buttonShare.href = `https://www/facebook.com/share.php?u=${link}`
+        // console.log(buttonShare);
+        this.init();
+    }
+    init(){
+        const buttonShare = document.querySelector<HTMLAnchorElement>('.button-share-fb');
+        let postUrl = encodeURI(document.location.href);
+        let postTitle = encodeURI("Hi");
+        buttonShare.setAttribute("href",`https://www.facebook.com/sharer.php?u=${postUrl}`)
     }
     donateFundRaiser() {
         this.modal.show(this.inforFundDetail.fundId);
@@ -109,4 +124,13 @@ export class AppUserPostDetailComponent extends AppComponentBase implements OnIn
     //           )
     //       )
     //   }
+    // shareFaceBook(){
+    //     const link = encodeURI(window.location.href);
+    //     const msg = encodeURIComponent('Hey');
+    //     const title = encodeURIComponent(document.querySelector('title').textContent);
+    //     console.log([link,msg,title])
+
+    //     const buttonShare = document.querySelector<HTMLElement>('.button-share-fb')[0];
+    //     buttonShare.href = `https://www/facebook.com/share.php?u=${link}`
+    // }
 }

@@ -7,12 +7,14 @@
                     <h4 class="modal-title">
                         <span>{{l("Thêm mới bài đăng đấu giá")}}</span>
                     </h4>
-                    <button class="tmss-btn btn-outline-primary" (click)="save()">
-                        {{ l("Lưu") }}
-                        <i class="fa fa-save"></i>
-                    </button>
-                    <button [disabled]="saving" type="button" class="tmss-btn btn-outline-dark"
-                        (click)="close()">{{l("Cancel")}}</button>
+                    <div class="block-button d-flex justify-content-end">
+                        <button class="tmss-btn btn-outline-primary" (click)="save()">
+                            {{ l("Lưu") }}
+                            <i class="fa fa-save"></i>
+                        </button>
+                        <button [disabled]="saving" type="button" class="tmss-btn btn-outline-dark"
+                            (click)="close()">{{l("Cancel")}}</button>
+                    </div>
                 </div>
 
                 <div class="modal-body">
@@ -22,19 +24,6 @@
                                 <div class="row col-12 d-flex justify-content-between">
                                     <!-- left -->
                                     <div class="col-7">
-                                        <div class="row mb-2">
-                                            <div class="col-12 d-flex justify-content-between align-items-center">
-                                                <div class="col-4">
-                                                    <label for="fund-name" class="label">Tên vật phẩm đấu giá:</label>
-                                                </div>
-                                                <div class="col-1">
-                                                    <i class="fa-solid fa-circle-info"></i>
-                                                </div>
-                                                <div class="col-7">
-                                                    <input type="text" class="input" [(ngModel)]="input.itemName"name="itemName">
-                                                </div>
-                                            </div>
-                                        </div>
                                         <div class="row mb-2">
                                             <div class="col-12 d-flex justify-content-between align-items-center">
                                                 <div class="col-4">
@@ -52,14 +41,27 @@
                                         <div class="row mb-2">
                                             <div class="col-12 d-flex justify-content-between align-items-center">
                                                 <div class="col-4">
+                                                    <label for="fund-name" class="label">Tên vật phẩm:</label>
+                                                </div>
+                                                <div class="col-1">
+                                                    <i class="fa-solid fa-circle-info"></i>
+                                                </div>
+                                                <div class="col-7">
+                                                    <input type="text" class="input" [(ngModel)]="input.itemName"
+                                                        name="itemName">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <div class="col-12 d-flex justify-content-between align-items-center">
+                                                <div class="col-4">
                                                     <label for="fund-name" class="label">Ngày bắt đầu:</label>
                                                 </div>
                                                 <div class="col-1">
                                                     <i class="fa-solid fa-circle-info"></i>
                                                 </div>
                                                 <div class="col-7">
-                                                    <p-calendar name="fundEndDate" [(ngModel)]="input.startDate"
-                                                        (onSelect)="onChangeDate($event,'start')"
+                                                    <p-calendar name="fundEndDate" [(ngModel)]="startDate"
                                                         dateFormat="dd/mm/yy"></p-calendar>
                                                 </div>
                                             </div>
@@ -73,8 +75,7 @@
                                                     <i class="fa-solid fa-circle-info"></i>
                                                 </div>
                                                 <div class="col-7">
-                                                    <p-calendar name="fundStartDate" [(ngModel)]="input.endDate"
-                                                        (onSelect)="onChangeDate($event,'end')"
+                                                    <p-calendar name="fundStartDate" [(ngModel)]="endDate"
                                                         dateFormat="dd/mm/yy"></p-calendar>
                                                 </div>
                                             </div>
@@ -91,8 +92,9 @@
                                                     <i class="fa-solid fa-circle-info"></i>
                                                 </div>
                                                 <div class="col-7">
-                                                    <input type="number" name="amountJumpMin"
-                                                        [(ngModel)]="input.amountJumpMin" class="input">
+                                                    <p-inputNumber name="amountAuction"
+                                                        [(ngModel)]="input.amountJumpMin"
+                                                        currency="VND"></p-inputNumber>
                                                 </div>
                                             </div>
                                         </div>
@@ -105,8 +107,9 @@
                                                     <i class="fa-solid fa-circle-info"></i>
                                                 </div>
                                                 <div class="col-7">
-                                                    <input type="number" name="amountJumpMax"
-                                                        [(ngModel)]="input.amountJumpMax" class="input">
+                                                    <p-inputNumber name="amountAuction"
+                                                        [(ngModel)]="input.amountJumpMax"
+                                                        currency="VND"></p-inputNumber>
                                                 </div>
                                             </div>
                                         </div>
@@ -119,15 +122,16 @@
                                                     <i class="fa-solid fa-circle-info"></i>
                                                 </div>
                                                 <div class="col-7">
-                                                    <input type="number" name="startingPrice"
-                                                        [(ngModel)]="input.startingPrice" class="input">
+                                                    <p-inputNumber name="amountAuction"
+                                                        [(ngModel)]="input.startingPrice"
+                                                        currency="VND"></p-inputNumber>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row mb-2">
                                             <div class="col-12 d-flex justify-content-between align-items-center">
                                                 <div class="col-4">
-                                                    <label for="fund-name" class="label">Số lượng vật phẩm:</label>
+                                                    <label for="fund-name" class="label">Số lượng:</label>
                                                 </div>
                                                 <div class="col-1">
                                                     <i class="fa-solid fa-circle-info"></i>
@@ -143,16 +147,13 @@
                                 <div class="row mt-5 mb-5">
                                     <div class="col-12">
                                         <p>Giới thiệu vật phẩm:</p>
-                                        <p-editor [style]="{ height: '120px' }" [(ngModel)]="input.introduceItem" name="introduceItem"></p-editor>
+                                        <p-editor [style]="{ height: '120px' }" [(ngModel)]="input.introduceItem"
+                                            name="introduceItem"></p-editor>
                                     </div>
                                 </div>
                                 <div class="row d-flex justify-content-between mb-5">
-                                    <div class="col-5">
-                                        <form action="/uploads" method="post" enctype="multipart/form-data"
-                                            class="d-flex" id="form-add-image-auction">
-                                            <input type="file" [(ngModel)]="input.file" [ngModelOptions]="{standalone: true}"
-                                                id="images-auction"  multiple (change)="previewImages($event)">
-                                        </form>
+                                    <div class="col-4">
+                                        <p-upload-auction #uploadImage (onSelect)="updateListImage($event)" [inforImage]="this.input.file"></p-upload-auction>
                                     </div>
                                 </div>
                             </div>

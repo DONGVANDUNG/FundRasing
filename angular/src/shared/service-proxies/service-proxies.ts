@@ -6649,59 +6649,21 @@ export class FundRaiserServiceProxy {
     }
 
     /**
-     * @param id (optional) 
-     * @param file (optional) 
-     * @param itemName (optional) 
-     * @param introduceItem (optional) 
-     * @param amountJumpMin (optional) 
-     * @param amountJumpMax (optional) 
-     * @param startingPrice (optional) 
-     * @param amount (optional) 
+     * @param body (optional) 
      * @return Success
      */
-    createOrEditItemAuction(id: number | undefined, file: FileParameter[] | undefined, itemName: string | undefined, introduceItem: string | undefined, amountJumpMin: number | undefined, amountJumpMax: number | undefined, startingPrice: number | undefined, amount: number | undefined): Observable<void> {
+    createOrEditItemAuction(body: CreateOrEditAuctionInputDto | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/FundRaiser/CreateOrEditItemAuction";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = new FormData();
-        if (id === null || id === undefined)
-            throw new Error("The parameter 'id' cannot be null.");
-        else
-            content_.append("Id", id.toString());
-        if (file === null || file === undefined)
-            throw new Error("The parameter 'file' cannot be null.");
-        else
-            file.forEach(item_ => content_.append("File", item_.data, item_.fileName ? item_.fileName : "File") );
-        if (itemName === null || itemName === undefined)
-            throw new Error("The parameter 'itemName' cannot be null.");
-        else
-            content_.append("ItemName", itemName.toString());
-        if (introduceItem === null || introduceItem === undefined)
-            throw new Error("The parameter 'introduceItem' cannot be null.");
-        else
-            content_.append("IntroduceItem", introduceItem.toString());
-        if (amountJumpMin === null || amountJumpMin === undefined)
-            throw new Error("The parameter 'amountJumpMin' cannot be null.");
-        else
-            content_.append("AmountJumpMin", amountJumpMin.toString());
-        if (amountJumpMax === null || amountJumpMax === undefined)
-            throw new Error("The parameter 'amountJumpMax' cannot be null.");
-        else
-            content_.append("AmountJumpMax", amountJumpMax.toString());
-        if (startingPrice === null || startingPrice === undefined)
-            throw new Error("The parameter 'startingPrice' cannot be null.");
-        else
-            content_.append("StartingPrice", startingPrice.toString());
-        if (amount === null || amount === undefined)
-            throw new Error("The parameter 'amount' cannot be null.");
-        else
-            content_.append("Amount", amount.toString());
+        const content_ = JSON.stringify(body);
 
         let options_ : any = {
             body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
             })
         };
 
@@ -6729,6 +6691,62 @@ export class FundRaiserServiceProxy {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param auctionItemId (optional) 
+     * @return Success
+     */
+    getForEditAuction(auctionItemId: number | undefined): Observable<CreateOrEditAuctionInputDto> {
+        let url_ = this.baseUrl + "/api/services/app/FundRaiser/getForEditAuction?";
+        if (auctionItemId === null)
+            throw new Error("The parameter 'auctionItemId' cannot be null.");
+        else if (auctionItemId !== undefined)
+            url_ += "auctionItemId=" + encodeURIComponent("" + auctionItemId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetForEditAuction(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetForEditAuction(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<CreateOrEditAuctionInputDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<CreateOrEditAuctionInputDto>;
+        }));
+    }
+
+    protected processGetForEditAuction(response: HttpResponseBase): Observable<CreateOrEditAuctionInputDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = CreateOrEditAuctionInputDto.fromJS(resultData200);
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -17103,7 +17121,7 @@ export class UserFundRaisingServiceProxy {
      * @param body (optional) 
      * @return Success
      */
-    createOrEditAccountBank(body: InforDetailBankAcountDto | undefined): Observable<void> {
+    createOrEditAccountBank(body: InforDetailBankAcountDto | undefined): Observable<BankAccount> {
         let url_ = this.baseUrl + "/api/services/app/UserFundRaising/CreateOrEditAccountBank";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -17115,6 +17133,7 @@ export class UserFundRaisingServiceProxy {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
             })
         };
 
@@ -17125,14 +17144,14 @@ export class UserFundRaisingServiceProxy {
                 try {
                     return this.processCreateOrEditAccountBank(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
+                    return _observableThrow(e) as any as Observable<BankAccount>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<void>;
+                return _observableThrow(response_) as any as Observable<BankAccount>;
         }));
     }
 
-    protected processCreateOrEditAccountBank(response: HttpResponseBase): Observable<void> {
+    protected processCreateOrEditAccountBank(response: HttpResponseBase): Observable<BankAccount> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -17141,7 +17160,10 @@ export class UserFundRaisingServiceProxy {
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BankAccount.fromJS(resultData200);
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -17326,19 +17348,19 @@ export class UserFundRaisingServiceProxy {
 
     /**
      * @param deposit (optional) 
-     * @param auctionId (optional) 
+     * @param auctionItemId (optional) 
      * @return Success
      */
-    userDepositAuction(deposit: number | undefined, auctionId: number | undefined): Observable<void> {
+    userDepositAuction(deposit: number | undefined, auctionItemId: number | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/UserFundRaising/UserDepositAuction?";
         if (deposit === null)
             throw new Error("The parameter 'deposit' cannot be null.");
         else if (deposit !== undefined)
             url_ += "deposit=" + encodeURIComponent("" + deposit) + "&";
-        if (auctionId === null)
-            throw new Error("The parameter 'auctionId' cannot be null.");
-        else if (auctionId !== undefined)
-            url_ += "auctionId=" + encodeURIComponent("" + auctionId) + "&";
+        if (auctionItemId === null)
+            throw new Error("The parameter 'auctionItemId' cannot be null.");
+        else if (auctionItemId !== undefined)
+            url_ += "auctionItemId=" + encodeURIComponent("" + auctionItemId) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -19409,6 +19431,94 @@ export interface IAuthenticateResultModel {
     c: string | undefined;
 }
 
+export class BankAccount implements IBankAccount {
+    bankName!: string | undefined;
+    bankNumber!: string | undefined;
+    accountName!: string | undefined;
+    userId!: number | undefined;
+    balance!: number | undefined;
+    unit!: string | undefined;
+    isDeleted!: boolean;
+    deleterUserId!: number | undefined;
+    deletionTime!: DateTime | undefined;
+    lastModificationTime!: DateTime | undefined;
+    lastModifierUserId!: number | undefined;
+    creationTime!: DateTime;
+    creatorUserId!: number | undefined;
+    id!: number;
+
+    constructor(data?: IBankAccount) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.bankName = _data["bankName"];
+            this.bankNumber = _data["bankNumber"];
+            this.accountName = _data["accountName"];
+            this.userId = _data["userId"];
+            this.balance = _data["balance"];
+            this.unit = _data["unit"];
+            this.isDeleted = _data["isDeleted"];
+            this.deleterUserId = _data["deleterUserId"];
+            this.deletionTime = _data["deletionTime"] ? DateTime.fromISO(_data["deletionTime"].toString()) : <any>undefined;
+            this.lastModificationTime = _data["lastModificationTime"] ? DateTime.fromISO(_data["lastModificationTime"].toString()) : <any>undefined;
+            this.lastModifierUserId = _data["lastModifierUserId"];
+            this.creationTime = _data["creationTime"] ? DateTime.fromISO(_data["creationTime"].toString()) : <any>undefined;
+            this.creatorUserId = _data["creatorUserId"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): BankAccount {
+        data = typeof data === 'object' ? data : {};
+        let result = new BankAccount();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["bankName"] = this.bankName;
+        data["bankNumber"] = this.bankNumber;
+        data["accountName"] = this.accountName;
+        data["userId"] = this.userId;
+        data["balance"] = this.balance;
+        data["unit"] = this.unit;
+        data["isDeleted"] = this.isDeleted;
+        data["deleterUserId"] = this.deleterUserId;
+        data["deletionTime"] = this.deletionTime ? this.deletionTime.toString() : <any>undefined;
+        data["lastModificationTime"] = this.lastModificationTime ? this.lastModificationTime.toString() : <any>undefined;
+        data["lastModifierUserId"] = this.lastModifierUserId;
+        data["creationTime"] = this.creationTime ? this.creationTime.toString() : <any>undefined;
+        data["creatorUserId"] = this.creatorUserId;
+        data["id"] = this.id;
+        return data;
+    }
+}
+
+export interface IBankAccount {
+    bankName: string | undefined;
+    bankNumber: string | undefined;
+    accountName: string | undefined;
+    userId: number | undefined;
+    balance: number | undefined;
+    unit: string | undefined;
+    isDeleted: boolean;
+    deleterUserId: number | undefined;
+    deletionTime: DateTime | undefined;
+    lastModificationTime: DateTime | undefined;
+    lastModifierUserId: number | undefined;
+    creationTime: DateTime;
+    creatorUserId: number | undefined;
+    id: number;
+}
+
 export class BlockUserInput implements IBlockUserInput {
     userId!: number;
     tenantId!: number | undefined;
@@ -20127,6 +20237,94 @@ export interface ICreateOrEditAuction {
     isPublic: boolean | undefined;
     limitedOfNumber: number | undefined;
     listImage: string[] | undefined;
+}
+
+export class CreateOrEditAuctionInputDto implements ICreateOrEditAuctionInputDto {
+    id!: number | undefined;
+    file!: GetInforFileDto[] | undefined;
+    titleAuction!: string | undefined;
+    itemName!: string | undefined;
+    introduceItem!: string | undefined;
+    amountJumpMin!: number | undefined;
+    amountJumpMax!: number | undefined;
+    startingPrice!: number | undefined;
+    amount!: number | undefined;
+    startDate!: DateTime | undefined;
+    endDate!: DateTime | undefined;
+    targetAmountOfMoney!: number | undefined;
+
+    constructor(data?: ICreateOrEditAuctionInputDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            if (Array.isArray(_data["file"])) {
+                this.file = [] as any;
+                for (let item of _data["file"])
+                    this.file!.push(GetInforFileDto.fromJS(item));
+            }
+            this.titleAuction = _data["titleAuction"];
+            this.itemName = _data["itemName"];
+            this.introduceItem = _data["introduceItem"];
+            this.amountJumpMin = _data["amountJumpMin"];
+            this.amountJumpMax = _data["amountJumpMax"];
+            this.startingPrice = _data["startingPrice"];
+            this.amount = _data["amount"];
+            this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : <any>undefined;
+            this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : <any>undefined;
+            this.targetAmountOfMoney = _data["targetAmountOfMoney"];
+        }
+    }
+
+    static fromJS(data: any): CreateOrEditAuctionInputDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateOrEditAuctionInputDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        if (Array.isArray(this.file)) {
+            data["file"] = [];
+            for (let item of this.file)
+                data["file"].push(item.toJSON());
+        }
+        data["titleAuction"] = this.titleAuction;
+        data["itemName"] = this.itemName;
+        data["introduceItem"] = this.introduceItem;
+        data["amountJumpMin"] = this.amountJumpMin;
+        data["amountJumpMax"] = this.amountJumpMax;
+        data["startingPrice"] = this.startingPrice;
+        data["amount"] = this.amount;
+        data["startDate"] = this.startDate ? this.startDate.toString() : <any>undefined;
+        data["endDate"] = this.endDate ? this.endDate.toString() : <any>undefined;
+        data["targetAmountOfMoney"] = this.targetAmountOfMoney;
+        return data;
+    }
+}
+
+export interface ICreateOrEditAuctionInputDto {
+    id: number | undefined;
+    file: GetInforFileDto[] | undefined;
+    titleAuction: string | undefined;
+    itemName: string | undefined;
+    introduceItem: string | undefined;
+    amountJumpMin: number | undefined;
+    amountJumpMax: number | undefined;
+    startingPrice: number | undefined;
+    amount: number | undefined;
+    startDate: DateTime | undefined;
+    endDate: DateTime | undefined;
+    targetAmountOfMoney: number | undefined;
 }
 
 export class CreateOrEditFundPackageDto implements ICreateOrEditFundPackageDto {
@@ -23082,7 +23280,7 @@ export class GetAllAuctionDto implements IGetAllAuctionDto {
     amountJumpMin!: number | undefined;
     amountJumpMax!: number | undefined;
     startingPrice!: number | undefined;
-    startDate!: DateTime;
+    startDate!: DateTime | undefined;
     endDate!: DateTime | undefined;
     listImage!: string[] | undefined;
     userName!: string | undefined;
@@ -23092,6 +23290,7 @@ export class GetAllAuctionDto implements IGetAllAuctionDto {
     nextMinimumBid!: number | undefined;
     nextMaximumBid!: number | undefined;
     status!: string | undefined;
+    amount!: number | undefined;
 
     constructor(data?: IGetAllAuctionDto) {
         if (data) {
@@ -23125,6 +23324,7 @@ export class GetAllAuctionDto implements IGetAllAuctionDto {
             this.nextMinimumBid = _data["nextMinimumBid"];
             this.nextMaximumBid = _data["nextMaximumBid"];
             this.status = _data["status"];
+            this.amount = _data["amount"];
         }
     }
 
@@ -23158,6 +23358,7 @@ export class GetAllAuctionDto implements IGetAllAuctionDto {
         data["nextMinimumBid"] = this.nextMinimumBid;
         data["nextMaximumBid"] = this.nextMaximumBid;
         data["status"] = this.status;
+        data["amount"] = this.amount;
         return data;
     }
 }
@@ -23170,7 +23371,7 @@ export interface IGetAllAuctionDto {
     amountJumpMin: number | undefined;
     amountJumpMax: number | undefined;
     startingPrice: number | undefined;
-    startDate: DateTime;
+    startDate: DateTime | undefined;
     endDate: DateTime | undefined;
     listImage: string[] | undefined;
     userName: string | undefined;
@@ -23180,6 +23381,7 @@ export interface IGetAllAuctionDto {
     nextMinimumBid: number | undefined;
     nextMaximumBid: number | undefined;
     status: string | undefined;
+    amount: number | undefined;
 }
 
 export class GetAllAvailableWebhooksOutput implements IGetAllAvailableWebhooksOutput {
@@ -34259,7 +34461,7 @@ export interface IUpdateUserSignInTokenOutput {
 }
 
 export class UserAuction implements IUserAuction {
-    auctionId!: number | undefined;
+    auctionItemId!: number | undefined;
     amountAuction!: number | undefined;
     isPublic!: boolean | undefined;
 
@@ -34274,7 +34476,7 @@ export class UserAuction implements IUserAuction {
 
     init(_data?: any) {
         if (_data) {
-            this.auctionId = _data["auctionId"];
+            this.auctionItemId = _data["auctionItemId"];
             this.amountAuction = _data["amountAuction"];
             this.isPublic = _data["isPublic"];
         }
@@ -34289,7 +34491,7 @@ export class UserAuction implements IUserAuction {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["auctionId"] = this.auctionId;
+        data["auctionItemId"] = this.auctionItemId;
         data["amountAuction"] = this.amountAuction;
         data["isPublic"] = this.isPublic;
         return data;
@@ -34297,7 +34499,7 @@ export class UserAuction implements IUserAuction {
 }
 
 export interface IUserAuction {
-    auctionId: number | undefined;
+    auctionItemId: number | undefined;
     amountAuction: number | undefined;
     isPublic: boolean | undefined;
 }
@@ -35405,11 +35607,6 @@ export interface IWsFederationExternalLoginProviderSettings {
     metaDataAddress: string | undefined;
     wtrealm: string | undefined;
     authority: string | undefined;
-}
-
-export interface FileParameter {
-    data: any;
-    fileName: string;
 }
 
 export class ApiException extends Error {

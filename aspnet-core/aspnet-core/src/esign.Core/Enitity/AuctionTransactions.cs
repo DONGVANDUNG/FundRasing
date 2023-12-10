@@ -11,7 +11,7 @@ namespace esign.Enitity
     [Table("AuctionTransactions")]
     public class AuctionTransactions : FullAuditedEntity<long>
     {
-        public long? AuctionId { get; set; }
+        public long? AuctionItemId { get; set; }
         public long? AuctioneerId{ get; set; }
         public float? OldAmount { get; set; }
         public float? NewAmount { get; set; }

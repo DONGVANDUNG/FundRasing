@@ -41,7 +41,7 @@
             <div class="row align-items-center">
                 <div class="col-md-12">
                     <div class="item col-12">
-                        <grid-table [columnDefs]="columnDefs" [defaultColDef]="defaultColDef"
+                        <grid-table [columnDefs]="columnDefs" [defaultColDef]="defaultColDef" (onChangeSelection)="onChangeSelection($event)"
                             (onGridReady)="onGridReady($event)" (callBackEvent)="callBackGrid($event)"
                             [paginationParams]="paginationParams" [rowData]="rowData" [height]="'430px'"></grid-table>
                     </div>
@@ -49,6 +49,9 @@
             </div>
             <button class="tmss-btn btn-outline-primary mr-0" (click)="createAuction()">
                 <i class="fas fa-plus"></i> {{l("Thêm bài đăng")}}
+            </button>
+            <button class="tmss-btn btn-outline-primary mr-0" (click)="editAuction()">
+                <i class="fas fa-plus"></i> {{l("Sửa bài đăng")}}
             </button>
         </div>
     </div>

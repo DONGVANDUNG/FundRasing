@@ -12,7 +12,7 @@ namespace esign.Enitity
     public class AuctionDeposit :FullAuditedEntity<long>
     {
         public long? UserId { get; set; }
-        public long? AuctionId { get; set; }
+        public long? AuctionItemId { get; set; }
         public float? DepositAmount { get; set; }
         public DateTime? DepositDate { get; set; }
         public bool? IsPayDeposit { get; set; }

@@ -22,7 +22,7 @@ namespace esign.FundRaising
         }
         public async Task UserAuction(UserAuction input)
         {
-            var auctionItem = _mstAuctionItemsRepo.FirstOrDefault(e => e.AuctionId == input.AuctionId);
+            var auctionItem = _mstAuctionItemsRepo.FirstOrDefault(e => e.Id == input.AuctionItemId);
             var auctionTransaction = new AuctionTransactions();
             auctionTransaction.OldAmount = auctionItem.AuctionPresentAmount != null ? auctionItem.AuctionPresentAmount : auctionItem.StartingPrice;
             if (input.AmountAuction < auctionItem.AuctionPresentAmount || input.AmountAuction > auctionItem.AuctionPresentAmount + auctionItem.AmountJumpMax)
@@ -36,7 +36,7 @@ namespace esign.FundRaising
 
             await _mstAuctionItemsRepo.UpdateAsync(auctionItem);
             auctionTransaction.NewAmount = auctionItem.AuctionPresentAmount;
-            auctionTransaction.AuctionId = input.AuctionId;
+            auctionTransaction.AuctionItemId = input.AuctionItemId;
             auctionTransaction.AuctionDate = DateTime.Now;
             auctionTransaction.AuctioneerId = AbpSession.UserId;
             auctionTransaction.IsPublic = input.IsPublic;

@@ -360,7 +360,11 @@ namespace esign.FundRaising
         }
         public async Task RegisterFundRaiser(RegisterInforFundRaiserDto input)
         {
-
+            var bankAccount = await _mstBankRepo.FirstOrDefaultAsync(e=>e.UserId == AbpSession.UserId);
+            if(bankAccount == null)
+            {
+                throw new UserFriendlyException("Bạn chưa đăng ký tài khoản ngân hàng của hệ thống!");
+            }
             var user = _mstSleUserRepo.FirstOrDefault(e => e.Id == AbpSession.UserId);
             user.Address = input.Address;
             user.IntroduceOrganization = input.OrgnizationIntro;
@@ -381,26 +385,31 @@ namespace esign.FundRaising
             request.RequestTime = DateTime.Now;
             request.IsApprove = false;
             await _mstRequestToFundRaiserRepo.InsertAsync(request);
+            // Trừ tiền tài khoản
+            bankAccount.Balance -= paymentFee;
+            await _mstBankRepo.UpdateAsync(bankAccount);
 
             await _mstSleUserRepo.UpdateAsync(user);
         }
 
-        public async Task CreateOrEditAccountBank(InforDetailBankAcountDto input)
+        public async Task<BankAccount> CreateOrEditAccountBank(InforDetailBankAcountDto input)
         {
-            if (input.Id == 0)
+            if (input.Id == 0 || input.Id == null)
             {
                 var bank = new BankAccount();
                 ObjectMapper.Map(input, bank);
                 bank.UserId = AbpSession.UserId;
                 bank.Balance = 1000000;
                 bank.Unit = "VND";
-                await _mstBankRepo.InsertAsync(bank);
+                bank.Id = await _mstBankRepo.InsertAndGetIdAsync(bank);
+                return bank;
             }
-            else
-            {
-                var bankAccount = await _mstBankRepo.FirstOrDefaultAsync(e => e.Id == input.Id);
-                ObjectMapper.Map(input, bankAccount);
-            }
+            return null;
+            //else
+            //{
+            //    var bankAccount = await _mstBankRepo.FirstOrDefaultAsync(e => e.Id == input.Id);
+            //    ObjectMapper.Map(input, bankAccount);
+            //}
         }
 
         public async Task<List<GetFundRaisingViewForAdminDto>> getListPostOfFundRaising()
@@ -443,7 +452,7 @@ namespace esign.FundRaising
         }
         public async Task UserAuction(UserAuction input)
         {
-            var auctionItem = _mstAuctionItemsRepo.FirstOrDefault(e => e.AuctionId == input.AuctionId);
+            var auctionItem = _mstAuctionItemsRepo.FirstOrDefault(e => e.Id == input.AuctionItemId);
             var auctionTransaction = new AuctionTransactions();
             auctionTransaction.OldAmount = auctionItem.AuctionPresentAmount != null ? auctionItem.AuctionPresentAmount : auctionItem.StartingPrice;
             if (input.AmountAuction < auctionItem.AuctionPresentAmount || input.AmountAuction > auctionItem.AuctionPresentAmount + auctionItem.AmountJumpMax)
@@ -457,34 +466,33 @@ namespace esign.FundRaising
 
             await _mstAuctionItemsRepo.UpdateAsync(auctionItem);
             auctionTransaction.NewAmount = auctionItem.AuctionPresentAmount;
-            auctionTransaction.AuctionId = input.AuctionId;
             auctionTransaction.AuctionDate = DateTime.Now;
             auctionTransaction.AuctioneerId = AbpSession.UserId;
             auctionTransaction.IsPublic = input.IsPublic;
             await _mstAuctionTransactionRepo.InsertAsync(auctionTransaction);
         }
-        public async Task UserDepositAuction(float deposit,long auctionId)
+        public async Task UserDepositAuction(float deposit,long auctionItemId)
         {
-            var auctionStartingPrice = _mstAuctionItemsRepo.FirstOrDefault(e => e.AuctionId == auctionId).StartingPrice;
+            var auctionStartingPrice = _mstAuctionItemsRepo.FirstOrDefault(e => e.Id == auctionItemId).StartingPrice;
             if(deposit < auctionStartingPrice/100 || deposit > (auctionStartingPrice*15)/100) {
                 throw new UserFriendlyException("Số tiền đặt cọc không hợp lệ");           
             }
             var auctionDeposit = new AuctionDeposit();
             auctionDeposit.UserId = AbpSession.UserId;
-            auctionDeposit.AuctionId= auctionId;
+            auctionDeposit.AuctionItemId= auctionItemId;
             auctionDeposit.DepositAmount = deposit;
             auctionDeposit.DepositDate = DateTime.Now;
             await _mstAuctionDepositRepo.InsertAsync(auctionDeposit);
         }
         public async Task<InformationAuctionDepositDto> GetInforAuctionDeposit(long auctionId)
         {
-            var auctionItem = (from item in _mstAuctionItemsRepo.GetAll().Where(e => e.AuctionId == auctionId)
-                               join auction in _mstAuctionRepo.GetAll() on item.AuctionId equals auction.Id
+            var auctionItem = (from deposit in _mstAuctionDepositRepo.GetAll().Where(e => e.AuctionItemId == auctionId)
+                               join auctionItems in _mstAuctionItemsRepo.GetAll() on deposit.AuctionItemId equals auctionItems.Id
                                select new InformationAuctionDepositDto
                                {
-                                   AuctionTitle = auction.TitleAuction,
-                                   MinAmountDepost = item.StartingPrice / 100,
-                                   MaxAmountDepost = item.StartingPrice * 15 / 100
+                                   AuctionTitle = auctionItems.TitleAuction,
+                                   MinAmountDepost = auctionItems.StartingPrice / 100,
+                                   MaxAmountDepost = auctionItems.StartingPrice * 15 / 100
                                }).FirstOrDefault();
             return auctionItem;
         }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using esign.EntityFrameworkCore;
 
@@ -11,9 +12,11 @@ using esign.EntityFrameworkCore;
 namespace esign.Migrations
 {
     [DbContext(typeof(esignDbContext))]
-    partial class esignDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231209030204_update-table-auction-items")]
+    partial class updatetableauctionitems
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1897,7 +1900,7 @@ namespace esign.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<long?>("AuctionItemId")
+                    b.Property<long?>("AuctionId")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreationTime")
@@ -1946,7 +1949,7 @@ namespace esign.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<long?>("AuctionItemId")
+                    b.Property<long>("AuctionItemId")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreationTime")
@@ -1989,14 +1992,14 @@ namespace esign.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<int?>("Amount")
-                        .HasColumnType("int");
-
                     b.Property<float?>("AmountJumpMax")
                         .HasColumnType("real");
 
                     b.Property<float?>("AmountJumpMin")
                         .HasColumnType("real");
+
+                    b.Property<long?>("AuctionId")
+                        .HasColumnType("bigint");
 
                     b.Property<float?>("AuctionPresentAmount")
                         .HasColumnType("real");
@@ -2013,14 +2016,8 @@ namespace esign.Migrations
                     b.Property<DateTime?>("DeletionTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("EndDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("IntroduceItem")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool?>("IsClose")
-                        .HasColumnType("bit");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -2037,20 +2034,11 @@ namespace esign.Migrations
                     b.Property<int?>("NumberOfParticipants")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("StartDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<float?>("StartingPrice")
                         .HasColumnType("real");
 
                     b.Property<float?>("TargetAmountOfMoney")
                         .HasColumnType("real");
-
-                    b.Property<string>("TitleAuction")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long?>("UserId")
-                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -2068,7 +2056,7 @@ namespace esign.Migrations
                     b.Property<DateTime?>("AuctionDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<long?>("AuctionItemId")
+                    b.Property<long?>("AuctionId")
                         .HasColumnType("bigint");
 
                     b.Property<long?>("AuctioneerId")

@@ -122,6 +122,13 @@ export class AppAdminAuctionComponent extends AppComponentBase implements OnInit
                 cellClass: ['text-left'],
             },
             {
+                headerName: this.l('Số lượng'),
+                headerTooltip: this.l('Số lượng'),
+                field: 'amount',
+                width: 150,
+                cellClass: ['text-left'],
+            },
+            {
                 headerName: this.l('Ngày bắt đầu'),
                 headerTooltip: this.l('Ngày bắt đầu'),
                 field: 'startDate',
@@ -225,7 +232,10 @@ export class AppAdminAuctionComponent extends AppComponentBase implements OnInit
         })
     }
     createAuction() {
-        this.modalCreate.show(this.selectedAuction);
+        this.modalCreate.show();
+    }
+    editAuction(){
+        this.modalCreate.show(this.selectedAuction)
     }
 
 }
