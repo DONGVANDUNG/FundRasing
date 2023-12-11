@@ -11,22 +11,22 @@
     <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
         <div class="kt-portlet kt-portlet--mobile">
             <div>
-                <div class="row align-items-center mt-2 mb-2">
-                    <!-- <div class="col-md-2">
+                <div class="row align-items-center mt-3 mb-3">
+                    <div class="col-md-3">
                         <div class="form-group">
-                            <tmss-combobox [items]="listTypePackage" [(ngModel)]="typePackage"
+                            <tmss-combobox [items]="listStatus" [(ngModel)]="status"
                              [label]="'label'" [key]="'value'"  [text]="l('Loại quỹ')" name="typePackage">
                             </tmss-combobox>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <!-- <div class="col-md-3">
                         <div class="form-group">
                             <tmss-datepicker [(ngModel)]="createdDate" [dateInputFormat]="'DD-MM-YYYY'" [text]="l('Ngày tạo gói')" name="createdDate"></tmss-datepicker>
                         </div>
                     </div> -->
-                    <div class="col-md-9">
+                    <div class="col-md-6">
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3 d-flex justify-content-end">
                         <button class="tmss-btn  btn-outline-primary tmss-override" (click)="search()">
                             <i class="fa fa-search" aria-hidden="true"></i>
                             {{l("Search")}}

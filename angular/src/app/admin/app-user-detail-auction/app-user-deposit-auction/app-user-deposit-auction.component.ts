@@ -15,7 +15,7 @@ export class AppUserDepositAuctionComponent extends AppComponentBase implements 
   saving;
   active;
   depositAmount;
-  auctionId;
+  auctionItemId:number;
   inforDepost;
   constructor(injector: Injector,private userServiceProxy: UserFundRaisingServiceProxy,
     private dataFormatService:DataFormatService) {
@@ -24,11 +24,10 @@ export class AppUserDepositAuctionComponent extends AppComponentBase implements 
 
   ngOnInit() {
   }
-  show(autionId): void {
+  show(autionItemId:number): void {
     this.modal.show();
-    this.inforDepost.auctionTitle = null;
-    this.auctionId = autionId;
-    this.userServiceProxy.getInforAuctionDeposit(autionId).subscribe(re=>{
+    this.auctionItemId = autionItemId;
+    this.userServiceProxy.getInforAuctionDeposit(this.auctionItemId).subscribe(re=>{
       this.inforDepost = re;
       this.inforDepost.maxAmountDepost = this.dataFormatService.moneyFormat(re.maxAmountDepost);
       this.inforDepost.minAmountDepost = this.dataFormatService.moneyFormat(re.minAmountDepost);
@@ -38,8 +37,8 @@ export class AppUserDepositAuctionComponent extends AppComponentBase implements 
     this.modal.hide();
   }
   depositAuction(){
-    this.userServiceProxy.userDepositAuction(this.depositAmount,this.auctionId).subscribe(()=>{
-      this.notify.success("Đặt cọc thành công.Bạn có thể tham gia phiên đấu giá ngay bây giờ.");
+    this.userServiceProxy.userDepositAuction(this.depositAmount,this.auctionItemId).subscribe(()=>{
+      this.notify.success("Đặt cọc thành công. Bạn có thể tham gia phiên đấu giá ngay bây giờ.");
       this.modalSave.emit(null);
       this.modal.hide();
     })

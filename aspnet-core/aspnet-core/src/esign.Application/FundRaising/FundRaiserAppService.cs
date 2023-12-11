@@ -418,6 +418,7 @@ namespace esign.FundRaising
         public async Task<PagedResultDto<GetAllAuctionDto>> getAllAuctionAdmin(AuctionInputDto input)
         {
             var query = from item in _mstSleAuctionItemsRepo.GetAll().Where(e => AbpSession.TenantId == null || e.UserId == AbpSession.UserId)
+                        //.Where(e=>e)
                         select new GetAllAuctionDto
                         {
                             Id = item.Id,
@@ -459,7 +460,8 @@ namespace esign.FundRaising
         }
         public async Task<List<GetAllAuctionDto>> getAllAuctionUser()
         {
-            var listAuction = (from item in _mstSleAuctionItemsRepo.GetAll()
+            var listAuction = (from item in _mstSleAuctionItemsRepo.GetAll().
+                               WhereIf(AbpSession.TenantId != null, e=>e.UserId != AbpSession.UserId)
                                    //|| e.UserId != AbpSession.UserId)
                                select new GetAllAuctionDto
                                {
@@ -503,17 +505,18 @@ namespace esign.FundRaising
         public async Task<PagedResultDto<GetListFundRaisingDto>> getListFundRaising(FundRaisingInputDto input)
         {
             var listFundRaising = from funds in _mstSleFundRepo.GetAll().Where(e => e.UserId == AbpSession.UserId)
+                                  .Where(e=>input.Status == 0 || e.Status == input.Status)
                                   select new GetListFundRaisingDto
                                   {
                                       Id = funds.Id,
                                       FundTitle = funds.FundTitle,
                                       FundName = funds.FundName,
-                                      FundRaisingDay = funds.FundRaisingDay,
-                                      FundEndDate = funds.FundEndDate,
+                                      FundRaisingDay = funds.FundRaisingDay.ToString("dd/MM/yyyy"),
+                                      FundEndDate = funds.FundEndDate.ToString("dd/MM/yyyy"),
                                       AmountDonationTarget = funds.AmountDonationTarget,
                                       Status = funds.Status == 1 ? "Đang hoạt động" : "Đã đóng",
                                       TotalPost = _mstFundRaiserPostRepo.GetAll().Where(e => e.FundId == funds.Id).Count(),
-                                      TotalDonate = _mstSleFundTransactionRepo.GetAll().Where(e => e.FundId == funds.Id && e.IsAdmin == false || e.IsAdmin == null).Count(),
+                                      TotalDonate = funds.DonateAmount,
                                   };
             var totalCount = await listFundRaising.CountAsync();
             var result = await listFundRaising.PageBy(input).ToListAsync();
@@ -525,16 +528,17 @@ namespace esign.FundRaising
         public async Task<PagedResultDto<GetListPostByFundRaisingDto>> getAllFundRaiserPost(GetListFundRaiserPostInputDto input)
         {
             var listPost = from post in _mstFundRaiserPostRepo.GetAll().Where(e => e.UserId == AbpSession.UserId)
-                           join fund in _mstSleFundRepo.GetAll() on post.FundId equals fund.Id
+                           join fund in _mstSleFundRepo.GetAll().Where(e=>input.FundId == null ||e.Id == input.FundId) on post.FundId equals fund.Id
                            select new GetListPostByFundRaisingDto
                            {
                                Id = post.Id,
                                FundName = fund.FundName,
                                PostTopic = post.PostTopic,
-                               PostCreated = post.CreationTime,
+                               PostCreated = post.CreationTime.ToString("dd/MM/yyyy"),
                                PostTitle = post.PostTitle,
                                AmountOfTarget = fund.AmountDonationTarget,
-                               FundEndDate = fund.FundEndDate,
+                               FundEndDate = fund.FundEndDate.ToString("dd/MM/yyyy"),
+                               FundRaisingDay = fund.FundRaisingDay.ToString("dd/MM/yyyy"),
                                Status = fund.Status == 1 ? "Đang hoạt động" : "Đã đóng"
                            };
             var totalCount = await listPost.CountAsync();
@@ -547,6 +551,7 @@ namespace esign.FundRaising
         public List<GetListComboboxDto> getListFundName()
         {
             var listFundRaising = from fund in _mstSleFundRepo.GetAll().Where(e => e.Status == 1)
+                                  .WhereIf(AbpSession.TenantId != null,e=>e.UserId == AbpSession.UserId)
                                   select new GetListComboboxDto
                                   {
                                       Id = fund.Id,

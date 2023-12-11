@@ -6,6 +6,7 @@ import { ceil } from 'lodash-es';
 import * as moment from 'moment';
 import { AdminFundRaisingServiceProxy } from '@shared/service-proxies/service-proxies';
 import { DataFormatService } from '@app/shared/common/services/data-format.service';
+import { DateTime } from 'luxon';
 @Component({
   selector: 'app-admin-fundRaiser',
   templateUrl: './app-admin-fundRaiser.component.html',
@@ -32,8 +33,8 @@ export class AppAdminFundRaiserComponent extends AppComponentBase implements OnI
             value: false, label: 'Không hoạt động',
         }
     ]
-    createdJoin;
-    status;
+    createdJoin = new Date();
+    status = true;
     email;
     params: GridParams;
     advancedFiltersAreShown: boolean;
@@ -176,14 +177,13 @@ export class AppAdminFundRaiserComponent extends AppComponentBase implements OnI
     }
     clearValueFilter() {
         this.onGridReady(this.paginationParams);
-        this.createdJoin = null;
-        this.status = null;
-        this.email = null;
+        this.createdJoin = new Date();
+        this.status = true;
     }
 
     getAll(paginationParams: PaginationParamsModel) {
         return this.fundRaising.getAllListFundRaiser(
-            this.createdJoin,
+            DateTime.fromJSDate(this.createdJoin),
             this.status,
             this.sorting ?? null,
             paginationParams ? paginationParams.skipCount : 0,

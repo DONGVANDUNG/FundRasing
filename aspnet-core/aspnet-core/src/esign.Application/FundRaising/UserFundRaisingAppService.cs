@@ -76,25 +76,28 @@ namespace esign.FundRaising
         }
         public async Task<List<GetListFundRasingDto>> getHistoryDonationForFund()
         {
-            var listFund = (from transaction in _mstSleFundTransactionRepo.GetAll()
-                            join fund in _mstSleFundRepo.GetAll().DistinctBy(e => e.Id) on transaction.FundId equals fund.Id
-                            join post in _mstFundRaiserPostRepo.GetAll() on fund.Id equals post.FundId
-                            join postImage in _mstFundImageRepo.GetAll() on post.Id equals postImage.PostId
+            var listFund = from transaction in _mstSleFundTransactionRepo.GetAll().Where(e=>e.UserId == AbpSession.UserId)
+                           join fund in _mstSleFundRepo.GetAll() on transaction.FundId equals fund.Id
+                           join post in _mstFundRaiserPostRepo.GetAll() on fund.Id equals post.FundId
+                           join postImage in _mstFundImageRepo.GetAll() on post.Id equals postImage.PostId
 
-                            //join fundDetail in _mstSleFundDetailRepo.GetAll() on fund.Id equals fundDetail.FundId    
-                            select new GetListFundRasingDto
-                            {
-                                Id = post.Id,
-                                ListImageUrl = _mstFundImageRepo.GetAll().Where(e => e.PostId == post.Id).Select(re => re.ImageUrl).ToList(),
-                                AmountDonatePresent = fund.AmountDonationPresent,
-                                PercentAchieved = (fund.AmountDonationPresent / fund.AmountDonationTarget) * 100,
-                                PostTitle = post.PostTitle,
-                                AmountDonateTarget = fund.AmountDonationTarget,
-                                PostTopic = post.PostTopic,
-                                //OrganizationName = _mstSleUserRepo.FirstOrDefault(e => e.Id == fund.UserId).IntroduceOrganization,
-                                //FundDetail
-                            }).ToListAsync();
-            return await listFund;
+                           //join fundDetail in _mstSleFundDetailRepo.GetAll() on fund.Id equals fundDetail.FundId    
+                           select new GetListFundRasingDto
+                           {
+                               Id = post.Id,
+                               ListImageUrl = _mstFundImageRepo.GetAll().Where(e => e.PostId == post.Id).Select(re => re.ImageUrl).ToList(),
+                               AmountDonatePresent = fund.AmountDonationPresent,
+                               PercentAchieved = (fund.AmountDonationPresent / fund.AmountDonationTarget) * 100,
+                               PostTitle = post.PostTitle,
+                               AmountDonateTarget = fund.AmountDonationTarget,
+                               PostTopic = post.PostTopic,
+                               FundId = fund.Id
+                               //OrganizationName = _mstSleUserRepo.FirstOrDefault(e => e.Id == fund.UserId).IntroduceOrganization,
+                               //FundDetail
+                           };
+            var test = await listFund.ToListAsync();
+            var result = test.DistinctBy(x => x.FundId).ToList();
+            return result;
         }
         public GetFundsDetailByIdForUser GetInforPostById(long Id)
         {
@@ -122,7 +125,8 @@ namespace esign.FundRaising
                                    AddressOrgnization = user.Address,
                                    Phone = user.Phone,
                                    Email = user.EmailAddress,
-                                   FundId = fund.Id
+                                   FundId = fund.Id,
+                                   DonateAmount = fund.DonateAmount
                                }).FirstOrDefault();
             return fundRaising;
         }
@@ -159,7 +163,7 @@ namespace esign.FundRaising
                                       PaymentFee = funPackage.PaymentFee,
                                       Description = funPackage.Description,
                                       Duration = funPackage.Duration,
-                                      CreatedTime = funPackage.CreationTime
+                                      CreatedTime = funPackage.CreationTime.ToString("dd/MM/yyyy")
                                   };
             return await listFundPackage.ToListAsync();
         }
@@ -429,7 +433,8 @@ namespace esign.FundRaising
         public async Task<List<GetFundRaisingViewForAdminDto>> getListPostOfFundRaising()
         {
             var listPost = (from post in _mstFundRaiserPostRepo.GetAll()
-                            join fund in _mstSleFundRepo.GetAll() on post.FundId equals fund.Id
+                            join fund in _mstSleFundRepo.GetAll().Where(e=> DateTime.Now >= e.FundRaisingDay && DateTime.Now <=e.FundEndDate)
+                            on post.FundId equals fund.Id
                             join user in _mstSleUserRepo.GetAll() on fund.UserId equals user.Id
                             select new GetFundRaisingViewForAdminDto
                             {
@@ -449,16 +454,15 @@ namespace esign.FundRaising
         {
             var listTransaction = (from transaction in _mstSleFundTransactionRepo.GetAll().Where(e => e.FundId == fundId &&
                                    (e.IsAdmin == false || e.IsAdmin == null))
-                                   join fund in _mstSleFundRepo.GetAll() on transaction.FundId equals fund.Id
-                                   join user in _mstSleUserRepo.GetAll() on fund.UserId equals user.Id
+                                   join user in _mstSleUserRepo.GetAll() on transaction.SenderId equals user.Id
                                    select new TransactionOfFundForDto
                                    {
                                        //Id = transaction.Id,
-                                       UserDonate = user.Name,
+                                       UserDonate = user.Surname + " " + user.Name,
                                        Amount = transaction.AmountOfMoney,
                                        //Content = transaction.MessageToFund,
                                        //FundName = fund.FundName,
-                                       CreatedTime = transaction.CreationTime,
+                                       CreatedTime = transaction.CreationTime.ToString("dd/MM/yyyy"),
                                        IsPublic = transaction.IsPublic
 
                                    }).ToListAsync();
@@ -498,10 +502,9 @@ namespace esign.FundRaising
             auctionDeposit.DepositDate = DateTime.Now;
             await _mstAuctionDepositRepo.InsertAsync(auctionDeposit);
         }
-        public async Task<InformationAuctionDepositDto> GetInforAuctionDeposit(long auctionId)
+        public async Task<InformationAuctionDepositDto> GetInforAuctionDeposit(long auctionItemId)
         {
-            var auctionItem = (from deposit in _mstAuctionDepositRepo.GetAll().Where(e => e.AuctionItemId == auctionId)
-                               join auctionItems in _mstAuctionItemsRepo.GetAll() on deposit.AuctionItemId equals auctionItems.Id
+            var auctionItem = (from auctionItems in _mstAuctionItemsRepo.GetAll().Where(e=>e.Id == auctionItemId)
                                select new InformationAuctionDepositDto
                                {
                                    AuctionTitle = auctionItems.TitleAuction,

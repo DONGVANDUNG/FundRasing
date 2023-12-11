@@ -6,6 +6,7 @@ import { AdminFundRaisingServiceProxy, UserServiceProxy } from '@shared/service-
 import { ceil } from 'lodash-es';
 import * as moment from 'moment';
 import { CreateOrEditFundPackageComponent } from './create-or-edit-fund-package/create-or-edit-fund-package.component';
+import { DateTime } from 'luxon';
 
 @Component({
     selector: 'app-app-admin-fund-package',
@@ -25,7 +26,7 @@ export class AppAdminFundPackageComponent extends AppComponentBase implements On
     paginationParams: PaginationParamsModel;
     params: GridParams;
     advancedFiltersAreShown: boolean;
-    createdDate;
+    createdDate = new Date();
     typePackage;
     listTypePackage = [
         { label: 'Tuần', value: 'Tuần' },
@@ -94,7 +95,6 @@ export class AppAdminFundPackageComponent extends AppComponentBase implements On
             {
                 headerName: this.l('Ngày tạo gói'),
                 headerTooltip: this.l('Ngày tạo gói'),
-                valueGetter: params => this.dataFormatService.dateFormat(params.data.createdTime),
                 field: 'createdTime',
                 flex: 4,
                 cellClass: ['text-left'],
@@ -157,13 +157,13 @@ export class AppAdminFundPackageComponent extends AppComponentBase implements On
     }
     clearValueFilter() {
         this.onGridReady(this.paginationParams);
-        this.createdDate = null;
+        this.createdDate = new Date();
         this.typePackage = null;
     }
 
     getAll(paginationParams: PaginationParamsModel) {
         return this._adminServiceProxy.getListFundPackage(
-            this.createdDate,
+            DateTime.fromJSDate(this.createdDate),
             this.typePackage,
             this.sorting ?? null,
             paginationParams ? paginationParams.skipCount : 0,
@@ -180,6 +180,9 @@ export class AppAdminFundPackageComponent extends AppComponentBase implements On
         this.modalCreate.show();
     }
     editFundPackage(){
+        if(!this.selectedPackage){
+            this.notify.warn("Vui lòng chọn một bản ghi")
+        }
         this.modalCreate.show(this.selectedPackage);
     }
 }

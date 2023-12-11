@@ -13,6 +13,7 @@ export class AppUserFundraiserComponent extends AppComponentBase implements OnIn
   isChangeBankInfo: boolean = false;
   dataFundRaiser: RegisterInforFundRaiserDto = new RegisterInforFundRaiserDto;
   dataInforBankUser: InforDetailBankAcountDto = new InforDetailBankAcountDto;
+  isRegister: boolean = false;
   constructor(injector: Injector, private fundRaisingRepo: FundRaiserServiceProxy,
     private _userServiceProxy: UserFundRaisingServiceProxy) {
     super(injector);
@@ -25,6 +26,7 @@ export class AppUserFundraiserComponent extends AppComponentBase implements OnIn
     })
     this._userServiceProxy.getForEditFundRaiser().subscribe(result => {
       this.dataFundRaiser = result;
+      this.isRegister = result.fundPackageId != null ? true : false
       if (result == null) {
         this.notify.warn("Vui lòng đăng ký thông tin để tham gia gây quỹ")
       }
@@ -50,6 +52,7 @@ export class AppUserFundraiserComponent extends AppComponentBase implements OnIn
       this._userServiceProxy.registerFundRaiser(this.dataFundRaiser).subscribe((result) => {
         this.notify.success("Đăng ký thành công.Yêu cầu của bạn sẽ sớm được phê duyệt!");
         this.dataFundRaiser = result;
+        this.isRegister = result.fundPackageId != null ? true : false
       },
       );
     }

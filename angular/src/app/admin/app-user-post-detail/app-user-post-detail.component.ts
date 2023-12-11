@@ -48,15 +48,15 @@ export class AppUserPostDetailComponent extends AppComponentBase implements OnIn
             this.inforFundDetail.amountDonatePresent = this.dataFormatService.moneyFormat(result.amountDonatePresent);
             this.inforFundDetail.amountDonateTarget = this.dataFormatService.moneyFormat(result.amountDonateTarget);
             this.imageUrl = this.baseUrl + this.inforFundDetail.listImageUrl[0];
-        })
+            var progress = document.querySelector<HTMLElement>(".span-progress");
+            progress.style.width = `${result.percentAchieved}%`
+        });
         this._userServiceProxy.getListTransactionForFund(this.fundId).subscribe(rs => {
             this.listTransaction = rs;
             this.listTransaction.forEach(transaction => {
-                transaction.createdTime = this.dataFormatService.dateFormat(transaction.createdTime);
-                transaction.amount = this.dataFormatService.moneyFormat(transaction.amount);
-            })
-            this.listTransaction.forEach((item) => {
-                item.amount = this.dataFormatService.moneyFormat(item.amount)
+                transaction.createdTime = this.dataFormatService.dateFormatTransaction(transaction.createdTime);
+                transaction.amount = this.dataFormatService.moneyFormat(transaction.amount)
+                //transaction.amount = this.dataFormatService.moneyFormat(transaction.amount);
             })
         });
         this._userServiceProxy.checkUserIsFundRaiser().subscribe(result=>{

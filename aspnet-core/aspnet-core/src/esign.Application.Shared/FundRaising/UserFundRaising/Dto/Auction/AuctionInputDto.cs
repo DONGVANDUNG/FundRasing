@@ -7,5 +7,6 @@ namespace esign.FundRaising.UserFundRaising.Dto.Auction
 {
     public class AuctionInputDto : PagedAndSortedResultRequestDto
     {
+        public int? Status { get; set; }
     }
 }

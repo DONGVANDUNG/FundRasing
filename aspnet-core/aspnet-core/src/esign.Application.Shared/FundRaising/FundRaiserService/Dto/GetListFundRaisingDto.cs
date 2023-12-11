@@ -7,15 +7,15 @@ namespace esign.FundRaising.FundRaiserService.Dto
     public class GetListFundRaisingDto
     {
         public long? Id { get; set; }
-        public DateTime? FundRaisingDay { get; set; }
+        public string FundRaisingDay { get; set; }
         public string FundName { get; set; }
-        public DateTime? FundEndDate { get; set; }
+        public string FundEndDate { get; set; }
         public float? AmountDonationTarget { get; set; }
         public string Unit { get; set; }
         public string Status { get; set; }
         public string FundRaiser { get; set; }
         public string FundTitle { get; set; }
-        public int TotalPost { get; set; }
-        public int TotalDonate { get; set; }
+        public int? TotalPost { get; set; }
+        public int? TotalDonate { get; set; }
     }
 }

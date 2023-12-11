@@ -4,11 +4,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">
-                    <span>Thông tin đặt cho cho phiên đấu giá {{this.inforDepost?.auctionTitle}}</span>
+                    <h3>Thông tin đặt cho cho phiên đấu giá {{this.inforDepost?.auctionTitle}}</h3>
                 </h4>
-                <button type="button" class="close" (click)="close()" aria-label="Close" [disabled]="saving">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <span (click)="close()" aria-hidden="true">&times;</span>
             </div>
 
             <div class="modal-body">
@@ -20,21 +18,21 @@
                                     tổ chức đấu giá tài sản với mức tối thiểu là 1% và mức tối đa không quá 15%.
                                 </p>
                                 <p> Cụ thể trong phiên đấu giá
-                                    này mức đặt cọc hợp lệ từ {{this.inforDepost?.minAmountDepost}}VND đến
-                                    {{this.inforDepost?.maxAmountDepost}}VND</p>
+                                    này mức đặt cọc hợp lệ từ {{this.inforDepost?.minAmountDepost}} VND đến
+                                    {{this.inforDepost?.maxAmountDepost}} VND</p>
                                 <div class="col-12 d-flex align-items-center">
                                     <label class="label">Số tiền đặt cọc:</label>
                                     <p-inputNumber name="amountAuction" [(ngModel)]="depositAmount"
-                                             currency="VND"></p-inputNumber>
+                                        currency="VND"></p-inputNumber>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button [disabled]="saving" type="button" class="tmss-btn btn-outline-dark"
+                    <button [disabled]="saving" type="button" class="tmss-btn btn-outline-primary"
                         (click)="depositAuction()">Đặt cọc</button>
-                    <button [disabled]="saving" type="button" class="tmss-btn btn-outline-dark"
+                    <button [disabled]="saving" type="button" class="tmss-btn btn-outline-danger"
                         (click)="close()">{{l("Cancel")}}</button>
                 </div>
             </div>

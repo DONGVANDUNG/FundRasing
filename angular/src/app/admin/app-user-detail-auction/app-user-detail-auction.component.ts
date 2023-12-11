@@ -9,6 +9,7 @@ import { error } from 'console';
 import { AppUserDepositAuctionComponent } from './app-user-deposit-auction/app-user-deposit-auction.component';
 // import { AuctionService } from '@app/shared/layout/chat/auction-hub.service';
 import { DataFormatService } from '@app/shared/common/services/data-format.service';
+import { AuctionService } from '@app/shared/layout/chat/auction-hub.service';
 
 @Component({
     selector: 'app-app-user-detail-auction',
@@ -18,8 +19,7 @@ import { DataFormatService } from '@app/shared/common/services/data-format.servi
 export class AppUserDetailAuctionComponent extends AppComponentBase implements OnInit {
     @ViewChild("deposit") modalDeposit : AppUserDepositAuctionComponent;
     private hubConnection: signalR.HubConnection;
-    auctionId:number;
-    auctionItemId;
+    auctionItemId:number;
     isDeposit :boolean = false;
     baseUrl = AppConsts.remoteServiceBaseUrl + '/';
     dataAuction;
@@ -27,7 +27,7 @@ export class AppUserDetailAuctionComponent extends AppComponentBase implements O
     constructor(private route: ActivatedRoute,
         injector: Injector,
         private _fundRaiser: FundRaiserServiceProxy,
-        //private auctionService: AuctionService,
+        private auctionService: AuctionService,
         public _zone: NgZone,
         private dataFormateService: DataFormatService
     ) {
@@ -35,17 +35,17 @@ export class AppUserDetailAuctionComponent extends AppComponentBase implements O
     }
 
     ngOnInit() {
-        //this.init();
-        this.auctionId = this.route.snapshot.params['auctionId'];
-        this.userAuction.auctionItemId = this.auctionId;
+        this.init();
+        this.auctionItemId = this.route.snapshot.params['auctionId'];
+        this.userAuction.auctionItemId = this.auctionItemId;
         this.userAuction.isPublic = false;
-        this._fundRaiser.getAuctionById(this.auctionId).subscribe(re => {
+        this._fundRaiser.getAuctionById(this.auctionItemId).subscribe(re => {
             this.dataAuction = re;
             this.dataAuction.nextMinimumBid = this.dataFormateService.moneyFormat(re.nextMinimumBid);
             this.dataAuction.nextMaximumBid= this.dataFormateService.moneyFormat(re.nextMaximumBid);
             this.dataAuction.auctionPresentAmount= this.dataFormateService.moneyFormat(re.auctionPresentAmount);
         })
-        //this.checkUserDeposit();
+        this.checkUserDeposit();
     }
     checkUserDeposit(){
         this._fundRaiser.checkUserDepositAuction().subscribe(re=>{
@@ -57,20 +57,20 @@ export class AppUserDetailAuctionComponent extends AppComponentBase implements O
             this.notify.warn("Vui lòng nhập số tiền đấu giá");
             return;
         }
-        // this.auctionService.updateAuction(this.userAuction.amountAuction,this.userAuction.auctionItemId,this.userAuction.isPublic, () => {
-        //     this.notify.success("Đấu giá vật phẩm thành công");
-        // });
+        this.auctionService.updateAuction(this.userAuction.amountAuction,this.userAuction.auctionItemId,this.userAuction.isPublic, () => {
+            this.notify.success("Đấu giá vật phẩm thành công");
+        });
     }
 
 
-    // init() {
-    //     this.subscribeToEvent('app.chat.updateAmountAuction', (amountPresent, amountJumnpMin, amountJumnpMax) => {
-    //         this.dataAuction.auctionPresentAmount = amountPresent;
-    //         this.dataAuction.amountJumpMin = amountJumnpMin;
-    //         this.dataAuction.amountJumpMax = amountJumnpMax;
-    //     });
-    // }
+    init() {
+        this.subscribeToEvent('app.chat.updateAmountAuction', (amountPresent, amountJumnpMin, amountJumnpMax) => {
+            this.dataAuction.auctionPresentAmount = this.dataFormateService.moneyFormat(amountPresent);
+            this.dataAuction.nextMinimumBid = this.dataFormateService.moneyFormat(amountJumnpMin);
+            this.dataAuction.nextMaximumBid = this.dataFormateService.moneyFormat(amountJumnpMax);
+        });
+    }
     depositAuction(){
-        this.modalDeposit.show(this.auctionId);
+        this.modalDeposit.show(this.auctionItemId);
     }
 }

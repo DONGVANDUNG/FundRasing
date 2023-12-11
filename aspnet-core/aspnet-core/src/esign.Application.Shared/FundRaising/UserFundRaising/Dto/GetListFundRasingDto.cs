@@ -20,6 +20,7 @@ namespace esign.FundRaising
         public string Purpose { get; set; }
         public string Target { get; set; }
         public string Note { get; set; }
+        public long? FundId { get; set; }
 
         // 
 

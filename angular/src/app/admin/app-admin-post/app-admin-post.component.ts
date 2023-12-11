@@ -32,13 +32,9 @@ export class AppAdminPostComponent extends AppComponentBase implements OnInit {
 
     advancedFiltersAreShown: boolean;
     createdDate;
+    fundRaising;
     typePackage;
-    listTypePackage = [
-        { label: 'Tuần', value: 'Tuần' },
-        { label: 'Tháng', value: 'Tháng' },
-        { label: 'Năm', value: 'Năm' },
-
-    ]
+    listFundRaising = []
     seletedPost;
     sideBar = {
         toolPanels: [
@@ -100,14 +96,14 @@ export class AppAdminPostComponent extends AppComponentBase implements OnInit {
                 headerName: this.l('Ngày tạo quỹ'),
                 headerTooltip: this.l('Ngày tạo quỹ'),
                 field: 'fundRaisingDay',
-                valueGetter: params => this.dataFormatService.dateFormat(params.data.fundRaisingDay),
+                //valueGetter: params => this.dataFormatService.dateFormat(params.data.fundRaisingDay),
                 width: 150,
                 cellClass: ['text-left'],
             },
             {
                 headerName: this.l('Ngày kết thúc'),
                 headerTooltip: this.l('Ngày kết thúc'),
-                valueGetter: params => this.dataFormatService.dateFormat(params.data.fundEndDate),
+                //valueGetter: params => this.dataFormatService.dateFormat(params.data.fundEndDate),
                 field: 'fundEndDate',
                 width: 150,
                 cellClass: ['text-left'],
@@ -117,14 +113,14 @@ export class AppAdminPostComponent extends AppComponentBase implements OnInit {
                 headerTooltip: this.l('Mục tiêu quỹ'),
                 field: 'amountOfTarget',
                 valueGetter: params => this.dataFormatService.moneyFormat(params.data.amountOfTarget) + " VND",
-                width:150,
+                width: 150,
                 cellClass: ['text-left'],
             },
             {
                 headerName: this.l('Trạng thái'),
                 headerTooltip: this.l('Trạng thái'),
                 field: 'status',
-                width:120,
+                width: 120,
                 cellClass: ['text-left'],
             },
         ];
@@ -149,6 +145,9 @@ export class AppAdminPostComponent extends AppComponentBase implements OnInit {
     ngOnInit() {
         this.paginationParams = { pageNum: 1, pageSize: 20, totalCount: 0 };
         this.onGridReady(this.paginationParams);
+        this._funRaiser.getListFundName().subscribe(re => {
+            this.listFundRaising = re;
+        })
     }
 
     onGridReady(paginationParams) {
@@ -178,12 +177,12 @@ export class AppAdminPostComponent extends AppComponentBase implements OnInit {
     }
     clearValueFilter() {
         this.onGridReady(this.paginationParams);
-        this.createdDate = null;
-        this.typePackage = null;
+        this.fundRaising = null;
     }
 
     getAll(paginationParams: PaginationParamsModel) {
         return this._funRaiser.getAllFundRaiserPost(
+            this.fundRaising,
             this.sorting ?? null,
             paginationParams ? paginationParams.skipCount : 0,
             paginationParams ? paginationParams.pageSize : 20
@@ -211,8 +210,8 @@ export class AppAdminPostComponent extends AppComponentBase implements OnInit {
         this.modalCreatePost.show();
     }
 
-    editPost(){
-        if(!this.seletedPost){
+    editPost() {
+        if (!this.seletedPost) {
             this.notify.warn("Vui lòng chọn một bản ghi bài đăng");
             return;
         }

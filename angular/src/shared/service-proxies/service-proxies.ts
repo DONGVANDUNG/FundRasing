@@ -886,18 +886,18 @@ export class AdminFundRaisingServiceProxy {
     }
 
     /**
-     * @param createdDate (optional) 
+     * @param status (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getListFundRaising(createdDate: DateTime | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetListFundRaisingDto> {
+    getListFundRaising(status: number | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetListFundRaisingDto> {
         let url_ = this.baseUrl + "/api/services/app/AdminFundRaising/getListFundRaising?";
-        if (createdDate === null)
-            throw new Error("The parameter 'createdDate' cannot be null.");
-        else if (createdDate !== undefined)
-            url_ += "CreatedDate=" + encodeURIComponent(createdDate ? "" + createdDate.toString() : "") + "&";
+        if (status === null)
+            throw new Error("The parameter 'status' cannot be null.");
+        else if (status !== undefined)
+            url_ += "Status=" + encodeURIComponent("" + status) + "&";
         if (sorting === null)
             throw new Error("The parameter 'sorting' cannot be null.");
         else if (sorting !== undefined)
@@ -6820,13 +6820,18 @@ export class FundRaiserServiceProxy {
     }
 
     /**
+     * @param status (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAllAuctionAdmin(sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetAllAuctionDto> {
+    getAllAuctionAdmin(status: number | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetAllAuctionDto> {
         let url_ = this.baseUrl + "/api/services/app/FundRaiser/getAllAuctionAdmin?";
+        if (status === null)
+            throw new Error("The parameter 'status' cannot be null.");
+        else if (status !== undefined)
+            url_ += "Status=" + encodeURIComponent("" + status) + "&";
         if (sorting === null)
             throw new Error("The parameter 'sorting' cannot be null.");
         else if (sorting !== undefined)
@@ -7104,18 +7109,18 @@ export class FundRaiserServiceProxy {
     }
 
     /**
-     * @param createdDate (optional) 
+     * @param status (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getListFundRaising(createdDate: DateTime | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetListFundRaisingDto> {
+    getListFundRaising(status: number | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetListFundRaisingDto> {
         let url_ = this.baseUrl + "/api/services/app/FundRaiser/getListFundRaising?";
-        if (createdDate === null)
-            throw new Error("The parameter 'createdDate' cannot be null.");
-        else if (createdDate !== undefined)
-            url_ += "CreatedDate=" + encodeURIComponent(createdDate ? "" + createdDate.toString() : "") + "&";
+        if (status === null)
+            throw new Error("The parameter 'status' cannot be null.");
+        else if (status !== undefined)
+            url_ += "Status=" + encodeURIComponent("" + status) + "&";
         if (sorting === null)
             throw new Error("The parameter 'sorting' cannot be null.");
         else if (sorting !== undefined)
@@ -7175,13 +7180,18 @@ export class FundRaiserServiceProxy {
     }
 
     /**
+     * @param fundId (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAllFundRaiserPost(sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetListPostByFundRaisingDto> {
+    getAllFundRaiserPost(fundId: number | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetListPostByFundRaisingDto> {
         let url_ = this.baseUrl + "/api/services/app/FundRaiser/getAllFundRaiserPost?";
+        if (fundId === null)
+            throw new Error("The parameter 'fundId' cannot be null.");
+        else if (fundId !== undefined)
+            url_ += "FundId=" + encodeURIComponent("" + fundId) + "&";
         if (sorting === null)
             throw new Error("The parameter 'sorting' cannot be null.");
         else if (sorting !== undefined)
@@ -17408,15 +17418,15 @@ export class UserFundRaisingServiceProxy {
     }
 
     /**
-     * @param auctionId (optional) 
+     * @param auctionItemId (optional) 
      * @return Success
      */
-    getInforAuctionDeposit(auctionId: number | undefined): Observable<InformationAuctionDepositDto> {
+    getInforAuctionDeposit(auctionItemId: number | undefined): Observable<InformationAuctionDepositDto> {
         let url_ = this.baseUrl + "/api/services/app/UserFundRaising/GetInforAuctionDeposit?";
-        if (auctionId === null)
-            throw new Error("The parameter 'auctionId' cannot be null.");
-        else if (auctionId !== undefined)
-            url_ += "auctionId=" + encodeURIComponent("" + auctionId) + "&";
+        if (auctionItemId === null)
+            throw new Error("The parameter 'auctionItemId' cannot be null.");
+        else if (auctionItemId !== undefined)
+            url_ += "auctionItemId=" + encodeURIComponent("" + auctionItemId) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -25058,7 +25068,7 @@ export class GetListFundPackageDto implements IGetListFundPackageDto {
     description!: string | undefined;
     duration!: string | undefined;
     paymentFee!: number | undefined;
-    createdTime!: DateTime | undefined;
+    createdTime!: string | undefined;
     commission!: string | undefined;
 
     constructor(data?: IGetListFundPackageDto) {
@@ -25077,7 +25087,7 @@ export class GetListFundPackageDto implements IGetListFundPackageDto {
             this.description = _data["description"];
             this.duration = _data["duration"];
             this.paymentFee = _data["paymentFee"];
-            this.createdTime = _data["createdTime"] ? DateTime.fromISO(_data["createdTime"].toString()) : <any>undefined;
+            this.createdTime = _data["createdTime"];
             this.commission = _data["commission"];
         }
     }
@@ -25096,7 +25106,7 @@ export class GetListFundPackageDto implements IGetListFundPackageDto {
         data["description"] = this.description;
         data["duration"] = this.duration;
         data["paymentFee"] = this.paymentFee;
-        data["createdTime"] = this.createdTime ? this.createdTime.toString() : <any>undefined;
+        data["createdTime"] = this.createdTime;
         data["commission"] = this.commission;
         return data;
     }
@@ -25108,22 +25118,22 @@ export interface IGetListFundPackageDto {
     description: string | undefined;
     duration: string | undefined;
     paymentFee: number | undefined;
-    createdTime: DateTime | undefined;
+    createdTime: string | undefined;
     commission: string | undefined;
 }
 
 export class GetListFundRaisingDto implements IGetListFundRaisingDto {
     id!: number | undefined;
-    fundRaisingDay!: DateTime | undefined;
+    fundRaisingDay!: string | undefined;
     fundName!: string | undefined;
-    fundEndDate!: DateTime | undefined;
+    fundEndDate!: string | undefined;
     amountDonationTarget!: number | undefined;
     unit!: string | undefined;
     status!: string | undefined;
     fundRaiser!: string | undefined;
     fundTitle!: string | undefined;
-    totalPost!: number;
-    totalDonate!: number;
+    totalPost!: number | undefined;
+    totalDonate!: number | undefined;
 
     constructor(data?: IGetListFundRaisingDto) {
         if (data) {
@@ -25137,9 +25147,9 @@ export class GetListFundRaisingDto implements IGetListFundRaisingDto {
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"];
-            this.fundRaisingDay = _data["fundRaisingDay"] ? DateTime.fromISO(_data["fundRaisingDay"].toString()) : <any>undefined;
+            this.fundRaisingDay = _data["fundRaisingDay"];
             this.fundName = _data["fundName"];
-            this.fundEndDate = _data["fundEndDate"] ? DateTime.fromISO(_data["fundEndDate"].toString()) : <any>undefined;
+            this.fundEndDate = _data["fundEndDate"];
             this.amountDonationTarget = _data["amountDonationTarget"];
             this.unit = _data["unit"];
             this.status = _data["status"];
@@ -25160,9 +25170,9 @@ export class GetListFundRaisingDto implements IGetListFundRaisingDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
-        data["fundRaisingDay"] = this.fundRaisingDay ? this.fundRaisingDay.toString() : <any>undefined;
+        data["fundRaisingDay"] = this.fundRaisingDay;
         data["fundName"] = this.fundName;
-        data["fundEndDate"] = this.fundEndDate ? this.fundEndDate.toString() : <any>undefined;
+        data["fundEndDate"] = this.fundEndDate;
         data["amountDonationTarget"] = this.amountDonationTarget;
         data["unit"] = this.unit;
         data["status"] = this.status;
@@ -25176,16 +25186,16 @@ export class GetListFundRaisingDto implements IGetListFundRaisingDto {
 
 export interface IGetListFundRaisingDto {
     id: number | undefined;
-    fundRaisingDay: DateTime | undefined;
+    fundRaisingDay: string | undefined;
     fundName: string | undefined;
-    fundEndDate: DateTime | undefined;
+    fundEndDate: string | undefined;
     amountDonationTarget: number | undefined;
     unit: string | undefined;
     status: string | undefined;
     fundRaiser: string | undefined;
     fundTitle: string | undefined;
-    totalPost: number;
-    totalDonate: number;
+    totalPost: number | undefined;
+    totalDonate: number | undefined;
 }
 
 export class GetListFundRasingDto implements IGetListFundRasingDto {
@@ -25200,6 +25210,7 @@ export class GetListFundRasingDto implements IGetListFundRasingDto {
     purpose!: string | undefined;
     target!: string | undefined;
     note!: string | undefined;
+    fundId!: number | undefined;
 
     constructor(data?: IGetListFundRasingDto) {
         if (data) {
@@ -25227,6 +25238,7 @@ export class GetListFundRasingDto implements IGetListFundRasingDto {
             this.purpose = _data["purpose"];
             this.target = _data["target"];
             this.note = _data["note"];
+            this.fundId = _data["fundId"];
         }
     }
 
@@ -25254,6 +25266,7 @@ export class GetListFundRasingDto implements IGetListFundRasingDto {
         data["purpose"] = this.purpose;
         data["target"] = this.target;
         data["note"] = this.note;
+        data["fundId"] = this.fundId;
         return data;
     }
 }
@@ -25270,6 +25283,7 @@ export interface IGetListFundRasingDto {
     purpose: string | undefined;
     target: string | undefined;
     note: string | undefined;
+    fundId: number | undefined;
 }
 
 export class GetListPostByFundRaisingDto implements IGetListPostByFundRaisingDto {
@@ -25277,12 +25291,13 @@ export class GetListPostByFundRaisingDto implements IGetListPostByFundRaisingDto
     postTitle!: string | undefined;
     targetIntroduce!: string | undefined;
     postTopic!: string | undefined;
-    postCreated!: DateTime | undefined;
+    postCreated!: string | undefined;
     purpose!: string | undefined;
     note!: string | undefined;
     fundName!: string | undefined;
     amountOfTarget!: number | undefined;
-    fundEndDate!: DateTime | undefined;
+    fundEndDate!: string | undefined;
+    fundRaisingDay!: string | undefined;
     status!: string | undefined;
 
     constructor(data?: IGetListPostByFundRaisingDto) {
@@ -25300,12 +25315,13 @@ export class GetListPostByFundRaisingDto implements IGetListPostByFundRaisingDto
             this.postTitle = _data["postTitle"];
             this.targetIntroduce = _data["targetIntroduce"];
             this.postTopic = _data["postTopic"];
-            this.postCreated = _data["postCreated"] ? DateTime.fromISO(_data["postCreated"].toString()) : <any>undefined;
+            this.postCreated = _data["postCreated"];
             this.purpose = _data["purpose"];
             this.note = _data["note"];
             this.fundName = _data["fundName"];
             this.amountOfTarget = _data["amountOfTarget"];
-            this.fundEndDate = _data["fundEndDate"] ? DateTime.fromISO(_data["fundEndDate"].toString()) : <any>undefined;
+            this.fundEndDate = _data["fundEndDate"];
+            this.fundRaisingDay = _data["fundRaisingDay"];
             this.status = _data["status"];
         }
     }
@@ -25323,12 +25339,13 @@ export class GetListPostByFundRaisingDto implements IGetListPostByFundRaisingDto
         data["postTitle"] = this.postTitle;
         data["targetIntroduce"] = this.targetIntroduce;
         data["postTopic"] = this.postTopic;
-        data["postCreated"] = this.postCreated ? this.postCreated.toString() : <any>undefined;
+        data["postCreated"] = this.postCreated;
         data["purpose"] = this.purpose;
         data["note"] = this.note;
         data["fundName"] = this.fundName;
         data["amountOfTarget"] = this.amountOfTarget;
-        data["fundEndDate"] = this.fundEndDate ? this.fundEndDate.toString() : <any>undefined;
+        data["fundEndDate"] = this.fundEndDate;
+        data["fundRaisingDay"] = this.fundRaisingDay;
         data["status"] = this.status;
         return data;
     }
@@ -25339,12 +25356,13 @@ export interface IGetListPostByFundRaisingDto {
     postTitle: string | undefined;
     targetIntroduce: string | undefined;
     postTopic: string | undefined;
-    postCreated: DateTime | undefined;
+    postCreated: string | undefined;
     purpose: string | undefined;
     note: string | undefined;
     fundName: string | undefined;
     amountOfTarget: number | undefined;
-    fundEndDate: DateTime | undefined;
+    fundEndDate: string | undefined;
+    fundRaisingDay: string | undefined;
     status: string | undefined;
 }
 
@@ -33669,7 +33687,7 @@ export interface ITopStatsData {
 export class TransactionOfFundForDto implements ITransactionOfFundForDto {
     id!: number | undefined;
     amount!: number;
-    createdTime!: DateTime | undefined;
+    createdTime!: string | undefined;
     content!: string | undefined;
     userDonate!: string | undefined;
     fundName!: string | undefined;
@@ -33689,7 +33707,7 @@ export class TransactionOfFundForDto implements ITransactionOfFundForDto {
         if (_data) {
             this.id = _data["id"];
             this.amount = _data["amount"];
-            this.createdTime = _data["createdTime"] ? DateTime.fromISO(_data["createdTime"].toString()) : <any>undefined;
+            this.createdTime = _data["createdTime"];
             this.content = _data["content"];
             this.userDonate = _data["userDonate"];
             this.fundName = _data["fundName"];
@@ -33709,7 +33727,7 @@ export class TransactionOfFundForDto implements ITransactionOfFundForDto {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["amount"] = this.amount;
-        data["createdTime"] = this.createdTime ? this.createdTime.toString() : <any>undefined;
+        data["createdTime"] = this.createdTime;
         data["content"] = this.content;
         data["userDonate"] = this.userDonate;
         data["fundName"] = this.fundName;
@@ -33722,7 +33740,7 @@ export class TransactionOfFundForDto implements ITransactionOfFundForDto {
 export interface ITransactionOfFundForDto {
     id: number | undefined;
     amount: number;
-    createdTime: DateTime | undefined;
+    createdTime: string | undefined;
     content: string | undefined;
     userDonate: string | undefined;
     fundName: string | undefined;

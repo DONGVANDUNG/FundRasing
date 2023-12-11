@@ -7,5 +7,6 @@ namespace esign.FundRaising.FundRaiserService.Dto
 {
     public class GetListFundRaiserPostInputDto: PagedAndSortedResultRequestDto
     {
+        public long? FundId{ get; set; }
     }
 }

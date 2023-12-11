@@ -2,7 +2,7 @@
     <div class="block-information">
         <div class="header d-flex justify-content-between align-items-center mt-3">
             <h3>Thông tin chi tiết đăng ký gây quỹ</h3>
-            <button class="btn-save" *ngIf="dataFundRaiser.fundPackageId != null" (click)="save()">Yêu cầu đăng ký gây quỹ</button>
+            <button class="btn-save" *ngIf="!isRegister" (click)="save()">Yêu cầu đăng ký gây quỹ</button>
         </div>
         <hr class="itemPreviewView__separator">
         <div class="block-personal-information mt-5 mb-2">

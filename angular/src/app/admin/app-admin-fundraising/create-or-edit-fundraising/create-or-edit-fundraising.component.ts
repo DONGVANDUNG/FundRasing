@@ -58,6 +58,7 @@ export class CreateOrEditFundraisingComponent extends AppComponentBase {
         this.modal.show();
     }
     close() {
+        this.inputData = new CreateOrEditFundRaisingDto();
         this.modal.hide();
     }
     save() {
@@ -81,8 +82,6 @@ export class CreateOrEditFundraisingComponent extends AppComponentBase {
                 this.modalSave.emit(null);
 
                 this.modal.hide();
-            }, (error) => {
-                this.notify.error("Đã xảy ra lỗi")
             })
     }
     // onChangeDate(event, type) {

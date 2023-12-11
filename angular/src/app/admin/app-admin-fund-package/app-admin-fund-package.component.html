@@ -22,13 +22,13 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <tmss-datepicker [(ngModel)]="createdDate" [dateInputFormat]="'DD-MM-YYYY'" [text]="l('Ngày tạo gói')" name="createdDate"></tmss-datepicker>
+                            <tmss-datepicker [(ngModel)]="createdDate" [dateInputFormat]="'DD/MM/YYYY'" [text]="l('Ngày tạo gói')" name="createdDate"></tmss-datepicker>
                         </div>
                     </div>
                     <div class="col-md-2">
                     </div>
                     <div class="col-md-3 d-flex justify-content-end">
-                        <button class="tmss-btn  btn-outline-primary tmss-override" (click)="search()">
+                        <button class="tmss-btn  btn-outline-primary tmss-override mr-5" (click)="search()">
                             <i class="fa fa-search" aria-hidden="true"></i>
                             {{l("Search")}}
                           </button>
@@ -53,7 +53,7 @@
                 </div>
             </div>
             <div class="modal-footer d-flex justify-content-end">
-                <button class="tmss-btn btn-outline-primary mr-5" (click)="createFundPackage()">
+                <button class="tmss-btn btn-outline-primary btn-create" (click)="createFundPackage()">
                     <i class="fas fa-plus"></i> {{l("Thêm gói quỹ")}}
                 </button>
                 <button class="tmss-btn btn-outline-primary mr-0" [disabled]="!selectedPackage" (click)="editFundPackage()">

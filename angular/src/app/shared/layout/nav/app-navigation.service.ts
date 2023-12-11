@@ -24,13 +24,14 @@ export class AppNavigationService {
                 'Administration', '', 'flaticon-interface-8', '', [],
                 [
                     new AppMenuItem('Thông báo', 'Pages.Administration', 'flaticon-app', '/app/notifications'),
-                    new AppMenuItem('Quỹ', 'Pages.Administration', 'flaticon-app', '/app/admin/fund-detail'),
+                    //new AppMenuItem('Quỹ', 'Pages.Administration', 'flaticon-app', '/app/admin/fund-detail'),
                     new AppMenuItem('Người gây quỹ', 'Pages.Administration', 'flaticon-app', '/app/admin/fundRaiser'),
                     new AppMenuItem('Quản lý giao dịch', 'Pages.Administration', 'flaticon-app', '/app/admin/transaction'),
                     new AppMenuItem('Gói quỹ', 'Pages.Administration', 'flaticon-app', '/app/admin/fundPackage'),
                     new AppMenuItem('Yêu cầu gây quỹ', 'Pages.Administration', 'flaticon-app', '/app/admin/request-to-fundraiser'),
                     //new AppMenuItem('Tài khoản khách', 'Pages.Administration', 'flaticon-app', '/app/admin/accountGuest'),
                     new AppMenuItem('Roles', 'Pages.Administration', 'flaticon-suitcase', '/app/admin/roles'),
+                    new AppMenuItem('Phân quyền', 'Pages.Administration', 'flaticon-suitcase', '/app/admin/users'),
                     //        new AppMenuItem(
                     //             'Settings',
                     //             'Pages.Administration.Host.Settings',

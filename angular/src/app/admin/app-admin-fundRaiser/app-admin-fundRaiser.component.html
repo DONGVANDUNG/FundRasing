@@ -2,7 +2,7 @@
     <div class="kt-subheader kt-grid__item redline-header">
         <div [class]="containerClass">
             <div class="kt-subheader__main">
-                <h3 class="kt-subheader__title">
+                <h3 class="kt-subheader__title mb-2">
                     <span class="kt_subheader__desc">{{l("Danh sách người gây quỹ")}}</span>
                 </h3>
             </div>
@@ -25,7 +25,7 @@
                     </div>
                     <div class="col-md-5">
                         <div class="form-group">
-                            <tmss-datepicker [(ngModel)]="createdJoin" [text]="l('Ngày gây quỹ')"
+                            <tmss-datepicker [dateInputFormat]="'DD/MM/YYYY'" [(ngModel)]="createdJoin" [text]="l('Ngày tham gia')"
                                 name="createdJoin"></tmss-datepicker>
                         </div>
                     </div>

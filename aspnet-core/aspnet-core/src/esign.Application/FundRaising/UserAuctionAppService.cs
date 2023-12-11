@@ -1,6 +1,10 @@
-﻿using Abp.Domain.Repositories;
+﻿using Abp.Dapper.Repositories;
+using Abp.Domain.Repositories;
+using Abp.Domain.Uow;
 using Abp.UI;
+using esign.Authorization.Users;
 using esign.Enitity;
+using esign.FundRaising.FundRaiserService.Dto;
 using esign.FundRaising.UserFundRaising.Dto.Auction;
 using System;
 using System.Collections.Generic;
@@ -14,14 +18,17 @@ namespace esign.FundRaising
     {
         private readonly IRepository<AuctionItems, long> _mstAuctionItemsRepo;
         private readonly IRepository<AuctionTransactions, long> _mstAuctionTransactionRepo;
+        private readonly IDapperRepository<AuctionItems, long> _dapperRepo;
 
-        public UserAuctionAppService(IRepository<AuctionTransactions, long> mstAuctionTransactionRepo, IRepository<AuctionItems, long> mstAuctionItemsRepo)
+        public UserAuctionAppService(IRepository<AuctionTransactions, long> mstAuctionTransactionRepo, IRepository<AuctionItems, long> mstAuctionItemsRepo, IDapperRepository<AuctionItems, long> dapperRepo)
         {
             _mstAuctionTransactionRepo = mstAuctionTransactionRepo;
             _mstAuctionItemsRepo = mstAuctionItemsRepo;
+            _dapperRepo = dapperRepo;
         }
         public async Task UserAuction(UserAuction input)
         {
+
             var auctionItem = _mstAuctionItemsRepo.FirstOrDefault(e => e.Id == input.AuctionItemId);
             var auctionTransaction = new AuctionTransactions();
             auctionTransaction.OldAmount = auctionItem.AuctionPresentAmount != null ? auctionItem.AuctionPresentAmount : auctionItem.StartingPrice;

@@ -17,6 +17,7 @@ export class AppAdminAuctionComponent extends AppComponentBase implements OnInit
     rowData: any = [];
     defaultColDef;
     filter: string = '';
+    status;
     maxResultCount: number = 20;
     skipCount: number = 0;
     sorting: string = '';
@@ -25,11 +26,9 @@ export class AppAdminAuctionComponent extends AppComponentBase implements OnInit
     advancedFiltersAreShown: boolean;
     createdDate;
     typeAuction;
-    listTypeAuction = [
-        { label: 'Tuần', value: 'Tuần' },
-        { label: 'Tháng', value: 'Tháng' },
-        { label: 'Năm', value: 'Năm' },
-
+    listStatus = [
+        { label: 'Hoạt động', value: 1 },
+        { label: 'Đã đóng', value: 2 },
     ]
     selectedAuction;
     sideBar = {
@@ -208,6 +207,7 @@ export class AppAdminAuctionComponent extends AppComponentBase implements OnInit
 
     getAll(paginationParams: PaginationParamsModel) {
         return this._fundRaiser.getAllAuctionAdmin(
+            this.status,
             this.sorting ?? null,
             paginationParams ? paginationParams.skipCount : 0,
             paginationParams ? paginationParams.pageSize : 20
@@ -235,6 +235,10 @@ export class AppAdminAuctionComponent extends AppComponentBase implements OnInit
         this.modalCreate.show();
     }
     editAuction(){
+        if(this.selectedAuction === undefined){
+            this.notify.warn("Vui lòng chọn một bản ghi");
+            return;
+        }
         this.modalCreate.show(this.selectedAuction)
     }
 

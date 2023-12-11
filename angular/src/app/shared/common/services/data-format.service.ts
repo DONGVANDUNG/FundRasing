@@ -33,6 +33,10 @@ export class DataFormatService {
     // if (val == '0001-01-01T00:00:00' || val == '9999-12-31T23:59:59.9999999') return '';
     return val ? moment(val).tz(this.getTimeZone()).local().format('DD/MM/YYYY') : '';
   }
+  dateFormatTransaction(val: string | moment.Moment | Date) {
+    // if (val == '0001-01-01T00:00:00' || val == '9999-12-31T23:59:59.9999999') return '';
+    return val ? moment(val).tz(this.getTimeZone()).local().format('DD/MM/YYYY hh:mm') : '';
+  }
 
   monthFormat(val: string | number) {
     return val ? moment(val).format('MM-YYYY') : ''
