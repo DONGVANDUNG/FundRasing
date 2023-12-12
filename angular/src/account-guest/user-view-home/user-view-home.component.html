@@ -9,13 +9,13 @@
   </script>
   <header class="container-fluid pr-0 pl-0 top-header fixed-top ticker-bottom-padding">
     <div class="row pt-3 pb-3 pl-3 h-100 bg-white d-flex justify-content-between">
-      <div class="col-7 col-md-7 col-lg-6 top-logo my-auto d-flex justify-content-between">
+      <div class="col-7 col-md-7 col-lg-7 top-logo my-auto d-flex justify-content-between">
         <img src="/assets/common/images/logo-header.png" alt="" class="h-100">
         <ul class="list-navigation d-flex">
           <li class="item-nav" (click)="redirectLink(1)">Trang chủ</li>
           <li class="item-nav" (click)="redirectLink(2)">Dự án</li>
+          <li class="item-nav" (click)="redirectLink(3)">Gói quỹ</li>
           <li class="item-nav" (click)="redirectLink(4)">Về chúng tôi</li>
-          <li class="item-nav" (click)="redirectLink(3)">Hướng dẫn</li>
           <!-- <li class="item-nav" (click)="redirectLink(3)">Ủng hộ Fundraising</li> -->
         </ul>
       </div>
@@ -44,30 +44,26 @@
     <div class="home-raising-funds w-100">
       <div class="raising-funds-title">
         <h4>Dự án đang gây quỹ</h4>
-        <p>Hãy lựa chọn dự án trong lĩnh vực <br> mà bạn quan tâm nhất</p>
+        <p style="color: #7A7A7A">Hãy lựa chọn dự án trong lĩnh vực <br> mà bạn quan tâm nhất</p>
       </div>
-      <div class="raising-funds-element w-100">
+      <div class="raising-funds-element w-100 mt-5">
         <div class="slide-container">
-          <div class="slide-list d-flex">
-            <div class="slide-item" *ngFor="let item of raisingArray">
-              <div class="item-image">
-                <img src="" alt="">
-                <div class="item-tag">Giáo dục</div>
-              </div>
-              <div class="item-content">
-                <a (click)="goToFundraisingDetail(item)">Quỹ từ thiện Nâng bước tuổi thơ</a>
-                <h2>Chung tay hỗ trợ sinh oạt phí cho 3 thiếu niên cùng tiếp bước đến trường</h2>
-                <div class="progress-bar">
-                  <span></span>
+            <div class="slide-item" *ngFor="let item of listFundRaising">
+                <img [src]="baseUrl + item.listImageUrl[0]" alt="" class="item-image" [routerLink]="['../user-post-detail',item.id,item.fundId]">
+                <div class="item-tag">{{item.postTopic}}</div>
+                <div class="item-content">
+                    <a>{{item.organizationName}}</a>
+                    <h2>{{item.postTitle}}</h2>
+                    <div class="progress-bar">
+                        <span></span>
+                    </div>
+                    <div class="statistic-bdi d-flex">
+                        <span>{{item.amountDonatePresent}} VND</span>
+                        <span>{{item.percentAchieved}}%</span>
+                    </div>
+                    <p>với mục tiêu {{item.amountDonateTarget}} VND</p>
                 </div>
-                <div class="statistic-bdi d-flex">
-                  <span>18.1295</span>
-                  <span>50%</span>
-                </div>
-                <p>với mục tiêu 24.000.000đ</p>
-              </div>
             </div>
-          </div>
         </div>
         <div class="see-all">
           <a href="/guest/home">Xem tất cả</a>
@@ -80,23 +76,23 @@
       <ul class="total-statistics d-flex">
         <li>
           <span>Dự án</span>
-          <span>52</span>
+          <span>{{listInforAboutWeb.project}}</span>
         </li>
         <li>
           <span>Sứ giả</span>
-          <span>129</span>
+          <span>{{listInforAboutWeb.fundRaiser}}</span>
         </li>
-        <li>
+        <!-- <li>
           <span>Tổ chức</span>
           <span>28</span>
-        </li>
+        </li> -->
         <li>
           <span>Lượt ủng hộ</span>
-          <span>3346</span>
+          <span>{{listInforAboutWeb.amountDonate}}</span>
         </li>
         <li>
           <span>Tiền ủng hộ</span>
-          <span>1.35 tỷ</span>
+          <span>{{listInforAboutWeb.amountOfMoneyDonate}}</span>
         </li>
       </ul>
     </div>
@@ -181,7 +177,7 @@
         <div class="section-bottom-mid footer-section-layout-2 h-100">
           <ul>
             <li><i class="fa fa-phone" aria-hidden="true"></i>Hotline: <span>0345627105</span></li>
-            <li><i class="fa fa-envelope" aria-hidden="true"></i>FundRaising@gmail.com/li>
+            <li><i class="fa fa-envelope" aria-hidden="true"></i>FundRaising@gmail.com</li>
             <li><i class="fa fa-map-marker" aria-hidden="true"></i>Số 71 , phố Trần Thái Tông, Cầu Giấy, Hà Nội.</li>
             <li>© Givenow.vn – All Rights Reserved</li>
           </ul>

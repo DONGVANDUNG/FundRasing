@@ -21,20 +21,16 @@ const routes: Routes = [
                 data: { preload: true },
             },
             {
-                path: 'fund-raising-live',
-                loadChildren: () => import('./fundraising-live-sites/fundraising-live-sites.module').then((m) => m.FundraisingLiveSitesModule), //Lazy load account module
-                data: { preload: true },
-            },
-            {
                 path: 'about-us',
                 loadChildren: () => import('./contact-us/contact-us.module').then((m) => m.ContactUsHomeModule), //Lazy load account module
                 data: { preload: true },
             },
             {
-                path: 'fund-raising-detail/:id',
-                loadChildren: () => import('./fund-raising-detail/fundraising-detail.module').then((m) => m.FundraisingDetailModule), //Lazy load account module
+                path: 'project',
+                loadChildren: () => import('./user-view-fund-content/user-view-fund-content.module').then((m) => m.UserViewFundContentModule), //Lazy load account module
                 data: { preload: true },
             },
+
             // {
             //     path: 'checkout',
             //     component: UserViewCheckoutComponent,

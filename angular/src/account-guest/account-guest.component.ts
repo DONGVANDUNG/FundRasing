@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ContactUsComponent } from 'account-guest/contact-us/contact-us.component';
-import { FundraisingLiveSitesComponent } from './fundraising-live-sites/fundraising-live-sites.component';
 import { FundPackageComponent } from './fund-package/fund-package.component';
 import { Route, Router } from '@angular/router';
 import { UserViewHomeComponent } from './user-view-home/user-view-home.component';
@@ -12,12 +11,11 @@ import { UserViewHomeComponent } from './user-view-home/user-view-home.component
 })
 export class AccountGuestComponent implements OnInit {
 
-    @ViewChild("fundRaisingLive") fundRaisingLive: FundraisingLiveSitesComponent;
     @ViewChild("fundPackage") fundPackage: FundPackageComponent;
     @ViewChild("userHome") userHome: UserViewHomeComponent;
     @ViewChild("contactUs") contactUs: ContactUsComponent;
     isLoading: boolean = false;
-    constructor(private router: Router) { 
+    constructor(private router: Router) {
         this.isLoading = true;
         setTimeout(() => {
             this.isLoading = false;

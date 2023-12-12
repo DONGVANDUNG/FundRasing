@@ -1,3 +1,137 @@
-<p>
- cay
-</p>
+<!-- <loading *ngIf="isLoading">{{ isLoading }}</loading> -->
+
+<body
+    class="page-template page-template-template-main page-template-template-main-php page page-id-12344 page-child parent-pageid-12289 group-blog"
+    style="padding-top: 144px;">
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PLCPQ9Q" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript>
+    <div class="page">
+        <header class="container-fluid pr-0 pl-0 top-header fixed-top ticker-bottom-padding">
+            <div class="row pt-3 pb-3 pl-3 h-100 bg-white d-flex justify-content-between">
+                <div class="col-7 col-md-7 col-lg-7 top-logo my-auto d-flex justify-content-between">
+                    <img src="/assets/common/images/logo-header.png" alt="" class="h-100">
+                    <ul class="list-navigation d-flex">
+                        <li class="item-nav" (click)="redirectLink(1)">Trang chủ</li>
+                        <li class="item-nav" (click)="redirectLink(2)">Dự án</li>
+                        <li class="item-nav" (click)="redirectLink(3)">Gói quỹ</li>
+                        <li class="item-nav" (click)="redirectLink(4)">Về chúng tôi</li>
+                        <!-- <li class="item-nav" (click)="redirectLink(3)">Ủng hộ Fundraising</li> -->
+                    </ul>
+                </div>
+                <div class="col-12 col-md-4 col-lg-2 top-right-nav my-auto text-right d-none d-lg-block">
+                    <div class="navbar-expand-xl pr-3 float-right d-flex justify-content-end align-items-center">
+                        <a routerLink="/account/login" class="mr-4 text-login">Login</a>
+                        <a class="ml-5 btn btn-blue float-right m-neg-6 pl-24 pr-24">Get in Touch</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div id="main-body" class="body-contact-us">
+            <div class="logo-widdget w-50"></div>
+            <div class="contact-widdget w-100">
+                <p-tabView [(activeIndex)]="activeIndex">
+                    <p-tabPanel header="Dự án đang gây quỹ">
+                        <h1 class="text-center title">Các dự án đang gây quỹ</h1>
+                        <p class="text-center sub-title">Hãy lựa chọn dự án trong lĩnh vực mà bạn quan tâm nhất</p>
+                        <div class="raising-funds-element d-flex justify-content-center w-100 mt-5">
+                            <div class="slide-container">
+                                <div class="slide-item" *ngFor="let item of listFundActive">
+                                    <img [src]="baseUrl + item.listImageUrl[0]" alt="" class="item-image"
+                                        [routerLink]="['../user-post-detail',item.id,item.fundId]">
+                                    <div class="item-tag">{{item.postTopic}}</div>
+                                    <div class="item-content">
+                                        <a>{{item.organizationName}}</a>
+                                        <h2>{{item.postTitle}}</h2>
+                                        <div class="progress-bar">
+                                            <span></span>
+                                        </div>
+                                        <div class="statistic-bdi d-flex">
+                                            <span>{{item.amountDonatePresent}} VND</span>
+                                            <span>{{item.percentAchieved}}%</span>
+                                        </div>
+                                        <p>với mục tiêu {{item.amountDonateTarget}} VND</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </p-tabPanel>
+                    <p-tabPanel header="Dự án đã kết thúc">
+                        <h1 class="text-center title">Các dự án đã kết thúc gây quỹ</h1>
+                        <p class="text-center sub-title">Hãy lựa chọn dự án trong lĩnh vực mà bạn quan tâm nhất</p>
+                        <div class="raising-funds-element d-flex justify-content-center w-100">
+                            <div class="slide-container">
+                                <div class="slide-item" *ngFor="let item of listFundClose">
+                                    <img [src]="baseUrl + item.listImageUrl[0]" alt="" class="item-image"
+                                        [routerLink]="['../user-post-detail',item.id,item.fundId]">
+                                    <div class="item-tag">{{item.postTopic}}</div>
+                                    <div class="item-content">
+                                        <a>{{item.organizationName}}</a>
+                                        <h2>{{item.postTitle}}</h2>
+                                        <div class="progress-bar">
+                                            <span></span>
+                                        </div>
+                                        <div class="statistic-bdi d-flex">
+                                            <span>{{item.amountDonatePresent}} VND</span>
+                                            <span>{{item.percentAchieved}}%</span>
+                                        </div>
+                                        <p>với mục tiêu {{item.amountDonateTarget}} VND</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </p-tabPanel>
+                </p-tabView>
+            </div>
+        </div>
+
+        <footer class="container-fluid footer">
+            <div class="container-fotter">
+                <div class="footer-section-top  w-100 d-flex">
+                    <div class="section-top-logo footer-section-layout-1 h-100">
+                        <img src="/assets/common/images/logo.jpg" alt="" class="h-100">
+                    </div>
+                    <div class="section-top-title footer-section-layout-2 h-100">
+                        <p>Nền tảng gây quỹ cộng đồng trực tuyến <br>
+                            tiện lợi, tin cậy và minh bạch.</p>
+                    </div>
+                    <div class="section-top-widdget footer-section-layout-3 h-100"></div>
+                </div>
+                <div class="footer-section-middle w-100 d-flex">
+                    <div class="section-middle-left footer-section-layout-1 h-100"></div>
+                    <div class="section-middle-mid footer-section-layout-2 h-100">
+                        <ul class="d-flex">
+                            <li>Giới thiệu</li>
+                            <li>Điều khoản và điều kiện</li>
+                            <li>Tin Tức</li>
+                            <li>Báo Chí</li>
+                        </ul>
+                    </div>
+                    <div class="section-middle-right footer-section-layout-3 h-100"></div>
+                </div>
+                <div class="footer-section-bottom w-100 d-flex">
+                    <div class="section-bottom-left footer-section-layout-1 h-100"></div>
+                    <div class="section-bottom-mid footer-section-layout-2 h-100">
+                        <ul>
+                            <li><i class="fa fa-phone" aria-hidden="true"></i>Hotline: <span>0345627105</span></li>
+                            <li><i class="fa fa-envelope" aria-hidden="true"></i>FundRaising@gmail.com/li>
+                            <li><i class="fa fa-map-marker" aria-hidden="true"></i>Số 71 , phố Trần Thái Tông, Cầu Giấy,
+                                Hà Nội.</li>
+                            <li>© Givenow.vn – All Rights Reserved</li>
+                        </ul>
+                    </div>
+                    <div class="section-bottom-right footer-section-layout-3 h-100">
+                        <div class="frame-poster w-50 h-100">
+                            <div class="follow-page poster-contact d-flex justify-content-center align-items-center">
+                                <i class="fa fa-facebook-square" aria-hidden="true"></i> Follow Page
+                            </div>
+                            <div class="contac-us poster-contact d-flex justify-content-center align-items-center">
+                                <i class="fa fa-envelope" aria-hidden="true"></i>Contact Us
+                            </div>
+                            <img src="/assets/common/images/poster.png" alt="" class="w-100 h-100">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>

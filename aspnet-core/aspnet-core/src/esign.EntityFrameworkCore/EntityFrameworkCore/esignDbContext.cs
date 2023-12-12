@@ -61,6 +61,7 @@ namespace esign.EntityFrameworkCore
         public virtual DbSet<FundRaiserPost> FundRaiserPosts { get; set; }
         public virtual DbSet<AuctionItems> AuctionItems { get; set; }
         public virtual DbSet<AuctionDeposit> AuctionDeposit { get; set; }
+        public virtual DbSet<UserFundPackage> UserFundPackages { get; set; }
 
         public esignDbContext(DbContextOptions<esignDbContext> options)
             : base(options)

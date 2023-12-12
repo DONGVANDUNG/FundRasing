@@ -1,4 +1,5 @@
-﻿using Abp.Application.Services.Dto;
+﻿using Abp.Application.Navigation;
+using Abp.Application.Services.Dto;
 using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
 using Abp.UI;
@@ -40,6 +41,9 @@ namespace esign.FundRaising
         private readonly IRepository<GuestAccount, int> _mstSleGuestAccountRepo;
         private readonly IRepository<FundImage, long> _mstSleFundImageRepo;
         private readonly IRepository<RequestToFundRaiser, long> _mstRequestToFundraiserRepo;
+        private readonly IRepository<UserFundPackage, long> _mstUserFundPackageRepo;
+        private readonly IRepository<BankAccount, long> _mstBankRepo;
+        private readonly IRepository<FundTransactions, long> _mstSleFundTransactionRepo;
         private readonly ISendEmail _sendEmail;
 
 
@@ -53,7 +57,10 @@ namespace esign.FundRaising
             IRepository<GuestAccount, int> mstSleGuestAccountRepo,
             IRepository<FundImage, long> mstSleFundImageRepo,
             IRepository<RequestToFundRaiser, long> mstRequestToFundraiserRepo,
-            ISendEmail sendEmail)
+            ISendEmail sendEmail,
+            IRepository<UserFundPackage, long> mstUserFundPackageRepo,
+            IRepository<BankAccount, long> mstBankRepo,
+            IRepository<FundTransactions, long> mstSleFundTransactionRepo)
         {
             _mstSleFundRepo = mstSleFundRepo;
             //_mstSleFundRaiserRepo = mstSleFundRaiserRepo;
@@ -66,6 +73,9 @@ namespace esign.FundRaising
             _mstSleFundImageRepo = mstSleFundImageRepo;
             _mstRequestToFundraiserRepo = mstRequestToFundraiserRepo;
             _sendEmail = sendEmail;
+            _mstUserFundPackageRepo = mstUserFundPackageRepo;
+            _mstBankRepo = mstBankRepo;
+            _mstSleFundTransactionRepo = mstSleFundTransactionRepo;
         }
 
         public async Task<TransactionOfFundForDto> getInforTransactionById(int transactionId)
@@ -87,10 +97,12 @@ namespace esign.FundRaising
 
         public async Task<PagedResultDto<GetInformationFundRaiserDto>> getListFundRaiser(GetAllFundRaiserForInputDto input)
         {
-            var listFundRaiser = (from user in _mstSleUserRepo.GetAll().Where(e => e.TypeUser == 3).
-                                  Where(e => input.Email == null || e.Email.Contains(input.Email))
+            var listFundRaiser = (from user in _mstSleUserRepo.GetAll().Where(e => e.TypeUser == 3)
+                                  .Where(e => input.Email == null || e.Email.Contains(input.Email))
                                   .Where(e => input.StatusAccount == null || e.IsActive == input.StatusAccount)
-                                  .Where(e => input.Created == null || e.FundRaiserDate == input.Created)
+                                  join userPackage  in _mstUserFundPackageRepo.GetAll()
+                                  .Where(e => input.Created == null || e.CreationTime == input.Created)
+                                  on user.Id equals userPackage.UserId
 
                                   select new GetInformationFundRaiserDto
                                   {
@@ -178,7 +190,7 @@ namespace esign.FundRaising
                                       Description = funPackage.Description,
                                       Duration = funPackage.Duration,
                                       CreatedTime = funPackage.CreationTime.ToString("dd/MM/yyyy"),
-                                      Commission = funPackage.Commission.ToString() + "%/giao dịch"
+                                      Commission = funPackage.Commission
                                   };
             var totalCount = await listFundPackage.CountAsync();
             return new PagedResultDto<GetListFundPackageDto>
@@ -217,7 +229,7 @@ namespace esign.FundRaising
         public async Task UpdateFundPackage(CreateOrEditFundPackageDto input)
         {
             var fund = await _mstSleFundPackageRepo.FirstOrDefaultAsync(e => e.Id == input.Id && e.Status == true);
-            var user = await _mstSleUserRepo.GetAll().Where(e => e.FundPackageId == input.Id).Select(re => re.Id).ToListAsync();
+            var user = await _mstUserFundPackageRepo.GetAll().Where(e => e.FundPackageId == input.Id).Select(re => re.Id).ToListAsync();
             if (fund != null && user.Count() == 0)
             {
                 //fund.UserId = (int)AbpSession.UserId;
@@ -243,18 +255,19 @@ namespace esign.FundRaising
         public async Task<PagedResultDto<GetListAccountUserDto>> getAllListFundRaiser(GuestAccountForInputDto input)
         {
             var listFundRaiser = from user in _mstSleUserRepo.GetAll().Where(e=>e.TypeUser == 3)
-                               .Where(e => input.CreatedDate == null || e.FundRaiserDate.Value.Date == input.CreatedDate.Value.Date)
-                               .Where(e => input.Status == null || e.IsActive == input.Status)
-                               join fundPackage in _mstSleFundPackageRepo.GetAll() on user.FundPackageId equals fundPackage.Id
-                               select new GetListAccountUserDto
+                                 join userPackage in _mstUserFundPackageRepo.GetAll().
+                                 Where(e => input.CreatedDate == null || e.CreationTime.Date == input.CreatedDate.Value.Date)
+                                .Where(e => input.Status == null || e.IsExpired == input.Status) on user.Id equals userPackage.UserId
+                                join fundPackage in _mstSleFundPackageRepo.GetAll() on userPackage.FundPackageId equals fundPackage.Id
+                                select new GetListAccountUserDto
                                {
                                    Id = user.Id,
                                    UserName = user.UserName,
                                    Email = user.EmailAddress,
                                    Status = user.IsActive == true ? "Đang hoạt động" : "Ngừng hoạt động",
                                    Created = user.CreationTime,
-                                   FundEndDate = user.FundRaiserDate,
-                                   FundRaiserDate = user.FundRaiserDate,
+                                   FundEndDate = userPackage.FundEndDate,
+                                   FundRaiserDate = userPackage.CreationTime,
                                    FundPackage = fundPackage.PaymentFee +"VND / "+fundPackage.Duration
                                };
             var totalCount = await listFundRaiser.CountAsync();
@@ -287,12 +300,44 @@ namespace esign.FundRaising
             if(user!= null)
             {
                 user.TypeUser = 3;
-                user.FundRaiserDate = DateTime.Now;
                 await _mstSleUserRepo.UpdateAsync(user);
                 var request = await _mstRequestToFundraiserRepo.FirstOrDefaultAsync(e => e.UserId == userId);
                 request.IsApprove = true;
                 await _mstRequestToFundraiserRepo.UpdateAsync(request);
+                var fundPackage = _mstSleFundPackageRepo.FirstOrDefault(e => e.Id == request.FundPackageId);
 
+                var userPackage = new UserFundPackage();
+                userPackage.UserId = request.UserId;
+                userPackage.FundPackageId = request.FundPackageId;
+                userPackage.IsExpired = false;
+                if(fundPackage.Duration == "Tuần")
+                {
+                    userPackage.FundEndDate = DateTime.Now.AddDays(7);
+                }
+                if(fundPackage.Duration == "Tháng")
+                {
+                    userPackage.FundEndDate = DateTime.Now.AddDays(30);
+                }
+                if (fundPackage.Duration == "Năm")
+                {
+                    userPackage.FundEndDate = DateTime.Now.AddDays(365);
+                }
+                await _mstUserFundPackageRepo.InsertAsync(userPackage);
+
+                var bankAdmin = await _mstBankRepo.FirstOrDefaultAsync(e => e.UserId == 1);
+                bankAdmin.Balance += fundPackage.PaymentFee;
+                await _mstBankRepo.UpdateAsync(bankAdmin);
+
+                var transactionAdmin = new FundTransactions();
+                transactionAdmin.AmountOfMoney = fundPackage.PaymentFee;
+                transactionAdmin.MessageToFund = "Trả phí gói quỹ";
+                transactionAdmin.Receiver = "Admin";
+                transactionAdmin.SenderId = request.UserId;
+                transactionAdmin.Balance = bankAdmin.Balance;
+                transactionAdmin.ReceiverId = 1;
+                transactionAdmin.IsAdmin = true;
+
+                await _mstSleFundTransactionRepo.InsertAsync(transactionAdmin);
                 SendEmailInputDto sendEmailInput = new SendEmailInputDto
                 {
                     EmailReceive = user.EmailAddress,

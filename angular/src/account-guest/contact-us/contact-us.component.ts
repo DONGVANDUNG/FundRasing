@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 export class ContactUsComponent implements OnInit {
 
     constructor(private router: Router) { }
-    isLoading : boolean = false;
+    isLoading: boolean = false;
     ngOnInit() {
         this.isLoading = true;
         setTimeout(() => {
@@ -22,7 +22,7 @@ export class ContactUsComponent implements OnInit {
             this.router.navigateByUrl("guest/home");
         }
         if (option === 2) {
-            this.router.navigateByUrl("guest/fund-raising-live");
+            this.router.navigateByUrl("guest/project");
         }
         if (option === 3) {
             this.router.navigateByUrl("guest/fund-package");

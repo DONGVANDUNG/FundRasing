@@ -1,54 +1,85 @@
-<div class="header-block-donate d-flex justify-content-start align-items-center">
-  <span (click)="redirectHome()">
-    < &nbsp;&nbsp;</span>
-      <span (click)="redirectHome()">Back</span>
-</div>
-<div class="fund-detail">
-  <div class="block-detail-fund">
-    <div class="header-fund-detail">
-      <div class="title-detail">
-        <span class="ordering">#1</span>
-        <span class="sub-title">Please donate £ 10</span>
-      </div>
-      <div class="fund-detail-donate">
-        <button class="btn-donate">$60,000</button>
-        <span>Raised So Far</span>
-      </div>
-    </div>
-    <hr class="itemPreviewView__separator">
-    <div class="body-content d-flex justify-content-between">
-      <img src="/assets/common/images/test.jpg" alt="" class="image-detail-fund">
-      <div class="block-donation">
-        <div class="block-donation-header d-flex justify-content-between align-items-center">
-          <p>Donation:</p>
-          <span>£10</span>
+<!-- <loading *ngIf="isLoading">{{ isLoading }}</loading> -->
+
+<body
+    class="page-template page-template-template-main page-template-template-main-php page page-id-12344 page-child parent-pageid-12289 group-blog"
+    style="padding-top: 144px;">
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PLCPQ9Q" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript>
+    <div class="page">
+        <header class="container-fluid pr-0 pl-0 top-header fixed-top ticker-bottom-padding">
+            <div class="row pt-3 pb-3 pl-3 h-100 bg-white d-flex justify-content-between">
+                <div class="col-7 col-md-7 col-lg-7 top-logo my-auto d-flex justify-content-between">
+                    <img src="/assets/common/images/logo-header.png" alt="" class="h-100">
+                    <ul class="list-navigation d-flex">
+                        <li class="item-nav" (click)="redirectLink(1)">Trang chủ</li>
+                        <li class="item-nav" (click)="redirectLink(2)">Dự án</li>
+                        <li class="item-nav" (click)="redirectLink(3)">Gói quỹ</li>
+                        <li class="item-nav" (click)="redirectLink(4)">Về chúng tôi</li>
+                        <!-- <li class="item-nav" (click)="redirectLink(3)">Ủng hộ Fundraising</li> -->
+                    </ul>
+                </div>
+                <div class="col-12 col-md-4 col-lg-2 top-right-nav my-auto text-right d-none d-lg-block">
+                    <div class="navbar-expand-xl pr-3 float-right d-flex justify-content-end align-items-center">
+                        <a routerLink="/account/login" class="mr-4 text-login">Login</a>
+                        <a class="text-login">Register</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div id="main-body" class="body-contact-us">
+            <div class="logo-widdget w-50"></div>
+            <div class="contact-widdget w-100">
+            </div>
         </div>
-        <div class="block-donation-content">
-          <p>Leave a message of support!</p>
-          <input type="text" class="input-content-donation" placeholder="Write your message here."
-            (keydown)="limitedCharacter()">
-          <br>
-          <span class="note-input">255 character(s) left</span>
-          <br>
-          <div class="btn-donation">
-            <button (click)="donateNow()">Donate Now</button>
-          </div>
-        </div>
-      </div>
+
+        <footer class="container-fluid footer">
+            <div class="container-fotter">
+                <div class="footer-section-top  w-100 d-flex">
+                    <div class="section-top-logo footer-section-layout-1 h-100">
+                        <img src="/assets/common/images/logo.jpg" alt="" class="h-100">
+                    </div>
+                    <div class="section-top-title footer-section-layout-2 h-100">
+                        <p>Nền tảng gây quỹ cộng đồng trực tuyến <br>
+                            tiện lợi, tin cậy và minh bạch.</p>
+                    </div>
+                    <div class="section-top-widdget footer-section-layout-3 h-100"></div>
+                </div>
+                <div class="footer-section-middle w-100 d-flex">
+                    <div class="section-middle-left footer-section-layout-1 h-100"></div>
+                    <div class="section-middle-mid footer-section-layout-2 h-100">
+                        <ul class="d-flex">
+                            <li>Giới thiệu</li>
+                            <li>Điều khoản và điều kiện</li>
+                            <li>Tin Tức</li>
+                            <li>Báo Chí</li>
+                        </ul>
+                    </div>
+                    <div class="section-middle-right footer-section-layout-3 h-100"></div>
+                </div>
+                <div class="footer-section-bottom w-100 d-flex">
+                    <div class="section-bottom-left footer-section-layout-1 h-100"></div>
+                    <div class="section-bottom-mid footer-section-layout-2 h-100">
+                        <ul>
+                            <li><i class="fa fa-phone" aria-hidden="true"></i>Hotline: <span>0345627105</span></li>
+                            <li><i class="fa fa-envelope" aria-hidden="true"></i>FundRaising@gmail.com/li>
+                            <li><i class="fa fa-map-marker" aria-hidden="true"></i>Số 71 , phố Trần Thái Tông, Cầu Giấy,
+                                Hà Nội.</li>
+                            <li>© Givenow.vn – All Rights Reserved</li>
+                        </ul>
+                    </div>
+                    <div class="section-bottom-right footer-section-layout-3 h-100">
+                        <div class="frame-poster w-50 h-100">
+                            <div class="follow-page poster-contact d-flex justify-content-center align-items-center">
+                                <i class="fa fa-facebook-square" aria-hidden="true"></i> Follow Page
+                            </div>
+                            <div class="contac-us poster-contact d-flex justify-content-center align-items-center">
+                                <i class="fa fa-envelope" aria-hidden="true"></i>Contact Us
+                            </div>
+                            <img src="/assets/common/images/poster.png" alt="" class="w-100 h-100">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
     </div>
-    <div class="footer-fund-detail d-flex">
-      <p class="title-footer">Please make a donation to help raise critical funds for our cause.</p>
-      <div class="infor-user">
-        <h2>Supporter</h2>
-        <div class="block-infor d-flex justify-content-between align-items-center">
-          <div class="block-image d-flex align-items-center">
-            <img src="/assets/common/images/test.jpg" width="40" height="40" alt="">
-            <span class="user-name">Van Rung</span>
-          </div>
-          <span class="total-donate">£20</span>
-        </div>
-      </div>
-    </div>
-    <hr class="itemPreviewView__separator">
-  </div>
-</div>
+</body>

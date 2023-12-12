@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { DataFormatService } from '@app/shared/common/services/data-format.service';
+import { UserFundRaisingServiceProxy } from '@shared/service-proxies/service-proxies';
 
 @Component({
     selector: 'app-fund-package',
@@ -7,24 +9,25 @@ import { Router } from '@angular/router';
     styleUrls: ['./fund-package.component.less']
 })
 export class FundPackageComponent implements OnInit {
-    isLoading: boolean = false;
-    constructor(private router: Router) {
-        this.isLoading = true;
-        setTimeout(() => {
-            this.isLoading = false;
-        }
-            , 1000)
-    }
+    listFundPackage = [];
+    constructor(private router: Router, private _userServiceProxy: UserFundRaisingServiceProxy,
+        private dataFormatService: DataFormatService) { }
 
     ngOnInit() {
-
+        this._userServiceProxy.getListFundPackage().subscribe(result => {
+            this.listFundPackage = result;
+            this.listFundPackage.forEach(packages => {
+                packages.paymentFee = this.dataFormatService.moneyFormat(packages.paymentFee);
+                packages.commission = this.dataFormatService.moneyFormat(packages.commission);
+            })
+        })
     }
     redirectLink(option) {
         if (option === 1) {
             this.router.navigateByUrl("guest/home");
         }
         if (option === 2) {
-            this.router.navigateByUrl("guest/fund-raising-live");
+            this.router.navigateByUrl("guest/project");
         }
         if (option === 3) {
             this.router.navigateByUrl("guest/fund-package");
@@ -33,5 +36,4 @@ export class FundPackageComponent implements OnInit {
             this.router.navigateByUrl("guest/about-us");
         }
     }
-
 }

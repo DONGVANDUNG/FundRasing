@@ -16541,35 +16541,10 @@ export class UserFundRaisingServiceProxy {
     }
 
     /**
-     * @param createdDate (optional) 
-     * @param typePackage (optional) 
-     * @param sorting (optional) 
-     * @param skipCount (optional) 
-     * @param maxResultCount (optional) 
      * @return Success
      */
-    getListFundPackage(createdDate: DateTime | undefined, typePackage: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<GetListFundPackageDto[]> {
-        let url_ = this.baseUrl + "/api/services/app/UserFundRaising/GetListFundPackage?";
-        if (createdDate === null)
-            throw new Error("The parameter 'createdDate' cannot be null.");
-        else if (createdDate !== undefined)
-            url_ += "CreatedDate=" + encodeURIComponent(createdDate ? "" + createdDate.toString() : "") + "&";
-        if (typePackage === null)
-            throw new Error("The parameter 'typePackage' cannot be null.");
-        else if (typePackage !== undefined)
-            url_ += "TypePackage=" + encodeURIComponent("" + typePackage) + "&";
-        if (sorting === null)
-            throw new Error("The parameter 'sorting' cannot be null.");
-        else if (sorting !== undefined)
-            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&";
-        if (skipCount === null)
-            throw new Error("The parameter 'skipCount' cannot be null.");
-        else if (skipCount !== undefined)
-            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
-        if (maxResultCount === null)
-            throw new Error("The parameter 'maxResultCount' cannot be null.");
-        else if (maxResultCount !== undefined)
-            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
+    getListFundPackage(): Observable<GetListFundPackageDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/UserFundRaising/GetListFundPackage";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -17515,6 +17490,173 @@ export class UserFundRaisingServiceProxy {
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
                 result200 = resultData200 !== undefined ? resultData200 : <any>null;
     
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    getInforWeb(): Observable<InformationWebDto> {
+        let url_ = this.baseUrl + "/api/services/app/UserFundRaising/getInforWeb";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetInforWeb(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetInforWeb(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<InformationWebDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<InformationWebDto>;
+        }));
+    }
+
+    protected processGetInforWeb(response: HttpResponseBase): Observable<InformationWebDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = InformationWebDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    getAllFundRaisingIsClose(): Observable<GetListFundRasingDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/UserFundRaising/GetAllFundRaisingIsClose";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllFundRaisingIsClose(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllFundRaisingIsClose(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GetListFundRasingDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GetListFundRasingDto[]>;
+        }));
+    }
+
+    protected processGetAllFundRaisingIsClose(response: HttpResponseBase): Observable<GetListFundRasingDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(GetListFundRasingDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    getAllFundRaisingIsActive(): Observable<GetListFundRasingDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/UserFundRaising/GetAllFundRaisingIsActive";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllFundRaisingIsActive(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllFundRaisingIsActive(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GetListFundRasingDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GetListFundRasingDto[]>;
+        }));
+    }
+
+    protected processGetAllFundRaisingIsActive(response: HttpResponseBase): Observable<GetListFundRasingDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(GetListFundRasingDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -25064,12 +25206,11 @@ export interface IGetListComboboxDto {
 
 export class GetListFundPackageDto implements IGetListFundPackageDto {
     id!: number;
-    discount!: number;
     description!: string | undefined;
     duration!: string | undefined;
     paymentFee!: number | undefined;
     createdTime!: string | undefined;
-    commission!: string | undefined;
+    commission!: number | undefined;
 
     constructor(data?: IGetListFundPackageDto) {
         if (data) {
@@ -25083,7 +25224,6 @@ export class GetListFundPackageDto implements IGetListFundPackageDto {
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"];
-            this.discount = _data["discount"];
             this.description = _data["description"];
             this.duration = _data["duration"];
             this.paymentFee = _data["paymentFee"];
@@ -25102,7 +25242,6 @@ export class GetListFundPackageDto implements IGetListFundPackageDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
-        data["discount"] = this.discount;
         data["description"] = this.description;
         data["duration"] = this.duration;
         data["paymentFee"] = this.paymentFee;
@@ -25114,12 +25253,11 @@ export class GetListFundPackageDto implements IGetListFundPackageDto {
 
 export interface IGetListFundPackageDto {
     id: number;
-    discount: number;
     description: string | undefined;
     duration: string | undefined;
     paymentFee: number | undefined;
     createdTime: string | undefined;
-    commission: string | undefined;
+    commission: number | undefined;
 }
 
 export class GetListFundRaisingDto implements IGetListFundRaisingDto {
@@ -27111,6 +27249,54 @@ export interface IInformationAuctionDepositDto {
     auctionTitle: string | undefined;
     minAmountDepost: number | undefined;
     maxAmountDepost: number | undefined;
+}
+
+export class InformationWebDto implements IInformationWebDto {
+    project!: number | undefined;
+    fundRaiser!: number | undefined;
+    amountDonate!: number | undefined;
+    amountOfMoneyDonate!: number | undefined;
+
+    constructor(data?: IInformationWebDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.project = _data["project"];
+            this.fundRaiser = _data["fundRaiser"];
+            this.amountDonate = _data["amountDonate"];
+            this.amountOfMoneyDonate = _data["amountOfMoneyDonate"];
+        }
+    }
+
+    static fromJS(data: any): InformationWebDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new InformationWebDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["project"] = this.project;
+        data["fundRaiser"] = this.fundRaiser;
+        data["amountDonate"] = this.amountDonate;
+        data["amountOfMoneyDonate"] = this.amountOfMoneyDonate;
+        return data;
+    }
+}
+
+export interface IInformationWebDto {
+    project: number | undefined;
+    fundRaiser: number | undefined;
+    amountDonate: number | undefined;
+    amountOfMoneyDonate: number | undefined;
 }
 
 export class InsertOrUpdateAllValuesInput implements IInsertOrUpdateAllValuesInput {

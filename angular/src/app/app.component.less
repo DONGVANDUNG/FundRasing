@@ -40,10 +40,22 @@
 }
 
 :host ::ng-deep {
-    .p-disabled{
+    body{
+        font-family: Inter, Helvetica, "sans-serif";
+    }
+    .p-disabled {
         opacity: 1 !important;
     }
-
+    .kt-grid__item{
+        background-color: #fff !important;
+        margin-left: 10px;
+        margin-right: 10px;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    .app-sidebar .menu .menu-item .menu-link.active .menu-title {
+        color: red !important;
+    }
     .ag-theme-alpine .ag-header-cell-resize:after {
         content: "";
         position: absolute;
@@ -273,12 +285,47 @@
     .ag-layout-normal {
         height: 100% !important;
     }
-    .p-dropdown-panel .p-dropdown-items .p-dropdown-item{
+
+    .p-dropdown-panel .p-dropdown-items .p-dropdown-item {
         font-size: 1rem;
     }
-    .ag-center-cols-viewport{
-        overflow: hidden;
+
+    .menu-title {
+        color: #3f2bc8 !important;
+        font-size: 1.1rem;
     }
+    .menu-icon i{
+        font-size: 1.2rem;
+    }
+     .app-sidebar{
+        background-color:#fff !important;
+    }
+    .app-header{
+        background-color: transparent;
+    }
+    #kt_app_sidebar{
+        border-radius: 0 30px 30px 0;
+    }
+    #kt_app_sidebar_menu_wrapper{
+        height: 758px;
+    }
+    #kt_app_footer{
+        background-color: transparent;
+    }
+    #kt_app_page{
+        background: linear-gradient( 106.26deg, rgba(234, 11, 32, 1) 0%, rgba(50, 45, 213, 1) 100% ) !important;
+    }
+    .app-container{
+        padding-left: 5px !important;
+    }
+    .app-main{
+        background-color: #fff !important;
+        margin: 0px 10px;
+        border-radius: 10px;
+    }
+    // .ag-center-cols-viewport{
+    //     overflow: hidden;
+    // }
     //     .modal{
     //         display: flex;
     //         justify-content: center;

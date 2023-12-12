@@ -1,6 +1,9 @@
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { DataFormatService } from '@app/shared/common/services/data-format.service';
+import { AppConsts } from '@shared/AppConsts';
 import { AppComponentBase } from '@shared/common/app-component-base';
+import { UserFundRaisingServiceProxy } from '@shared/service-proxies/service-proxies';
 
 @Component({
     selector: 'app-user-view-home',
@@ -17,24 +20,37 @@ export class UserViewHomeComponent extends AppComponentBase {
     selectedFunDetail: boolean = false;
     isLoading = false;
     blockDonateSuccess: boolean = false;
+    baseUrl = AppConsts.remoteServiceBaseUrl + '/';
+    listFundRaising = [] // ARRAY NÀY BAO GỒM ẢNH, TITLE , CONTENT CỦA 1 DỰ ÁN ĐANG GÂY QUỸ, CÓ THỂ LÀ 1 RECORD
+    listInforAboutWeb;
 
-    raisingArray = ['1','2','3','4','5'] // ARRAY NÀY BAO GỒM ẢNH, TITLE , CONTENT CỦA 1 DỰ ÁN ĐANG GÂY QUỸ, CÓ THỂ LÀ 1 RECORD
-
-
-    constructor(injector: Injector, private router: Router) {
+    constructor(injector: Injector, private router: Router,
+        private _userServiceProxy: UserFundRaisingServiceProxy,
+        private dataFormatService: DataFormatService) {
         super(injector);
         this.isLoading = true;
         setTimeout(() => {
             this.isLoading = false;
         }
             , 1000)
+        this._userServiceProxy.getListPostOfFundRaising().subscribe((result) => {
+            this.listFundRaising = result.slice(0,6);
+            this.listFundRaising.forEach((item) => {
+                item.amountDonateTarget = this.dataFormatService.moneyFormat(item.amountDonateTarget);
+                item.amountDonatePresent = this.dataFormatService.moneyFormat(item.amountDonatePresent);
+            })
+        })
+        this._userServiceProxy.getInforWeb().subscribe(result => {
+            this.listInforAboutWeb = result;
+            this.listInforAboutWeb.amountOfMoneyDonate = this.dataFormatService.moneyFormat(this.listInforAboutWeb.amountOfMoneyDonate)
+        })
     }
     redirectLink(option) {
         if (option === 1) {
             this.router.navigateByUrl("guest/home");
         }
         if (option === 2) {
-            this.router.navigateByUrl("guest/fund-raising-live");
+            this.router.navigateByUrl("guest/project");
         }
         if (option === 3) {
             this.router.navigateByUrl("guest/fund-package");
@@ -80,16 +96,16 @@ export class UserViewHomeComponent extends AppComponentBase {
             );
         }
     }
-    changeBanner(index){
+    changeBanner(index) {
         var banner = document.querySelectorAll('.circle-img')
         var backgroundBanner = document.querySelector('.home-banner')
         var bannerTitle = document.querySelector<HTMLElement>('.banner-title')
         var bannerContent = document.querySelector<HTMLElement>('.banner-content')
 
         var bannerClasses = ['banner1', 'banner2', 'banner3'];
-         backgroundBanner.classList.remove(...bannerClasses);
+        backgroundBanner.classList.remove(...bannerClasses);
 
-         if (index >= 1 && index <= bannerClasses.length) {
+        if (index >= 1 && index <= bannerClasses.length) {
             backgroundBanner.classList.add(bannerClasses[index - 1]);
         }
 
@@ -100,14 +116,14 @@ export class UserViewHomeComponent extends AppComponentBase {
 
         bannerTitle.classList.add('zoomOutAnimation');
         bannerContent.classList.add('zoomOutAnimation');
-       
+
         setTimeout(() => {
             bannerTitle.classList.remove('zoomOutAnimation');
             bannerContent.classList.remove('zoomOutAnimation');
         }, 1000);
     }
 
-    goToFundraisingDetail(id): void{
+    goToFundraisingDetail(id): void {
         this.router.navigate(['/guest/fund-raising-detail', id]);
     }
 }

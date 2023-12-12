@@ -14,48 +14,28 @@ export class AppNavigationService {
 
     getMenu(): AppMenu {
         return new AppMenu('MainMenu', 'MainMenu', [
-
-
-            // new AppMenuItem('Tenants', 'Pages.Tenants', 'flaticon-list-3', '/app/admin/tenants'),
-            // new AppMenuItem('Editions', 'Pages.Editions', 'flaticon-app', '/app/admin/editions'),
-            // new AppMenuItem('User', 'Pages.Editions', 'flaticon-app', '/app/admin/user-home'),
-            //new AppMenuItem('Home', 'Pages.UserDonate', 'flaticon-app', '/app/admin/fund-detail'),
+            new AppMenuItem('Thông báo', 'Pages.Administration', 'flaticon-alert', '/app/notifications'),
+            new AppMenuItem('Người gây quỹ', 'Pages.Administration', 'flaticon-users-1', '/app/admin/fundRaiser'),
+            new AppMenuItem('Quản lý giao dịch', 'Pages.Administration', 'fas fa-users-cog', '/app/admin/transaction'),
+            new AppMenuItem('Gói quỹ', 'Pages.Administration', 'flaticon-line-graph', '/app/admin/fundPackage'),
+            new AppMenuItem('Yêu cầu gây quỹ', 'Pages.Administration', 'flaticon-line-graph', '/app/admin/request-to-fundraiser'),
+            new AppMenuItem('Đăng bài gây quỹ', 'Pages.FundRaising', 'flaticon2-analytics-2', '/app/admin/admin-post'),
+            new AppMenuItem('Quản lý quỹ người dùng', 'Pages.FundRaising', 'flaticon-line-graph', '/app/admin/fundRaising'),
+            new AppMenuItem('Quyên góp từ thiện', 'Pages.UserDonate', 'flaticon-line-graph', '/app/admin/user-post'),
+            new AppMenuItem('Tham gia đấu giá', 'Pages.UserDonate', 'flaticon-line-graph', '/app/admin/auction-user'),
+            new AppMenuItem('Đăng bài đấu giá', 'Pages.FundRaising', 'flaticon2-analytics-2', '/app/admin/auction-admin'),
+            new AppMenuItem('Đăng ký gây quỹ', 'Pages.UserDonate', 'flaticon-refresh', '/app/admin/register-fundraiser'),
+            new AppMenuItem('Đăng ký tài khoản ngân hàng', 'Pages.UserDonate', 'flaticon-refresh', '/app/admin/register-bank'),
+            new AppMenuItem('Lịch sử Donate', 'Pages.UserDonate', 'flaticon-line-graph', '/app/admin/checkout'),
+            new AppMenuItem('Roles', 'Pages.Administration', 'flaticon-suitcase', '/app/admin/roles'),
+            new AppMenuItem('Phân quyền', 'Pages.Administration', 'flaticon-suitcase', '/app/admin/users'),
             new AppMenuItem(
-                'Administration', '', 'flaticon-interface-8', '', [],
-                [
-                    new AppMenuItem('Thông báo', 'Pages.Administration', 'flaticon-app', '/app/notifications'),
-                    //new AppMenuItem('Quỹ', 'Pages.Administration', 'flaticon-app', '/app/admin/fund-detail'),
-                    new AppMenuItem('Người gây quỹ', 'Pages.Administration', 'flaticon-app', '/app/admin/fundRaiser'),
-                    new AppMenuItem('Quản lý giao dịch', 'Pages.Administration', 'flaticon-app', '/app/admin/transaction'),
-                    new AppMenuItem('Gói quỹ', 'Pages.Administration', 'flaticon-app', '/app/admin/fundPackage'),
-                    new AppMenuItem('Yêu cầu gây quỹ', 'Pages.Administration', 'flaticon-app', '/app/admin/request-to-fundraiser'),
-                    //new AppMenuItem('Tài khoản khách', 'Pages.Administration', 'flaticon-app', '/app/admin/accountGuest'),
-                    new AppMenuItem('Roles', 'Pages.Administration', 'flaticon-suitcase', '/app/admin/roles'),
-                    new AppMenuItem('Phân quyền', 'Pages.Administration', 'flaticon-suitcase', '/app/admin/users'),
-                    //        new AppMenuItem(
-                    //             'Settings',
-                    //             'Pages.Administration.Host.Settings',
-                    //             'flaticon-settings',
-                    //             '/app/admin/hostSettings'
-                    //         ),
-                    //     ]
-                    // ),
-                    //new AppMenuItem('Trang chủ', 'Pages.UserDonate', 'flaticon-app', '/app/admin/post'),
-                    new AppMenuItem('Đăng bài gây quỹ', 'Pages.FundRaising', 'flaticon-app', '/app/admin/admin-post'),
-                    new AppMenuItem('Quản lý quỹ người dùng', 'Pages.FundRaising', 'flaticon-app', '/app/admin/fundRaising'),
-                    new AppMenuItem('Quyên góp từ thiện', 'Pages.UserDonate', 'flaticon-app', '/app/admin/user-post'),
-                    new AppMenuItem('Tham gia đấu giá', 'Pages.UserDonate', 'flaticon-app', '/app/admin/auction-user'),
-                    new AppMenuItem('Đăng bài đấu giá', 'Pages.FundRaising', 'flaticon-app', '/app/admin/auction-admin'),
-                    new AppMenuItem('Đăng ký gây quỹ', 'Pages.UserDonate', 'flaticon-app', '/app/admin/register-fundraiser'),
-                    new AppMenuItem('Đăng ký tài khoản ngân hàng', 'Pages.UserDonate', 'flaticon-app', '/app/admin/register-bank'),
-                    new AppMenuItem('Lịch sử Donate', 'Pages.UserDonate', 'flaticon-suitcase', '/app/admin/checkout'),
-                    new AppMenuItem(
-                        'DemoUiComponents',
-                        'Pages.DemoUiComponents',
-                        'flaticon-shapes',
-                        '/app/admin/demo-ui-components'
-                    ),
-                ])]);
+                'DemoUiComponents',
+                'Pages.DemoUiComponents',
+                'flaticon-shapes',
+                '/app/admin/demo-ui-components'
+            ),
+        ]);
     }
 
     checkChildMenuItemPermission(menuItem): boolean {
