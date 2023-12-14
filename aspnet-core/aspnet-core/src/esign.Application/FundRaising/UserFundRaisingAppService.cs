@@ -416,6 +416,11 @@ namespace esign.FundRaising
         {
             if (input.Id == 0 || input.Id == null)
             {
+                var accountExist = await _mstBankRepo.FirstOrDefaultAsync(e=>e.BankNumber == input.BankNumber);
+                if(accountExist!= null)
+                {
+                    throw new UserFriendlyException("Tài khoản đã tồn tại trong hệ thống");
+                }
                 var bank = new BankAccount();
                 ObjectMapper.Map(input, bank);
                 bank.UserId = AbpSession.UserId;

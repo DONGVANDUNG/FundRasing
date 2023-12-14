@@ -30,7 +30,11 @@ const routes: Routes = [
                 loadChildren: () => import('./user-view-fund-content/user-view-fund-content.module').then((m) => m.UserViewFundContentModule), //Lazy load account module
                 data: { preload: true },
             },
-
+            {
+                path: 'user-fund-detail/:postId/:fundId',
+                loadChildren: () => import('./user-view-fund-detail/user-view-fund-detail.module').then((m) => m.UserViewFundDetailModule), //Lazy load account module
+                data: { preload: true },
+            },
             // {
             //     path: 'checkout',
             //     component: UserViewCheckoutComponent,

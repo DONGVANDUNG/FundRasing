@@ -21,8 +21,9 @@
       </div>
       <div class="col-12 col-md-4 col-lg-2 top-right-nav my-auto text-right d-none d-lg-block">
         <div class="navbar-expand-xl pr-3 float-right d-flex justify-content-end align-items-center">
-          <a routerLink="/account/login" class="mr-4 text-login">Login</a>
-          <a class="ml-5 btn btn-blue float-right m-neg-6 pl-24 pr-24">Get in Touch</a>
+          <a routerLink="/account/login" class="mr-4 text-login">Đăng nhập</a>
+          <span class="text-login">&nbsp;/&nbsp;</span>
+          <a class="text-login" routerLink="/account/register">Đăng ký</a>
         </div>
       </div>
     </div>
@@ -44,29 +45,30 @@
     <div class="home-raising-funds w-100">
       <div class="raising-funds-title">
         <h4>Dự án đang gây quỹ</h4>
-        <p style="color: #7A7A7A">Hãy lựa chọn dự án trong lĩnh vực <br> mà bạn quan tâm nhất</p>
+        <p style="color: #7A7A7A;margin-bottom:30px">Hãy lựa chọn dự án trong lĩnh vực <br> mà bạn quan tâm nhất</p>
       </div>
       <div class="raising-funds-element w-100 mt-5">
         <div class="slide-container">
-            <div class="slide-item" *ngFor="let item of listFundRaising">
-                <img [src]="baseUrl + item.listImageUrl[0]" alt="" class="item-image" [routerLink]="['../user-post-detail',item.id,item.fundId]">
-                <div class="item-tag">{{item.postTopic}}</div>
-                <div class="item-content">
-                    <a>{{item.organizationName}}</a>
-                    <h2>{{item.postTitle}}</h2>
-                    <div class="progress-bar">
-                        <span></span>
-                    </div>
-                    <div class="statistic-bdi d-flex">
-                        <span>{{item.amountDonatePresent}} VND</span>
-                        <span>{{item.percentAchieved}}%</span>
-                    </div>
-                    <p>với mục tiêu {{item.amountDonateTarget}} VND</p>
-                </div>
+          <div class="slide-item" *ngFor="let item of listFundRaising">
+            <img [src]="baseUrl + item.listImageUrl[0]" alt="" class="item-image"
+              [routerLink]="['../user-fund-detail',item.id,item.fundId]">
+            <div class="item-tag">{{item.postTopic}}</div>
+            <div class="item-content">
+              <a>{{item.organizationName}}</a>
+              <h2>{{item.postTitle}}</h2>
+              <div class="progress-bar">
+                <span></span>
+              </div>
+              <div class="statistic-bdi d-flex">
+                <span>{{item.amountDonatePresent}} VND</span>
+                <span>{{item.percentAchieved}}%</span>
+              </div>
+              <p>với mục tiêu {{item.amountDonateTarget}} VND</p>
             </div>
+          </div>
         </div>
         <div class="see-all">
-          <a href="/guest/home">Xem tất cả</a>
+          <a href="/guest/project">Xem tất cả</a>
         </div>
       </div>
     </div>

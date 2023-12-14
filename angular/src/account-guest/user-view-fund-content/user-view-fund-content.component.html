@@ -20,8 +20,9 @@
                 </div>
                 <div class="col-12 col-md-4 col-lg-2 top-right-nav my-auto text-right d-none d-lg-block">
                     <div class="navbar-expand-xl pr-3 float-right d-flex justify-content-end align-items-center">
-                        <a routerLink="/account/login" class="mr-4 text-login">Login</a>
-                        <a class="ml-5 btn btn-blue float-right m-neg-6 pl-24 pr-24">Get in Touch</a>
+                        <a routerLink="/account/login" class="mr-4 text-login">Đăng nhập</a>
+                        <span class="text-login">&nbsp;/&nbsp;</span>
+                        <a class="text-login" routerLink="/account/register">Đăng ký</a>
                     </div>
                 </div>
             </div>
@@ -37,7 +38,7 @@
                             <div class="slide-container">
                                 <div class="slide-item" *ngFor="let item of listFundActive">
                                     <img [src]="baseUrl + item.listImageUrl[0]" alt="" class="item-image"
-                                        [routerLink]="['../user-post-detail',item.id,item.fundId]">
+                                        [routerLink]="['../user-fund-detail',item.id,item.fundId]">
                                     <div class="item-tag">{{item.postTopic}}</div>
                                     <div class="item-content">
                                         <a>{{item.organizationName}}</a>
@@ -62,7 +63,7 @@
                             <div class="slide-container">
                                 <div class="slide-item" *ngFor="let item of listFundClose">
                                     <img [src]="baseUrl + item.listImageUrl[0]" alt="" class="item-image"
-                                        [routerLink]="['../user-post-detail',item.id,item.fundId]">
+                                        [routerLink]="['../user-fund-detail',item.id,item.fundId]">
                                     <div class="item-tag">{{item.postTopic}}</div>
                                     <div class="item-content">
                                         <a>{{item.organizationName}}</a>
@@ -113,7 +114,7 @@
                     <div class="section-bottom-mid footer-section-layout-2 h-100">
                         <ul>
                             <li><i class="fa fa-phone" aria-hidden="true"></i>Hotline: <span>0345627105</span></li>
-                            <li><i class="fa fa-envelope" aria-hidden="true"></i>FundRaising@gmail.com/li>
+                            <li><i class="fa fa-envelope" aria-hidden="true"></i>FundRaising@gmail.com</li>
                             <li><i class="fa fa-map-marker" aria-hidden="true"></i>Số 71 , phố Trần Thái Tông, Cầu Giấy,
                                 Hà Nội.</li>
                             <li>© Givenow.vn – All Rights Reserved</li>
