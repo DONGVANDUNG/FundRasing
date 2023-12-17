@@ -26,5 +26,7 @@ namespace esign.FundRaising.UserFundRaising.Dto.Auction
         public float? NextMaximumBid { get; set; }
         public string Status { get; set; }
         public int? Amount { get; set; }
+        public string UserCreate { get; set; }
+        public bool? IsCloseAuction { get; set; }
     }
 }

@@ -241,5 +241,9 @@ export class AppAdminAuctionComponent extends AppComponentBase implements OnInit
         }
         this.modalCreate.show(this.selectedAuction)
     }
-
+    hiddenAuction(){
+        this._fundRaiser.closeAuctionItem(this.selectedAuction).subscribe(()=>{
+            this.notify.success('Ẩn bài đăng thành công');
+        })
+    }
 }

@@ -20,15 +20,6 @@ namespace esign.Migrations
                 .Annotation("SqlServer:Identity", "1, 1")
                 .OldAnnotation("SqlServer:Identity", "1, 1");
 
-            migrationBuilder.AlterColumn<long>(
-                name: "Id",
-                table: "FundRaiser",
-                type: "bigint",
-                nullable: false,
-                oldClrType: typeof(int),
-                oldType: "int")
-                .Annotation("SqlServer:Identity", "1, 1")
-                .OldAnnotation("SqlServer:Identity", "1, 1");
 
             migrationBuilder.AlterColumn<long>(
                 name: "FundId",
@@ -82,22 +73,9 @@ namespace esign.Migrations
                 .Annotation("SqlServer:Identity", "1, 1")
                 .OldAnnotation("SqlServer:Identity", "1, 1");
 
-            migrationBuilder.AlterColumn<int>(
-                name: "Id",
-                table: "FundRaiser",
-                type: "int",
-                nullable: false,
-                oldClrType: typeof(long),
-                oldType: "bigint")
-                .Annotation("SqlServer:Identity", "1, 1")
-                .OldAnnotation("SqlServer:Identity", "1, 1");
+          
 
-            migrationBuilder.AddColumn<int>(
-                name: "FundPackageId",
-                table: "FundRaiser",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
+
 
             migrationBuilder.AlterColumn<long>(
                 name: "FundId",

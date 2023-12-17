@@ -217,4 +217,9 @@ export class AppAdminPostComponent extends AppComponentBase implements OnInit {
         }
         this.modalCreatePost.show(this.seletedPost)
     }
+    hiddenPost(){
+        this._funRaiser.closePostFundRaising(this.seletedPost).subscribe(()=>{
+            this.notify.success("Đóng bài đăng thành công")
+        })
+    }
 }

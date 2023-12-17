@@ -37,7 +37,8 @@ namespace esign.FundRaising
         private readonly IRepository<FundRaiserPost, long> _mstFundRaiserPostRepo;
         private readonly IRepository<FundImage, long> _mstFundImageRepo;
         private readonly IRepository<Auction, long> _mstAuctionRepo;
-        private readonly IRepository<AuctionTransactions, long> _mstAuctionTransactionRepo;
+        private readonly IRepository<AuctionHistory, long> _mstAuctionTransactionRepo;
+        private readonly IRepository<AuctionTransactionDeposit, long> _mstAuctionTransactionDeposit;
         private readonly IRepository<AuctionItems, long> _mstAuctionItemsRepo;
         private readonly IRepository<AuctionDeposit, long> _mstAuctionDepositRepo;
         private readonly IRepository<UserFundPackage, long> _mstUserFundPackageRepo;
@@ -53,7 +54,13 @@ namespace esign.FundRaising
             IRepository<FundRaisingTopic, int> mstSleFundTopictRepo,
             IRepository<FundPackage, int> mstSleFundPackageRepo,
             IRepository<FundTransactions, long> mstSleFundTransactionRepo,
-            IRepository<User, long> mstSleUserRepo, IRepository<FundImage, long> mstSleFundImageRepo, IRepository<BankAccount, long> mstBankRepo, IRepository<FundRaiserPost, long> mstFundRaiserPostRepo, IRepository<FundImage, long> mstFundImageRepo, IRepository<RequestToFundRaiser, long> mstRequestToFundRaiserRepo, IRepository<Auction, long> mstAuctionRepo, IRepository<AuctionTransactions, long> mstAuctionTransactionRepo, IRepository<AuctionItems, long> mstAuctionItemsRepo, IRepository<AuctionDeposit, long> mstAuctionDepositRepo, ISendEmail sendEmail, IRepository<UserFundPackage, long> mstUserFundPackageRepo)
+            IRepository<User, long> mstSleUserRepo, IRepository<FundImage, long> mstSleFundImageRepo,
+            IRepository<BankAccount, long> mstBankRepo,
+            IRepository<FundRaiserPost, long> mstFundRaiserPostRepo,
+            IRepository<FundImage, long> mstFundImageRepo,
+            IRepository<RequestToFundRaiser, long> mstRequestToFundRaiserRepo,
+            IRepository<Auction, long> mstAuctionRepo
+            , IRepository<AuctionHistory, long> mstAuctionTransactionRepo, IRepository<AuctionItems, long> mstAuctionItemsRepo, IRepository<AuctionDeposit, long> mstAuctionDepositRepo, ISendEmail sendEmail, IRepository<UserFundPackage, long> mstUserFundPackageRepo, IRepository<AuctionTransactionDeposit, long> mstAuctionTransactionDeposit)
         {
             _mstSleFundRepo = mstSleFundRepo;
             /// _mstSleFundRaiserRepo = mstSleFundRaiserRepo;
@@ -75,6 +82,7 @@ namespace esign.FundRaising
             _mstAuctionDepositRepo = mstAuctionDepositRepo;
             _sendEmail = sendEmail;
             _mstUserFundPackageRepo = mstUserFundPackageRepo;
+            _mstAuctionTransactionDeposit = mstAuctionTransactionDeposit;
         }
         public async Task<List<GetListFundRasingDto>> getHistoryDonationForFund()
         {
@@ -478,7 +486,7 @@ namespace esign.FundRaising
         public async Task UserAuction(UserAuction input)
         {
             var auctionItem = _mstAuctionItemsRepo.FirstOrDefault(e => e.Id == input.AuctionItemId);
-            var auctionTransaction = new AuctionTransactions();
+            var auctionTransaction = new AuctionHistory();
             auctionTransaction.OldAmount = auctionItem.AuctionPresentAmount != null ? auctionItem.AuctionPresentAmount : auctionItem.StartingPrice;
             if (input.AmountAuction < auctionItem.AuctionPresentAmount || input.AmountAuction > auctionItem.AuctionPresentAmount + auctionItem.AmountJumpMax)
             {
@@ -508,6 +516,18 @@ namespace esign.FundRaising
             auctionDeposit.DepositAmount = deposit;
             auctionDeposit.DepositDate = DateTime.Now;
             await _mstAuctionDepositRepo.InsertAsync(auctionDeposit);
+
+            var bankAccountAdmin = await _mstBankRepo.FirstOrDefaultAsync(e => e.UserId == 1);
+            bankAccountAdmin.Balance += deposit;
+            await _mstBankRepo.UpdateAsync(bankAccountAdmin);
+
+            AuctionTransactionDeposit fundTransaction = new AuctionTransactionDeposit();
+            fundTransaction.SenderId = AbpSession.UserId;
+            fundTransaction.ReceiverId = 1;
+            fundTransaction.AuctionItemId = auctionItemId;
+            fundTransaction.AmountOfMoney = deposit;
+            fundTransaction.MessageContent = "Đặt cọc đấu giá";
+            await _mstAuctionTransactionDeposit.InsertAsync(fundTransaction);
         }
         public async Task<InformationAuctionDepositDto> GetInforAuctionDeposit(long auctionItemId)
         {

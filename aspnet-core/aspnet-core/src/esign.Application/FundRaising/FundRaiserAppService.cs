@@ -9,23 +9,13 @@ using System.Linq;
 using esign.Authorization.Users;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Twilio.Rest.Api.V2010.Account;
-using Microsoft.AspNetCore.Http;
 using System.IO;
 using esign.FundRaising.Admin.Dto;
 using esign.Enitity;
-using Microsoft.AspNetCore.Mvc;
-using esign.Configuration;
-using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Hosting;
-using Dapper;
 using esign.FundRaising.UserFundRaising.Dto.Auction;
 using Abp.Application.Services.Dto;
 using Abp.Linq.Extensions;
-using Microsoft.AspNetCore.SignalR;
-using Abp.RealTime;
-using NPOI.HSSF.Record;
 using esign.FundRaising.UserFundRaising.Dto;
 
 namespace esign.FundRaising
@@ -38,13 +28,16 @@ namespace esign.FundRaising
         private readonly IRepository<FundDetails, long> _mstSleDetailsRepo;
         private readonly IRepository<UserWarning, int> _mstSleUserWarningRepo;
         private readonly IRepository<Auction, long> _mstAuctionRepo;
-        private readonly IRepository<AuctionTransactions, long> _mstAuctionTransactionRepo;
+        private readonly IRepository<AuctionHistory, long> _mstAuctionTransactionRepo;
         private readonly IRepository<AuctionImages, long> _mstAuctionImagesRepo;
         ///private readonly IRepository<FundRaiser, long> _mstSleFundRaiserRepo;
         private readonly IRepository<FundImage, long> _mstSleFundImageRepo;
         private readonly IRepository<AuctionItems, long> _mstSleAuctionItemsRepo;
         private readonly IRepository<AuctionDeposit, long> _mstSleAuctionDepositRepo;
         private readonly IRepository<FundRaiserPost, long> _mstFundRaiserPostRepo;
+        private readonly IRepository<BankAccount, long> _mstBankRepo;
+        private readonly IRepository<AuctionTransactionDeposit, long> _mstAuctionTransactionDeposit;
+
         public FundRaiserAppService(IRepository<Funds, long> mstSleFundRepo,
             IRepository<FundTransactions, long> mstSleFundTransactionRepo,
             IRepository<User, long> mstSleUserRepo,
@@ -55,11 +48,13 @@ namespace esign.FundRaising
             //IRepository<FundRaiser, long> mstSleFundRaiserRepo,
             IRepository<FundImage, long> mstSleFundImageRepo,
             IRepository<Auction, long> mstAuctionRepo,
-            IRepository<AuctionTransactions, long> mstAuctionTransactionRepo,
+            IRepository<AuctionHistory, long> mstAuctionTransactionRepo,
             IRepository<AuctionImages, long> mstAuctionImagesRepo,
             IRepository<AuctionItems, long> mstSleAuctionItemsRepo,
             IRepository<AuctionDeposit, long> mstSleAuctionDepositRepo,
-            IRepository<FundRaiserPost, long> mstFundRaiserPostRepo)
+            IRepository<FundRaiserPost, long> mstFundRaiserPostRepo,
+            IRepository<BankAccount, long> mstBankRepo,
+            IRepository<AuctionTransactionDeposit, long> mstAuctionTransactionDeposit)
         {
             _mstSleFundRepo = mstSleFundRepo;
             _mstSleFundTransactionRepo = mstSleFundTransactionRepo;
@@ -74,6 +69,8 @@ namespace esign.FundRaising
             _mstSleAuctionItemsRepo = mstSleAuctionItemsRepo;
             _mstSleAuctionDepositRepo = mstSleAuctionDepositRepo;
             _mstFundRaiserPostRepo = mstFundRaiserPostRepo;
+            _mstBankRepo = mstBankRepo;
+            _mstAuctionTransactionDeposit = mstAuctionTransactionDeposit;
         }
         public async Task CloseFundRaising(long fundId)
         {
@@ -432,7 +429,8 @@ namespace esign.FundRaising
                             StartDate = (DateTime)item.StartDate,
                             IntroduceItem = item.IntroduceItem,
                             Status = item.IsClose == false ? "Đang hoạt động" : "Đã đóng",
-                            Amount = item.Amount
+                            Amount = item.Amount,
+                            IsCloseAuction = item.IsClose
                         };
 
             var totalCount = await query.CountAsync();
@@ -462,6 +460,7 @@ namespace esign.FundRaising
         {
             var listAuction = (from item in _mstSleAuctionItemsRepo.GetAll().
                                WhereIf(AbpSession.TenantId != null, e=>e.UserId != AbpSession.UserId)
+                               join user in _mstSleUserRepo.GetAll() on item.UserId equals user.Id
                                    //|| e.UserId != AbpSession.UserId)
                                select new GetAllAuctionDto
                                {
@@ -478,6 +477,7 @@ namespace esign.FundRaising
                                    NextMinimumBid = item.AuctionPresentAmount + item.AmountJumpMin,
                                    NextMaximumBid = item.AuctionPresentAmount + item.AmountJumpMax,
                                    ListImage = _mstAuctionImagesRepo.GetAll().Where(e => e.AuctionItemId == item.Id).Select(re => re.ImageUrl).ToList(),
+                                   UserCreate = user.Surname + " " + user.Name
                                }).ToListAsync();
 
 
@@ -558,6 +558,46 @@ namespace esign.FundRaising
                                       Name = fund.FundName
                                   };
             return listFundRaising.ToList();
+        }
+
+        public async void ClosePostFundRaising(long postId)
+        {
+            var post = await _mstFundRaiserPostRepo.FirstOrDefaultAsync(e => e.Id == postId);
+            post.IsClose = true;
+            await _mstFundRaiserPostRepo.UpdateAsync(post);
+        }
+        public async void CloseAuctionItem(long auctionItemId)
+        {
+            var auctionItem = await _mstSleAuctionItemsRepo.FirstOrDefaultAsync(e => e.Id == auctionItemId);
+            auctionItem.IsClose = true;
+            await _mstSleAuctionItemsRepo.UpdateAsync(auctionItem);
+        }
+        public async void PayDepositAuction(long auctionItemId)
+        {
+            var auctionItem = await _mstSleAuctionItemsRepo.FirstOrDefaultAsync(e => e.Id == auctionItemId);
+            var listDeposit = await _mstSleAuctionDepositRepo.GetAll().Where(e => e.AuctionItemId == auctionItem.Id && e.IsPayDeposit == false).ToListAsync();
+            foreach(var deposit in listDeposit)
+            {
+                var bankAccountUser = await _mstBankRepo.FirstOrDefaultAsync(e => e.UserId == deposit.UserId);
+                var bankAccountAdmin = await _mstBankRepo.FirstOrDefaultAsync(e => e.UserId == 1);
+                if (bankAccountUser != null)
+                {
+                    bankAccountUser.Balance += deposit.DepositAmount;
+                    await _mstBankRepo.UpdateAsync(bankAccountUser);
+                    bankAccountAdmin.Balance -= deposit.DepositAmount;
+                    await _mstBankRepo.UpdateAsync(bankAccountAdmin);
+
+                    AuctionTransactionDeposit fundTransaction = new AuctionTransactionDeposit();
+                    fundTransaction.SenderId = 1;
+                    fundTransaction.ReceiverId = deposit.UserId;
+                    fundTransaction.AuctionItemId = deposit.AuctionItemId;
+                    fundTransaction.AmountOfMoney = deposit.DepositAmount;
+                    fundTransaction.MessageContent = "Trả cọc đấu giá";
+                    await _mstAuctionTransactionDeposit.InsertAsync(fundTransaction);
+                    deposit.IsPayDeposit = true;
+                    await _mstSleAuctionDepositRepo.UpdateAsync(deposit);
+                }
+            }
         }
     }
 }

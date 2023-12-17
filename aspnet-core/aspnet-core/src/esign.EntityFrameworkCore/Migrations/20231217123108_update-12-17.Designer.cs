@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using esign.EntityFrameworkCore;
 
@@ -11,9 +12,11 @@ using esign.EntityFrameworkCore;
 namespace esign.Migrations
 {
     [DbContext(typeof(esignDbContext))]
-    partial class esignDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231217123108_update-12-17")]
+    partial class update1217
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1929,58 +1932,6 @@ namespace esign.Migrations
                     b.ToTable("AuctionDeposit");
                 });
 
-            modelBuilder.Entity("esign.Enitity.AuctionHistory", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<DateTime?>("AuctionDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("AuctionItemId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("AuctioneerId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("CreatorUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("DeleterUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime?>("DeletionTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<bool?>("IsPublic")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("LastModifierUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<float?>("NewAmount")
-                        .HasColumnType("real");
-
-                    b.Property<float?>("OldAmount")
-                        .HasColumnType("real");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AuctionHistory");
-                });
-
             modelBuilder.Entity("esign.Enitity.AuctionImages", b =>
                 {
                     b.Property<long>("Id")
@@ -2100,7 +2051,7 @@ namespace esign.Migrations
                     b.ToTable("AuctionItems");
                 });
 
-            modelBuilder.Entity("esign.Enitity.AuctionTransactionDeposit", b =>
+            modelBuilder.Entity("esign.Enitity.AuctionTransactions", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -2108,10 +2059,13 @@ namespace esign.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<float?>("AmountOfMoney")
-                        .HasColumnType("real");
+                    b.Property<DateTime?>("AuctionDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<long?>("AuctionItemId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("AuctioneerId")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreationTime")
@@ -2129,24 +2083,24 @@ namespace esign.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<bool?>("IsPublic")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime?>("LastModificationTime")
                         .HasColumnType("datetime2");
 
                     b.Property<long?>("LastModifierUserId")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("MessageContent")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<float?>("NewAmount")
+                        .HasColumnType("real");
 
-                    b.Property<long?>("ReceiverId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("SenderId")
-                        .HasColumnType("bigint");
+                    b.Property<float?>("OldAmount")
+                        .HasColumnType("real");
 
                     b.HasKey("Id");
 
-                    b.ToTable("AuctionTransactionDeposit");
+                    b.ToTable("AuctionTransactions");
                 });
 
             modelBuilder.Entity("esign.Enitity.BankAccount", b =>

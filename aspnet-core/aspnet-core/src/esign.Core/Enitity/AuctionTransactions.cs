@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace esign.Enitity
 {
-    [Table("AuctionTransactions")]
-    public class AuctionTransactions : FullAuditedEntity<long>
+    [Table("AuctionHistory")]
+    public class AuctionHistory : FullAuditedEntity<long>
     {
         public long? AuctionItemId { get; set; }
         public long? AuctioneerId{ get; set; }

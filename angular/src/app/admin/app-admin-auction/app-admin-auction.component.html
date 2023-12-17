@@ -53,6 +53,12 @@
             <button class="tmss-btn btn-outline-primary mr-0" (click)="editAuction()">
                 <i class="fas fa-plus"></i> {{l("Sửa bài đăng")}}
             </button>
+            <button class="tmss-btn btn-outline-primary mr-0" (click)="hiddenAuction()">
+                <i class="fas fa-plus"></i> {{l("Ẩn bài đăng")}}
+            </button>
+            <button class="tmss-btn btn-outline-primary mr-0" *ngIf="isCloseAuction" (click)="payAuctionDeposit()">
+                <i class="fas fa-plus"></i> {{l("Trả cọc")}}
+            </button>
         </div>
     </div>
     <app-create-or-edit-auction #createOrEdit (modalSave)="onGridReady(paginationParams)"></app-create-or-edit-auction>

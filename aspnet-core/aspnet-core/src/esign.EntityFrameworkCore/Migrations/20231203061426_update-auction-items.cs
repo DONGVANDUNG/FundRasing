@@ -11,13 +11,7 @@ namespace esign.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "AmountOfMoney",
-                table: "Funds");
 
-            migrationBuilder.DropColumn(
-                name: "Commission",
-                table: "Funds");
 
             migrationBuilder.DropColumn(
                 name: "DonateSuggestAmount",
@@ -57,17 +51,6 @@ namespace esign.Migrations
             migrationBuilder.DropTable(
                 name: "AuctionItems");
 
-            migrationBuilder.AddColumn<float>(
-                name: "AmountOfMoney",
-                table: "Funds",
-                type: "real",
-                nullable: true);
-
-            migrationBuilder.AddColumn<float>(
-                name: "Commission",
-                table: "Funds",
-                type: "real",
-                nullable: true);
 
             migrationBuilder.AddColumn<float>(
                 name: "DonateSuggestAmount",

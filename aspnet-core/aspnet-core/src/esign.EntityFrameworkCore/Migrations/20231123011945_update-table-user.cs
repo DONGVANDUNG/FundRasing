@@ -14,16 +14,6 @@ namespace esign.Migrations
                 name: "FundPackageId",
                 table: "AbpUsers");
 
-            migrationBuilder.AlterColumn<int>(
-                name: "FundPackageId",
-                table: "FundRaiser",
-                type: "int",
-                nullable: false,
-                defaultValue: 0,
-                oldClrType: typeof(long),
-                oldType: "bigint",
-                oldNullable: true);
-
             migrationBuilder.AddColumn<float>(
                 name: "Blances",
                 table: "AbpUsers",
@@ -38,13 +28,6 @@ namespace esign.Migrations
                 name: "Blances",
                 table: "AbpUsers");
 
-            migrationBuilder.AlterColumn<long>(
-                name: "FundPackageId",
-                table: "FundRaiser",
-                type: "bigint",
-                nullable: true,
-                oldClrType: typeof(int),
-                oldType: "int");
 
             migrationBuilder.AddColumn<int>(
                 name: "FundPackageId",

@@ -7307,6 +7307,110 @@ export class FundRaiserServiceProxy {
         }
         return _observableOf(null as any);
     }
+
+    /**
+     * @param postId (optional) 
+     * @return Success
+     */
+    closePostFundRaising(postId: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/FundRaiser/ClosePostFundRaising?";
+        if (postId === null)
+            throw new Error("The parameter 'postId' cannot be null.");
+        else if (postId !== undefined)
+            url_ += "postId=" + encodeURIComponent("" + postId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processClosePostFundRaising(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processClosePostFundRaising(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processClosePostFundRaising(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param auctionItemId (optional) 
+     * @return Success
+     */
+    closeAuctionItem(auctionItemId: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/FundRaiser/CloseAuctionItem?";
+        if (auctionItemId === null)
+            throw new Error("The parameter 'auctionItemId' cannot be null.");
+        else if (auctionItemId !== undefined)
+            url_ += "auctionItemId=" + encodeURIComponent("" + auctionItemId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCloseAuctionItem(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCloseAuctionItem(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processCloseAuctionItem(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
 }
 
 @Injectable()
@@ -23499,6 +23603,7 @@ export class GetAllAuctionDto implements IGetAllAuctionDto {
     nextMaximumBid!: number | undefined;
     status!: string | undefined;
     amount!: number | undefined;
+    userCreate!: string | undefined;
 
     constructor(data?: IGetAllAuctionDto) {
         if (data) {
@@ -23533,6 +23638,7 @@ export class GetAllAuctionDto implements IGetAllAuctionDto {
             this.nextMaximumBid = _data["nextMaximumBid"];
             this.status = _data["status"];
             this.amount = _data["amount"];
+            this.userCreate = _data["userCreate"];
         }
     }
 
@@ -23567,6 +23673,7 @@ export class GetAllAuctionDto implements IGetAllAuctionDto {
         data["nextMaximumBid"] = this.nextMaximumBid;
         data["status"] = this.status;
         data["amount"] = this.amount;
+        data["userCreate"] = this.userCreate;
         return data;
     }
 }
@@ -23590,6 +23697,7 @@ export interface IGetAllAuctionDto {
     nextMaximumBid: number | undefined;
     status: string | undefined;
     amount: number | undefined;
+    userCreate: string | undefined;
 }
 
 export class GetAllAvailableWebhooksOutput implements IGetAllAvailableWebhooksOutput {

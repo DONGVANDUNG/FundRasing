@@ -56,6 +56,9 @@
             <button class="tmss-btn btn-outline-primary mr-0" (click)="editPost()">
                 <i class="fas fa-edit"></i>{{l("Sửa bài đăng")}}
             </button>
+            <button class="tmss-btn btn-outline-primary mr-0" (click)="hiddenPost()">
+                <i class="fas fa-edit"></i>{{l("Ẩn bài đăng")}}
+            </button>
         </div>
     </div>
 <app-create-or-edit-post #createOrEditPost (modalSave)="onGridReady($event)"></app-create-or-edit-post>

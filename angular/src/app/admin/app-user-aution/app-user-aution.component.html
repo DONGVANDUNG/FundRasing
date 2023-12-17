@@ -7,13 +7,13 @@
   <div class="block-list-fund d-flex justify-content-start">
     <div class="item-fundraising" *ngFor="let auction of dataAution" [routerLink]="['../auction-detail',auction.id]">
       <div class="item-fund-image">
-        <img [src]="baseUrl + auction.listImageUrl[0] " alt="">
+        <!-- <img [src]="baseUrl + auction?.listImageUrl[0] " alt=""> -->
       </div>
       <br>
       <!-- <span class="text-donate">{{aution.titleAucion}}</span> -->
       <div class="footer-block-fund">
-        <button class="btn-donate">$60,000</button>
-        <p class="text-footer">Raised So Far</p>
+        <button class="btn-donate">{{auction.startingPrice}}</button>
+        <p class="text-footer">{{auction.userCreate}}</p>
       </div>
     </div>
   </div>

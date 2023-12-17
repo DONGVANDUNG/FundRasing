@@ -17,10 +17,10 @@ namespace esign.FundRaising
     public class UserAuctionAppService : esignAppServiceBase, IUserAuction
     {
         private readonly IRepository<AuctionItems, long> _mstAuctionItemsRepo;
-        private readonly IRepository<AuctionTransactions, long> _mstAuctionTransactionRepo;
+        private readonly IRepository<AuctionHistory, long> _mstAuctionTransactionRepo;
         private readonly IDapperRepository<AuctionItems, long> _dapperRepo;
 
-        public UserAuctionAppService(IRepository<AuctionTransactions, long> mstAuctionTransactionRepo, IRepository<AuctionItems, long> mstAuctionItemsRepo, IDapperRepository<AuctionItems, long> dapperRepo)
+        public UserAuctionAppService(IRepository<AuctionHistory, long> mstAuctionTransactionRepo, IRepository<AuctionItems, long> mstAuctionItemsRepo, IDapperRepository<AuctionItems, long> dapperRepo)
         {
             _mstAuctionTransactionRepo = mstAuctionTransactionRepo;
             _mstAuctionItemsRepo = mstAuctionItemsRepo;
@@ -30,7 +30,7 @@ namespace esign.FundRaising
         {
 
             var auctionItem = _mstAuctionItemsRepo.FirstOrDefault(e => e.Id == input.AuctionItemId);
-            var auctionTransaction = new AuctionTransactions();
+            var auctionTransaction = new AuctionHistory();
             auctionTransaction.OldAmount = auctionItem.AuctionPresentAmount != null ? auctionItem.AuctionPresentAmount : auctionItem.StartingPrice;
             if (input.AmountAuction < auctionItem.AuctionPresentAmount || input.AmountAuction > auctionItem.AuctionPresentAmount + auctionItem.AmountJumpMax)
             {

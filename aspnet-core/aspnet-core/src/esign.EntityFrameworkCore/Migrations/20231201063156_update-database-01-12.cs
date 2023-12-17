@@ -18,13 +18,7 @@ namespace esign.Migrations
                 name: "Commission",
                 table: "Funds");
 
-            migrationBuilder.DropColumn(
-                name: "Country",
-                table: "AbpUsers");
-
-            migrationBuilder.DropColumn(
-                name: "ImageUrl",
-                table: "AbpUsers");
+            
 
 
             migrationBuilder.RenameColumn(
@@ -209,17 +203,6 @@ namespace esign.Migrations
                 .Annotation("SqlServer:Identity", "1, 1")
                 .OldAnnotation("SqlServer:Identity", "1, 1");
 
-            migrationBuilder.AddColumn<string>(
-                name: "Country",
-                table: "AbpUsers",
-                type: "nvarchar(max)",
-                nullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "ImageUrl",
-                table: "AbpUsers",
-                type: "nvarchar(max)",
-                nullable: true);
         }
     }
 }
