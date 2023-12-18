@@ -585,17 +585,18 @@ namespace esign.FundRaising
             var emailUserWin = "";
             foreach(var deposit in listDeposit)
             {
-                var bankAccountUser = await _mstBankRepo.FirstOrDefaultAsync(e => e.UserId == deposit.UserId);
-                var bankAccountAdmin = await _mstBankRepo.FirstOrDefaultAsync(e => e.UserId == 1);
-                if (bankAccountUser != null)
+                var bankAccountUserDeposit = await _mstBankRepo.FirstOrDefaultAsync(e => e.UserId == deposit.UserId);
+                var bankAccountAdmin = await _mstBankRepo.FirstOrDefaultAsync(e => e.UserId == auctionItem.UserId);
+                if (bankAccountUserDeposit != null)
                 {
-                    bankAccountUser.Balance += deposit.DepositAmount;
-                    await _mstBankRepo.UpdateAsync(bankAccountUser);
+                    bankAccountUserDeposit.Balance += deposit.DepositAmount;
+                    await _mstBankRepo.UpdateAsync(bankAccountUserDeposit);
+
                     bankAccountAdmin.Balance -= deposit.DepositAmount;
                     await _mstBankRepo.UpdateAsync(bankAccountAdmin);
 
                     AuctionTransactionDeposit fundTransaction = new AuctionTransactionDeposit();
-                    fundTransaction.SenderId = 1;
+                    fundTransaction.SenderId = auctionItem.UserId;
                     fundTransaction.ReceiverId = deposit.UserId;
                     fundTransaction.AuctionItemId = deposit.AuctionItemId;
                     fundTransaction.AmountOfMoney = deposit.DepositAmount;

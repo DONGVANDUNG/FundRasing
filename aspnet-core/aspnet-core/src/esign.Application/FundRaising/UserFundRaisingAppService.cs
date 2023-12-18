@@ -508,8 +508,8 @@ namespace esign.FundRaising
         }
         public async Task UserDepositAuction(float deposit,long auctionItemId)
         {
-            var auctionStartingPrice = _mstAuctionItemsRepo.FirstOrDefault(e => e.Id == auctionItemId).StartingPrice;
-            if(deposit < auctionStartingPrice/100 || deposit > (auctionStartingPrice*15)/100) {
+            var auctionItem = _mstAuctionItemsRepo.FirstOrDefault(e => e.Id == auctionItemId);
+            if(deposit < auctionItem.StartingPrice / 100 || deposit > (auctionItem.StartingPrice * 15)/100) {
                 throw new UserFriendlyException("Số tiền đặt cọc không hợp lệ");           
             }
             var auctionDeposit = new AuctionDeposit();
@@ -519,13 +519,13 @@ namespace esign.FundRaising
             auctionDeposit.DepositDate = DateTime.Now;
             await _mstAuctionDepositRepo.InsertAsync(auctionDeposit);
 
-            var bankAccountAdmin = await _mstBankRepo.FirstOrDefaultAsync(e => e.UserId == 1);
-            bankAccountAdmin.Balance += deposit;
-            await _mstBankRepo.UpdateAsync(bankAccountAdmin);
+            var bankAccountUser = await _mstBankRepo.FirstOrDefaultAsync(e => e.UserId == auctionItem.UserId);
+            bankAccountUser.Balance += deposit;
+            await _mstBankRepo.UpdateAsync(bankAccountUser);
 
             AuctionTransactionDeposit fundTransaction = new AuctionTransactionDeposit();
             fundTransaction.SenderId = AbpSession.UserId;
-            fundTransaction.ReceiverId = 1;
+            fundTransaction.ReceiverId = auctionItem.UserId;
             fundTransaction.AuctionItemId = auctionItemId;
             fundTransaction.AmountOfMoney = deposit;
             fundTransaction.MessageContent = "Đặt cọc đấu giá";
