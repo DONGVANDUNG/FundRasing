@@ -10,6 +10,7 @@ export class ContactUsComponent implements OnInit {
 
     constructor(private router: Router) { }
     isLoading: boolean = false;
+    isLogin = localStorage.getItem("isLogin");
     ngOnInit() {
         this.isLoading = true;
         setTimeout(() => {
@@ -30,5 +31,8 @@ export class ContactUsComponent implements OnInit {
         if (option === 4) {
             this.router.navigateByUrl("guest/about-us");
         }
+    }
+    routerLink(){
+        this.router.navigateByUrl('/app/notifications');
     }
 }

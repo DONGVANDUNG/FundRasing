@@ -23,7 +23,7 @@ export class UserViewHomeComponent extends AppComponentBase {
     baseUrl = AppConsts.remoteServiceBaseUrl + '/';
     listFundRaising = [] // ARRAY NÀY BAO GỒM ẢNH, TITLE , CONTENT CỦA 1 DỰ ÁN ĐANG GÂY QUỸ, CÓ THỂ LÀ 1 RECORD
     listInforAboutWeb;
-
+    isLogin = localStorage.getItem("isLogin");
     constructor(injector: Injector, private router: Router,
         private _userServiceProxy: UserFundRaisingServiceProxy,
         private dataFormatService: DataFormatService) {
@@ -43,7 +43,9 @@ export class UserViewHomeComponent extends AppComponentBase {
         this._userServiceProxy.getInforWeb().subscribe(result => {
             this.listInforAboutWeb = result;
             this.listInforAboutWeb.amountOfMoneyDonate = this.dataFormatService.moneyFormat(this.listInforAboutWeb.amountOfMoneyDonate)
-        })
+        });
+        localStorage.setItem("isLogin","Y");
+        console.log(this.isLogin);
     }
     redirectLink(option) {
         if (option === 1) {
@@ -125,5 +127,8 @@ export class UserViewHomeComponent extends AppComponentBase {
 
     goToFundraisingDetail(id): void {
         this.router.navigate(['/guest/fund-raising-detail', id]);
+    }
+    routerLink(){
+        this.router.navigateByUrl('/app/notifications');
     }
 }

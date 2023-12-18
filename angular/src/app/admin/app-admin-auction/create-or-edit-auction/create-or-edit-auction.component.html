@@ -146,7 +146,13 @@
                                 </div>
                                 <div class="row mt-5 mb-5">
                                     <div class="col-12">
-                                        <p>Giới thiệu vật phẩm:</p>
+                                        <div class="header d-flex justify-content-between mb-3" style="width: 27%;">
+                                            <p style="margin: 0;">Giới thiệu vật phẩm:</p>
+                                            <span class="d-flex justify-content-between align-items-center" style="width:33%">
+                                                <label for="">Công khai</label>
+                                                <input type="checkbox" [(ngModel)]="input.isPublic" name="isPublic">
+                                            </span>
+                                        </div>
                                         <p-editor [style]="{ height: '120px' }" [(ngModel)]="input.introduceItem"
                                             name="introduceItem"></p-editor>
                                     </div>

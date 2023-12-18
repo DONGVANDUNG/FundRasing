@@ -27,15 +27,14 @@ namespace esign.FundRaising
         private readonly IRepository<Funds, long> _mstSleFundRepo;
         //private readonly IRepository<FundRaiser, long> _mstSleFundRaiserRepo;
         private readonly IRepository<FundDetails, long> _mstSleFundDetailRepo;
-        private readonly IRepository<FundRaisingTopic, int> _mstSleFundTopictRepo;
         private readonly IRepository<FundPackage, int> _mstSleFundPackageRepo;
         private readonly IRepository<FundTransactions, long> _mstSleFundTransactionRepo;
         private readonly IRepository<User, long> _mstSleUserRepo;
-        private readonly IRepository<FundImage, long> _mstSleFundImageRepo;
+        private readonly IRepository<PostImage, long> _mstSleFundImageRepo;
         private readonly IRepository<BankAccount, long> _mstBankRepo;
         private readonly IRepository<RequestToFundRaiser, long> _mstRequestToFundRaiserRepo;
         private readonly IRepository<FundRaiserPost, long> _mstFundRaiserPostRepo;
-        private readonly IRepository<FundImage, long> _mstFundImageRepo;
+        private readonly IRepository<PostImage, long> _mstFundImageRepo;
         private readonly IRepository<Auction, long> _mstAuctionRepo;
         private readonly IRepository<AuctionHistory, long> _mstAuctionTransactionRepo;
         private readonly IRepository<AuctionTransactionDeposit, long> _mstAuctionTransactionDeposit;
@@ -51,21 +50,23 @@ namespace esign.FundRaising
             // mstSleFundRaiserRepo,
             IRepository<FundDetails, long> mstSleFundDetailRepo,
             IWebHostEnvironment hostingEnvironment, IWebHostEnvironment env,
-            IRepository<FundRaisingTopic, int> mstSleFundTopictRepo,
             IRepository<FundPackage, int> mstSleFundPackageRepo,
             IRepository<FundTransactions, long> mstSleFundTransactionRepo,
-            IRepository<User, long> mstSleUserRepo, IRepository<FundImage, long> mstSleFundImageRepo,
+            IRepository<User, long> mstSleUserRepo, IRepository<PostImage, long> mstSleFundImageRepo,
             IRepository<BankAccount, long> mstBankRepo,
             IRepository<FundRaiserPost, long> mstFundRaiserPostRepo,
-            IRepository<FundImage, long> mstFundImageRepo,
+            IRepository<PostImage, long> mstFundImageRepo,
             IRepository<RequestToFundRaiser, long> mstRequestToFundRaiserRepo,
             IRepository<Auction, long> mstAuctionRepo
-            , IRepository<AuctionHistory, long> mstAuctionTransactionRepo, IRepository<AuctionItems, long> mstAuctionItemsRepo, IRepository<AuctionDeposit, long> mstAuctionDepositRepo, ISendEmail sendEmail, IRepository<UserFundPackage, long> mstUserFundPackageRepo, IRepository<AuctionTransactionDeposit, long> mstAuctionTransactionDeposit)
+            , IRepository<AuctionHistory, long> mstAuctionTransactionRepo, 
+            IRepository<AuctionItems, long> mstAuctionItemsRepo, 
+            IRepository<AuctionDeposit, long> mstAuctionDepositRepo, 
+            ISendEmail sendEmail, IRepository<UserFundPackage, long> mstUserFundPackageRepo, 
+            IRepository<AuctionTransactionDeposit, long> mstAuctionTransactionDeposit)
         {
             _mstSleFundRepo = mstSleFundRepo;
             /// _mstSleFundRaiserRepo = mstSleFundRaiserRepo;
             _mstSleFundDetailRepo = mstSleFundDetailRepo;
-            _mstSleFundTopictRepo = mstSleFundTopictRepo;
             _mstSleFundPackageRepo = mstSleFundPackageRepo;
             _mstSleFundTransactionRepo = mstSleFundTransactionRepo;
             _mstSleUserRepo = mstSleUserRepo;
@@ -340,6 +341,7 @@ namespace esign.FundRaising
                     ObjectMapper.Map(fundRaiser, fundRaiserEdit);
                     fundRaiserEdit.OrgnizationIntro = fundRaiser.IntroduceOrganization;
                     fundRaiserEdit.Orgnization = fundRaiser.Company;
+                    fundRaiserEdit.IsRequest = request.Id != null ? true : false;
                     return fundRaiserEdit;
                 }
                 return null;

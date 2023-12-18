@@ -100,6 +100,7 @@ export class LoginComponent extends AppComponentBase implements OnInit {
                 () => {
                     this.submitting = false;
                     this.hideMainSpinner();
+                    localStorage.setItem("isLogin","Y");
                 },
                 'app/notifications',
                 token

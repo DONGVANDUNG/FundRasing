@@ -19,11 +19,15 @@
                     </ul>
                 </div>
                 <div class="col-12 col-md-4 col-lg-2 top-right-nav my-auto text-right d-none d-lg-block">
-                    <div class="navbar-expand-xl pr-3 float-right d-flex justify-content-end align-items-center">
+                    <div *ngIf="isLogin == 'N'"
+                        class="navbar-expand-xl pr-3 float-right d-flex justify-content-end align-items-center">
                         <a routerLink="/account/login" class="mr-4 text-login">Đăng nhập</a>
                         <span class="text-login">&nbsp;/&nbsp;</span>
                         <a class="text-login" routerLink="/account/register">Đăng ký</a>
                     </div>
+                    <img style="margin-left: 100px;
+            width: 30%;cursor: pointer;" *ngIf="isLogin == 'Y'" (click)="routerLink()" src="/assets/common/images/default-profile-picture.png"
+                        alt="">
                 </div>
             </div>
         </header>

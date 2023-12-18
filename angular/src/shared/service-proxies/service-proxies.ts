@@ -7411,6 +7411,58 @@ export class FundRaiserServiceProxy {
         }
         return _observableOf(null as any);
     }
+
+    /**
+     * @param auctionItemId (optional) 
+     * @return Success
+     */
+    payDepositAuction(auctionItemId: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/FundRaiser/PayDepositAuction?";
+        if (auctionItemId === null)
+            throw new Error("The parameter 'auctionItemId' cannot be null.");
+        else if (auctionItemId !== undefined)
+            url_ += "auctionItemId=" + encodeURIComponent("" + auctionItemId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPayDepositAuction(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPayDepositAuction(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processPayDepositAuction(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
 }
 
 @Injectable()
@@ -20564,6 +20616,7 @@ export class CreateOrEditAuctionInputDto implements ICreateOrEditAuctionInputDto
     startDate!: DateTime | undefined;
     endDate!: DateTime | undefined;
     targetAmountOfMoney!: number | undefined;
+    isPublic!: boolean | undefined;
 
     constructor(data?: ICreateOrEditAuctionInputDto) {
         if (data) {
@@ -20592,6 +20645,7 @@ export class CreateOrEditAuctionInputDto implements ICreateOrEditAuctionInputDto
             this.startDate = _data["startDate"] ? DateTime.fromISO(_data["startDate"].toString()) : <any>undefined;
             this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : <any>undefined;
             this.targetAmountOfMoney = _data["targetAmountOfMoney"];
+            this.isPublic = _data["isPublic"];
         }
     }
 
@@ -20620,6 +20674,7 @@ export class CreateOrEditAuctionInputDto implements ICreateOrEditAuctionInputDto
         data["startDate"] = this.startDate ? this.startDate.toString() : <any>undefined;
         data["endDate"] = this.endDate ? this.endDate.toString() : <any>undefined;
         data["targetAmountOfMoney"] = this.targetAmountOfMoney;
+        data["isPublic"] = this.isPublic;
         return data;
     }
 }
@@ -20637,6 +20692,7 @@ export interface ICreateOrEditAuctionInputDto {
     startDate: DateTime | undefined;
     endDate: DateTime | undefined;
     targetAmountOfMoney: number | undefined;
+    isPublic: boolean | undefined;
 }
 
 export class CreateOrEditFundPackageDto implements ICreateOrEditFundPackageDto {
@@ -23604,6 +23660,7 @@ export class GetAllAuctionDto implements IGetAllAuctionDto {
     status!: string | undefined;
     amount!: number | undefined;
     userCreate!: string | undefined;
+    isCloseAuction!: boolean | undefined;
 
     constructor(data?: IGetAllAuctionDto) {
         if (data) {
@@ -23639,6 +23696,7 @@ export class GetAllAuctionDto implements IGetAllAuctionDto {
             this.status = _data["status"];
             this.amount = _data["amount"];
             this.userCreate = _data["userCreate"];
+            this.isCloseAuction = _data["isCloseAuction"];
         }
     }
 
@@ -23674,6 +23732,7 @@ export class GetAllAuctionDto implements IGetAllAuctionDto {
         data["status"] = this.status;
         data["amount"] = this.amount;
         data["userCreate"] = this.userCreate;
+        data["isCloseAuction"] = this.isCloseAuction;
         return data;
     }
 }
@@ -23698,6 +23757,7 @@ export interface IGetAllAuctionDto {
     status: string | undefined;
     amount: number | undefined;
     userCreate: string | undefined;
+    isCloseAuction: boolean | undefined;
 }
 
 export class GetAllAvailableWebhooksOutput implements IGetAllAvailableWebhooksOutput {
@@ -31219,6 +31279,7 @@ export class RegisterInforFundRaiserDto implements IRegisterInforFundRaiserDto {
     phone!: string | undefined;
     orgnizationIntro!: string | undefined;
     email!: string | undefined;
+    isRequest!: boolean | undefined;
 
     constructor(data?: IRegisterInforFundRaiserDto) {
         if (data) {
@@ -31239,6 +31300,7 @@ export class RegisterInforFundRaiserDto implements IRegisterInforFundRaiserDto {
             this.phone = _data["phone"];
             this.orgnizationIntro = _data["orgnizationIntro"];
             this.email = _data["email"];
+            this.isRequest = _data["isRequest"];
         }
     }
 
@@ -31259,6 +31321,7 @@ export class RegisterInforFundRaiserDto implements IRegisterInforFundRaiserDto {
         data["phone"] = this.phone;
         data["orgnizationIntro"] = this.orgnizationIntro;
         data["email"] = this.email;
+        data["isRequest"] = this.isRequest;
         return data;
     }
 }
@@ -31272,6 +31335,7 @@ export interface IRegisterInforFundRaiserDto {
     phone: string | undefined;
     orgnizationIntro: string | undefined;
     email: string | undefined;
+    isRequest: boolean | undefined;
 }
 
 export class RegisterInput implements IRegisterInput {

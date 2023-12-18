@@ -51,7 +51,7 @@ namespace esign.EntityFrameworkCore
         public virtual DbSet<FundDetailContent> FundDetailContents { get; set; }
         public virtual DbSet<FundRaisingTopic> FundRaisingTopics { get; set; }
         public virtual DbSet<GuestAccount> GuestAccounts { get; set; }
-        public virtual DbSet<FundImage> FundImage { get; set; }
+        public virtual DbSet<PostImage> FundImage { get; set; }
         public virtual DbSet<BankAccount> BankAccounts { get; set; }
         public virtual DbSet<Auction> Auctions { get; set; }
         public virtual DbSet<AuctionHistory> AuctionHistory { get; set; }

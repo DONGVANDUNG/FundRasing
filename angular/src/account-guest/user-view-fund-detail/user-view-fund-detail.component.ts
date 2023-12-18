@@ -19,6 +19,7 @@ export class UserViewFundDetailComponent extends AppComponentBase implements OnI
     activeIndex = 1;
     listTransaction= [];
     fundId;
+    isLogin = localStorage.getItem("isLogin");
     responsiveOptions: any[]
     constructor(injector: Injector, private router: Router, private route: ActivatedRoute,
         private _userServiceProxy: UserFundRaisingServiceProxy,
@@ -86,5 +87,8 @@ export class UserViewFundDetailComponent extends AppComponentBase implements OnI
     }
     donateFundRaiser(){
         this.router.navigate(["/app/admin/user-post-detail",this.postId])
+    }
+    routerLink(){
+        this.router.navigateByUrl('/app/notifications');
     }
 }

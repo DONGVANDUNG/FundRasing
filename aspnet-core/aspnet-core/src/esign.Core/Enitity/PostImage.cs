@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace esign.Enitity
 {
-    [Table("FundImage")]
-    public class FundImage : FullAuditedEntity<long>
+    [Table("PostImage")]
+    public class PostImage : FullAuditedEntity<long>
     {
         public long PostId { get; set; }
         public string ImageUrl { get; set; }

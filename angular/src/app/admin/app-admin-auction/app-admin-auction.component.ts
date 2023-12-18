@@ -18,6 +18,7 @@ export class AppAdminAuctionComponent extends AppComponentBase implements OnInit
     defaultColDef;
     filter: string = '';
     status;
+    isCloseAuction;
     maxResultCount: number = 20;
     skipCount: number = 0;
     sorting: string = '';
@@ -244,6 +245,11 @@ export class AppAdminAuctionComponent extends AppComponentBase implements OnInit
     hiddenAuction(){
         this._fundRaiser.closeAuctionItem(this.selectedAuction).subscribe(()=>{
             this.notify.success('Ẩn bài đăng thành công');
+        })
+    }
+    payAuctionDeposit(){
+        this._fundRaiser.payDepositAuction(this.selectedAuction).subscribe(result=>{
+            this.notify.success("Trả cọc thành công. Thông báo đã được gửi tới người chiến thắng");
         })
     }
 }

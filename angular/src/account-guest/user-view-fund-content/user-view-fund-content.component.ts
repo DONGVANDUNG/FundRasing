@@ -14,6 +14,7 @@ export class UserViewFundContentComponent implements OnInit {
     listFundPackage = [];
     listFundActive = [];
     listFundClose = [];
+    isLogin = localStorage.getItem("isLogin");
     baseUrl = AppConsts.remoteServiceBaseUrl + '/';
     constructor(private router: Router, private _userServiceProxy: UserFundRaisingServiceProxy,
         private dataFormatService: DataFormatService) { }
@@ -54,5 +55,8 @@ export class UserViewFundContentComponent implements OnInit {
         if (option === 4) {
             this.router.navigateByUrl("guest/about-us");
         }
+    }
+    routerLink(){
+        this.router.navigateByUrl('/app/notifications');
     }
 }

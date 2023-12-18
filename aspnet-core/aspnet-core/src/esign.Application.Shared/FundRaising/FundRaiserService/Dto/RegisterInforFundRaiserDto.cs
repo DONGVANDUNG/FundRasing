@@ -15,6 +15,6 @@ namespace esign.FundRaising.FundRaiserService.Dto
         public string Phone { get; set; }
         public string OrgnizationIntro { get; set; }
         public string Email { get; set; }
-
+        public bool? IsRequest { get; set; }
     }
 }

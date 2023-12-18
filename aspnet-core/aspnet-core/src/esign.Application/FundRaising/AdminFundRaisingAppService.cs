@@ -37,9 +37,8 @@ namespace esign.FundRaising
         private readonly IRepository<FundPackage, int> _mstSleFundPackageRepo;
         private readonly IRepository<User, long> _mstSleUserRepo;
         private readonly IRepository<FundTransactions, long> _mstSleTransactionRepo;
-        private readonly IRepository<UserWarning, int> _mstSleUserWarningRepo;
         private readonly IRepository<GuestAccount, int> _mstSleGuestAccountRepo;
-        private readonly IRepository<FundImage, long> _mstSleFundImageRepo;
+        private readonly IRepository<PostImage, long> _mstSleFundImageRepo;
         private readonly IRepository<RequestToFundRaiser, long> _mstRequestToFundraiserRepo;
         private readonly IRepository<UserFundPackage, long> _mstUserFundPackageRepo;
         private readonly IRepository<BankAccount, long> _mstBankRepo;
@@ -55,7 +54,7 @@ namespace esign.FundRaising
             IRepository<User, long> mstSleUserRepo,
             IRepository<FundTransactions, long> mstSleTransactionRepo,
             IRepository<GuestAccount, int> mstSleGuestAccountRepo,
-            IRepository<FundImage, long> mstSleFundImageRepo,
+            IRepository<PostImage, long> mstSleFundImageRepo,
             IRepository<RequestToFundRaiser, long> mstRequestToFundraiserRepo,
             ISendEmail sendEmail,
             IRepository<UserFundPackage, long> mstUserFundPackageRepo,

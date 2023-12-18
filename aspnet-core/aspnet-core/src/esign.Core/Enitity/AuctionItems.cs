@@ -25,5 +25,6 @@ namespace esign.Enitity
         public DateTime? EndDate { get; set; }
         public bool? IsClose { get; set; }
         public int? Amount { get; set; }
+        public bool? IsPublic { get; set; }
     }
 }

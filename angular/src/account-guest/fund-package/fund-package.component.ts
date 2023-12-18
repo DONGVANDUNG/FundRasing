@@ -10,6 +10,7 @@ import { UserFundRaisingServiceProxy } from '@shared/service-proxies/service-pro
 })
 export class FundPackageComponent implements OnInit {
     listFundPackage = [];
+    isLogin = localStorage.getItem("isLogin");
     constructor(private router: Router, private _userServiceProxy: UserFundRaisingServiceProxy,
         private dataFormatService: DataFormatService) { }
 
@@ -35,5 +36,8 @@ export class FundPackageComponent implements OnInit {
         if (option === 4) {
             this.router.navigateByUrl("guest/about-us");
         }
+    }
+    routerLink(){
+        this.router.navigateByUrl('/app/notifications');
     }
 }

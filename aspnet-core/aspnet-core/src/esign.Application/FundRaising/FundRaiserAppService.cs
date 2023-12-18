@@ -17,6 +17,8 @@ using esign.FundRaising.UserFundRaising.Dto.Auction;
 using Abp.Application.Services.Dto;
 using Abp.Linq.Extensions;
 using esign.FundRaising.UserFundRaising.Dto;
+using esign.FundRaising.SendEmail.Dto;
+using esign.FundRaising.SendEmail;
 
 namespace esign.FundRaising
 {
@@ -31,12 +33,14 @@ namespace esign.FundRaising
         private readonly IRepository<AuctionHistory, long> _mstAuctionTransactionRepo;
         private readonly IRepository<AuctionImages, long> _mstAuctionImagesRepo;
         ///private readonly IRepository<FundRaiser, long> _mstSleFundRaiserRepo;
-        private readonly IRepository<FundImage, long> _mstSleFundImageRepo;
+        private readonly IRepository<PostImage, long> _mstSleFundImageRepo;
         private readonly IRepository<AuctionItems, long> _mstSleAuctionItemsRepo;
         private readonly IRepository<AuctionDeposit, long> _mstSleAuctionDepositRepo;
         private readonly IRepository<FundRaiserPost, long> _mstFundRaiserPostRepo;
         private readonly IRepository<BankAccount, long> _mstBankRepo;
         private readonly IRepository<AuctionTransactionDeposit, long> _mstAuctionTransactionDeposit;
+        private readonly ISendEmail _sendEmail;
+
 
         public FundRaiserAppService(IRepository<Funds, long> mstSleFundRepo,
             IRepository<FundTransactions, long> mstSleFundTransactionRepo,
@@ -46,7 +50,7 @@ namespace esign.FundRaising
             IRepository<FundDetails, long> mstSleDetailsRepo,
             IRepository<UserWarning, int> mstSleUserWarningRepo,
             //IRepository<FundRaiser, long> mstSleFundRaiserRepo,
-            IRepository<FundImage, long> mstSleFundImageRepo,
+            IRepository<PostImage, long> mstSleFundImageRepo,
             IRepository<Auction, long> mstAuctionRepo,
             IRepository<AuctionHistory, long> mstAuctionTransactionRepo,
             IRepository<AuctionImages, long> mstAuctionImagesRepo,
@@ -54,7 +58,8 @@ namespace esign.FundRaising
             IRepository<AuctionDeposit, long> mstSleAuctionDepositRepo,
             IRepository<FundRaiserPost, long> mstFundRaiserPostRepo,
             IRepository<BankAccount, long> mstBankRepo,
-            IRepository<AuctionTransactionDeposit, long> mstAuctionTransactionDeposit)
+            IRepository<AuctionTransactionDeposit, long> mstAuctionTransactionDeposit,
+            ISendEmail sendEmail)
         {
             _mstSleFundRepo = mstSleFundRepo;
             _mstSleFundTransactionRepo = mstSleFundTransactionRepo;
@@ -71,6 +76,7 @@ namespace esign.FundRaising
             _mstFundRaiserPostRepo = mstFundRaiserPostRepo;
             _mstBankRepo = mstBankRepo;
             _mstAuctionTransactionDeposit = mstAuctionTransactionDeposit;
+            _sendEmail = sendEmail;
         }
         public async Task CloseFundRaising(long fundId)
         {
@@ -106,7 +112,7 @@ namespace esign.FundRaising
 
                 foreach (var image in input.File)
                 {
-                    FundImage fundImage = new FundImage();
+                    PostImage fundImage = new PostImage();
                     fundImage.PostId = postId;
                     fundImage.ImageUrl = Path.Combine("uploads", image.ImageUrl);
                     fundImage.Size = image.Size;
@@ -161,7 +167,7 @@ namespace esign.FundRaising
             {
                 if (imagePost.Id == null)
                 {
-                    FundImage fundImage = new FundImage();
+                    PostImage fundImage = new PostImage();
                     fundImage.PostId = input.Id;
                     fundImage.ImageUrl = Path.Combine("uploads", imagePost.ImageUrl);
                     fundImage.Size = imagePost.Size;
@@ -477,7 +483,7 @@ namespace esign.FundRaising
                                    NextMinimumBid = item.AuctionPresentAmount + item.AmountJumpMin,
                                    NextMaximumBid = item.AuctionPresentAmount + item.AmountJumpMax,
                                    ListImage = _mstAuctionImagesRepo.GetAll().Where(e => e.AuctionItemId == item.Id).Select(re => re.ImageUrl).ToList(),
-                                   UserCreate = user.Surname + " " + user.Name
+                                   UserCreate = item.IsPublic == true ? user.Surname + " " + user.Name : "Anomongus"
                                }).ToListAsync();
 
 
@@ -576,6 +582,7 @@ namespace esign.FundRaising
         {
             var auctionItem = await _mstSleAuctionItemsRepo.FirstOrDefaultAsync(e => e.Id == auctionItemId);
             var listDeposit = await _mstSleAuctionDepositRepo.GetAll().Where(e => e.AuctionItemId == auctionItem.Id && e.IsPayDeposit == false).ToListAsync();
+            var emailUserWin = "";
             foreach(var deposit in listDeposit)
             {
                 var bankAccountUser = await _mstBankRepo.FirstOrDefaultAsync(e => e.UserId == deposit.UserId);
@@ -598,6 +605,21 @@ namespace esign.FundRaising
                     await _mstSleAuctionDepositRepo.UpdateAsync(deposit);
                 }
             }
+            var user = listDeposit.MaxBy(e => e.DepositAmount);
+            emailUserWin =  _mstSleUserRepo.FirstOrDefault(e=>e.Id == user.UserId).Email;
+            SendEmailInputDto sendEmailInput = new SendEmailInputDto
+            {
+                EmailReceive = emailUserWin,
+                //Body = "Xin chúc mừng bạn đã trở thành người gây quỹ trên hệ thống của chúng tôi, bạn có thể bắt đầu ngay vào việc gây quỹ.",
+                Body = "<p style='font-weight:bold;font-size:18px'>Hệ thống gây quỹ trực tuyến FundRaising.</p>" +
+                          "<p>Chúc mừng bạn đã chiến thắng phiên đấu giá "+ auctionItem.TitleAuction +" với mức giá đấu là "+ auctionItem.AuctionPresentAmount+"</p>" +
+                          "<p>Bạn vui lòng thanh toán giá trị vật phẩm đấu giá và nhập đầy đủ thông tin nhận hàng để chúng tôi" +
+                          "vận chuyển vật phẩm tới bạn một cách nhanh chóng!</p>" +
+                          "<i style='color:red'>Cảm ơn bạn đã tin tưởng vào sử dụng hệ thống.Chúng tôi cam kết tạo ra một môi trường gây quỹ công bằng, hợp pháp." +
+                          "Chúc cho những dự án của bạn sẽ hoàn thành tốt đẹp giúp đỡ cho những hoàn cảnh khó khăn kịp thời, nâng cao chất lượng xã hội.</i>",
+                Subject = "Thông báo trở thành người gây quỹ",
+            };
+            _sendEmail.SendEmail(sendEmailInput);
         }
     }
 }
