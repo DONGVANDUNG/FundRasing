@@ -19,6 +19,7 @@ export class AppUserDonationComponent extends AppComponentBase implements OnInit
     activeIndex = 0;
     inforFundDetail;
     imageUrl;
+    saving;
     baseUrl = AppConsts.remoteServiceBaseUrl + '/';
     listTransaction: TransactionOfFundForDto[] = []
     inputData: DataDonateForFundInput = new DataDonateForFundInput();
@@ -59,7 +60,6 @@ export class AppUserDonationComponent extends AppComponentBase implements OnInit
                 this.router.navigateByUrl('app/admin/user-post');
             },
             (error => {
-                this.notify.error(error);
                 this.isLoading = false;
             }
             )

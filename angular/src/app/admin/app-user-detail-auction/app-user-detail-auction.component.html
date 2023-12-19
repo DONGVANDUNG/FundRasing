@@ -1,4 +1,4 @@
-<div class="block-header-color"></div>
+<!-- <div class="block-header-color"></div> -->
 <div class="block-auction">
     <p class="title-header">{{dataAuction?.itemName}}</p>
     <div class="header-auction d-flex">
@@ -12,7 +12,7 @@
         <div class="block-img-auction">
             <img [src]="baseUrl + dataAuction?.listImage[0]" alt="">
         </div>
-        <div class="form-auction">
+        <div class="form-auction" *ngIf="!dataAuction.isClose">
             <div class="auction-content">
                 <div class="item-content">
                     <p>Thời gian còn lại:</p>
@@ -34,7 +34,7 @@
             <div class="block-fill-auction">
                 <p-inputNumber name="amountAuction" [(ngModel)]="userAuction.amountAuction"
                                              currency="VND"></p-inputNumber>
-                <button type="button" class="btn-place-bid" *ngIf="isDeposit" (click)="placeBid()">Đấu giá</button>
+                <button type="button" class="btn-place-bid" *ngIf="isDeposit" [buttonBusy]="auction" (click)="placeBid()">Đấu giá</button>
                 <button type="button" class="btn-place-bid" *ngIf="!isDeposit" (click)="depositAuction()">Tham gia đấu giá</button>
             </div>
             <div class="block-is-public">
@@ -42,9 +42,12 @@
                 </label>
                 <input type="checkbox" id="is-public" [(ngModel)]="userAuction.isPublic">
             </div>
-            <p class="content-intro-auction mt-5">{{dataAuction?.introduceItem}}</p>
+        </div>
+        <div class="auction-close d-flex justify-content-center align-items-center" *ngIf="dataAuction.isClose">
+            <span>Auction Close</span>
         </div>
     </div>
+    <p class="content-intro-auction mt-5" [innerHTML]="dataAuction?.introduceItem"></p>
 </div>
 <hr class="itemPreviewView__separator">
 <!-- <div class="block-footer-color">Được tạo bởi Givergy</div> -->

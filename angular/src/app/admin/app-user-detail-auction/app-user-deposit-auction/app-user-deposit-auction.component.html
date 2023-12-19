@@ -30,7 +30,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button [disabled]="saving" type="button" class="tmss-btn btn-outline-primary"
+                    <button [buttonBusy]="saving" type="button" class="tmss-btn btn-outline-primary"
                         (click)="depositAuction()">Đặt cọc</button>
                     <button [disabled]="saving" type="button" class="tmss-btn btn-outline-danger"
                         (click)="close()">{{l("Cancel")}}</button>

@@ -11,28 +11,28 @@ import { InforDetailBankAcountDto, UserFundRaisingServiceProxy, UserServiceProxy
 export class AppUserBankComponent extends AppComponentBase implements OnInit {
 
     listBank = [
-        {name:'Argribank',code:'Argribank'},
-        {name:'Tpbank',code:'Tpbank'},
-        {name:'BIDV',code:'BIDV'},
-        {name:'ViettinBank',code:'ViettinBank'},
-        {name:'Sacombank',code:'Sacombank'},
-        {name:'TechcomBank',code:'TechcomBank'},
+        { name: 'Argribank', code: 'Argribank' },
+        { name: 'Tpbank', code: 'Tpbank' },
+        { name: 'BIDV', code: 'BIDV' },
+        { name: 'ViettinBank', code: 'ViettinBank' },
+        { name: 'Sacombank', code: 'Sacombank' },
+        { name: 'TechcomBank', code: 'TechcomBank' },
     ];
     isChangeBankInfo: boolean = false;
     dataInforBankUser;
     constructor(injector: Injector,
-         private _userServiceProxy: UserFundRaisingServiceProxy,
-         private dataFormatService: DataFormatService) {
+        private _userServiceProxy: UserFundRaisingServiceProxy,
+        private dataFormatService: DataFormatService) {
         super(injector);
     }
 
     ngOnInit() {
         this._userServiceProxy.getInforBankUser().subscribe(result => {
-            if(result!= null){
+            if (result != null) {
                 this.dataInforBankUser = result;
                 this.dataInforBankUser.balance = this.dataFormatService.moneyFormat(result.balance);
             }
-            else{
+            else {
                 this.dataInforBankUser.id = 0;
                 this.dataInforBankUser.bankName = null;
                 this.dataInforBankUser.bankNumber = null;
@@ -53,27 +53,27 @@ export class AppUserBankComponent extends AppComponentBase implements OnInit {
         })
     }
     save() {
-        if(this.dataInforBankUser.bankName){
+        if (this.dataInforBankUser.bankName) {
             this.notify.warn("Vui lòng chọn ngân hàng")
         }
-        if(this.dataInforBankUser.bankNumber){
+        if (this.dataInforBankUser.bankNumber) {
             this.notify.warn("Vui lòng nhập số tài khoản")
         }
-        if(this.dataInforBankUser.accountName){
+        if (this.dataInforBankUser.accountName) {
             this.notify.warn("Vui lòng nhập tên tài khoản")
         }
         this._userServiceProxy.createOrEditAccountBank(this.dataInforBankUser).subscribe((re) => {
-            if(this.dataInforBankUser.id != null){
+            if (this.dataInforBankUser.id != null) {
                 this.notify.success("Sửa thông tin gây quỹ thành công")
             }
             else
                 this.notify.success("Đăng ký tài khoản ngân hàng thành công")
-            this.dataInforBankUser= re;
+            this.dataInforBankUser = re;
             this.dataInforBankUser.balance = this.dataFormatService.moneyFormat(re.balance);
         },
-            (error => { this.notify.error("Đã xảy ra lỗi") }));
+        );
     }
-    toUpperCase(){
+    toUpperCase() {
         this.dataInforBankUser.accountName = this.dataInforBankUser.accountName.toUpperCase();
     }
 }

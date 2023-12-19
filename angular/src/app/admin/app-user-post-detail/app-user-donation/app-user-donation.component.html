@@ -29,7 +29,7 @@
                                     <span class="note-input">255 character(s) left</span>
                                     <br>
                                     <div class="btn-donation">
-                                        <button type="button" (click)="donateToFund()">Submit</button>
+                                        <button type="button" [buttonBusy]="saving" (click)="donateToFund()">Submit</button>
                                     </div>
                                     <i class="fa-solid fa-xmark" (click)="close()"></i>
                                 </div>

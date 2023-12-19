@@ -28,5 +28,6 @@ namespace esign.FundRaising.UserFundRaising.Dto.Auction
         public int? Amount { get; set; }
         public string UserCreate { get; set; }
         public bool? IsCloseAuction { get; set; }
+        public long? AuctionItemsId { get; set; }
     }
 }

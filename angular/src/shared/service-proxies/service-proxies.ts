@@ -7463,6 +7463,64 @@ export class FundRaiserServiceProxy {
         }
         return _observableOf(null as any);
     }
+
+    /**
+     * @return Success
+     */
+    getAllHistoryAuctionUser(): Observable<GetAllAuctionDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/FundRaiser/getAllHistoryAuctionUser";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllHistoryAuctionUser(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllHistoryAuctionUser(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GetAllAuctionDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GetAllAuctionDto[]>;
+        }));
+    }
+
+    protected processGetAllHistoryAuctionUser(response: HttpResponseBase): Observable<GetAllAuctionDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(GetAllAuctionDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
 }
 
 @Injectable()
@@ -17659,6 +17717,58 @@ export class UserFundRaisingServiceProxy {
     /**
      * @return Success
      */
+    checkUserRegisterBankAccount(): Observable<boolean> {
+        let url_ = this.baseUrl + "/api/services/app/UserFundRaising/CheckUserRegisterBankAccount";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCheckUserRegisterBankAccount(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCheckUserRegisterBankAccount(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<boolean>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<boolean>;
+        }));
+    }
+
+    protected processCheckUserRegisterBankAccount(response: HttpResponseBase): Observable<boolean> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return Success
+     */
     getInforWeb(): Observable<InformationWebDto> {
         let url_ = this.baseUrl + "/api/services/app/UserFundRaising/getInforWeb";
         url_ = url_.replace(/[?&]$/, "");
@@ -23661,6 +23771,7 @@ export class GetAllAuctionDto implements IGetAllAuctionDto {
     amount!: number | undefined;
     userCreate!: string | undefined;
     isCloseAuction!: boolean | undefined;
+    auctionItemsId!: number | undefined;
 
     constructor(data?: IGetAllAuctionDto) {
         if (data) {
@@ -23697,6 +23808,7 @@ export class GetAllAuctionDto implements IGetAllAuctionDto {
             this.amount = _data["amount"];
             this.userCreate = _data["userCreate"];
             this.isCloseAuction = _data["isCloseAuction"];
+            this.auctionItemsId = _data["auctionItemsId"];
         }
     }
 
@@ -23733,6 +23845,7 @@ export class GetAllAuctionDto implements IGetAllAuctionDto {
         data["amount"] = this.amount;
         data["userCreate"] = this.userCreate;
         data["isCloseAuction"] = this.isCloseAuction;
+        data["auctionItemsId"] = this.auctionItemsId;
         return data;
     }
 }
@@ -23758,6 +23871,7 @@ export interface IGetAllAuctionDto {
     amount: number | undefined;
     userCreate: string | undefined;
     isCloseAuction: boolean | undefined;
+    auctionItemsId: number | undefined;
 }
 
 export class GetAllAvailableWebhooksOutput implements IGetAllAvailableWebhooksOutput {
@@ -24195,6 +24309,7 @@ export class GetAuctionDetailDto implements IGetAuctionDetailDto {
     timeLeft!: number | undefined;
     nextMinimumBid!: number | undefined;
     nextMaximumBid!: number | undefined;
+    isClose!: boolean | undefined;
 
     constructor(data?: IGetAuctionDetailDto) {
         if (data) {
@@ -24225,6 +24340,7 @@ export class GetAuctionDetailDto implements IGetAuctionDetailDto {
             this.timeLeft = _data["timeLeft"];
             this.nextMinimumBid = _data["nextMinimumBid"];
             this.nextMaximumBid = _data["nextMaximumBid"];
+            this.isClose = _data["isClose"];
         }
     }
 
@@ -24255,6 +24371,7 @@ export class GetAuctionDetailDto implements IGetAuctionDetailDto {
         data["timeLeft"] = this.timeLeft;
         data["nextMinimumBid"] = this.nextMinimumBid;
         data["nextMaximumBid"] = this.nextMaximumBid;
+        data["isClose"] = this.isClose;
         return data;
     }
 }
@@ -24274,6 +24391,7 @@ export interface IGetAuctionDetailDto {
     timeLeft: number | undefined;
     nextMinimumBid: number | undefined;
     nextMaximumBid: number | undefined;
+    isClose: boolean | undefined;
 }
 
 export class GetCurrentLoginInformationsOutput implements IGetCurrentLoginInformationsOutput {
@@ -24799,6 +24917,7 @@ export class GetFundsDetailByIdForUser implements IGetFundsDetailByIdForUser {
     phone!: string | undefined;
     email!: string | undefined;
     fundId!: number | undefined;
+    isCloseFund!: number | undefined;
 
     constructor(data?: IGetFundsDetailByIdForUser) {
         if (data) {
@@ -24841,6 +24960,7 @@ export class GetFundsDetailByIdForUser implements IGetFundsDetailByIdForUser {
             this.phone = _data["phone"];
             this.email = _data["email"];
             this.fundId = _data["fundId"];
+            this.isCloseFund = _data["isCloseFund"];
         }
     }
 
@@ -24883,6 +25003,7 @@ export class GetFundsDetailByIdForUser implements IGetFundsDetailByIdForUser {
         data["phone"] = this.phone;
         data["email"] = this.email;
         data["fundId"] = this.fundId;
+        data["isCloseFund"] = this.isCloseFund;
         return data;
     }
 }
@@ -24914,6 +25035,7 @@ export interface IGetFundsDetailByIdForUser {
     phone: string | undefined;
     email: string | undefined;
     fundId: number | undefined;
+    isCloseFund: number | undefined;
 }
 
 export class GetGeneralStatsOutput implements IGetGeneralStatsOutput {

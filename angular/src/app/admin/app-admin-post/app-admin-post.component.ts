@@ -81,7 +81,7 @@ export class AppAdminPostComponent extends AppComponentBase implements OnInit {
                 headerName: this.l('Ngày tạo bài đăng'),
                 headerTooltip: this.l('Ngày tạo bài đăng'),
                 field: 'postCreated',
-                valueGetter: params => this.dataFormatService.dateFormat(params.data.postCreated),
+                //valueGetter: params => this.dataFormatService.dateFormat(params.data.postCreated),
                 width: 250,
                 cellClass: ['text-left'],
             },

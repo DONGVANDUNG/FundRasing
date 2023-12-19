@@ -102,6 +102,7 @@ export class AuctionService extends AppComponentBase {
              .invoke('updateAmountOfAuction', amountPresent, parseInt(auctionId), isPublic)
             //.invoke('updateAmountOfAuction',1)
             .then((result) => {
+                this.notify.success("Đấu giá thành công");
                 if (result) {
                     abp.notify.warn(result);
                 }

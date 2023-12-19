@@ -324,6 +324,7 @@ namespace esign.FundRaising
                     auctionItem.AmountJumpMin = input.AmountJumpMin;
                     auctionItem.IntroduceItem = input.IntroduceItem;
                     auctionItem.StartingPrice = input.StartingPrice;
+                    auctionItem.AuctionPresentAmount = input.StartingPrice;
                     var auctionItemId = await _mstSleAuctionItemsRepo.InsertAndGetIdAsync(auctionItem);
 
 
@@ -483,7 +484,8 @@ namespace esign.FundRaising
                                    NextMinimumBid = item.AuctionPresentAmount + item.AmountJumpMin,
                                    NextMaximumBid = item.AuctionPresentAmount + item.AmountJumpMax,
                                    ListImage = _mstAuctionImagesRepo.GetAll().Where(e => e.AuctionItemId == item.Id).Select(re => re.ImageUrl).ToList(),
-                                   UserCreate = item.IsPublic == true ? user.Surname + " " + user.Name : "Anomongus"
+                                   UserCreate = item.IsPublic == true ? user.Surname + " " + user.Name : "Anomongus",
+                                   IsCloseAuction = item.IsClose
                                }).ToListAsync();
 
 
@@ -500,6 +502,7 @@ namespace esign.FundRaising
             TimeSpan timeSpan = DateTime.Now - auctionItem.CreationTime;
             auctionResult.TimeLeft = (int?)timeSpan.TotalDays;
             auctionResult.ListImage = _mstAuctionImagesRepo.GetAll().Where(e => e.AuctionItemId == auctionItem.Id).Select(re => re.ImageUrl).ToList();
+            auctionResult.IsClose = auctionItem.IsClose;
             //auctionResult.UserName = _mstSleUserRepo.FirstOrDefault(e => e.Id == auction.UserId).UserName;
             return auctionResult;
         }
@@ -621,6 +624,36 @@ namespace esign.FundRaising
                 Subject = "Thông báo trở thành người gây quỹ",
             };
             _sendEmail.SendEmail(sendEmailInput);
+        }
+        public async Task<List<GetAllAuctionDto>> getAllHistoryAuctionUser()
+        {
+            var listAuction = from auctionTransaction in _mstAuctionTransactionRepo.GetAll() 
+                               join item in _mstSleAuctionItemsRepo.GetAll() on auctionTransaction.AuctionItemId equals item.Id
+                               join user in _mstSleUserRepo.GetAll() on item.UserId equals user.Id
+                               //|| e.UserId != AbpSession.UserId)
+                               select new GetAllAuctionDto
+                               {
+                                   Id = auctionTransaction.Id,
+                                   ItemName = item.ItemName,
+                                   AuctionPresentAmount = item.AuctionPresentAmount,
+                                   TitleAuction = item.TitleAuction,
+                                   AmountJumpMax = item.AmountJumpMax,
+                                   AmountJumpMin = item.AmountJumpMin,
+                                   EndDate = item.EndDate,
+                                   StartingPrice = item.StartingPrice,
+                                   StartDate = (DateTime)item.StartDate,
+                                   IntroduceItem = item.IntroduceItem,
+                                   NextMinimumBid = item.AuctionPresentAmount + item.AmountJumpMin,
+                                   NextMaximumBid = item.AuctionPresentAmount + item.AmountJumpMax,
+                                   ListImage = _mstAuctionImagesRepo.GetAll().Where(e => e.AuctionItemId == item.Id).Select(re => re.ImageUrl).ToList(),
+                                   UserCreate = item.IsPublic == true ? user.Surname + " " + user.Name : "Anomongus",
+                                   IsCloseAuction = item.IsClose,
+                                   AuctionItemsId = item.Id
+                               };
+
+            var test = await listAuction.ToListAsync();
+            var result = test.DistinctBy(x => x.AuctionItemsId).ToList();
+            return result;
         }
     }
 }

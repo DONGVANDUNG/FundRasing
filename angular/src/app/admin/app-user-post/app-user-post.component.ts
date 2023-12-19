@@ -31,9 +31,11 @@ export class AppUserPostComponent implements OnInit {
   getAllFundRaising() {
     this._userServiceProxy.getListPostOfFundRaising().subscribe((result) => {
       this.listFundRaising = result;
-      this.listFundRaising.forEach((item)=>{
+      this.listFundRaising.forEach((item,index)=>{
         item.amountDonateTarget = this.dataFormatService.moneyFormat(item.amountDonateTarget);
         item.amountDonatePresent = this.dataFormatService.moneyFormat(item.amountDonatePresent);
+        // var progress = document.querySelector<HTMLElement>(`.span-progress${index}`);
+        // progress.style.width = `${item.percentAchieved}%`
       })
     })
   }

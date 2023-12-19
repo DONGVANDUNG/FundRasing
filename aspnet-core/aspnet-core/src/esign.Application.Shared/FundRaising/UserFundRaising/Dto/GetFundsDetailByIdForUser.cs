@@ -34,5 +34,6 @@ namespace esign.FundRaising
         public string Phone { get; set; }
         public string Email { get; set; }
         public long? FundId { get; set; }
+        public int? IsCloseFund { get; set; }
     }
 }

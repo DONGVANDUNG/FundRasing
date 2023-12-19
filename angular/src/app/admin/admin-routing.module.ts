@@ -102,6 +102,11 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
                         loadChildren: () => import('./app-admin-request-to-fundraiser/app-admin-request-to-fundraiser.module').then((m) => m.AppAdminRequestToFundraiserModule),
                         //data: { permission: 'Pages.UserDonate.FundRaising' },
                     },
+                    {
+                        path: 'history-auction',
+                        loadChildren: () => import('./app-user-history-auction/app-user-history-auction.module').then((m) => m.AppUserHistoryAuctionModule),
+                        //data: { permission: 'Pages.UserDonate.FundRaising' },
+                    },
                     // {
                     //     path: 'dashboard',
                     //     loadChildren: () => import('./app-admin-statistical-web/app-admin-statistical-web.module').then((m) => m.AppAdminStatisticalWebModule),

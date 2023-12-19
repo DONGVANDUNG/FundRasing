@@ -20,5 +20,6 @@ namespace esign.FundRaising.UserFundRaising.Dto.Auction
         public int? TimeLeft { get; set; }
         public float? NextMinimumBid { get; set; }
         public float? NextMaximumBid { get; set; }
+        public bool? IsClose { get; set; }
     }
 }

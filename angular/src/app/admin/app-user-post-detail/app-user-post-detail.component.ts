@@ -54,7 +54,7 @@ export class AppUserPostDetailComponent extends AppComponentBase implements OnIn
         this._userServiceProxy.getListTransactionForFund(this.fundId).subscribe(rs => {
             this.listTransaction = rs;
             this.listTransaction.forEach(transaction => {
-                transaction.createdTime = this.dataFormatService.dateFormatTransaction(transaction.createdTime);
+                //transaction.createdTime = this.dataFormatService.dateFormatTransaction(transaction.createdTime);
                 transaction.amount = this.dataFormatService.moneyFormat(transaction.amount)
                 //transaction.amount = this.dataFormatService.moneyFormat(transaction.amount);
             })
@@ -79,7 +79,15 @@ export class AppUserPostDetailComponent extends AppComponentBase implements OnIn
         buttonShare.setAttribute("href", `https://www.facebook.com/sharer.php?u=${postUrl}`)
     }
     donateFundRaiser() {
-        this.modal.show(this.inforFundDetail.fundId);
+        if(this.inforFundDetail.isCloseFund === 2){
+            this.notify.warn("Dự án đã kết thúc");
+            return;
+        }
+        this._userServiceProxy.checkUserRegisterBankAccount().subscribe((re)=>{
+            if(re === true && this.inforFundDetail.isCloseFund === 1){
+                this.modal.show(this.inforFundDetail.fundId);
+            }
+        })
     }
     requestToFundRaiser(){
         this.router.navigateByUrl("app/admin/register-fundraiser")

@@ -32,10 +32,10 @@ namespace esign.FundRaising
             var auctionItem = _mstAuctionItemsRepo.FirstOrDefault(e => e.Id == input.AuctionItemId);
             var auctionTransaction = new AuctionHistory();
             auctionTransaction.OldAmount = auctionItem.AuctionPresentAmount != null ? auctionItem.AuctionPresentAmount : auctionItem.StartingPrice;
-            if (input.AmountAuction < auctionItem.AuctionPresentAmount || input.AmountAuction > auctionItem.AuctionPresentAmount + auctionItem.AmountJumpMax)
-            {
-                throw new UserFriendlyException("Mức đấu thầu không hợp lệ");
-            }
+            //if (input.AmountAuction < auctionItem.AuctionPresentAmount || input.AmountAuction > auctionItem.AuctionPresentAmount + auctionItem.AmountJumpMax)
+            //{
+            //    throw new UserFriendlyException("Mức đấu thầu không hợp lệ");
+            //}
             if (auctionItem != null)
             {
                 auctionItem.AuctionPresentAmount = input.AmountAuction;

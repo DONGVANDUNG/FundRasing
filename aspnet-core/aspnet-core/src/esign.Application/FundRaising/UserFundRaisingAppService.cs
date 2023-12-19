@@ -58,10 +58,10 @@ namespace esign.FundRaising
             IRepository<PostImage, long> mstFundImageRepo,
             IRepository<RequestToFundRaiser, long> mstRequestToFundRaiserRepo,
             IRepository<Auction, long> mstAuctionRepo
-            , IRepository<AuctionHistory, long> mstAuctionTransactionRepo, 
-            IRepository<AuctionItems, long> mstAuctionItemsRepo, 
-            IRepository<AuctionDeposit, long> mstAuctionDepositRepo, 
-            ISendEmail sendEmail, IRepository<UserFundPackage, long> mstUserFundPackageRepo, 
+            , IRepository<AuctionHistory, long> mstAuctionTransactionRepo,
+            IRepository<AuctionItems, long> mstAuctionItemsRepo,
+            IRepository<AuctionDeposit, long> mstAuctionDepositRepo,
+            ISendEmail sendEmail, IRepository<UserFundPackage, long> mstUserFundPackageRepo,
             IRepository<AuctionTransactionDeposit, long> mstAuctionTransactionDeposit)
         {
             _mstSleFundRepo = mstSleFundRepo;
@@ -87,7 +87,7 @@ namespace esign.FundRaising
         }
         public async Task<List<GetListFundRasingDto>> getHistoryDonationForFund()
         {
-            var listFund = from transaction in _mstSleFundTransactionRepo.GetAll().Where(e=>e.UserId == AbpSession.UserId)
+            var listFund = from transaction in _mstSleFundTransactionRepo.GetAll().Where(e => e.SenderId == AbpSession.UserId)
                            join fund in _mstSleFundRepo.GetAll() on transaction.FundId equals fund.Id
                            join post in _mstFundRaiserPostRepo.GetAll() on fund.Id equals post.FundId
                            join postImage in _mstFundImageRepo.GetAll() on post.Id equals postImage.PostId
@@ -137,7 +137,8 @@ namespace esign.FundRaising
                                    Phone = user.Phone,
                                    Email = user.EmailAddress,
                                    FundId = fund.Id,
-                                   DonateAmount = fund.DonateAmount
+                                   DonateAmount = fund.DonateAmount,
+                                   IsCloseFund = fund.Status
                                }).FirstOrDefault();
             return fundRaising;
         }
@@ -185,7 +186,7 @@ namespace esign.FundRaising
             var accountUserDonate = await _mstBankRepo.FirstOrDefaultAsync(e => e.UserId == AbpSession.UserId);
             if (accountUserDonate == null)
             {
-                throw new UserFriendlyException("Bạn chưa đăng ký tài khoản ngân hàng");
+                throw new UserFriendlyException("Bạn chưa đăng ký tài khoản ngân hàng của hệ thống");
             }
             if (accountUserDonate.Balance < input.AmountOfMoney)
             {
@@ -252,18 +253,30 @@ namespace esign.FundRaising
 
             await _mstSleFundTransactionRepo.InsertAsync(transactionAdmin);
             var userDonateCurrent = await _mstSleUserRepo.FirstOrDefaultAsync(e => e.Id == AbpSession.UserId);
-            SendEmailInputDto sendEmailInput = new SendEmailInputDto
+            SendEmailInputDto sendEmailInputForUser = new SendEmailInputDto
             {
                 EmailReceive = userDonateCurrent.EmailAddress,
-                //Body = "Xin chúc mừng bạn đã trở thành người gây quỹ trên hệ thống của chúng tôi, bạn có thể bắt đầu ngay vào việc gây quỹ.",
                 Body = "<p style='font-weight:bold;font-size:18px'>Hệ thống gây quỹ trực tuyến FundRaising.</p>" +
-                          "<p>Cảm ơn bạn đã đóng góp " + input.AmountOfMoney +" VND " + "cho quỹ "+ userCreatedFundId.FundName + " vào lúc "+DateTime.Now+ "</p>"+
-                          "<p>Chúng tôi cam kết sẽ sử dụng số tiền của bạn để hỗ trợ những hoàn cảnh khó khăn một cách công khai, kịp thời, hiệu quả!</p>"+
+                          "<p>Cảm ơn bạn đã đóng góp " + input.AmountOfMoney + " VND " + "cho quỹ " + userCreatedFundId.FundName + " vào lúc " + DateTime.Now + "</p>" +
+                          "<p>Chúng tôi cam kết sẽ sử dụng số tiền của bạn để hỗ trợ những hoàn cảnh khó khăn một cách công khai, kịp thời, hiệu quả!</p>" +
                           "<i style='color:red'>Cảm ơn bạn đã tin tưởng vào sử dụng hệ thống.Chúng tôi cam kết tạo ra một môi trường gây quỹ công bằng, hợp pháp." +
                           "Chúc cho những dự án của bạn sẽ hoàn thành tốt đẹp giúp đỡ cho những hoàn cảnh khó khăn kịp thời, nâng cao chất lượng xã hội.</i>",
                 Subject = "Thông báo trở thành người gây quỹ",
             };
-            _sendEmail.SendEmail(sendEmailInput);
+
+            SendEmailInputDto sendEmailInputForFundRaiser = new SendEmailInputDto
+            {
+                EmailReceive = userDonateCurrent.EmailAddress,
+                Body = "<p style='font-weight:bold;font-size:18px'>Hệ thống gây quỹ trực tuyến FundRaising.</p>" +
+                          "<p>Người dùng " + userSend + "đã ủng hộ cho quỹ " + userCreatedFundId.FundName + " số tiền là : "+ input.AmountOfMoney + " VND vào lúc " + DateTime.Now + "</p>" +
+                          "<p>Email này được thông báo từ hệ thống trang web gửi tới bạn để giúp bạn năm bắt chi tiết các thông tin về việc làm từ thiện trên hệ thống</p>" +
+                          "<i style='color:red'>Cảm ơn bạn đã tin tưởng vào sử dụng hệ thống.Chúng tôi cam kết tạo ra một môi trường gây quỹ công bằng, hợp pháp." +
+                          "Chúc cho những dự án của bạn sẽ hoàn thành tốt đẹp giúp đỡ cho những hoàn cảnh khó khăn kịp thời, nâng cao chất lượng xã hội.</i>",
+                Subject = "Thông báo trở thành người gây quỹ",
+            };
+
+            _sendEmail.SendEmail(sendEmailInputForUser);
+            _sendEmail.SendEmail(sendEmailInputForFundRaiser);
         }
 
         public float getTotalAmountDonateOfFund(int fundId)
@@ -382,8 +395,8 @@ namespace esign.FundRaising
         }
         public async Task<RegisterInforFundRaiserDto> RegisterFundRaiser(RegisterInforFundRaiserDto input)
         {
-            var bankAccount = await _mstBankRepo.FirstOrDefaultAsync(e=>e.UserId == AbpSession.UserId);
-            if(bankAccount == null)
+            var bankAccount = await _mstBankRepo.FirstOrDefaultAsync(e => e.UserId == AbpSession.UserId);
+            if (bankAccount == null)
             {
                 throw new UserFriendlyException("Bạn chưa đăng ký tài khoản ngân hàng của hệ thống!");
             }
@@ -405,6 +418,7 @@ namespace esign.FundRaising
             request.UserId = AbpSession.UserId;
             request.RequestTime = DateTime.Now;
             request.IsApprove = false;
+            request.FundPackageId = input.FundPackageId;
             await _mstRequestToFundRaiserRepo.InsertAsync(request);
             // Trừ tiền tài khoản
             //bankAccount.Balance -= paymentFee;
@@ -426,8 +440,8 @@ namespace esign.FundRaising
         {
             if (input.Id == 0 || input.Id == null)
             {
-                var accountExist = await _mstBankRepo.FirstOrDefaultAsync(e=>e.BankNumber == input.BankNumber);
-                if(accountExist!= null)
+                var accountExist = await _mstBankRepo.FirstOrDefaultAsync(e => e.BankNumber == input.BankNumber);
+                if (accountExist != null)
                 {
                     throw new UserFriendlyException("Tài khoản đã tồn tại trong hệ thống");
                 }
@@ -450,7 +464,7 @@ namespace esign.FundRaising
         public async Task<List<GetFundRaisingViewForAdminDto>> getListPostOfFundRaising()
         {
             var listPost = (from post in _mstFundRaiserPostRepo.GetAll()
-                            join fund in _mstSleFundRepo.GetAll().Where(e=> DateTime.Now >= e.FundRaisingDay && DateTime.Now <=e.FundEndDate)
+                            join fund in _mstSleFundRepo.GetAll()
                             on post.FundId equals fund.Id
                             join user in _mstSleUserRepo.GetAll() on fund.UserId equals user.Id
                             select new GetFundRaisingViewForAdminDto
@@ -461,7 +475,7 @@ namespace esign.FundRaising
                                 PostTitle = post.PostTitle,
                                 AmountDonatePresent = fund.AmountDonationPresent,
                                 AmountDonateTarget = fund.AmountDonationTarget,
-                                PercentAchieved = fund.PercentAchieved,
+                                PercentAchieved = (fund.AmountDonationPresent / fund.AmountDonationTarget) * 100,
                                 PostTopic = post.PostTopic,
                                 ListImageUrl = _mstFundImageRepo.GetAll().Where(e => e.PostId == post.Id).Select(re => re.ImageUrl).ToList()
                             }).ToListAsync();
@@ -506,15 +520,21 @@ namespace esign.FundRaising
             auctionTransaction.IsPublic = input.IsPublic;
             await _mstAuctionTransactionRepo.InsertAsync(auctionTransaction);
         }
-        public async Task UserDepositAuction(float deposit,long auctionItemId)
+        public async Task UserDepositAuction(float deposit, long auctionItemId)
         {
+            var bankAccount = await _mstBankRepo.FirstOrDefaultAsync(e => e.UserId == AbpSession.UserId);
+            if (bankAccount == null)
+            {
+                throw new UserFriendlyException("Bạn chưa đăng ký tài khoản ngân hàng của hệ thống");
+            }
             var auctionItem = _mstAuctionItemsRepo.FirstOrDefault(e => e.Id == auctionItemId);
-            if(deposit < auctionItem.StartingPrice / 100 || deposit > (auctionItem.StartingPrice * 15)/100) {
-                throw new UserFriendlyException("Số tiền đặt cọc không hợp lệ");           
+            if (deposit < auctionItem.StartingPrice / 100 || deposit > (auctionItem.StartingPrice * 15) / 100)
+            {
+                throw new UserFriendlyException("Số tiền đặt cọc không hợp lệ");
             }
             var auctionDeposit = new AuctionDeposit();
             auctionDeposit.UserId = AbpSession.UserId;
-            auctionDeposit.AuctionItemId= auctionItemId;
+            auctionDeposit.AuctionItemId = auctionItemId;
             auctionDeposit.DepositAmount = deposit;
             auctionDeposit.DepositDate = DateTime.Now;
             await _mstAuctionDepositRepo.InsertAsync(auctionDeposit);
@@ -533,7 +553,7 @@ namespace esign.FundRaising
         }
         public async Task<InformationAuctionDepositDto> GetInforAuctionDeposit(long auctionItemId)
         {
-            var auctionItem = (from auctionItems in _mstAuctionItemsRepo.GetAll().Where(e=>e.Id == auctionItemId)
+            var auctionItem = (from auctionItems in _mstAuctionItemsRepo.GetAll().Where(e => e.Id == auctionItemId)
                                select new InformationAuctionDepositDto
                                {
                                    AuctionTitle = auctionItems.TitleAuction,
@@ -545,20 +565,29 @@ namespace esign.FundRaising
         public bool CheckUserIsFundRaiser()
         {
             var user = _mstUserFundPackageRepo.FirstOrDefault(e => e.UserId == AbpSession.UserId);
-            if(user != null && user?.IsExpired == false)
+            if (user != null && user?.IsExpired == false)
             {
                 return true;
             }
             return false;
+        }
+        public bool CheckUserRegisterBankAccount()
+        {
+            var bankAccountUser = _mstBankRepo.FirstOrDefault(e => e.UserId == AbpSession.UserId);
+            if (bankAccountUser == null)
+            {
+                throw new UserFriendlyException("Bạn chưa đăng ký tài khoản ngân hàng của hệ thống");
+            };
+            return true;
         }
         public async Task<InformationWebDto> getInforWeb()
         {
             var inforResult = new InformationWebDto();
             inforResult.Project = _mstSleFundRepo.GetAll().Count();
             inforResult.FundRaiser = _mstSleUserRepo.GetAll().Where(e => e.TypeUser == 3).Count();
-            inforResult.AmountDonate = _mstSleFundTransactionRepo.GetAll().Where(e=>e.IsAdmin == false).Count();
+            inforResult.AmountDonate = _mstSleFundTransactionRepo.GetAll().Where(e => e.IsAdmin == false).Count();
             var listTransaction = _mstSleFundTransactionRepo.GetAll().Where(e => e.IsAdmin == false).ToList();
-            foreach(var transaction in listTransaction)
+            foreach (var transaction in listTransaction)
             {
                 inforResult.AmountOfMoneyDonate += transaction.AmountOfMoney;
             }
@@ -567,7 +596,7 @@ namespace esign.FundRaising
         public async Task<List<GetListFundRasingDto>> GetAllFundRaisingIsClose()
         {
             var listFundOutStanding = (from post in _mstFundRaiserPostRepo.GetAll()
-                                       join fund in _mstSleFundRepo.GetAll().Where(e=>e.Status == 2) on post.FundId equals fund.Id
+                                       join fund in _mstSleFundRepo.GetAll().Where(e => e.Status == 2) on post.FundId equals fund.Id
                                        join postImage in _mstFundImageRepo.GetAll() on post.Id equals postImage.PostId
                                        join user in _mstSleUserRepo.GetAll() on fund.UserId equals user.Id
                                        select new GetListFundRasingDto

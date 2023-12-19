@@ -2,14 +2,15 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { DataFormatService } from '@app/shared/common/services/data-format.service';
 import { AppConsts } from '@shared/AppConsts';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { FundRaiserServiceProxy, GetAllAuctionDto, UserServiceProxy } from '@shared/service-proxies/service-proxies';
+import { UserServiceProxy, FundRaiserServiceProxy } from '@shared/service-proxies/service-proxies';
 
 @Component({
-    selector: 'app-app-user-aution',
-    templateUrl: './app-user-aution.component.html',
-    styleUrls: ['./app-user-aution.component.less']
+  selector: 'app-app-user-history-auction',
+  templateUrl: './app-user-history-auction.component.html',
+  styleUrls: ['./app-user-history-auction.component.less']
 })
-export class AppUserAutionComponent extends AppComponentBase implements OnInit {
+export class AppUserHistoryAuctionComponent extends AppComponentBase implements OnInit {
+
     dataAution;
     baseUrl = AppConsts.remoteServiceBaseUrl + '/';
     constructor(injector: Injector, private _userServiceProxy: UserServiceProxy,
@@ -18,7 +19,7 @@ export class AppUserAutionComponent extends AppComponentBase implements OnInit {
     }
 
     ngOnInit() {
-        this._fundRaiser.getAllAuctionUser().subscribe(result=>{
+        this._fundRaiser.getAllHistoryAuctionUser().subscribe(result=>{
             this.dataAution = result;
             this.dataAution.forEach((item)=>{
                 item.auctionPresentAmount = this.dataFormatService.moneyFormat(item.auctionPresentAmount);
@@ -26,5 +27,4 @@ export class AppUserAutionComponent extends AppComponentBase implements OnInit {
             })
         })
     }
-    showFundDetail(){}
 }

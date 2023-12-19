@@ -25,8 +25,9 @@ export class AppNavigationService {
             new AppMenuItem('Tham gia đấu giá', 'Pages.UserDonate', 'flaticon-line-graph', '/app/admin/auction-user'),
             new AppMenuItem('Bài đăng đấu giá', 'Pages.FundRaising', 'flaticon2-analytics-2', '/app/admin/auction-admin'),
             new AppMenuItem('Đăng ký gây quỹ', 'Pages.UserDonate', 'flaticon-refresh', '/app/admin/register-fundraiser'),
-            new AppMenuItem('Đăng ký tài khoản ngân hàng', 'Pages.UserDonate', 'flaticon-refresh', '/app/admin/register-bank'),
-            new AppMenuItem('Lịch sử Donate', 'Pages.UserDonate', 'flaticon-line-graph', '/app/admin/checkout'),
+            new AppMenuItem('Tài khoản ngân hàng', 'Pages.UserDonate', 'flaticon-refresh', '/app/admin/register-bank'),
+            new AppMenuItem('Lịch sử quyên góp', 'Pages.UserDonate', 'flaticon-line-graph', '/app/admin/checkout'),
+            new AppMenuItem('Lịch sử đấu giá', 'Pages.UserDonate', 'flaticon-line-graph', '/app/admin/history-auction'),
             new AppMenuItem('Roles', 'Pages.Administration', 'flaticon-suitcase', '/app/admin/roles'),
             new AppMenuItem('Phân quyền', 'Pages.Administration', 'flaticon-suitcase', '/app/admin/users'),
             new AppMenuItem(

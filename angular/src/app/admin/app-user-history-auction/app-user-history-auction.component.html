@@ -1,0 +1,20 @@
+<div class="block-donate">
+    <!-- <div class="header-block-donate d-flex justify-content-start align-items-center">
+        <span (click)="redirectHome()">
+            < &nbsp;&nbsp;</span>
+                <span (click)="redirectHome()">Back</span>
+    </div> -->
+    <div class="block-list-fund d-flex justify-content-start">
+      <div class="item-fundraising" *ngFor="let auction of dataAution" [routerLink]="['../auction-detail',auction.auctionItemsId]">
+        <div class="item-fund-image">
+          <img [src]="baseUrl + auction?.listImage[0]" alt="" name="image">
+        </div>
+        <br>
+        <!-- <span class="text-donate">{{aution.titleAucion}}</span> -->
+        <div class="footer-block-fund">
+          <button class="btn-donate">{{auction.startingPrice}} VND</button>
+          <p class="text-footer">{{auction.userCreate}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
