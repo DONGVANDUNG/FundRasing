@@ -528,10 +528,17 @@ namespace esign.FundRaising
                 throw new UserFriendlyException("Bạn chưa đăng ký tài khoản ngân hàng của hệ thống");
             }
             var auctionItem = _mstAuctionItemsRepo.FirstOrDefault(e => e.Id == auctionItemId);
+
+            if(auctionItem.NumberOfParticipants == auctionItem.LimitedPersionJoin)
+            {
+                throw new UserFriendlyException("Phiên đấu giá đã vượt quá số người hợp lệ");
+            }
             if (deposit < auctionItem.StartingPrice / 100 || deposit > (auctionItem.StartingPrice * 15) / 100)
             {
                 throw new UserFriendlyException("Số tiền đặt cọc không hợp lệ");
             }
+            auctionItem.NumberOfParticipants += 1;
+            await _mstAuctionItemsRepo.UpdateAsync(auctionItem);
             var auctionDeposit = new AuctionDeposit();
             auctionDeposit.UserId = AbpSession.UserId;
             auctionDeposit.AuctionItemId = auctionItemId;

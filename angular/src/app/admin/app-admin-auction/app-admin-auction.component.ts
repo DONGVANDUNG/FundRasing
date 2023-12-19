@@ -18,7 +18,6 @@ export class AppAdminAuctionComponent extends AppComponentBase implements OnInit
     defaultColDef;
     filter: string = '';
     status;
-    isCloseAuction;
     maxResultCount: number = 20;
     skipCount: number = 0;
     sorting: string = '';
@@ -26,6 +25,7 @@ export class AppAdminAuctionComponent extends AppComponentBase implements OnInit
     params: GridParams;
     advancedFiltersAreShown: boolean;
     createdDate;
+    isCloseAuction = false;
     typeAuction;
     listStatus = [
         { label: 'Hoạt động', value: 1 },
@@ -218,6 +218,7 @@ export class AppAdminAuctionComponent extends AppComponentBase implements OnInit
         const selected = paginationParams.api.getSelectedRows()[0];
         if (selected) {
             this.selectedAuction = selected.id;
+            this.isCloseAuction = selected.isCloseAuction
         }
     }
     deleteFundAuction() {
@@ -248,8 +249,6 @@ export class AppAdminAuctionComponent extends AppComponentBase implements OnInit
         })
     }
     payAuctionDeposit(){
-        this._fundRaiser.payDepositAuction(this.selectedAuction).subscribe(result=>{
-            this.notify.success("Trả cọc thành công. Thông báo đã được gửi tới người chiến thắng");
-        })
+        
     }
 }

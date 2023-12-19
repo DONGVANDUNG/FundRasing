@@ -39,6 +39,7 @@ namespace esign.FundRaising
         private readonly IRepository<FundRaiserPost, long> _mstFundRaiserPostRepo;
         private readonly IRepository<BankAccount, long> _mstBankRepo;
         private readonly IRepository<AuctionTransactionDeposit, long> _mstAuctionTransactionDeposit;
+        private readonly IRepository<UserFundPackage, long> _mstUserFundPackage;
         private readonly ISendEmail _sendEmail;
 
 
@@ -59,7 +60,8 @@ namespace esign.FundRaising
             IRepository<FundRaiserPost, long> mstFundRaiserPostRepo,
             IRepository<BankAccount, long> mstBankRepo,
             IRepository<AuctionTransactionDeposit, long> mstAuctionTransactionDeposit,
-            ISendEmail sendEmail)
+            ISendEmail sendEmail,
+            IRepository<UserFundPackage, long> mstUserFundPackage)
         {
             _mstSleFundRepo = mstSleFundRepo;
             _mstSleFundTransactionRepo = mstSleFundTransactionRepo;
@@ -77,6 +79,7 @@ namespace esign.FundRaising
             _mstBankRepo = mstBankRepo;
             _mstAuctionTransactionDeposit = mstAuctionTransactionDeposit;
             _sendEmail = sendEmail;
+            _mstUserFundPackage = mstUserFundPackage;
         }
         public async Task CloseFundRaising(long fundId)
         {
@@ -654,6 +657,19 @@ namespace esign.FundRaising
             var test = await listAuction.ToListAsync();
             var result = test.DistinctBy(x => x.AuctionItemsId).ToList();
             return result;
+        }
+        public bool CheckIsExpireFundPackage()
+        {
+            var user = _mstUserFundPackage.FirstOrDefault(e => e.UserId == AbpSession.UserId);
+            return (bool)user.IsExpired;
+        }
+        public async void ExtentionFundPackage(long fundPackageId)
+        {
+            var userPackage = new UserFundPackage();
+            userPackage.UserId = AbpSession.UserId;
+            userPackage.FundPackageId = fundPackageId;
+            userPackage.IsExpired = false;
+            await _mstUserFundPackage.InsertAsync(userPackage);
         }
     }
 }

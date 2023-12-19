@@ -19,6 +19,7 @@ namespace esign.Enitity
         public float? StartingPrice { get; set; }
         public float? AuctionPresentAmount { get; set; }
         public float? TargetAmountOfMoney { get; set; }
+        public int? LimitedPersionJoin { get; set; }
         public int? NumberOfParticipants { get; set; }
         public long? UserId { get; set; }
         public DateTime? StartDate { get; set; }

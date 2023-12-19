@@ -14,6 +14,7 @@ export class AppUserFundraiserComponent extends AppComponentBase implements OnIn
     dataFundRaiser: RegisterInforFundRaiserDto = new RegisterInforFundRaiserDto;
     dataInforBankUser: InforDetailBankAcountDto = new InforDetailBankAcountDto;
     isRegister: boolean = false;
+    isExtention: boolean = false;
     constructor(injector: Injector, private fundRaisingRepo: FundRaiserServiceProxy,
         private _userServiceProxy: UserFundRaisingServiceProxy) {
         super(injector);
@@ -33,6 +34,9 @@ export class AppUserFundraiserComponent extends AppComponentBase implements OnIn
             if (!this.dataFundRaiser.fundPackageId) {
                 this.dataFundRaiser.id = 0;
             }
+        });
+        this.fundRaisingRepo.checkIsExpireFundPackage().subscribe(result => {
+            this.isExtention = result;
         })
     }
     changeInforBank() {
@@ -56,5 +60,9 @@ export class AppUserFundraiserComponent extends AppComponentBase implements OnIn
             },
             );
         }
+    }
+    extentionFundPackage() {
+        this.fundRaisingRepo.extentionFundPackage(this.dataFundRaiser.fundPackageId).subscribe(() => {
+        })
     }
 }
