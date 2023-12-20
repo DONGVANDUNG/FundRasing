@@ -54,14 +54,14 @@ export class CreateOrEditPostComponent extends AppComponentBase {
         super(injector)
     }
     show(postId?) {
+        this.listFund = [];
+        this.postId = postId;
+        this.uploadedFiles = [];
         this._fundRaiser.getListFundName().subscribe(result => {
             result.forEach(item => {
                 this.listFund.push({ label: item.name, value: item.id })
             })
         })
-        this.listFund = [];
-        this.postId = postId;
-        this.uploadedFiles = [];
         if (postId) {
             this._fundRaiser.getForEditPost(postId).subscribe(result => {
                 this.input = result;

@@ -26,7 +26,6 @@ namespace esign.FundRaising
     {
         private readonly IRepository<Funds, long> _mstSleFundRepo;
         //private readonly IRepository<FundRaiser, long> _mstSleFundRaiserRepo;
-        private readonly IRepository<FundDetails, long> _mstSleFundDetailRepo;
         private readonly IRepository<FundPackage, int> _mstSleFundPackageRepo;
         private readonly IRepository<FundTransactions, long> _mstSleFundTransactionRepo;
         private readonly IRepository<User, long> _mstSleUserRepo;
@@ -48,7 +47,6 @@ namespace esign.FundRaising
         public UserFundRaisingAppService(IRepository<Funds, long> mstSleFundRepo,
             //IRepository<FundRaiser, long>
             // mstSleFundRaiserRepo,
-            IRepository<FundDetails, long> mstSleFundDetailRepo,
             IWebHostEnvironment hostingEnvironment, IWebHostEnvironment env,
             IRepository<FundPackage, int> mstSleFundPackageRepo,
             IRepository<FundTransactions, long> mstSleFundTransactionRepo,
@@ -66,7 +64,6 @@ namespace esign.FundRaising
         {
             _mstSleFundRepo = mstSleFundRepo;
             /// _mstSleFundRaiserRepo = mstSleFundRaiserRepo;
-            _mstSleFundDetailRepo = mstSleFundDetailRepo;
             _mstSleFundPackageRepo = mstSleFundPackageRepo;
             _mstSleFundTransactionRepo = mstSleFundTransactionRepo;
             _mstSleUserRepo = mstSleUserRepo;
@@ -114,7 +111,6 @@ namespace esign.FundRaising
         {
             var fundRaising = (from post in _mstFundRaiserPostRepo.GetAll().Where(e => e.IsClose == false && e.Id == Id)
                                join fund in _mstSleFundRepo.GetAll() on (long)post.FundId equals fund.Id
-                               join fundDetail in _mstSleFundDetailRepo.GetAll() on fund.Id equals (long)fundDetail.FundId
 
                                //join postImage in _mstFundImageRepo.GetAll() on post.Id equals postImage.PostId
                                join user in _mstSleUserRepo.GetAll() on fund.UserId equals user.Id
@@ -128,9 +124,6 @@ namespace esign.FundRaising
                                    AmountDonateTarget = fund.AmountDonationTarget,
                                    PostTopic = post.PostTopic,
                                    OrganizationName = user.Company,
-                                   Purpose = fundDetail.Purpose,
-                                   Note = fundDetail.Note,
-                                   Target = fundDetail.Target,
                                    FundName = fund.FundName,
                                    OrganizationIntroduce = user.IntroduceOrganization,
                                    AddressOrgnization = user.Address,

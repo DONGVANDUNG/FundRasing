@@ -27,7 +27,6 @@ namespace esign.FundRaising
         private readonly IRepository<Funds, long> _mstSleFundRepo;
         private readonly IRepository<FundTransactions, long> _mstSleFundTransactionRepo;
         private readonly IRepository<User, long> _mstSleUserRepo;
-        private readonly IRepository<FundDetails, long> _mstSleDetailsRepo;
         private readonly IRepository<UserWarning, int> _mstSleUserWarningRepo;
         private readonly IRepository<Auction, long> _mstAuctionRepo;
         private readonly IRepository<AuctionHistory, long> _mstAuctionTransactionRepo;
@@ -48,7 +47,6 @@ namespace esign.FundRaising
             IRepository<User, long> mstSleUserRepo,
             IWebHostEnvironment hostingEnvironment,
             IWebHostEnvironment env,
-            IRepository<FundDetails, long> mstSleDetailsRepo,
             IRepository<UserWarning, int> mstSleUserWarningRepo,
             //IRepository<FundRaiser, long> mstSleFundRaiserRepo,
             IRepository<PostImage, long> mstSleFundImageRepo,
@@ -66,7 +64,6 @@ namespace esign.FundRaising
             _mstSleFundRepo = mstSleFundRepo;
             _mstSleFundTransactionRepo = mstSleFundTransactionRepo;
             _mstSleUserRepo = mstSleUserRepo;
-            _mstSleDetailsRepo = mstSleDetailsRepo;
             _mstSleUserWarningRepo = mstSleUserWarningRepo;
             //_mstSleFundRaiserRepo = mstSleFundRaiserRepo;
             _mstSleFundImageRepo = mstSleFundImageRepo;

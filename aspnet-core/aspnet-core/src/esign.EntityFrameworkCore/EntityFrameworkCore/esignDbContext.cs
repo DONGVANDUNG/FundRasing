@@ -41,7 +41,6 @@ namespace esign.EntityFrameworkCore
 
         //// Fund Raising
 
-        public virtual DbSet<FundDetails> FundDetails { get; set; }
         public virtual DbSet<FundPackage> FundPackages { get; set; }
         //public virtual DbSet<FundRaiser> FundRaisers { get; set; }
         public virtual DbSet<Funds> Funds { get; set; }
