@@ -23,6 +23,11 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
                         // data: { permission: 'Pages.Administration.Users' },
                     },
                     {
+                        path: 'fundPackage-user',
+                        loadChildren: () => import('./app-admin-list-register-fundpackage/app-admin-list-register-fundpackage.module').then((m) => m.AppAdminListRegisterFundpackageModule),
+                        // data: { permission: 'Pages.Administration.Users' },
+                    },
+                    {
                         path: 'fundRaising',
                         loadChildren: () => import('./app-admin-fundraising/app-admin-fundraising.module').then((m) => m.AppAdminFundraisingModule),
                         // data: { permission: 'Pages.Administration.Users' },

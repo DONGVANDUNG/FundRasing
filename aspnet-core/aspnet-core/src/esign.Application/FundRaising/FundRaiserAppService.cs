@@ -320,7 +320,7 @@ namespace esign.FundRaising
                     auctionItem.EndDate = input.EndDate;
                     auctionItem.UserId = AbpSession.UserId;
                     auctionItem.IsClose = false;
-                    auctionItem.Amount = input.Amount;
+                    auctionItem.LimitedPersionJoin = input.LimitedPersionJoin;
                     auctionItem.TargetAmountOfMoney = input.TargetAmountOfMoney;
                     auctionItem.ItemName = input.ItemName;
                     auctionItem.AmountJumpMax = input.AmountJumpMax;
@@ -328,6 +328,7 @@ namespace esign.FundRaising
                     auctionItem.IntroduceItem = input.IntroduceItem;
                     auctionItem.StartingPrice = input.StartingPrice;
                     auctionItem.AuctionPresentAmount = input.StartingPrice;
+                    auctionItem.IsPublic = input.IsPublic;
                     var auctionItemId = await _mstSleAuctionItemsRepo.InsertAndGetIdAsync(auctionItem);
 
 
@@ -355,6 +356,7 @@ namespace esign.FundRaising
                         auctionItem.AmountJumpMin = input.AmountJumpMin;
                         auctionItem.IntroduceItem = input.IntroduceItem;
                         auctionItem.StartingPrice = input.StartingPrice;
+                        auctionItem.IsPublic = input.IsPublic;
                         await _mstSleAuctionItemsRepo.UpdateAsync(auctionItem);
                     }
                     var listImageAuction = await _mstAuctionImagesRepo.GetAll().Where(e => e.AuctionItemId == input.Id).Select(re => re.Id).ToListAsync();
@@ -439,7 +441,7 @@ namespace esign.FundRaising
                             StartDate = (DateTime)item.StartDate,
                             IntroduceItem = item.IntroduceItem,
                             Status = item.IsClose == false ? "Đang hoạt động" : "Đã đóng",
-                            Amount = item.Amount,
+                            LimitedPersionJoin = item.LimitedPersionJoin,
                             IsCloseAuction = item.IsClose
                         };
 
@@ -661,7 +663,8 @@ namespace esign.FundRaising
         public bool CheckIsExpireFundPackage()
         {
             var user = _mstUserFundPackage.FirstOrDefault(e => e.UserId == AbpSession.UserId);
-            return (bool)user.IsExpired;
+            if(user == null) return false;
+            return (bool)user?.IsExpired;
         }
         public async void ExtentionFundPackage(long fundPackageId)
         {

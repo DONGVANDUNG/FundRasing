@@ -22,7 +22,9 @@ export class AppUserDetailAuctionComponent extends AppComponentBase implements O
     auctionItemId: number;
     isDeposit: boolean = false;
     nextMinimumBid;
-    nextMaximumBid
+    nextMaximumBid;
+    activeIndex = 1;
+    listHistoryAuction = []
     baseUrl = AppConsts.remoteServiceBaseUrl + '/';
     dataAuction;
     auction;
@@ -54,6 +56,12 @@ export class AppUserDetailAuctionComponent extends AppComponentBase implements O
             this.dataAuction.nextMinimumBid = this.dataFormateService.moneyFormat(re.nextMinimumBid);
             this.dataAuction.nextMaximumBid = this.dataFormateService.moneyFormat(re.nextMaximumBid);
             this.dataAuction.auctionPresentAmount = this.dataFormateService.moneyFormat(re.auctionPresentAmount);
+        });
+        this._userServiceProxy.getListHistoryForAuctionItem(this.auctionItemId).subscribe(result=>{
+            this.listHistoryAuction = result;
+            this.listHistoryAuction.forEach(item=>{
+                item.amountOfMoney = this.dataFormateService.moneyFormat(item.amountOfMoney);
+            })
         })
         this.checkUserDeposit();
     }

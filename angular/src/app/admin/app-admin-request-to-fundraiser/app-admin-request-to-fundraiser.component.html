@@ -5,8 +5,8 @@
                 <h3 class="kt-subheader__title">
                     <span class="kt_subheader__desc">{{l("Quản lý yêu cầu gây quỹ")}}</span>
                 </h3>
-                <button class="tmss-btn  btn-outline-primary tmss-override" (click)="approve()">
-                    <i class="fa fa-add" aria-hidden="true"></i>
+                <button [buttonBusy]="saving" class="tmss-btn  btn-outline-primary tmss-override" (click)="approve()">
+                    <i class="fa fa-add" aria-hidden="true" ></i>
                     {{l("Phê duyệt")}}
                 </button>
             </div>

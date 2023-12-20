@@ -4,10 +4,11 @@ import { AppUserDetailAuctionComponent } from './app-user-detail-auction.compone
 import { AppUserDetailAuctionRoutingModule } from './app-user-detail-auction-routing.module';
 import { AdminSharedModule } from '../shared/admin-shared.module';
 import { AppUserDepositAuctionComponent } from './app-user-deposit-auction/app-user-deposit-auction.component';
+import { TabViewModule } from 'primeng/tabview';
 
 @NgModule({
   imports: [
-    CommonModule,AppUserDetailAuctionRoutingModule,AdminSharedModule
+    CommonModule,AppUserDetailAuctionRoutingModule,AdminSharedModule,TabViewModule
   ],
   declarations: [AppUserDetailAuctionComponent,AppUserDepositAuctionComponent]
 })

@@ -89,7 +89,7 @@ export class AppAdminFundPackageComponent extends AppComponentBase implements On
                 headerName: this.l('Chiết khấu'),
                 headerTooltip: this.l('Chiết khấu'),
                 field: 'commission',
-                valueGetter: params => this.dataFormatService.moneyFormat(params.data.paymentFee) + " %/ giao dịch",
+                valueGetter: params => params.data.commission + " %/ giao dịch",
                 flex: 3,
                 cellClass: ['text-left'],
             },

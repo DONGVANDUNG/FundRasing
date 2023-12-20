@@ -8,6 +8,7 @@ namespace esign.FundRaising.FundRaiserService.Dto
 {
     public class TransactionForFundInputDto : PagedAndSortedResultRequestDto
     {
-        public int FundId { get; set; }
+        public int? FundId { get; set; }
+        public DateTime? TransactionTime { get; set; }
     }
 }

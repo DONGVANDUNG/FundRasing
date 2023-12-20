@@ -5,13 +5,23 @@
             </div>
             <div class="kt-subheader__toolbar">
                 <div class="kt-subheader__wrapper">
-                    <div class="row mb-1">
-                        <div class="col-3">
-                            <h3 class="kt-subheader__title">
-                                <span class="kt_subheader__desc">{{l("Thông tin quỹ")}}</span>
-                            </h3>
+                    <h3 class="kt-subheader__title">
+                        <span class="kt_subheader__desc">{{l("Thông tin giao dịch hệ thống")}}</span>
+                    </h3>
+                    <div class="row mb-1 mt-5">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <tmss-combobox [items]="listFundName" [(ngModel)]="fundId"
+                                 [label]="'name'" [key]="'id'"  [text]="l('Quỹ người dùng')" name="fundId">
+                                </tmss-combobox>
+                            </div>
                         </div>
-                        <div class="col-6"></div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <tmss-datepicker [(ngModel)]="transactionDate" [dateInputFormat]="'DD/MM/YYYY'" [text]="l('Ngày tạo gói')" name="createdDate"></tmss-datepicker>
+                            </div>
+                        </div>
+                        <div class="col-1"></div>
                         <div class="col-md-3 d-flex justify-content-end">
                             <div class="form-group float-right">
                                 <button type="button" class="tmss-btn btn-outline-primary"
@@ -31,34 +41,9 @@
     </div>
     <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
         <div class="kt-portlet kt-portlet--mobile">
-            <div class="row align-items-center">
-                <div class="col-md-12">
-                    <div class="item col-12">
-                        <grid-table [columnDefs]="columnDefsFundRaising" [defaultColDef]="defaultColDef"
-                            (onGridReady)="onGridReadyFundRaising($event)"
-                            (callBackEvent)="callBackGridFundRaising($event)"
-                            (changePaginationParams)="changePageFundRaising($event)"
-                            [paginationParams]="paginationParamsFundRaising"
-                            (onChangeSelection)="onChangeSelectionFundRaising($event)"
-                             [rowData]="rowDataFundRaising"
-                            [height]="'260px'"></grid-table>
-                    </div>
-                </div>
-            </div>
-            <!-- <div class="row mt-1 mb-1 d-flex">
-                <div class="col-10"></div>
-                <div class="col-2 d-flex justify-content-end">
-                    <button class="tmss-btn btn-outline-primary" (click)="viewDetailsTransaction(selectionTransaction)">
-                        <i class="fa fa-eye"></i> Xem chi tiết
-                    </button>
-                </div>
-            </div> -->
             <div class="row align-items-center mt-5">
                 <div class="col-md-12">
                     <div class="item col-12">
-                        <div class="tbContent mb-3">
-                           <h3>Thông tin giao dịch</h3>
-                        </div>
                         <grid-table [columnDefs]="columnDefsTransaction"
                             [defaultColDef]="defaultColDef"
                             (callBackEvent)="callBackGridTransaction($event)"
@@ -73,4 +58,3 @@
             </div>
         </div>
     </div>
-<app-view-detail-transaction #viewDetailTransaction></app-view-detail-transaction>

@@ -15,6 +15,7 @@ export class AppAdminRequestToFundraiserComponent extends AppComponentBase imple
     dateOfReport;
     rowData: any = [];
     defaultColDef;
+    saving;
     filter: string = '';
     maxResultCount: number = 20;
     skipCount: number = 0;
@@ -156,15 +157,18 @@ export class AppAdminRequestToFundraiserComponent extends AppComponentBase imple
         }
     }
     approve() {
+        this.saving = true;
         if (this.selectedRequest) {
             if (this.isApprove !== true) {
                 this._adminServiceProxy.approveFundRaiser(this.userId).subscribe(() => {
-                    this.notify.success("Phê duyệt thành công")
+                    this.notify.success("Phê duyệt thành công");
+                    this.saving = false;
                     this.onGridReady(this.paginationParams);
                 })
             }
             else
                 this.notify.warn("Yêu cầu này đã được phê duyệt");
+                this.saving = false;
         }
         else
             this.notify.warn("Vui lòng chọn một bản ghi phê duyệt");

@@ -124,7 +124,7 @@ export class AppAdminAuctionComponent extends AppComponentBase implements OnInit
             {
                 headerName: this.l('Số lượng'),
                 headerTooltip: this.l('Số lượng'),
-                field: 'amount',
+                field: 'limitedPersionJoin',
                 width: 150,
                 cellClass: ['text-left'],
             },
@@ -249,6 +249,6 @@ export class AppAdminAuctionComponent extends AppComponentBase implements OnInit
         })
     }
     payAuctionDeposit(){
-        
+
     }
 }

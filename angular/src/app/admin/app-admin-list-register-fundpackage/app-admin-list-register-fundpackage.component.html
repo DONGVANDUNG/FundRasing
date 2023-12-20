@@ -1,0 +1,57 @@
+<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+    <div class="kt-subheader kt-grid__item redline-header">
+        <div [class]="containerClass">
+            <div class="kt-subheader__main">
+                <h3 class="kt-subheader__title mb-2">
+                    <span class="kt_subheader__desc">{{l("Danh sách đăng ký gói quỹ")}}</span>
+                </h3>
+            </div>
+            <div class="kt-subheader__toolbar">
+                <div class="kt-subheader__wrapper">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div [class]="containerClass + ' kt-grid__item kt-grid__item--fluid'">
+        <div class="kt-portlet kt-portlet--mobile">
+            <div>
+                <div class="row align-items-center mt-5 mb-3">
+                    <div class="col-md-3 ml-2">
+                        <div class="form-group">
+                            <tmss-combobox [items]="listStatusAccount" [(ngModel)]="status"
+                                [text]="l('Trạng thái')" name="statusAccount">
+                            </tmss-combobox>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <tmss-datepicker [dateInputFormat]="'DD/MM/YYYY'" [(ngModel)]="createdJoin" [text]="l('Ngày tham gia')"
+                                name="createdJoin"></tmss-datepicker>
+                        </div>
+                    </div>
+                    <div class="col-md-1"></div>
+                    <div class="col-md-3 d-flex justify-content-end">
+                        <div class="form-group float-right">
+                            <button type="button" class="tmss-btn btn-outline-primary"
+                                (click)="clearValueFilter()">
+                                <i class="tmss-fa fas fa-redo mr-1"></i>{{l("Refresh")}}
+                            </button>
+                            <button class="tmss-btn btn-outline-primary" type="submit" (click)="search()"><i
+                                    class="fa fa-search"></i>
+                                <span>{{l('Search')}}</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row align-items-center">
+                <div class="col-md-12">
+                    <div class="item col-12">
+                        <grid-table [columnDefs]="columnDefs" [defaultColDef]="defaultColDef"
+                            (onGridReady)="onGridReady($event)" (callBackEvent)="callBackGrid($event)"
+                            [paginationParams]="paginationParams" [rowData]="rowData" [height]="'430px'"></grid-table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

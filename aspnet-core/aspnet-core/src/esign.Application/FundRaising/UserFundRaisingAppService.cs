@@ -268,7 +268,7 @@ namespace esign.FundRaising
             {
                 EmailReceive = userDonateCurrent.EmailAddress,
                 Body = "<p style='font-weight:bold;font-size:18px'>Hệ thống gây quỹ trực tuyến FundRaising.</p>" +
-                          "<p>Người dùng " + userSend + "đã ủng hộ cho quỹ " + userCreatedFundId.FundName + " số tiền là : "+ input.AmountOfMoney + " VND vào lúc " + DateTime.Now + "</p>" +
+                          "<p>Người dùng " + userSend + "đã ủng hộ cho quỹ " + userCreatedFundId.FundName + " số tiền là : " + input.AmountOfMoney + " VND vào lúc " + DateTime.Now + "</p>" +
                           "<p>Email này được thông báo từ hệ thống trang web gửi tới bạn để giúp bạn năm bắt chi tiết các thông tin về việc làm từ thiện trên hệ thống</p>" +
                           "<i style='color:red'>Cảm ơn bạn đã tin tưởng vào sử dụng hệ thống.Chúng tôi cam kết tạo ra một môi trường gây quỹ công bằng, hợp pháp." +
                           "Chúc cho những dự án của bạn sẽ hoàn thành tốt đẹp giúp đỡ cho những hoàn cảnh khó khăn kịp thời, nâng cao chất lượng xã hội.</i>",
@@ -499,6 +499,20 @@ namespace esign.FundRaising
                                    }).ToListAsync();
             return await listTransaction;
         }
+        public async Task<List<HistoryOfAuctionItemDto>> getListHistoryForAuctionItem(long auctionItemId)
+        {
+            var listTransaction = (from history in _mstAuctionTransactionRepo.GetAll().Where(e => e.AuctionItemId == auctionItemId)
+                                   join user in _mstSleUserRepo.GetAll() on history.AuctioneerId equals user.Id
+                                   select new HistoryOfAuctionItemDto
+                                   {
+                                       Id = history.Id,
+                                       UserAuction = user.Surname + " " + user.Name,
+                                       AuctionDate = history.AuctionDate.Value.ToString("dd/MM/yyyy"),
+                                       IsPublic = history.IsPublic,
+                                       AmountOfMoney = history.NewAmount
+                                   }).OrderByDescending(e=>e.AmountOfMoney).ToListAsync();
+            return await listTransaction;
+        }
         public async Task UserAuction(UserAuction input)
         {
             var auctionItem = _mstAuctionItemsRepo.FirstOrDefault(e => e.Id == input.AuctionItemId);
@@ -529,7 +543,7 @@ namespace esign.FundRaising
             }
             var auctionItem = _mstAuctionItemsRepo.FirstOrDefault(e => e.Id == auctionItemId);
 
-            if(auctionItem.NumberOfParticipants == auctionItem.LimitedPersionJoin)
+            if (auctionItem.NumberOfParticipants == auctionItem.LimitedPersionJoin)
             {
                 throw new UserFriendlyException("Phiên đấu giá đã vượt quá số người hợp lệ");
             }
@@ -549,6 +563,10 @@ namespace esign.FundRaising
             var bankAccountUser = await _mstBankRepo.FirstOrDefaultAsync(e => e.UserId == auctionItem.UserId);
             bankAccountUser.Balance += deposit;
             await _mstBankRepo.UpdateAsync(bankAccountUser);
+
+            var bankAccountUserAuction = await _mstBankRepo.FirstOrDefaultAsync(e => e.UserId == AbpSession.UserId);
+            bankAccountUserAuction.Balance -= deposit;
+            await _mstBankRepo.UpdateAsync(bankAccountUserAuction);
 
             AuctionTransactionDeposit fundTransaction = new AuctionTransactionDeposit();
             fundTransaction.SenderId = AbpSession.UserId;

@@ -99,7 +99,7 @@ namespace esign.FundRaising
             var listFundRaiser = (from user in _mstSleUserRepo.GetAll().Where(e => e.TypeUser == 3)
                                   .Where(e => input.Email == null || e.Email.Contains(input.Email))
                                   .Where(e => input.StatusAccount == null || e.IsActive == input.StatusAccount)
-                                  join userPackage  in _mstUserFundPackageRepo.GetAll()
+                                  join userPackage in _mstUserFundPackageRepo.GetAll()
                                   .Where(e => input.Created == null || e.CreationTime == input.Created)
                                   on user.Id equals userPackage.UserId
 
@@ -124,8 +124,8 @@ namespace esign.FundRaising
         public async Task<PagedResultDto<GetListFundRaisingDto>> getListFundRaising(FundRaisingInputDto input)
         {
             var listFundRaising = from fundRaising in _mstSleFundRepo.GetAll()
-                                   join user in _mstSleUserRepo.GetAll()
-                                   on fundRaising.UserId equals user.Id
+                                  join user in _mstSleUserRepo.GetAll()
+                                  on fundRaising.UserId equals user.Id
                                   select new GetListFundRaisingDto
                                   {
                                       Id = fundRaising.Id,
@@ -134,7 +134,7 @@ namespace esign.FundRaising
                                       FundEndDate = fundRaising.FundEndDate.ToString("dd/MM/yyyy"),
                                       AmountDonationTarget = fundRaising.AmountDonationTarget,
                                       Status = fundRaising.Status == 1 ? "Đang hoạt động" : "Đã đóng",
-                                      FundRaiser = user.Surname +" "+ user.Name
+                                      FundRaiser = user.Surname + " " + user.Name
                                   };
 
             var totalCount = await listFundRaising.CountAsync();
@@ -146,8 +146,10 @@ namespace esign.FundRaising
 
         public async Task<PagedResultDto<TransactionOfFundForDto>> getListTransactionForFund(TransactionForFundInputDto input)
         {
-            var listTransaction = from transaction in _mstSleTransactionRepo.GetAll().Where(e => e.FundId == input.FundId)
-                                  join user in _mstSleUserRepo.GetAll() on transaction.UserId equals user.Id
+            var listTransaction = from transaction in _mstSleTransactionRepo.GetAll().Where(e => input.FundId == 0
+                                  || e.FundId == input.FundId).Where(e => e.IsAdmin == true).
+                                  Where(e => input.TransactionTime == null || e.CreationTime.Date == input.TransactionTime.Value.Date)
+                                  join user in _mstSleUserRepo.GetAll() on transaction.SenderId equals user.Id
                                   join fund in _mstSleFundRepo.GetAll() on transaction.FundId equals fund.Id
                                   select new TransactionOfFundForDto
                                   {
@@ -155,7 +157,6 @@ namespace esign.FundRaising
                                       Amount = transaction.AmountOfMoney,
                                       Content = transaction.MessageToFund,
                                       FundName = fund.FundName,
-                                      Receiver = user.UserName,
                                       UserDonate = user.UserLogin,
                                       CreatedTime = transaction.CreationTime.ToString("dd/MM/yyyy")
                                   };
@@ -253,22 +254,22 @@ namespace esign.FundRaising
         }
         public async Task<PagedResultDto<GetListAccountUserDto>> getAllListFundRaiser(GuestAccountForInputDto input)
         {
-            var listFundRaiser = from user in _mstSleUserRepo.GetAll().Where(e=>e.TypeUser == 3)
+            var listFundRaiser = from user in _mstSleUserRepo.GetAll().Where(e => e.TypeUser == 3)
                                  join userPackage in _mstUserFundPackageRepo.GetAll().
                                  Where(e => input.CreatedDate == null || e.CreationTime.Date == input.CreatedDate.Value.Date)
                                 .Where(e => input.Status == null || e.IsExpired == input.Status) on user.Id equals userPackage.UserId
-                                join fundPackage in _mstSleFundPackageRepo.GetAll() on userPackage.FundPackageId equals fundPackage.Id
-                                select new GetListAccountUserDto
-                               {
-                                   Id = user.Id,
-                                   UserName = user.UserName,
-                                   Email = user.EmailAddress,
-                                   Status = user.IsActive == true ? "Đang hoạt động" : "Ngừng hoạt động",
-                                   Created = user.CreationTime,
-                                   FundEndDate = userPackage.FundEndDate,
-                                   FundRaiserDate = userPackage.CreationTime,
-                                   FundPackage = fundPackage.PaymentFee +"VND / "+fundPackage.Duration
-                               };
+                                 join fundPackage in _mstSleFundPackageRepo.GetAll() on userPackage.FundPackageId equals fundPackage.Id
+                                 select new GetListAccountUserDto
+                                 {
+                                     Id = user.Id,
+                                     UserName = user.UserName,
+                                     Email = user.EmailAddress,
+                                     Status = user.IsActive == true ? "Đang hoạt động" : "Ngừng hoạt động",
+                                     Created = user.CreationTime,
+                                     FundEndDate = userPackage.FundEndDate,
+                                     FundRaiserDate = userPackage.CreationTime,
+                                     FundPackage = fundPackage.PaymentFee + "VND / " + fundPackage.Duration
+                                 };
             var totalCount = await listFundRaiser.CountAsync();
             return new PagedResultDto<GetListAccountUserDto>(
                 totalCount,
@@ -296,7 +297,7 @@ namespace esign.FundRaising
         public async Task ApproveFundRaiser(long userId)
         {
             var user = await _mstSleUserRepo.FirstOrDefaultAsync(e => e.Id == userId);
-            if(user!= null)
+            if (user != null)
             {
                 user.TypeUser = 3;
                 await _mstSleUserRepo.UpdateAsync(user);
@@ -309,11 +310,11 @@ namespace esign.FundRaising
                 userPackage.UserId = request.UserId;
                 userPackage.FundPackageId = request.FundPackageId;
                 userPackage.IsExpired = false;
-                if(fundPackage.Duration == "Tuần")
+                if (fundPackage.Duration == "Tuần")
                 {
                     userPackage.FundEndDate = DateTime.Now.AddDays(7);
                 }
-                if(fundPackage.Duration == "Tháng")
+                if (fundPackage.Duration == "Tháng")
                 {
                     userPackage.FundEndDate = DateTime.Now.AddDays(30);
                 }
@@ -354,6 +355,35 @@ namespace esign.FundRaising
             }
 
         }
-
+        public List<GetListComboboxDto> getListFundName()
+        {
+            var listFundRaising = from fund in _mstSleFundRepo.GetAll().Where(e => e.Status == 1)
+                                  select new GetListComboboxDto
+                                  {
+                                      Id = fund.Id,
+                                      Name = fund.FundName
+                                  };
+            return listFundRaising.ToList();
+        }
+        public async Task<PagedResultDto<RegisterFundPackageUserDto>> getListRegisterFundPackageUser(RegisterFundPackageInputDto input)
+        {
+            var listRegister = from fundPackage in _mstUserFundPackageRepo.GetAll()
+                               join package in _mstSleFundPackageRepo.GetAll() on fundPackage.FundPackageId equals package.Id
+                               join user in _mstSleUserRepo.GetAll() on fundPackage.UserId equals user.Id
+                               select new RegisterFundPackageUserDto
+                               {
+                                   Id = fundPackage.Id,
+                                   UserNameRegister = user.Surname + " " + user.Name,
+                                   CreatedRegister = fundPackage.CreationTime.ToString("dd/MM/yyyy"),
+                                   ExpireDate = fundPackage.FundEndDate.Value.ToString("dd/MM/yyyy"),
+                                   FundPackage = package.PaymentFee + "VND / " + package.Duration,
+                                   Status = fundPackage.IsExpired == false ? "Đang hoạt động" : "Hết hạn"
+                               };
+            var totalCount = await listRegister.CountAsync();
+            return new PagedResultDto<RegisterFundPackageUserDto>(
+                totalCount,
+                await listRegister.PageBy(input).ToListAsync()
+                );
+        }
     }
 }

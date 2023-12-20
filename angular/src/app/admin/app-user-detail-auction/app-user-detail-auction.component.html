@@ -47,7 +47,28 @@
             <span>Auction Close</span>
         </div>
     </div>
-    <p class="content-intro-auction mt-5" [innerHTML]="dataAuction?.introduceItem"></p>
+    <p-tabView [(activeIndex)]="activeIndex">
+        <p-tabPanel header="Mô tả vật phẩm">
+            <p class="content-intro-auction mt-5" [innerHTML]="dataAuction?.introduceItem"></p>
+        </p-tabPanel>
+        <p-tabPanel header="Lịch sử đấu giá">
+            <table>
+                <tbody>
+                    <tr style="background-color: #dce2eb;font-size: 1.3rem;">
+                        <th class="spt-name">Người đấu giá</th>
+                        <th>Mức giá</th>
+                        <th>Thời gian</th>
+                    </tr>
+                    <tr *ngFor="let history of this.listHistoryAuction">
+                        <td class="spt-name-sib"><span class="banker-name">{{history.isPublic == true ? history.userAuction : "Người dùng ẩn danh"}}</span></td>
+                        <td class="baker-donate-money"><span class="woocommerce-Price-amount amount"><bdi>{{history.amountOfMoney}} VND
+                                        </bdi></span></td>
+                        <td class="baker-donate-date" [innerHTML]="history.auctionDate"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </p-tabPanel>
+    </p-tabView>
 </div>
 <hr class="itemPreviewView__separator">
 <!-- <div class="block-footer-color">Được tạo bởi Givergy</div> -->
