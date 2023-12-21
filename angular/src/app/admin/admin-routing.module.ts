@@ -10,7 +10,7 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
                     {
                         path: 'fundRaiser',
                         loadChildren: () => import('./app-admin-fundRaiser/app-admin-fundRaiser.module').then((m) => m.AppAdminFundRaiserModule),
-                        // data: { permission: 'Pages.Administration.Users' },
+                        data: { permission: 'Pages.Administration' },
                     },
                     {
                         path: 'accountGuest',
@@ -20,22 +20,22 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
                     {
                         path: 'fundPackage',
                         loadChildren: () => import('./app-admin-fund-package/app-admin-fund-package.module').then((m) => m.AppAdminFundPackageModule),
-                        // data: { permission: 'Pages.Administration.Users' },
+                        data: { permission: 'Pages.Administration' },
                     },
                     {
                         path: 'fundPackage-user',
                         loadChildren: () => import('./app-admin-list-register-fundpackage/app-admin-list-register-fundpackage.module').then((m) => m.AppAdminListRegisterFundpackageModule),
-                        // data: { permission: 'Pages.Administration.Users' },
+                        data: { permission: 'Pages.Administration' },
                     },
                     {
                         path: 'fundRaising',
                         loadChildren: () => import('./app-admin-fundraising/app-admin-fundraising.module').then((m) => m.AppAdminFundraisingModule),
-                        // data: { permission: 'Pages.Administration.Users' },
+                        data: { permission: 'Pages.Administration' },
                     },
                     {
                         path: 'transaction',
                         loadChildren: () => import('./app-admin-fund-transaction/app-admin-fund-transaction.module').then((m) => m.AppAdminFundTransactionModule),
-                        // data: { permission: 'Pages.Administration.Users' },
+                        data: { permission: 'Pages.Administration' },
                     },
                     // {
                     //     path: 'donation/:fundId',
@@ -50,7 +50,7 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
                     {
                         path: 'checkout',
                         loadChildren: () => import('./app-user-checkout/app-user-checkout.module').then((m) => m.AppUserCheckoutModule),
-                        // data: { permission: 'Pages.Administration.Users' },
+                        data: { permission: 'Pages.UserDonate.FundRaising' },
                     },
                     { //vãi lều sai chỗ nào chưa? path quá đảk, nok boy  gon nghẻ nhé =)))
                         path: 'users',
@@ -65,58 +65,58 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
                     {
                         path: 'admin-post',
                         loadChildren: () => import('./app-admin-post/app-admin-post.module').then((m) => m.AppAdminPostModule),
-                        //data: { permission: 'Pages.FundRaising' },
+                        data: { permission: 'Pages.Administration' },
                     },
                     {
                         path: 'register-bank',
                         loadChildren: () => import('./app-user-bank/app-user-bank.module').then((m) => m.AppUserBankModule),
-                        //data: { permission: 'Pages.FundRaising' },
+                        data: { permission: 'Pages.UserDonate' },
                     },
                     {
                         path: 'register-fundraiser',
                         loadChildren: () => import('./app-user-fundraiser/app-user-fundraiser.module').then((m) => m.AppAdminRegisterFundraiserModule),
-                        //data: { permission: 'Pages.UserDonate.FundRaising' },
+                        data: { permission: 'Pages.UserDonate' },
                     },
                     {
                         path: 'auction-admin',
                         loadChildren: () => import('./app-admin-auction/app-admin-auction.module').then((m) => m.AppAdminAuctionModule),
-                        //data: { permission: 'Pages.UserDonate.FundRaising' },
+                        data: { permission: 'Pages.UserDonate' },
                     },
                     {
                         path: 'auction-user',
                         loadChildren: () => import('./app-user-aution/app-user-aution.module').then((m) => m.AppUserAutionModule),
-                        //data: { permission: 'Pages.UserDonate.FundRaising' },
+                        data: { permission: 'Pages.UserDonate' },
                     },
                     {
                         path: 'auction-detail/:auctionId',
                         loadChildren: () => import('./app-user-detail-auction/app-user-detail-auction.module').then((m) => m.AppUserDetailAuctionModule),
-                        //data: { permission: 'Pages.UserDonate.FundRaising' },
+                        data: { permission: 'Pages.UserDonate' },
                     },
                     {
                         path: 'user-post',
                         loadChildren: () => import('./app-user-post/app-user-post.module').then((m) => m.AppUserPostModule),
-                        //data: { permission: 'Pages.UserDonate.FundRaising' },
+                        data: { permission: 'Pages.UserDonate' },
                     },
                     {
                         path: 'user-post-detail/:postId/:fundId',
                         loadChildren: () => import('./app-user-post-detail/app-user-post-detail.module').then((m) => m.AppUserPostDetailModule),
-                        //data: { permission: 'Pages.UserDonate.FundRaising' },
+                        data: { permission: 'Pages.UserDonate' },
                     },
                     {
                         path: 'request-to-fundraiser',
                         loadChildren: () => import('./app-admin-request-to-fundraiser/app-admin-request-to-fundraiser.module').then((m) => m.AppAdminRequestToFundraiserModule),
-                        //data: { permission: 'Pages.UserDonate.FundRaising' },
+                        data: { permission: 'Pages.UserDonate' },
                     },
                     {
                         path: 'history-auction',
                         loadChildren: () => import('./app-user-history-auction/app-user-history-auction.module').then((m) => m.AppUserHistoryAuctionModule),
+                        data: { permission: 'Pages.UserDonate.FundRaising' },
+                    },
+                    {
+                        path: 'dashboard',
+                        loadChildren: () => import('./app-admin-statistical-web/app-admin-statistical-web.module').then((m) => m.AppAdminStatisticalWebModule),
                         //data: { permission: 'Pages.UserDonate.FundRaising' },
                     },
-                    // {
-                    //     path: 'dashboard',
-                    //     loadChildren: () => import('./app-admin-statistical-web/app-admin-statistical-web.module').then((m) => m.AppAdminStatisticalWebModule),
-                    //     //data: { permission: 'Pages.UserDonate.FundRaising' },
-                    // },
                 ],
             },
         ]),
