@@ -9,5 +9,6 @@ namespace esign.FundRaising.UserFundRaising.Dto.Auction
         public long? AuctionItemId { get; set; }
         public float? AmountAuction { get; set; }
         public bool? IsPublic { get; set; }
+        public long? UserId { get; set; }
     }
 }

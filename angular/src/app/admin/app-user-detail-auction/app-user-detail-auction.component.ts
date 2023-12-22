@@ -56,6 +56,7 @@ export class AppUserDetailAuctionComponent extends AppComponentBase implements O
             this.dataAuction.nextMinimumBid = this.dataFormateService.moneyFormat(re.nextMinimumBid);
             this.dataAuction.nextMaximumBid = this.dataFormateService.moneyFormat(re.nextMaximumBid);
             this.dataAuction.auctionPresentAmount = this.dataFormateService.moneyFormat(re.auctionPresentAmount);
+            this.dataAuction.startingPrice = this.dataFormateService.moneyFormat(re.startingPrice);
         });
         this._userServiceProxy.getListHistoryForAuctionItem(this.auctionItemId).subscribe(result=>{
             this.listHistoryAuction = result;
@@ -82,6 +83,12 @@ export class AppUserDetailAuctionComponent extends AppComponentBase implements O
         this.auction = true;
         this.auctionService.updateAuction(this.userAuction.amountAuction, this.userAuction.auctionItemId, this.userAuction.isPublic, () => {
             this.auction = false;
+            this._userServiceProxy.getListHistoryForAuctionItem(this.auctionItemId).subscribe(result=>{
+                this.listHistoryAuction = result;
+                this.listHistoryAuction.forEach(item=>{
+                    item.amountOfMoney = this.dataFormateService.moneyFormat(item.amountOfMoney);
+                })
+            })
         });
     }
 

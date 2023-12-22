@@ -67,6 +67,22 @@ export class CreateOrEditFundraisingComponent extends AppComponentBase {
         // input.fundEndDate = this.inputData.fundEndDate;
         // input.fundRaisingDay = this.inputData.fundRaisingDay;
         // input.amountDonationTarget = this.inputData.amountDonationTarget;
+        if(this.inputData.fundName === null){
+            this.notify.warn("Vui lòng nhập thông tin tên quỹ");
+            return ;
+        }
+        if(this.inputData.amountDonationTarget === null){
+            this.notify.warn("Vui lòng nhập thông tin mục tiêu quỹ");
+            return ;
+        }
+        if(this.fundRaisingDate === null){
+            this.notify.warn("Vui lòng nhập thông tin ngày bắt đầu quỹ");
+            return ;
+        }
+        if(this.fundRaisingEndDate === null){
+            this.notify.warn("Vui lòng nhập thông tin ngày kết thúc quỹ");
+            return ;
+        }
         this.inputData.fundRaisingDay = DateTime.fromJSDate(this.fundRaisingDate);
         this.inputData.fundEndDate = DateTime.fromJSDate(this.fundRaisingEndDate);
         this._fundRaiser.createOrEditFundRaising(

@@ -1,3 +1,4 @@
+import { error } from 'console';
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { GridParams, PaginationParamsModel } from '@app/shared/common/models/base.model';
 import { DataFormatService } from '@app/shared/common/services/data-format.service';
@@ -27,6 +28,7 @@ export class AppAdminAuctionComponent extends AppComponentBase implements OnInit
     createdDate;
     isCloseAuction = false;
     typeAuction;
+    saving = false;
     listStatus = [
         { label: 'Hoạt động', value: 1 },
         { label: 'Đã đóng', value: 2 },
@@ -132,7 +134,6 @@ export class AppAdminAuctionComponent extends AppComponentBase implements OnInit
                 headerName: this.l('Ngày bắt đầu'),
                 headerTooltip: this.l('Ngày bắt đầu'),
                 field: 'startDate',
-                valueGetter: params => this.dataFormatService.dateFormat(params.data.startDate),
                 width: 130,
                 cellClass: ['text-left'],
             },
@@ -140,7 +141,6 @@ export class AppAdminAuctionComponent extends AppComponentBase implements OnInit
                 headerName: this.l('Ngày kết thúc'),
                 headerTooltip: this.l('Ngày kết thúc'),
                 field: 'endDate',
-                valueGetter: params => this.dataFormatService.dateFormat(params.data.endDate),
                 width: 130,
                 cellClass: ['text-left'],
             },
@@ -249,6 +249,14 @@ export class AppAdminAuctionComponent extends AppComponentBase implements OnInit
         })
     }
     payAuctionDeposit(){
-
+        this.saving = true;
+        this._fundRaiser.payDepositAuction(this.selectedAuction).subscribe(()=>{
+            this.notify.success("Trả cọc thành công. Đã gửi email tới người chiến thắng đấu giá");
+            this.saving = false;
+        },
+        (error)=>{
+            this.notify.error("Đã xảy ra lỗi");
+            this.saving = false;
+        })
     }
 }

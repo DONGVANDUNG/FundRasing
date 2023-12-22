@@ -99,6 +99,7 @@ constructor(
             headerName: this.l('Gói quỹ'),
             headerTooltip: this.l('Gói quỹ'),
             field: 'fundPackage',
+            valueGetter: params => this.dataFormatService.moneyFormat(params.data.fundPackage) + " VND / " + params.data.duration,
             width: 180,
             cellClass: ['text-left'],
         },
@@ -174,6 +175,8 @@ clearValueFilter() {
 
 getAll(paginationParams: PaginationParamsModel) {
     return this.admin.getListRegisterFundPackageUser(
+        this.status,
+        DateTime.fromJSDate(this.createdJoin),
         this.sorting ?? null,
         paginationParams ? paginationParams.skipCount : 0,
         paginationParams ? paginationParams.pageSize : 20

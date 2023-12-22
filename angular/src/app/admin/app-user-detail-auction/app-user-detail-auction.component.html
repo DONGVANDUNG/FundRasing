@@ -2,7 +2,7 @@
 <div class="block-auction">
     <p class="title-header">{{dataAuction?.itemName}}</p>
     <div class="header-auction d-flex">
-        <div class="block-starting-price font-weight-bold">Khởi điểm:{{dataAuction?.startingPrice}} VND</div>
+        <div class="block-starting-price font-weight-bold">Giá khởi điểm:{{dataAuction?.startingPrice}} VND</div>
         <span class="name-user-created">{{dataAuction?.isPublic == true ? dataAuction?.userName :
             "Ẩn danh"}}</span>
     </div>
@@ -38,7 +38,7 @@
                 <button type="button" class="btn-place-bid" *ngIf="!isDeposit" (click)="depositAuction()">Tham gia đấu giá</button>
             </div>
             <div class="block-is-public">
-                <label for="is-public" class="is-public">Tôi muốn ủng hộ công khai
+                <label for="is-public" class="is-public">Tôi muốn đấu giá công khai
                 </label>
                 <input type="checkbox" id="is-public" [(ngModel)]="userAuction.isPublic">
             </div>

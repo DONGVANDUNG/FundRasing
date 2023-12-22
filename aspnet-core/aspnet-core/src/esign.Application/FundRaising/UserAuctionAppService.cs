@@ -45,7 +45,7 @@ namespace esign.FundRaising
             auctionTransaction.NewAmount = auctionItem.AuctionPresentAmount;
             auctionTransaction.AuctionItemId = input.AuctionItemId;
             auctionTransaction.AuctionDate = DateTime.Now;
-            auctionTransaction.AuctioneerId = AbpSession.UserId;
+            auctionTransaction.AuctioneerId = input.UserId;
             auctionTransaction.IsPublic = input.IsPublic;
             await _mstAuctionTransactionRepo.InsertAsync(auctionTransaction);
         }

@@ -9,19 +9,19 @@
                         <span class="kt_subheader__desc">{{l("Thông tin giao dịch hệ thống")}}</span>
                     </h3>
                     <div class="row mb-1 mt-5">
-                        <div class="col-md-4">
+                        <!-- <div class="col-md-4">
                             <div class="form-group">
                                 <tmss-combobox [items]="listFundName" [(ngModel)]="fundId"
                                  [label]="'name'" [key]="'id'"  [text]="l('Quỹ người dùng')" name="fundId">
                                 </tmss-combobox>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="col-md-4">
                             <div class="form-group">
-                                <tmss-datepicker [(ngModel)]="transactionDate" [dateInputFormat]="'DD/MM/YYYY'" [text]="l('Ngày tạo gói')" name="createdDate"></tmss-datepicker>
+                                <tmss-datepicker [(ngModel)]="transactionDate" [dateInputFormat]="'DD/MM/YYYY'" [text]="l('Ngày giao dịch')" name="createdDate"></tmss-datepicker>
                             </div>
                         </div>
-                        <div class="col-1"></div>
+                        <div class="col-5"></div>
                         <div class="col-md-3 d-flex justify-content-end">
                             <div class="form-group float-right">
                                 <button type="button" class="tmss-btn btn-outline-primary"

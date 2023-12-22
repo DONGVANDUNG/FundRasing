@@ -20,11 +20,11 @@ namespace esign.FundRaising
         public List<string> ListImageUrl { get; set; }
         public string ReasonOfFund { get; set; }
         public string Description { get; set; }
-        public float? AmountDonatePresent { get; set; }
-        public float? AmountDonateTarget { get; set; }
-        public float? PercentAchieved { get; set; }
+        public decimal? AmountDonatePresent { get; set; }
+        public decimal? AmountDonateTarget { get; set; }
+        public decimal? PercentAchieved { get; set; }
         public string ContentFund { get; set; }
-        public float? PaymenFee { get; set; }
+        public decimal? PaymenFee { get; set; }
         public bool? IsPayeFee { get; set; }
         public int? DonateAmount{ get; set; }
         public string Purpose { get; set; }

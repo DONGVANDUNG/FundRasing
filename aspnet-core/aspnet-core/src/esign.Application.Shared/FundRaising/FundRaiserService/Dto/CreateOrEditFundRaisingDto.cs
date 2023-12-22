@@ -19,7 +19,7 @@ namespace esign.FundRaising.FundRaiserService.Dto
         public DateTime? FundRaisingDay { get; set; }
         public string FundName { get; set; }
         public DateTime? FundEndDate { get; set; }
-        public float? AmountDonationTarget { get; set; }
+        public decimal? AmountDonationTarget { get; set; }
         public List<string >listImage { get; set; }
     }
 }

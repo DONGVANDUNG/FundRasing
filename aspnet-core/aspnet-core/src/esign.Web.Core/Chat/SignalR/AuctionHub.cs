@@ -30,7 +30,7 @@ IUnitOfWorkManager unitOfWorkManager)
             _dapperRepo = dapperRepo;
             _unitOfWorkManager = unitOfWorkManager;
         }
-        public async Task UpdateAmountOfAuction(float? amountAuction, long? auctionItemId, bool isPublic)
+        public async Task UpdateAmountOfAuction(float? amountAuction, long? auctionItemId, bool isPublic,long userId)
         {
             //auctionItem.AuctionPresentAmount = amountAuction;
             //await _auctionItemsRepo.UpdateAsync(auctionItem);
@@ -42,9 +42,9 @@ IUnitOfWorkManager unitOfWorkManager)
                 {
                     AmountAuction = amountAuction,
                     AuctionItemId = auctionItemId,
-                    IsPublic = isPublic
+                    IsPublic = isPublic,
+                    UserId = userId
                 };
-                await _userAppService.UserAuction(userAuction);
                 var amountJumnpMin = auctionItem.AmountJumpMin + auctionItem.AuctionPresentAmount;
                 var amountJumnpMax = auctionItem.AmountJumpMax + auctionItem.AuctionPresentAmount;
                 await _userAppService.UserAuction(userAuction);

@@ -99,7 +99,7 @@ export class AuctionService extends AppComponentBase {
             return;
         }
         this.chatHub
-             .invoke('updateAmountOfAuction', amountPresent, parseInt(auctionId), isPublic)
+             .invoke('updateAmountOfAuction', amountPresent, parseInt(auctionId), isPublic,abp.session.userId)
             //.invoke('updateAmountOfAuction',1)
             .then((result) => {
                 this.notify.success("Đấu giá thành công");

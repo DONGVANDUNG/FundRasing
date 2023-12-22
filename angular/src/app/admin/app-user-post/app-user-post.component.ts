@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DateTimeService } from '@app/shared/common/timing/date-time.service';
 import { AppConsts } from '@shared/AppConsts';
-import { AdminFundRaisingServiceProxy, UserFundRaisingServiceProxy, UserServiceProxy } from '@shared/service-proxies/service-proxies';
+import { AdminFundRaisingServiceProxy, InputForGetAllListPost, UserFundRaisingServiceProxy, UserServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CreateOrEditPostComponent } from '../app-admin-post/create-or-edit-post/create-or-edit-post.component';
 import { DataFormatService } from '@app/shared/common/services/data-format.service';
 import { DataUtil } from '@metronic/app/kt/_utils';
@@ -19,7 +19,8 @@ export class AppUserPostComponent implements OnInit {
     code: true, name: 'Có'
   }, {
     code: false, name: 'Không'
-  }]
+  }];
+  input = new InputForGetAllListPost;
   baseUrl = AppConsts.remoteServiceBaseUrl + '/';
   filter;
   createdDateFilter;
@@ -30,16 +31,12 @@ export class AppUserPostComponent implements OnInit {
     this.getAllFundRaising();
   }
   getAllFundRaising() {
-    this._userServiceProxy.getListPostOfFundRaising().subscribe((result) => {
+    this._userServiceProxy.getListPostOfFundRaising(this.input).subscribe((result) => {
       this.listFundRaising = result;
-      // this.listFundRaising.forEach((item)=>{
-      //   item.amountDonatePresent = this.dataFormatService.moneyFormat(item.amountDonatePresent);
-      //   item.amountDonateTarget = this.dataFormatService.moneyFormat(item.amountDonateTarget);
-      // })
-      // setTimeout(() => {
-      //   this.getProcess();
-      // }, 1000);
-
+      this.listFundRaising.forEach((item)=>{
+        item.amountDonatePresent = this.dataFormatService.moneyFormat(item.amountDonatePresent);
+        item.amountDonateTarget = this.dataFormatService.moneyFormat(item.amountDonateTarget);
+      })
     })
   }
   formatDateTime(input, format) {

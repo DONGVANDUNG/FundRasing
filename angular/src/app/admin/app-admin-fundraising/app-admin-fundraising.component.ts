@@ -207,4 +207,9 @@ export class AppAdminFundraisingComponent extends AppComponentBase implements On
     createFund() {
         this.modalCreateFund.show();
     }
+    hiddenFund(){
+        this._funRaiser.hiddenFundRaising(this.selectedFund).subscribe(()=>{
+            this.notify.success('Ẩn quỹ thành công')
+        })
+    }
 }

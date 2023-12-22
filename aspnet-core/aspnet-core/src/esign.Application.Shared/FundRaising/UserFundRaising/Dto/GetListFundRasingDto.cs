@@ -9,10 +9,10 @@ namespace esign.FundRaising
         public long? Id { get; set; }
         public List<string> ListImageUrl { get; set; }
         public string PostTitle { get; set; }
-        public float? AmountDonatePresent { get; set; }
-        public float? AmountDonateTarget { get; set; }
+        public decimal? AmountDonatePresent { get; set; }
+        public decimal? AmountDonateTarget { get; set; }
         //Phần trăm đạt được
-        public float? PercentAchieved { get; set; }
+        public decimal? PercentAchieved { get; set; }
         public string OrganizationName { get; set; }
         public string PostTopic { get; set; }
 

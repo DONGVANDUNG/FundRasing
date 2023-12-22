@@ -7,5 +7,7 @@ namespace esign.FundRaising.Admin.Dto
 {
     public class RegisterFundPackageInputDto :PagedAndSortedResultRequestDto
     {
+        public bool? Status { get; set; }
+        public DateTime? CreatedTime { get; set; }
     }
 }

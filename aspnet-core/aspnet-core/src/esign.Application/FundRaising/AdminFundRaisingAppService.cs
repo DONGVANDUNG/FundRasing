@@ -146,9 +146,10 @@ namespace esign.FundRaising
 
         public async Task<PagedResultDto<TransactionOfFundForDto>> getListTransactionForFund(TransactionForFundInputDto input)
         {
-            var listTransaction = from transaction in _mstSleTransactionRepo.GetAll().Where(e => input.FundId == 0
-                                  || e.FundId == input.FundId).Where(e => e.IsAdmin == true).
-                                  Where(e => input.TransactionTime == null || e.CreationTime.Date == input.TransactionTime.Value.Date)
+            var listTransaction = from transaction in _mstSleTransactionRepo.GetAll()
+                                  //Where(e => input.FundId == 0|| e.FundId == input.FundId)
+                                  .Where(e => e.IsAdmin == true)
+                                 .Where(e => input.TransactionTime == null || e.CreationTime.Date == input.TransactionTime.Value.Date)
                                   join user in _mstSleUserRepo.GetAll() on transaction.SenderId equals user.Id
                                   join fund in _mstSleFundRepo.GetAll() on transaction.FundId equals fund.Id
                                   select new TransactionOfFundForDto
@@ -157,7 +158,7 @@ namespace esign.FundRaising
                                       Amount = transaction.AmountOfMoney,
                                       Content = transaction.MessageToFund,
                                       FundName = fund.FundName,
-                                      UserDonate = user.UserLogin,
+                                      UserDonate = transaction.IsPublic == true ? user.Surname +" "+user.Name : "Người dùng ẩn danh",
                                       CreatedTime = transaction.CreationTime.ToString("dd/MM/yyyy")
                                   };
             var totalCount = await listTransaction.CountAsync();
@@ -312,15 +313,15 @@ namespace esign.FundRaising
                 userPackage.IsExpired = false;
                 if (fundPackage.Duration == "Tuần")
                 {
-                    userPackage.FundEndDate = DateTime.Now.AddDays(7);
+                    userPackage.FundEndDate = DateTime.Now.AddDays(8);
                 }
                 if (fundPackage.Duration == "Tháng")
                 {
-                    userPackage.FundEndDate = DateTime.Now.AddDays(30);
+                    userPackage.FundEndDate = DateTime.Now.AddDays(31);
                 }
                 if (fundPackage.Duration == "Năm")
                 {
-                    userPackage.FundEndDate = DateTime.Now.AddDays(365);
+                    userPackage.FundEndDate = DateTime.Now.AddDays(366);
                 }
                 await _mstUserFundPackageRepo.InsertAsync(userPackage);
 
@@ -367,7 +368,8 @@ namespace esign.FundRaising
         }
         public async Task<PagedResultDto<RegisterFundPackageUserDto>> getListRegisterFundPackageUser(RegisterFundPackageInputDto input)
         {
-            var listRegister = from fundPackage in _mstUserFundPackageRepo.GetAll()
+            var listRegister = from fundPackage in _mstUserFundPackageRepo.GetAll().Where(e=> e.IsExpired == !input.Status).
+                               Where(e=> input.CreatedTime == null || e.CreationTime.Date == input.CreatedTime.Value.Date)
                                join package in _mstSleFundPackageRepo.GetAll() on fundPackage.FundPackageId equals package.Id
                                join user in _mstSleUserRepo.GetAll() on fundPackage.UserId equals user.Id
                                select new RegisterFundPackageUserDto
@@ -376,7 +378,8 @@ namespace esign.FundRaising
                                    UserNameRegister = user.Surname + " " + user.Name,
                                    CreatedRegister = fundPackage.CreationTime.ToString("dd/MM/yyyy"),
                                    ExpireDate = fundPackage.FundEndDate.Value.ToString("dd/MM/yyyy"),
-                                   FundPackage = package.PaymentFee + "VND / " + package.Duration,
+                                   FundPackage = package.PaymentFee,
+                                   Duration = package.Duration,
                                    Status = fundPackage.IsExpired == false ? "Đang hoạt động" : "Hết hạn"
                                };
             var totalCount = await listRegister.CountAsync();

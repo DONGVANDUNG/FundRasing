@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 
 namespace esign.FundRaising
 {
@@ -194,13 +195,13 @@ namespace esign.FundRaising
             await _mstSleFundRepo.UpdateAsync(userCreatedFundId);
 
             var fundPackageId = _mstUserFundPackageRepo.FirstOrDefault(e => e.UserId == userCreatedFundId.UserId).FundPackageId;
-            var commission = _mstSleFundPackageRepo.FirstOrDefault(e => e.Id == fundPackageId).Commission;
+            var fundPackage = _mstSleFundPackageRepo.FirstOrDefault(e => e.Id == fundPackageId);
 
             var fundRaiserId = _mstSleFundRepo.FirstOrDefault(e => e.Id == input.FundId).UserId;
             var fundRaiserReceive = _mstSleUserRepo.FirstOrDefault(e => e.Id == fundRaiserId).UserName;
             var userSend = _mstSleUserRepo.FirstOrDefault(e => e.Id == AbpSession.UserId).UserName;
 
-            var amountOfCommission = input.AmountOfMoney * commission / 100;
+            var amountOfCommission = input.AmountOfMoney * fundPackage.Commission / 100;
             //Nhận tiền
             var accountUserRaiseFund = await _mstBankRepo.FirstOrDefaultAsync(e => e.UserId == fundRaiserId);
             if (accountUserRaiseFund == null)
@@ -229,14 +230,14 @@ namespace esign.FundRaising
 
             // Chuyển tiền cho admin
             var bankAdmin = await _mstBankRepo.FirstOrDefaultAsync(e => e.UserId == 1);
-            bankAdmin.Balance += input.AmountOfMoney * (commission / 100);
+            bankAdmin.Balance += input.AmountOfMoney * (fundPackage.Commission / 100);
             await _mstBankRepo.UpdateAsync(accountUserRaiseFund);
 
             var transactionAdmin = new FundTransactions();
             transactionAdmin.FundId = input.FundId;
-            transactionAdmin.AmountOfMoney = input.AmountOfMoney * (commission / 100);
+            transactionAdmin.AmountOfMoney = fundPackage.PaymentFee;
             transactionAdmin.MessageToFund = "Trừ tiền phí gói quỹ";
-            transactionAdmin.Commission = input.AmountOfMoney * commission / 100;
+            transactionAdmin.Commission = input.AmountOfMoney * fundPackage.Commission / 100;
             transactionAdmin.Receiver = "Admin";
             transactionAdmin.Sender = userSend;
             transactionAdmin.SenderId = fundRaiserId;
@@ -433,7 +434,7 @@ namespace esign.FundRaising
         {
             if (input.Id == 0 || input.Id == null)
             {
-                var accountExist = await _mstBankRepo.FirstOrDefaultAsync(e => e.BankNumber == input.BankNumber);
+                var accountExist = await _mstBankRepo.FirstOrDefaultAsync(e => e.BankNumber == input.BankNumber || e.BankName == input.BankName);
                 if (accountExist != null)
                 {
                     throw new UserFriendlyException("Tài khoản đã tồn tại trong hệ thống");
@@ -454,17 +455,17 @@ namespace esign.FundRaising
             //}
         }
 
-        public async Task<List<GetFundRaisingViewForAdminDto>> getListPostOfFundRaising()
+        public async Task<List<GetFundRaisingViewForAdminDto>> getListPostOfFundRaising([FromBody]InputForGetAllListPost input)
         {
-            var listPost = (from post in _mstFundRaiserPostRepo.GetAll()
+            var listPost = (from post in _mstFundRaiserPostRepo.GetAll().Where(e=> input.FilterText == null || e.PostTitle.Contains(input.FilterText))
+                            .Where(e=> input.CreatimePost == null || e.CreationTime.Date == input.CreatimePost.Value.Date)
                             join fund in _mstSleFundRepo.GetAll()
                             on post.FundId equals fund.Id
-                            join user in _mstSleUserRepo.GetAll() on fund.UserId equals user.Id
                             select new GetFundRaisingViewForAdminDto
                             {
                                 Id = post.Id,
                                 FundId = fund.Id,
-                                OrganizationName = user.Company,
+                                FundName = fund.FundName,
                                 PostTitle = post.PostTitle,
                                 AmountDonatePresent = fund.AmountDonationPresent,
                                 AmountDonateTarget = fund.AmountDonationTarget,
@@ -506,27 +507,27 @@ namespace esign.FundRaising
                                    }).OrderByDescending(e=>e.AmountOfMoney).ToListAsync();
             return await listTransaction;
         }
-        public async Task UserAuction(UserAuction input)
-        {
-            var auctionItem = _mstAuctionItemsRepo.FirstOrDefault(e => e.Id == input.AuctionItemId);
-            var auctionTransaction = new AuctionHistory();
-            auctionTransaction.OldAmount = auctionItem.AuctionPresentAmount != null ? auctionItem.AuctionPresentAmount : auctionItem.StartingPrice;
-            if (input.AmountAuction < auctionItem.AuctionPresentAmount || input.AmountAuction > auctionItem.AuctionPresentAmount + auctionItem.AmountJumpMax)
-            {
-                throw new UserFriendlyException("Mức đấu thầu không hợp lệ");
-            }
-            if (auctionItem != null)
-            {
-                auctionItem.AuctionPresentAmount = input.AmountAuction;
-            }
+        //public async Task UserAuction(UserAuction input)
+        //{
+        //    var auctionItem = _mstAuctionItemsRepo.FirstOrDefault(e => e.Id == input.AuctionItemId);
+        //    var auctionTransaction = new AuctionHistory();
+        //    auctionTransaction.OldAmount = auctionItem.AuctionPresentAmount != null ? auctionItem.AuctionPresentAmount : auctionItem.StartingPrice;
+        //    if (input.AmountAuction < auctionItem.AuctionPresentAmount || input.AmountAuction > auctionItem.AuctionPresentAmount + auctionItem.AmountJumpMax)
+        //    {
+        //        throw new UserFriendlyException("Mức đấu thầu không hợp lệ");
+        //    }
+        //    if (auctionItem != null)
+        //    {
+        //        auctionItem.AuctionPresentAmount = input.AmountAuction;
+        //    }
 
-            await _mstAuctionItemsRepo.UpdateAsync(auctionItem);
-            auctionTransaction.NewAmount = auctionItem.AuctionPresentAmount;
-            auctionTransaction.AuctionDate = DateTime.Now;
-            auctionTransaction.AuctioneerId = AbpSession.UserId;
-            auctionTransaction.IsPublic = input.IsPublic;
-            await _mstAuctionTransactionRepo.InsertAsync(auctionTransaction);
-        }
+        //    await _mstAuctionItemsRepo.UpdateAsync(auctionItem);
+        //    auctionTransaction.NewAmount = auctionItem.AuctionPresentAmount;
+        //    auctionTransaction.AuctionDate = DateTime.Now;
+        //    auctionTransaction.AuctioneerId = AbpSession.UserId;
+        //    auctionTransaction.IsPublic = input.IsPublic;
+        //    await _mstAuctionTransactionRepo.InsertAsync(auctionTransaction);
+        //}
         public async Task UserDepositAuction(float deposit, long auctionItemId)
         {
             var bankAccount = await _mstBankRepo.FirstOrDefaultAsync(e => e.UserId == AbpSession.UserId);

@@ -58,6 +58,9 @@
             <button class="tmss-btn btn-outline-primary mr-0" [disabled]="!this.selectedFund" (click)="editFund()">
                 <i class="fas fa-edit"></i>{{l("Sửa quỹ")}}
             </button>
+            <button class="tmss-btn btn-outline-primary mr-0" [disabled]="!this.selectedFund" (click)="hiddenFund()">
+                <i class="fas fa-edit"></i>{{l("Ẩn quỹ")}}
+            </button>
         </div>
     </div>
 <app-create-or-edit-fundraising #createOrEditFund (modalSave)="onGridReady(paginationParams)"></app-create-or-edit-fundraising>

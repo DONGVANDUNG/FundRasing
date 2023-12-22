@@ -76,8 +76,7 @@ export class AppAdminFundTransactionComponent extends AppComponentBase implement
                 headerName: this.l('Người gửi'),
                 headerTooltip: this.l('Người gửi'),
                 field: 'userDonate',
-                flex: 3,
-                width: 130,
+                minWidth: 190,
                 cellClass: ['text-left'],
             },
             {
@@ -85,21 +84,21 @@ export class AppAdminFundTransactionComponent extends AppComponentBase implement
                 headerTooltip: this.l('Số tiền donate'),
                 field: 'amount',
                 valueGetter: params => this.dataFormatService.moneyFormat(params.data.amount) + " VND",
-                flex: 3,
-                cellClass: ['text-left'],
-            },
-            {
-                headerName: this.l('Nội dung chuyển tiền'),
-                headerTooltip: this.l('Nội dung chuyển tiền'),
-                field: 'content',
-                flex: 4,
+                minWidth: 150,
                 cellClass: ['text-left'],
             },
             {
                 headerName: this.l('Ngày chuyển tiền'),
                 headerTooltip: this.l('Ngày chuyển tiền'),
                 field: 'createdTime',
-                flex: 4,
+                minWidth: 150,
+                cellClass: ['text-left'],
+            },
+            {
+                headerName: this.l('Nội dung chuyển tiền'),
+                headerTooltip: this.l('Nội dung chuyển tiền'),
+                field: 'content',
+                minWidth:500,
                 cellClass: ['text-left'],
             },
         ];
@@ -157,7 +156,6 @@ export class AppAdminFundTransactionComponent extends AppComponentBase implement
 
     getAllTransaction(paginationParams: PaginationParamsModel) {
         return this.adminFundRaising.getListTransactionForFund(
-            this.fundId,
             DateTime.fromJSDate(this.transactionDate),
             this.sorting ?? null,
             paginationParams ? paginationParams.skipCount : 0,

@@ -1,11 +1,11 @@
-<input class="input-search" placeholder="Tên quỹ, tiêu đề quỹ" (keyup)="getAllFundRaising()" [(ngModel)]="filter" />
+<input class="input-search" placeholder="Tên quỹ, tiêu đề quỹ" (keyup)="getAllFundRaising()" [(ngModel)]="input.filterText" />
 <!-- <i class="fa-solid fa-magnifying-glass" (click)="getAllFundRaising()"></i> -->
-<div class="filter-fee">
+<!-- <div class="filter-fee">
     <p-dropdown [style]="{'width':'100%'}" [options]="listOption" [(ngModel)]="isPayFee" optionLabel="name"
         optionValue="code" (onChange)="getAllFundRaising()" placeholder="Trả phí gói"></p-dropdown>
-</div>
+</div> -->
 <div class="filter-date">
-    <p-calendar name="fundEndDate" [(ngModel)]="createdDate" (onSelect)="onChangeDate($event)" dateFormat="dd/mm/yy"
+    <p-calendar name="fundEndDate" [(ngModel)]="input.creatimePost" (onSelect)="onChangeDate($event)" dateFormat="dd/mm/yy"
         placeholder="Ngày tạo quỹ"></p-calendar>
 </div>
 <div class="list-fund-raising">
@@ -18,11 +18,11 @@
         </div>
     </div> -->
     <div class="list-fund-raising">
-        <div class="slide-item" *ngFor="let item of listFundRaising"> 
+        <div class="slide-item" *ngFor="let item of listFundRaising">
             <img [src]="baseUrl + item.listImageUrl[0]" alt="" class="item-image" [routerLink]="['../user-post-detail',item.id,item.fundId]">
             <div class="item-tag">{{item.postTopic}}</div>
             <div class="item-content">
-                <a>{{item.organizationName}}</a>
+                <a>{{item.fundName}}</a>
                 <h2>{{item.postTitle}}</h2>
                 <div class="progress-bar">
                     <span [style.width.%]="item.percentAchieved"></span>

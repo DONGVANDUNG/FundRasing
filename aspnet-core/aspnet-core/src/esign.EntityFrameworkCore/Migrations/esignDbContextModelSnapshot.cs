@@ -2552,11 +2552,11 @@ namespace esign.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<float?>("AmountDonationPresent")
-                        .HasColumnType("real");
+                    b.Property<decimal?>("AmountDonationPresent")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<float?>("AmountDonationTarget")
-                        .HasColumnType("real");
+                    b.Property<decimal?>("AmountDonationTarget")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2");
@@ -2603,8 +2603,8 @@ namespace esign.Migrations
                     b.Property<long?>("LastModifierUserId")
                         .HasColumnType("bigint");
 
-                    b.Property<float?>("PercentAchieved")
-                        .HasColumnType("real");
+                    b.Property<decimal?>("PercentAchieved")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int?>("Status")
                         .HasColumnType("int");
@@ -2711,55 +2711,6 @@ namespace esign.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("FundDetailContent");
-                });
-
-            modelBuilder.Entity("esign.FundRaising.FundDetails", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("CreatorUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("DeleterUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime?>("DeletionTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("FundId")
-                        .HasColumnType("bigint");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("LastModifierUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Note")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OrganizationName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Purpose")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Target")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("FundDetails");
                 });
 
             modelBuilder.Entity("esign.FundRaising.FundPackage", b =>

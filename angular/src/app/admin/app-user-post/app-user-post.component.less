@@ -1,6 +1,6 @@
 .input-search {
     position: absolute;
-    width: 20%;
+    width: 36%;
     height: 4.7vh;
     border-radius: 6px;
     // background-color: white;
@@ -31,6 +31,7 @@
     left: 60%;
     z-index: 998;
     height: 4.7vh;
+    color:white;
 
 }
 .fa-magnifying-glass {
@@ -41,7 +42,12 @@
     z-index: 999;
     cursor: pointer;
 }
-
+:host ::ng-deep {
+    .p-inputtext,.p-inputtext:hover{
+        color:gray;
+        background-color: white;
+    }
+}
 .list-fund-raising {
     display: flex;
     justify-content: flex-start;
@@ -200,6 +206,7 @@
 
         span:first-child {
             color: #F9153E;
+            font-weight: bold;
         }
 
         span:last-child {

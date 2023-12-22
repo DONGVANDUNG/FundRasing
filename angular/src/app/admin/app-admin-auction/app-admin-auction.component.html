@@ -56,7 +56,7 @@
             <button class="tmss-btn btn-outline-primary mr-0" (click)="hiddenAuction()">
                 <i class="fas fa-plus"></i> {{l("Ẩn bài đăng")}}
             </button>
-            <button class="tmss-btn btn-outline-primary mr-0" *ngIf="isCloseAuction" (click)="payAuctionDeposit()">
+            <button class="tmss-btn btn-outline-primary mr-0" [buttonBusy]="saving"  *ngIf="isCloseAuction" (click)="payAuctionDeposit()">
                 <i class="fas fa-plus"></i> {{l("Trả cọc")}}
             </button>
         </div>

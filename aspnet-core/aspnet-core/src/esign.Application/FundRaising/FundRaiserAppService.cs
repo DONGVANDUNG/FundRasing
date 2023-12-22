@@ -318,6 +318,7 @@ namespace esign.FundRaising
                     auctionItem.UserId = AbpSession.UserId;
                     auctionItem.IsClose = false;
                     auctionItem.LimitedPersionJoin = input.LimitedPersionJoin;
+                    auctionItem.NumberOfParticipants = 0;
                     auctionItem.TargetAmountOfMoney = input.TargetAmountOfMoney;
                     auctionItem.ItemName = input.ItemName;
                     auctionItem.AmountJumpMax = input.AmountJumpMax;
@@ -432,10 +433,10 @@ namespace esign.FundRaising
                             TitleAuction = item.TitleAuction,
                             AmountJumpMax = item.AmountJumpMax,
                             AmountJumpMin = item.AmountJumpMin,
-                            EndDate = item.EndDate,
+                            EndDate = item.EndDate.Value.ToString("dd/MM/yyyy"),
                             StartingPrice = item.StartingPrice,
                             AuctionPresentAmount = item.AuctionPresentAmount,
-                            StartDate = (DateTime)item.StartDate,
+                            StartDate = item.StartDate.Value.ToString("dd/MM/yyyy"),
                             IntroduceItem = item.IntroduceItem,
                             Status = item.IsClose == false ? "Đang hoạt động" : "Đã đóng",
                             LimitedPersionJoin = item.LimitedPersionJoin,
@@ -479,9 +480,9 @@ namespace esign.FundRaising
                                    TitleAuction = item.TitleAuction,
                                    AmountJumpMax = item.AmountJumpMax,
                                    AmountJumpMin = item.AmountJumpMin,
-                                   EndDate = item.EndDate,
+                                   EndDate = item.EndDate.Value.ToString("dd/MM/yyyy"),
                                    StartingPrice = item.StartingPrice,
-                                   StartDate = (DateTime)item.StartDate,
+                                   StartDate = item.StartDate.Value.ToString("dd/MM/yyyy"),
                                    IntroduceItem = item.IntroduceItem,
                                    NextMinimumBid = item.AuctionPresentAmount + item.AmountJumpMin,
                                    NextMaximumBid = item.AuctionPresentAmount + item.AmountJumpMax,
@@ -585,20 +586,23 @@ namespace esign.FundRaising
         }
         public async void PayDepositAuction(long auctionItemId)
         {
-            var auctionItem = await _mstSleAuctionItemsRepo.FirstOrDefaultAsync(e => e.Id == auctionItemId);
-            var listDeposit = await _mstSleAuctionDepositRepo.GetAll().Where(e => e.AuctionItemId == auctionItem.Id && e.IsPayDeposit == false).ToListAsync();
-            var emailUserWin = "";
-            foreach(var deposit in listDeposit)
+            var auctionItem =  _mstSleAuctionItemsRepo.FirstOrDefault(e => e.Id == auctionItemId);
+            var listDeposit =  _mstSleAuctionDepositRepo.GetAll().Where(e => e.AuctionItemId == auctionItem.Id && e.IsPayDeposit == false).ToList();
+            if (listDeposit == null)
             {
-                var bankAccountUserDeposit = await _mstBankRepo.FirstOrDefaultAsync(e => e.UserId == deposit.UserId);
-                var bankAccountAdmin = await _mstBankRepo.FirstOrDefaultAsync(e => e.UserId == auctionItem.UserId);
+                throw new UserFriendlyException("Đã trả cọc toàn bộ người tham gia đấu giá");
+            }
+            foreach (var deposit in listDeposit)
+            {
+                var bankAccountUserDeposit =  _mstBankRepo.FirstOrDefault(e => e.UserId == deposit.UserId);
+                var bankAccountAdmin =  _mstBankRepo.FirstOrDefault(e => e.UserId == auctionItem.UserId);
                 if (bankAccountUserDeposit != null)
                 {
                     bankAccountUserDeposit.Balance += deposit.DepositAmount;
-                    await _mstBankRepo.UpdateAsync(bankAccountUserDeposit);
+                     _mstBankRepo.Update(bankAccountUserDeposit);
 
                     bankAccountAdmin.Balance -= deposit.DepositAmount;
-                    await _mstBankRepo.UpdateAsync(bankAccountAdmin);
+                     _mstBankRepo.Update(bankAccountAdmin);
 
                     AuctionTransactionDeposit fundTransaction = new AuctionTransactionDeposit();
                     fundTransaction.SenderId = auctionItem.UserId;
@@ -608,11 +612,11 @@ namespace esign.FundRaising
                     fundTransaction.MessageContent = "Trả cọc đấu giá";
                     await _mstAuctionTransactionDeposit.InsertAsync(fundTransaction);
                     deposit.IsPayDeposit = true;
-                    await _mstSleAuctionDepositRepo.UpdateAsync(deposit);
+                     _mstSleAuctionDepositRepo.Update(deposit);
                 }
             }
             var user = listDeposit.MaxBy(e => e.DepositAmount);
-            emailUserWin =  _mstSleUserRepo.FirstOrDefault(e=>e.Id == user.UserId).Email;
+            var emailUserWin =  _mstSleUserRepo.FirstOrDefault(e=>e.Id == user.UserId)?.Email;
             SendEmailInputDto sendEmailInput = new SendEmailInputDto
             {
                 EmailReceive = emailUserWin,
@@ -641,9 +645,9 @@ namespace esign.FundRaising
                                    TitleAuction = item.TitleAuction,
                                    AmountJumpMax = item.AmountJumpMax,
                                    AmountJumpMin = item.AmountJumpMin,
-                                   EndDate = item.EndDate,
+                                   EndDate = item.EndDate.Value.ToString("dd/MM/yyyy"),
                                    StartingPrice = item.StartingPrice,
-                                   StartDate = (DateTime)item.StartDate,
+                                   StartDate = item.StartDate.Value.ToString("dd/MM/yyyy"),
                                    IntroduceItem = item.IntroduceItem,
                                    NextMinimumBid = item.AuctionPresentAmount + item.AmountJumpMin,
                                    NextMaximumBid = item.AuctionPresentAmount + item.AmountJumpMax,
@@ -670,6 +674,15 @@ namespace esign.FundRaising
             userPackage.FundPackageId = fundPackageId;
             userPackage.IsExpired = false;
             await _mstUserFundPackage.InsertAsync(userPackage);
+        }
+        public void HiddenFundRaising(long fundRaisingId)
+        {
+            var fundRaising = _mstSleFundRepo.FirstOrDefault(e => e.Id == fundRaisingId && e.UserId == AbpSession.UserId);
+            if(fundRaising != null)
+            {
+                fundRaising.Status = 2;
+                _mstSleFundRepo.Update(fundRaising);
+            }
         }
     }
 }

@@ -24,9 +24,9 @@ namespace esign.Entity
         public bool? IsOutStanding { get; set; }
         public bool? IsPayFee { get; set; }
         //Tiến độ thực hiện
-        public float? PercentAchieved { get; set; }
-        public float? AmountDonationPresent { get; set; }
-        public float? AmountDonationTarget { get; set; }
+        public decimal? PercentAchieved { get; set; }
+        public decimal? AmountDonationPresent { get; set; }
+        public decimal? AmountDonationTarget { get; set; }
         public int? DonateAmount { get; set; }
 
     }

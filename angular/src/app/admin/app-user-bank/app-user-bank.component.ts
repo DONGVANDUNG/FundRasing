@@ -53,13 +53,13 @@ export class AppUserBankComponent extends AppComponentBase implements OnInit {
         })
     }
     save() {
-        if (this.dataInforBankUser.bankName) {
+        if (this.dataInforBankUser.bankName === undefined) {
             this.notify.warn("Vui lòng chọn ngân hàng")
         }
-        if (this.dataInforBankUser.bankNumber) {
+        if (this.dataInforBankUser.bankNumber === undefined) {
             this.notify.warn("Vui lòng nhập số tài khoản")
         }
-        if (this.dataInforBankUser.accountName) {
+        if (this.dataInforBankUser.accountName === undefined) {
             this.notify.warn("Vui lòng nhập tên tài khoản")
         }
         this._userServiceProxy.createOrEditAccountBank(this.dataInforBankUser).subscribe((re) => {

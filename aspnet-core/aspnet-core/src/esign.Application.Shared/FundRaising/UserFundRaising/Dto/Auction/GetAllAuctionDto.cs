@@ -15,8 +15,8 @@ namespace esign.FundRaising.UserFundRaising.Dto.Auction
         public float? AmountJumpMin { get; set; }
         public float? AmountJumpMax { get; set; }
         public float? StartingPrice { get; set; }
-        public DateTime? StartDate { get; set; }
-        public DateTime? EndDate { get; set; }
+        public string StartDate { get; set; }
+        public string EndDate { get; set; }
         public List<string> ListImage { get; set; }
         public string UserName { get; set; }
         public bool? IsPublic { get; set; }
