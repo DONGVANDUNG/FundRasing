@@ -143,9 +143,8 @@ export class CreateOrEditPostComponent extends AppComponentBase {
                 this.input
             ).subscribe(
                 () => {
-                    this.notify.success("Thêm bài đăng thành công");
+                    this.notify.success("Sửa đăng thành công");
                     this.modalSave.emit(null);
-
                     this.modal.hide();
                 }, (error) => {
                     this.notify.error("Đã xảy ra lỗi")

@@ -1,12 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AppAdminStatisticalWebComponent } from './app-admin-statistical-web.component';
 // import { AppAdminStatisticalWebComponent } from './app-admin-statistical-web.component';
 
 const routes: Routes = [
     {
         path: '',
-        component: AppAdminStatisticalWebComponent,
+        // component: AppAdminStatisticalWebComponent,
         pathMatch: 'full',
     },
 ];

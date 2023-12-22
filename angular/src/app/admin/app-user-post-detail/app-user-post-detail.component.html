@@ -8,7 +8,8 @@
         </p>
         <div class="block-header d-flex justify-content-between">
             <span class="orgnization-name">{{inforFundDetail?.organizationName}}</span>
-            <span class="amount-donate"> <i class="fa-regular fa-user"></i>{{inforFundDetail?.donateAmount}} lượt ủng hộ</span>
+            <span class="amount-donate"> <i class="fa-regular fa-user"></i>{{inforFundDetail?.donateAmount}} lượt ủng
+                hộ</span>
         </div>
         <div class="block-target-fund d-flex justify-content-between">
             <p>Mục tiêu dự án</p>
@@ -21,13 +22,22 @@
             <p>Đã đạt được</p>
             <span class="amount-money-achieved">{{inforFundDetail?.amountDonatePresent}} VND</span>
         </div>
+        <div class="wpneo-single-sidebar d-flex justify-content-end mt-4" *ngIf="this.inforFundDetail.isCloseFund == 1">
+            <div class="container1 alert d-flex justify-content-center align-items-center" style="background: #FEF2F5;">
+                <div>
+                    <img class="icon"
+                        src="https://givenow.vn/wp-content/themes/funlin-progression-child/images/icons/ketthuc.svg" alt="icon">
+                </div>
+                <div class="text-alert"> Kết thúc thời gian gây qũy</div>
+            </div>
+        </div>
     </div>
 </div>
-<div class="block-donate">
+<div class="block-donate" *ngIf="this.inforFundDetail.isCloseFund == 2">
     <div class="list-image-detail"></div>
     <div class="donation d-flex justify-content-end">
         <button class="btn-donate" (click)="donateFundRaiser()">Ủng hộ ngay</button>
-        <button class="btn-raiser" *ngIf ="!isFundRaiser" (click)="requestToFundRaiser()">Trở thành sứ giả</button>
+        <button class="btn-raiser" *ngIf="!isFundRaiser" (click)="requestToFundRaiser()">Trở thành sứ giả</button>
         <a class="button-share-fb d-flex align-items-center">Chia sẻ<i class="fab fa-facebook ml-2"></i></a>
     </div>
 </div>
@@ -50,7 +60,8 @@
                     </div>
                     <div class="block-phone mt-3 mb-3">
                         <i class="fa-solid fa-phone"></i>
-                        <span class="text-phone">Hotline: <span style="color:red">{{this.inforFundDetail?.phone}}</span></span>
+                        <span class="text-phone">Hotline: <span
+                                style="color:red">{{this.inforFundDetail?.phone}}</span></span>
                     </div>
                     <div>
                         <i class="fa-regular fa-envelope"></i>
@@ -72,9 +83,11 @@
                         <th>Thời gian</th>
                     </tr>
                     <tr *ngFor="let transaction of this.listTransaction">
-                        <td class="spt-name-sib"><span class="banker-name">{{transaction.isPublic == true ? transaction.userDonate : "Người dùng ẩn danh"}}</span></td>
-                        <td class="baker-donate-money"><span class="woocommerce-Price-amount amount"><bdi>{{transaction.amount}} VND
-                                        </bdi></span></td>
+                        <td class="spt-name-sib"><span class="banker-name">{{transaction.isPublic == true ?
+                                transaction.userDonate : "Người dùng ẩn danh"}}</span></td>
+                        <td class="baker-donate-money"><span
+                                class="woocommerce-Price-amount amount"><bdi>{{transaction.amount}} VND
+                                </bdi></span></td>
                         <td class="baker-donate-date" [innerHTML]="transaction.createdTime"></td>
                     </tr>
                 </tbody>

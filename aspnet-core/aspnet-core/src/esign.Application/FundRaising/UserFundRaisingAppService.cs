@@ -455,10 +455,9 @@ namespace esign.FundRaising
             //}
         }
 
-        public async Task<List<GetFundRaisingViewForAdminDto>> getListPostOfFundRaising([FromBody]InputForGetAllListPost input)
+        public async Task<List<GetFundRaisingViewForAdminDto>> GetListPostOfFundRaising(InputForGetAllListPost input)
         {
             var listPost = (from post in _mstFundRaiserPostRepo.GetAll().Where(e=> input.FilterText == null || e.PostTitle.Contains(input.FilterText))
-                            .Where(e=> input.CreatimePost == null || e.CreationTime.Date == input.CreatimePost.Value.Date)
                             join fund in _mstSleFundRepo.GetAll()
                             on post.FundId equals fund.Id
                             select new GetFundRaisingViewForAdminDto

@@ -4,10 +4,6 @@
     <p-dropdown [style]="{'width':'100%'}" [options]="listOption" [(ngModel)]="isPayFee" optionLabel="name"
         optionValue="code" (onChange)="getAllFundRaising()" placeholder="Trả phí gói"></p-dropdown>
 </div> -->
-<div class="filter-date">
-    <p-calendar name="fundEndDate" [(ngModel)]="input.creatimePost" (onSelect)="onChangeDate($event)" dateFormat="dd/mm/yy"
-        placeholder="Ngày tạo quỹ"></p-calendar>
-</div>
 <div class="list-fund-raising">
     <!-- <div *ngFor="let item of listFundRaising" class="content-item-fund" [routerLink]="['../donation',item.id]">
         <img [src]="baseUrl + item.listImageUrl[0]" alt="" class="image-fund">

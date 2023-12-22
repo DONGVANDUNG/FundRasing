@@ -65,7 +65,7 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
                     {
                         path: 'admin-post',
                         loadChildren: () => import('./app-admin-post/app-admin-post.module').then((m) => m.AppAdminPostModule),
-                        data: { permission: 'Pages.Administration' },
+                        data: { permission: 'Pages.FundRaising' },
                     },
                     {
                         path: 'register-bank',
@@ -80,7 +80,7 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
                     {
                         path: 'auction-admin',
                         loadChildren: () => import('./app-admin-auction/app-admin-auction.module').then((m) => m.AppAdminAuctionModule),
-                        data: { permission: 'Pages.UserDonate' },
+                        data: { permission: 'Pages.FundRaising' },
                     },
                     {
                         path: 'auction-user',
@@ -110,7 +110,7 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
                     {
                         path: 'history-auction',
                         loadChildren: () => import('./app-user-history-auction/app-user-history-auction.module').then((m) => m.AppUserHistoryAuctionModule),
-                        data: { permission: 'Pages.UserDonate.FundRaising' },
+                        data: { permission: 'Pages.UserDonate' },
                     },
                     {
                         path: 'dashboard',

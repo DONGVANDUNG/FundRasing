@@ -5,6 +5,7 @@ import { AdminFundRaisingServiceProxy, InputForGetAllListPost, UserFundRaisingSe
 import { CreateOrEditPostComponent } from '../app-admin-post/create-or-edit-post/create-or-edit-post.component';
 import { DataFormatService } from '@app/shared/common/services/data-format.service';
 import { DataUtil } from '@metronic/app/kt/_utils';
+import { DateTime } from 'luxon';
 
 @Component({
   selector: 'app-app-user-post',
@@ -28,6 +29,7 @@ export class AppUserPostComponent implements OnInit {
   isPayFee;
   createdDate;
   ngOnInit() {
+    this.input.filterText ='';
     this.getAllFundRaising();
   }
   getAllFundRaising() {
@@ -42,10 +44,10 @@ export class AppUserPostComponent implements OnInit {
   formatDateTime(input, format) {
     return this._dateTimeService.formatDate(input as Date, format);
   }
-  onChangeDate(event) {
-    this.createdDateFilter = this.formatDateTime(event, 'yyyy-MM-dd');
-    this.getAllFundRaising();
-  }
+  // onChangeDate(event) {
+  //   this.createdDateFilter = DateTime.fromJSDate(event);
+  //   this.getAllFundRaising();
+  // }
   eventEnter(event) {
     if (event.keyCode === 13) {
       this.getAllFundRaising();

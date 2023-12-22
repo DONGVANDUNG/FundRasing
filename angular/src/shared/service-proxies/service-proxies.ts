@@ -17671,7 +17671,7 @@ export class UserFundRaisingServiceProxy {
      * @return Success
      */
     getListPostOfFundRaising(body: InputForGetAllListPost | undefined): Observable<GetFundRaisingViewForAdminDto[]> {
-        let url_ = this.baseUrl + "/api/services/app/UserFundRaising/getListPostOfFundRaising";
+        let url_ = this.baseUrl + "/api/services/app/UserFundRaising/GetListPostOfFundRaising";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -27949,7 +27949,6 @@ export interface IInformationWebDto {
 
 export class InputForGetAllListPost implements IInputForGetAllListPost {
     filterText!: string | undefined;
-    creatimePost!: DateTime | undefined;
 
     constructor(data?: IInputForGetAllListPost) {
         if (data) {
@@ -27963,7 +27962,6 @@ export class InputForGetAllListPost implements IInputForGetAllListPost {
     init(_data?: any) {
         if (_data) {
             this.filterText = _data["filterText"];
-            this.creatimePost = _data["creatimePost"] ? DateTime.fromISO(_data["creatimePost"].toString()) : <any>undefined;
         }
     }
 
@@ -27977,14 +27975,12 @@ export class InputForGetAllListPost implements IInputForGetAllListPost {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["filterText"] = this.filterText;
-        data["creatimePost"] = this.creatimePost ? this.creatimePost.toString() : <any>undefined;
         return data;
     }
 }
 
 export interface IInputForGetAllListPost {
     filterText: string | undefined;
-    creatimePost: DateTime | undefined;
 }
 
 export class InsertOrUpdateAllValuesInput implements IInsertOrUpdateAllValuesInput {
