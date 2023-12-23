@@ -1,11 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DateTimeService } from '@app/shared/common/timing/date-time.service';
 import { AppConsts } from '@shared/AppConsts';
-import { AdminFundRaisingServiceProxy, InputForGetAllListPost, UserFundRaisingServiceProxy, UserServiceProxy } from '@shared/service-proxies/service-proxies';
+import { AdminFundRaisingServiceProxy, UserFundRaisingServiceProxy, UserServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CreateOrEditPostComponent } from '../app-admin-post/create-or-edit-post/create-or-edit-post.component';
 import { DataFormatService } from '@app/shared/common/services/data-format.service';
 import { DataUtil } from '@metronic/app/kt/_utils';
-import { DateTime } from 'luxon';
 
 @Component({
   selector: 'app-app-user-post',
@@ -21,7 +20,6 @@ export class AppUserPostComponent implements OnInit {
   }, {
     code: false, name: 'Không'
   }];
-  input = new InputForGetAllListPost;
   baseUrl = AppConsts.remoteServiceBaseUrl + '/';
   filter;
   createdDateFilter;
@@ -29,11 +27,10 @@ export class AppUserPostComponent implements OnInit {
   isPayFee;
   createdDate;
   ngOnInit() {
-    this.input.filterText ='';
     this.getAllFundRaising();
   }
   getAllFundRaising() {
-    this._userServiceProxy.getListPostOfFundRaising(this.input).subscribe((result) => {
+    this._userServiceProxy.getListPostOfFundRaising().subscribe((result) => {
       this.listFundRaising = result;
       this.listFundRaising.forEach((item)=>{
         item.amountDonatePresent = this.dataFormatService.moneyFormat(item.amountDonatePresent);
@@ -45,7 +42,7 @@ export class AppUserPostComponent implements OnInit {
     return this._dateTimeService.formatDate(input as Date, format);
   }
   // onChangeDate(event) {
-  //   this.createdDateFilter = DateTime.fromJSDate(event);
+  //   this.input.creatimePost = this.formatDateTime(event, 'yyyy-MM-dd');
   //   this.getAllFundRaising();
   // }
   eventEnter(event) {

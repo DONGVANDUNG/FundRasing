@@ -17667,21 +17667,16 @@ export class UserFundRaisingServiceProxy {
     }
 
     /**
-     * @param body (optional) 
      * @return Success
      */
-    getListPostOfFundRaising(body: InputForGetAllListPost | undefined): Observable<GetFundRaisingViewForAdminDto[]> {
+    getListPostOfFundRaising(): Observable<GetFundRaisingViewForAdminDto[]> {
         let url_ = this.baseUrl + "/api/services/app/UserFundRaising/GetListPostOfFundRaising";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(body);
-
         let options_ : any = {
-            body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json-patch+json",
                 "Accept": "text/plain"
             })
         };
@@ -27945,42 +27940,6 @@ export interface IInformationWebDto {
     fundRaiser: number | undefined;
     amountDonate: number | undefined;
     amountOfMoneyDonate: number | undefined;
-}
-
-export class InputForGetAllListPost implements IInputForGetAllListPost {
-    filterText!: string | undefined;
-
-    constructor(data?: IInputForGetAllListPost) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.filterText = _data["filterText"];
-        }
-    }
-
-    static fromJS(data: any): InputForGetAllListPost {
-        data = typeof data === 'object' ? data : {};
-        let result = new InputForGetAllListPost();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["filterText"] = this.filterText;
-        return data;
-    }
-}
-
-export interface IInputForGetAllListPost {
-    filterText: string | undefined;
 }
 
 export class InsertOrUpdateAllValuesInput implements IInsertOrUpdateAllValuesInput {

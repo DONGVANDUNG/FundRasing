@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { DataFormatService } from '@app/shared/common/services/data-format.service';
 import { AppConsts } from '@shared/AppConsts';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { InputForGetAllListPost, UserFundRaisingServiceProxy } from '@shared/service-proxies/service-proxies';
+import {  UserFundRaisingServiceProxy } from '@shared/service-proxies/service-proxies';
 
 @Component({
     selector: 'app-user-view-home',
@@ -23,7 +23,6 @@ export class UserViewHomeComponent extends AppComponentBase {
     baseUrl = AppConsts.remoteServiceBaseUrl + '/';
     listFundRaising = [] // ARRAY NÀY BAO GỒM ẢNH, TITLE , CONTENT CỦA 1 DỰ ÁN ĐANG GÂY QUỸ, CÓ THỂ LÀ 1 RECORD
     listInforAboutWeb;
-    input = new InputForGetAllListPost();
     isLogin = localStorage.getItem("isLogin");
     constructor(injector: Injector, private router: Router,
         private _userServiceProxy: UserFundRaisingServiceProxy,
@@ -34,7 +33,7 @@ export class UserViewHomeComponent extends AppComponentBase {
             this.isLoading = false;
         }
             , 1000)
-        this._userServiceProxy.getListPostOfFundRaising(this.input).subscribe((result) => {
+        this._userServiceProxy.getListPostOfFundRaising().subscribe((result) => {
             this.listFundRaising = result.slice(0,6);
             this.listFundRaising.forEach((item) => {
                 item.amountDonateTarget = this.dataFormatService.moneyFormat(item.amountDonateTarget);

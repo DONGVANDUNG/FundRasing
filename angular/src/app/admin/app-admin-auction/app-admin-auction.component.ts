@@ -18,7 +18,7 @@ export class AppAdminAuctionComponent extends AppComponentBase implements OnInit
     rowData: any = [];
     defaultColDef;
     filter: string = '';
-    status;
+    status = 1;
     maxResultCount: number = 20;
     skipCount: number = 0;
     sorting: string = '';
@@ -172,6 +172,7 @@ export class AppAdminAuctionComponent extends AppComponentBase implements OnInit
     }
     ngOnInit() {
         this.paginationParams = { pageNum: 1, pageSize: 20, totalCount: 0 };
+        this.status = 1;
         this.onGridReady(this.paginationParams);
     }
 
