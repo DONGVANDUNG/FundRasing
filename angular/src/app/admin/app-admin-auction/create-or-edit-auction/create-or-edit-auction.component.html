@@ -4,8 +4,11 @@
         <div class="modal-content">
             <form *ngIf="active" autocomplete="off">
                 <div class="modal-header">
-                    <h4 class="modal-title">
+                    <h4 *ngIf="!autionItemId" class="modal-title">
                         <span>{{l("Thêm mới bài đăng đấu giá")}}</span>
+                    </h4>
+                    <h4 *ngIf="autionItemId" class="modal-title">
+                        <span>{{l("Sửa bài đăng đấu giá")}}</span>
                     </h4>
                     <div class="block-button d-flex justify-content-end">
                         <button class="tmss-btn btn-outline-primary" (click)="save()">

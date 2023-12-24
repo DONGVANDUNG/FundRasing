@@ -91,8 +91,8 @@ export class AppAdminFundRaiserComponent extends AppComponentBase implements OnI
                 cellClass: ['text-left'],
             },
             {
-                headerName: this.l('Email'),
-                headerTooltip: this.l('Email'),
+                headerName: this.l('Email '),
+                headerTooltip: this.l('Email '),
                 field: 'email',
                 width: 210,
                 cellClass: ['text-left'],
@@ -183,7 +183,7 @@ export class AppAdminFundRaiserComponent extends AppComponentBase implements OnI
 
     getAll(paginationParams: PaginationParamsModel) {
         return this.fundRaising.getAllListFundRaiser(
-            DateTime.fromJSDate(this.createdJoin),
+            //DateTime.fromJSDate(this.createdJoin),
             this.status,
             this.sorting ?? null,
             paginationParams ? paginationParams.skipCount : 0,

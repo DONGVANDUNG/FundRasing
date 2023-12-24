@@ -57,6 +57,7 @@ export class CreateOrEditPostComponent extends AppComponentBase {
         this.listFund = [];
         this.postId = postId;
         this.uploadedFiles = [];
+        this.clearData();
         this._fundRaiser.getListFundName().subscribe(result => {
             result.forEach(item => {
                 this.listFund.push({ label: item.name, value: item.id })

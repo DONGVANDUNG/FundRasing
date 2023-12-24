@@ -2,7 +2,7 @@
 <div class="block-auction">
     <p class="title-header">{{dataAuction?.itemName}}</p>
     <div class="header-auction d-flex">
-        <div class="block-starting-price font-weight-bold">Giá khởi điểm:{{dataAuction?.startingPrice}} VND</div>
+        <div class="block-starting-price font-weight-bold">Giá khởi điểm: {{dataAuction?.startingPrice}} VND</div>
         <span class="name-user-created">{{dataAuction?.isPublic == true ? dataAuction?.userName :
             "Ẩn danh"}}</span>
     </div>
@@ -43,8 +43,14 @@
                 <input type="checkbox" id="is-public" [(ngModel)]="userAuction.isPublic">
             </div>
         </div>
-        <div class="auction-close d-flex justify-content-center align-items-center" *ngIf="dataAuction.isClose">
-            <span>Auction Close</span>
+        <div class="wpneo-single-sidebar d-flex justify-content-end mt-4" *ngIf="dataAuction.isClose">
+            <div class="container1 alert d-flex justify-content-center align-items-center" style="background: #FEF2F5;">
+                <div>
+                    <img class="icon"
+                        src="https://givenow.vn/wp-content/themes/funlin-progression-child/images/icons/ketthuc.svg" alt="icon">
+                </div>
+                <div class="text-alert"> Kết thúc thời gian gây qũy</div>
+            </div>
         </div>
     </div>
     <p-tabView [(activeIndex)]="activeIndex">

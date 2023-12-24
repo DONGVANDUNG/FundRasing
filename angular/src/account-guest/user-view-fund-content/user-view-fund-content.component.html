@@ -48,7 +48,7 @@
                                         <a>{{item.organizationName}}</a>
                                         <h2>{{item.postTitle}}</h2>
                                         <div class="progress-bar">
-                                            <span></span>
+                                            <span [style.width.%]="item.percentAchieved"></span>
                                         </div>
                                         <div class="statistic-bdi d-flex">
                                             <span>{{item.amountDonatePresent}} VND</span>
@@ -73,7 +73,7 @@
                                         <a>{{item.organizationName}}</a>
                                         <h2>{{item.postTitle}}</h2>
                                         <div class="progress-bar">
-                                            <span></span>
+                                            <span [style.width.%]="item.percentAchieved"></span>
                                         </div>
                                         <div class="statistic-bdi d-flex">
                                             <span>{{item.amountDonatePresent}} VND</span>

@@ -20,17 +20,17 @@ export class ContactUsComponent implements OnInit {
     }
     redirectLink(option) {
         if (option === 1) {
-            this.router.navigateByUrl("guest/home");
+            this.router.navigateByUrl("/home");
         }
         if (option === 2) {
-            this.router.navigateByUrl("guest/project");
+            this.router.navigateByUrl("/project");
         }
         if (option === 3) {
-            this.router.navigateByUrl("guest/fund-package");
+            this.router.navigateByUrl("/fund-package");
         }
-        if (option === 4) {
-            this.router.navigateByUrl("guest/about-us");
-        }
+        // if (option === 4) {
+        //     this.router.navigateByUrl("/about-us");
+        // }
     }
     routerLink(){
         this.router.navigateByUrl('/app/notifications');

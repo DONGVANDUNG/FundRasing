@@ -158,13 +158,13 @@ export class AppAdminFundPackageComponent extends AppComponentBase implements On
     }
     clearValueFilter() {
         this.onGridReady(this.paginationParams);
-        this.createdDate = new Date();
+        // this.createdDate = new Date();
         this.typePackage = null;
     }
 
     getAll(paginationParams: PaginationParamsModel) {
         return this._adminServiceProxy.getListFundPackage(
-            DateTime.fromJSDate(this.createdDate),
+            // DateTime.fromJSDate(this.createdDate),
             this.typePackage,
             this.sorting ?? null,
             paginationParams ? paginationParams.skipCount : 0,

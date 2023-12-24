@@ -4,16 +4,16 @@ import { AppUiCustomizationService } from '@shared/common/ui/app-ui-customizatio
 
 const routes: Routes = [
     {
+        path: '',
+        loadChildren: () => import('account-guest/account-guest.module').then((m) => m.AccountGuestModule), //Lazy load account module
+        data: { preload: true },
+    },
+    {
         path: 'account',
         loadChildren: () => import('account/account.module').then((m) => m.AccountModule), //Lazy load account module
         data: { preload: true },
     },
     { path: '', redirectTo: 'app/notification', pathMatch: 'full' },
-    {
-        path: 'guest',
-        loadChildren: () => import('account-guest/account-guest.module').then((m) => m.AccountGuestModule), //Lazy load account module
-        data: { preload: true },
-    },
     { path: '**', redirectTo: 'guest', pathMatch: 'full' },
 ];
 

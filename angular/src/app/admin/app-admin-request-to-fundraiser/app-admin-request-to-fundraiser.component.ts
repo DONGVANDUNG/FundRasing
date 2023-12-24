@@ -157,9 +157,9 @@ export class AppAdminRequestToFundraiserComponent extends AppComponentBase imple
         }
     }
     approve() {
-        this.saving = true;
         if (this.selectedRequest) {
             if (this.isApprove !== true) {
+                this.saving = true;
                 this._adminServiceProxy.approveFundRaiser(this.userId).subscribe(() => {
                     this.notify.success("Phê duyệt thành công");
                     this.saving = false;

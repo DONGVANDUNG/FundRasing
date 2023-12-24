@@ -131,6 +131,7 @@ namespace esign.FundRaising
                                    Phone = user.Phone,
                                    Email = user.EmailAddress,
                                    FundId = fund.Id,
+                                   Introduce = post.TargetIntroduce,
                                    DonateAmount = fund.DonateAmount,
                                    IsCloseFund = fund.Status
                                }).FirstOrDefault();
@@ -434,7 +435,7 @@ namespace esign.FundRaising
         {
             if (input.Id == 0 || input.Id == null)
             {
-                var accountExist = await _mstBankRepo.FirstOrDefaultAsync(e => e.BankNumber == input.BankNumber || e.BankName == input.BankName);
+                var accountExist = await _mstBankRepo.FirstOrDefaultAsync(e => e.BankNumber == input.BankNumber && e.AccountName == input.AccountName);
                 if (accountExist != null)
                 {
                     throw new UserFriendlyException("Tài khoản đã tồn tại trong hệ thống");
@@ -604,8 +605,9 @@ namespace esign.FundRaising
             var inforResult = new InformationWebDto();
             inforResult.Project = _mstSleFundRepo.GetAll().Count();
             inforResult.FundRaiser = _mstSleUserRepo.GetAll().Where(e => e.TypeUser == 3).Count();
-            inforResult.AmountDonate = _mstSleFundTransactionRepo.GetAll().Where(e => e.IsAdmin == false).Count();
-            var listTransaction = _mstSleFundTransactionRepo.GetAll().Where(e => e.IsAdmin == false).ToList();
+            inforResult.AmountDonate = _mstSleFundTransactionRepo.GetAll().Where(e => e.IsAdmin == false || e.IsAdmin == null).Count();
+            var listTransaction = _mstSleFundTransactionRepo.GetAll().Where(e => e.IsAdmin == false || e.IsAdmin == null).ToList();
+            inforResult.AmountOfMoneyDonate = 0;
             foreach (var transaction in listTransaction)
             {
                 inforResult.AmountOfMoneyDonate += transaction.AmountOfMoney;

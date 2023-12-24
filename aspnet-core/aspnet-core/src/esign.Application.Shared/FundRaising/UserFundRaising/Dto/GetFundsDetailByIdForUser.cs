@@ -27,9 +27,7 @@ namespace esign.FundRaising
         public decimal? PaymenFee { get; set; }
         public bool? IsPayeFee { get; set; }
         public int? DonateAmount{ get; set; }
-        public string Purpose { get; set; }
-        public string Note { get; set; }
-        public string Target { get; set; }
+        public string Introduce { get; set; }
         public string AddressOrgnization { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }

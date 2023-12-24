@@ -83,6 +83,14 @@ export class CreateOrEditFundraisingComponent extends AppComponentBase {
             this.notify.warn("Vui lòng nhập thông tin ngày kết thúc quỹ");
             return ;
         }
+        if(this.fundRaisingDate >= this.fundRaisingEndDate){
+            this.notify.warn("Ngày kết thúc phải lớn hơn ngày bắt đầu");
+            return;
+        }
+        if(this.fundRaisingDate < DateTime.now){
+            this.notify.warn("Ngày bắt đầu phải lớn hơn ngày hiện tại");
+            return;
+        }
         this.inputData.fundRaisingDay = DateTime.fromJSDate(this.fundRaisingDate);
         this.inputData.fundEndDate = DateTime.fromJSDate(this.fundRaisingEndDate);
         this._fundRaiser.createOrEditFundRaising(

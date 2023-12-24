@@ -198,58 +198,6 @@ export class AccountServiceProxy {
     }
 
     /**
-     * @param userId (optional) 
-     * @return Success
-     */
-    addBasePermisson(userId: number | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/Account/AddBasePermisson?";
-        if (userId === null)
-            throw new Error("The parameter 'userId' cannot be null.");
-        else if (userId !== undefined)
-            url_ += "userId=" + encodeURIComponent("" + userId) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processAddBasePermisson(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processAddBasePermisson(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<void>;
-        }));
-    }
-
-    protected processAddBasePermisson(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
      * @param body (optional) 
      * @return Success
      */
@@ -1028,19 +976,14 @@ export class AdminFundRaisingServiceProxy {
     }
 
     /**
-     * @param createdDate (optional) 
      * @param typePackage (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getListFundPackage(createdDate: DateTime | undefined, typePackage: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetListFundPackageDto> {
+    getListFundPackage(typePackage: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetListFundPackageDto> {
         let url_ = this.baseUrl + "/api/services/app/AdminFundRaising/GetListFundPackage?";
-        if (createdDate === null)
-            throw new Error("The parameter 'createdDate' cannot be null.");
-        else if (createdDate !== undefined)
-            url_ += "CreatedDate=" + encodeURIComponent(createdDate ? "" + createdDate.toString() : "") + "&";
         if (typePackage === null)
             throw new Error("The parameter 'typePackage' cannot be null.");
         else if (typePackage !== undefined)
@@ -1316,19 +1259,14 @@ export class AdminFundRaisingServiceProxy {
     }
 
     /**
-     * @param createdDate (optional) 
      * @param status (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAllListFundRaiser(createdDate: DateTime | undefined, status: boolean | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetListAccountUserDto> {
+    getAllListFundRaiser(status: boolean | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<PagedResultDtoOfGetListAccountUserDto> {
         let url_ = this.baseUrl + "/api/services/app/AdminFundRaising/getAllListFundRaiser?";
-        if (createdDate === null)
-            throw new Error("The parameter 'createdDate' cannot be null.");
-        else if (createdDate !== undefined)
-            url_ += "CreatedDate=" + encodeURIComponent(createdDate ? "" + createdDate.toString() : "") + "&";
         if (status === null)
             throw new Error("The parameter 'status' cannot be null.");
         else if (status !== undefined)
@@ -25211,9 +25149,7 @@ export class GetFundsDetailByIdForUser implements IGetFundsDetailByIdForUser {
     paymenFee!: number | undefined;
     isPayeFee!: boolean | undefined;
     donateAmount!: number | undefined;
-    purpose!: string | undefined;
-    note!: string | undefined;
-    target!: string | undefined;
+    introduce!: string | undefined;
     addressOrgnization!: string | undefined;
     phone!: string | undefined;
     email!: string | undefined;
@@ -25254,9 +25190,7 @@ export class GetFundsDetailByIdForUser implements IGetFundsDetailByIdForUser {
             this.paymenFee = _data["paymenFee"];
             this.isPayeFee = _data["isPayeFee"];
             this.donateAmount = _data["donateAmount"];
-            this.purpose = _data["purpose"];
-            this.note = _data["note"];
-            this.target = _data["target"];
+            this.introduce = _data["introduce"];
             this.addressOrgnization = _data["addressOrgnization"];
             this.phone = _data["phone"];
             this.email = _data["email"];
@@ -25297,9 +25231,7 @@ export class GetFundsDetailByIdForUser implements IGetFundsDetailByIdForUser {
         data["paymenFee"] = this.paymenFee;
         data["isPayeFee"] = this.isPayeFee;
         data["donateAmount"] = this.donateAmount;
-        data["purpose"] = this.purpose;
-        data["note"] = this.note;
-        data["target"] = this.target;
+        data["introduce"] = this.introduce;
         data["addressOrgnization"] = this.addressOrgnization;
         data["phone"] = this.phone;
         data["email"] = this.email;
@@ -25329,9 +25261,7 @@ export interface IGetFundsDetailByIdForUser {
     paymenFee: number | undefined;
     isPayeFee: boolean | undefined;
     donateAmount: number | undefined;
-    purpose: string | undefined;
-    note: string | undefined;
-    target: string | undefined;
+    introduce: string | undefined;
     addressOrgnization: string | undefined;
     phone: string | undefined;
     email: string | undefined;

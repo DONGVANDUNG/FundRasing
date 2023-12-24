@@ -147,29 +147,29 @@ namespace esign.Authorization.Accounts
                 UserId = user.Id
             };
         }
-        public void AddBasePermisson(int userId)
-        {
-            using (SqlConnection connection = new SqlConnection(_appConfiguration.GetConnectionString("Default")))
-            {
+        //public void AddBasePermisson(int userId)
+        //{
+        //    using (SqlConnection connection = new SqlConnection(_appConfiguration.GetConnectionString("Default")))
+        //    {
                 
-                    connection.Execute(@"
-                            INSERT INTO dbo.AbpPermissions (CreationTime, CreatorUserId, Discriminator, IsGranted, Name, TenantId ,RoleId,UserId) VALUES
-                            (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages',1,3,@p_userId)
-                        ", new
-                    {
-                        p_userId = userId
-                    });
+        //            connection.Execute(@"
+        //                    INSERT INTO dbo.AbpPermissions (CreationTime, CreatorUserId, Discriminator, IsGranted, Name, TenantId ,RoleId,UserId) VALUES
+        //                    (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages',1,3,@p_userId)
+        //                ", new
+        //            {
+        //                p_userId = userId
+        //            });
 
-                    connection.Execute(@"
-                            INSERT INTO dbo.AbpPermissions (CreationTime, CreatorUserId, Discriminator, IsGranted, Name, TenantId ,RoleId,UserId) VALUES
-                            (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages.UserDonate',1,3,@p_userId)
-                        ", new
-                    {
-                        p_userId = userId
-                    });
+        //            connection.Execute(@"
+        //                    INSERT INTO dbo.AbpPermissions (CreationTime, CreatorUserId, Discriminator, IsGranted, Name, TenantId ,RoleId,UserId) VALUES
+        //                    (GetDate(),@p_userId, 'UserPermissionSetting',1,'Pages.UserDonate',1,3,@p_userId)
+        //                ", new
+        //            {
+        //                p_userId = userId
+        //            });
 
-            }
-        }
+        //    }
+        //}
 
         public async Task SendPasswordResetCode(SendPasswordResetCodeInput input)
         {

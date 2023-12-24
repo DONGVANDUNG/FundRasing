@@ -178,10 +178,11 @@ namespace esign.FundRaising
         //    user.LevelWarning += 1;
         //    await _mstSleUserWarningRepo.UpdateAsync(user);
         //}
+        //}
         public async Task<PagedResultDto<GetListFundPackageDto>> GetListFundPackage(FundPackageInputDto input)
         {
             var listFundPackage = from funPackage in _mstSleFundPackageRepo.GetAll().Where(e => e.Status == true)
-                                  .Where(e => input.CreatedDate == null || e.CreationTime.Date == input.CreatedDate.Value.Date)
+                                  //.Where(e => input.CreatedDate == null || e.CreationTime.Date == input.CreatedDate.Value.Date)
                                   .Where(e => input.TypePackage == null || e.Duration == input.TypePackage)
                                   select new GetListFundPackageDto
                                   {
@@ -256,9 +257,10 @@ namespace esign.FundRaising
         public async Task<PagedResultDto<GetListAccountUserDto>> getAllListFundRaiser(GuestAccountForInputDto input)
         {
             var listFundRaiser = from user in _mstSleUserRepo.GetAll().Where(e => e.TypeUser == 3)
-                                 join userPackage in _mstUserFundPackageRepo.GetAll().
-                                 Where(e => input.CreatedDate == null || e.CreationTime.Date == input.CreatedDate.Value.Date)
-                                .Where(e => input.Status == null || e.IsExpired == input.Status) on user.Id equals userPackage.UserId
+                                 join userPackage in _mstUserFundPackageRepo.GetAll()
+                                 //.
+                                // Where(e => input.CreatedDate == null || e.CreationTime.Date == input.CreatedDate.Value.Date)
+                                .Where(e => input.Status == null || e.IsExpired == !input.Status) on user.Id equals userPackage.UserId
                                  join fundPackage in _mstSleFundPackageRepo.GetAll() on userPackage.FundPackageId equals fundPackage.Id
                                  select new GetListAccountUserDto
                                  {

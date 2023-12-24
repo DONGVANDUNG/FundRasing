@@ -29,6 +29,7 @@ export class CreateOrEditAuctionComponent extends AppComponentBase implements On
     defaultColDef;
     startDate;
     endDate;
+    autionItemId;
     rowDataRepreson = [];
     active: boolean = false;
     saving: boolean = false;
@@ -51,6 +52,7 @@ export class CreateOrEditAuctionComponent extends AppComponentBase implements On
             this.modal.show();
         }
         else {
+            this.autionItemId = auctionId;
             this._fundRaiser.getForEditAuction(auctionId)
                 .subscribe((result) => {
                     this.input = result;
@@ -99,6 +101,14 @@ export class CreateOrEditAuctionComponent extends AppComponentBase implements On
         if (!this.input.file) {
             this.notify.warn("Vui chọn ảnh cho vật phẩm");
             return;
+        }
+        if(this.startDate < DateTime.now){
+            this.notify.warn("Ngày bắt đầu không được nhỏ hơn ngày hiện tại");
+            return; 
+        }
+        if(this.startDate >= this.endDate){
+            this.notify.warn("Ngày kết thúc phải lớn hơn ngày bắt đầu");
+            return; 
         }
         this.input.startDate = DateTime.fromJSDate(this.startDate);
         this.input.endDate = DateTime.fromJSDate(this.endDate);

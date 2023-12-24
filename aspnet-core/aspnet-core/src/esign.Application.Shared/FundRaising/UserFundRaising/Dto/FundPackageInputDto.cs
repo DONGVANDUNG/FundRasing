@@ -7,7 +7,7 @@ namespace esign.FundRaising.UserFundRaising.Dto
 {
     public class FundPackageInputDto : PagedAndSortedResultRequestDto
     {
-        public DateTime? CreatedDate { get; set; }
+        //public DateTime? CreatedDate { get; set; }
         public string TypePackage { get; set; }
     }
 }

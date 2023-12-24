@@ -130,6 +130,7 @@ export class UserMenuComponent extends ThemesLayoutBaseComponent implements OnIn
     }
 
     logout(): void {
+        localStorage.setItem("isLogin","N")
         this._authService.logout();
     }
 

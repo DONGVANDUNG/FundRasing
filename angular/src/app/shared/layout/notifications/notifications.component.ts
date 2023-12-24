@@ -41,10 +41,10 @@ export class NotificationsComponent extends AppComponentBase {
 
     ) {
         super(injector);
-        if (!this._permissionChecker.isGranted("Pages.UserDonate")) {
-            this._accountService.addBasePermisson(this._sessionService.userId).subscribe(() => {
-            })
-        }
+        // if (!this._permissionChecker.isGranted("Pages.UserDonate")) {
+        //     this._accountService.addBasePermisson(this._sessionService.userId).subscribe(() => {
+        //     })
+        // }
     }
 
     reloadPage(): void {

@@ -19,22 +19,22 @@ export class FundPackageComponent implements OnInit {
             this.listFundPackage = result;
             this.listFundPackage.forEach(packages => {
                 packages.paymentFee = this.dataFormatService.moneyFormat(packages.paymentFee);
-                packages.commission = this.dataFormatService.moneyFormat(packages.commission);
+                //packages.commission = this.dataFormatService.moneyFormat(packages.commission);
             })
         })
     }
     redirectLink(option) {
         if (option === 1) {
-            this.router.navigateByUrl("guest/home");
+            this.router.navigateByUrl("/home");
         }
         if (option === 2) {
-            this.router.navigateByUrl("guest/project");
+            this.router.navigateByUrl("/project");
         }
-        if (option === 3) {
-            this.router.navigateByUrl("guest/fund-package");
-        }
+        // if (option === 3) {
+        //     this.router.navigateByUrl("/fund-package");
+        // }
         if (option === 4) {
-            this.router.navigateByUrl("guest/about-us");
+            this.router.navigateByUrl("/about-us");
         }
     }
     routerLink(){

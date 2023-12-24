@@ -62,7 +62,7 @@
                             <a>{{item.organizationName ?? null}}</a>
                             <h2>{{item.postTitle ?? null}}</h2>
                             <div class="progress-bar">
-                                <span></span>
+                                <span [style.width.%]="item.percentAchieved"></span>
                             </div>
                             <div class="statistic-bdi d-flex">
                                 <span>{{item.amountDonatePresent}} VND</span>
@@ -99,7 +99,7 @@
                 </li>
                 <li>
                     <span>Tiền ủng hộ</span>
-                    <span>{{listInforAboutWeb.amountOfMoneyDonate ?? null}}</span>
+                    <span>{{listInforAboutWeb.amountOfMoneyDonate ?? null}} VNĐ</span>
                 </li>
             </ul>
         </div>
@@ -152,7 +152,7 @@
                     cho các dự án hay những con người yêu thiện nguyện.
                 </p>
 
-                <div class="button-view-detail">Xem chi tiết</div>
+                <div class="button-view-detail" routerLink="/guest/contac-us">Xem chi tiết</div>
             </div>
         </div>
 

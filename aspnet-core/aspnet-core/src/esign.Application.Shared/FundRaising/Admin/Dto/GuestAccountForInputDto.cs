@@ -7,7 +7,7 @@ namespace esign.FundRaising.Admin.Dto
 {
     public class GuestAccountForInputDto : PagedAndSortedResultRequestDto
     {
-        public DateTime? CreatedDate { get; set; }
+        //public DateTime? CreatedDate { get; set; }
         public bool? Status { get; set; }
     }
 }

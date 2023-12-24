@@ -30,7 +30,7 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
                     {
                         path: 'fundRaising',
                         loadChildren: () => import('./app-admin-fundraising/app-admin-fundraising.module').then((m) => m.AppAdminFundraisingModule),
-                        data: { permission: 'Pages.Administration' },
+                        data: { permission: 'Pages.FundRaising' },
                     },
                     {
                         path: 'transaction',
@@ -50,7 +50,7 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
                     {
                         path: 'checkout',
                         loadChildren: () => import('./app-user-checkout/app-user-checkout.module').then((m) => m.AppUserCheckoutModule),
-                        data: { permission: 'Pages.UserDonate.FundRaising' },
+                        data: { permission: 'Pages.UserDonate' },
                     },
                     { //vãi lều sai chỗ nào chưa? path quá đảk, nok boy  gon nghẻ nhé =)))
                         path: 'users',
@@ -105,7 +105,7 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
                     {
                         path: 'request-to-fundraiser',
                         loadChildren: () => import('./app-admin-request-to-fundraiser/app-admin-request-to-fundraiser.module').then((m) => m.AppAdminRequestToFundraiserModule),
-                        data: { permission: 'Pages.UserDonate' },
+                        data: { permission: 'Pages.Administration' },
                     },
                     {
                         path: 'history-auction',
