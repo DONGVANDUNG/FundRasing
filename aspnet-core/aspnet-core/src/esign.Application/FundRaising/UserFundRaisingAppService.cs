@@ -458,9 +458,9 @@ namespace esign.FundRaising
 
         public async Task<List<GetFundRaisingViewForAdminDto>> GetListPostOfFundRaising()
         {
-            var listPost = (from post in _mstFundRaiserPostRepo.GetAll()
+            var listPost = (from post in _mstFundRaiserPostRepo.GetAll().Where(e => e.Status == 1)
                             //.Where(e=> input.FilterText == null || e.PostTitle.Contains(input.FilterText))
-                            join fund in _mstSleFundRepo.GetAll()
+                            join fund in _mstSleFundRepo.GetAll().Where(e => e.Status == 2)
                             on post.FundId equals fund.Id
                             select new GetFundRaisingViewForAdminDto
                             {
