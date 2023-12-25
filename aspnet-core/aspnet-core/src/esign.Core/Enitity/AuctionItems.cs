@@ -24,7 +24,7 @@ namespace esign.Enitity
         public long? UserId { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
-        public bool? IsClose { get; set; }
+        public int? Status { get; set; }
         public int? Amount { get; set; }
         public bool? IsPublic { get; set; }
     }

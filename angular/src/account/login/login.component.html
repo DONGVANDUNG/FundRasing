@@ -1,23 +1,23 @@
 ﻿<div class="form-container">
-    <p class="title">Welcome back</p>
+    <p class="title">FundRaising</p>
     <form class="form" (ngSubmit)="login()" method="post" #loginForm="ngForm">
         <input type="text" class="input" #userNameOrEmailAddressInput="ngModel" autoFocus autocomplete="new-password"
             [(ngModel)]="loginService.authenticateModel.userNameOrEmailAddress" name="userNameOrEmailAddress" required
-            placeholder="UserName">
+            placeholder="Tên đăng nhập">
         <validation-messages [formCtrl]="userNameOrEmailAddressInput"
             *ngIf="!userNameOrEmailAddressInput.touched"></validation-messages>
         <input type="password" [(ngModel)]="loginService.authenticateModel.password" #passwordInput="ngModel" required
-            class="input" autocomplete="new-password" name="password" maxlength="32" placeholder="Password">
+            class="input" autocomplete="new-password" name="password" maxlength="32" placeholder="Mật khẩu">
         <validation-messages [formCtrl]="passwordInput" *ngIf="!passwordInput.touched"></validation-messages>
-        <p class="page-link">
+        <!-- <p class="page-link">
             <span class="page-link-label d-flex justify-content-center" routerLink="/account/forgot-password">Forgot Password?</span>
-        </p>
-        <button type="submit" [disabled]="!loginForm.form.valid" class="form-btn">Log in</button>
+        </p> -->
+        <button type="submit" [disabled]="!loginForm.form.valid" class="form-btn">Đăng nhập</button>
     </form>
     <p class="sign-up-label d-flex justify-content-center">
-        Don't have an account? <span class="sign-up-link" routerLink="/account/register" routerLinkActive="true">Sign up</span>
+        Bạn chưa có tài khoản? <span class="sign-up-link" routerLink="/account/register" routerLinkActive="true">Đăng ký</span>
     </p>
-    <div class="buttons-container">
+    <!-- <div class="buttons-container">
         <div class="google-login-button">
             <svg stroke="currentColor" fill="currentColor" stroke-width="0" version="1.1" x="0px" y="0px"
                 class="google-icon" viewBox="0 0 48 48" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
@@ -34,5 +34,5 @@
             </svg>
             <span>Log in with Google</span>
         </div>
-    </div>
+    </div> -->
 </div>

@@ -12,7 +12,7 @@
         <div class="block-img-auction">
             <img [src]="baseUrl + dataAuction?.listImage[0]" alt="">
         </div>
-        <div class="form-auction" *ngIf="!dataAuction.isClose">
+        <div class="form-auction" *ngIf="dataAuction.status == 2">
             <div class="auction-content">
                 <div class="item-content">
                     <p>Thời gian còn lại:</p>
@@ -43,7 +43,7 @@
                 <input type="checkbox" id="is-public" [(ngModel)]="userAuction.isPublic">
             </div>
         </div>
-        <div class="wpneo-single-sidebar d-flex justify-content-end mt-4" *ngIf="dataAuction.isClose">
+        <div class="wpneo-single-sidebar d-flex justify-content-end mt-4" *ngIf="dataAuction.status == 3">
             <div class="container1 alert d-flex justify-content-center align-items-center" style="background: #FEF2F5;">
                 <div>
                     <img class="icon"

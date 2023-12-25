@@ -106,7 +106,7 @@ namespace esign.FundRaising
                 post.UserId = AbpSession.UserId;
                 post.TargetIntroduce = input.TargetIntroduce;
                 post.PostTopic = input.PostTopic;
-                post.IsClose = false;
+                post.Status = 1;
                 post.Purpose = input.Purpose;
                 var postId = await _mstFundRaiserPostRepo.InsertAndGetIdAsync(post);
 
@@ -316,7 +316,7 @@ namespace esign.FundRaising
                     auctionItem.StartDate = input.StartDate;
                     auctionItem.EndDate = input.EndDate;
                     auctionItem.UserId = AbpSession.UserId;
-                    auctionItem.IsClose = false;
+                    auctionItem.Status = 1;
                     auctionItem.LimitedPersionJoin = input.LimitedPersionJoin;
                     auctionItem.NumberOfParticipants = 0;
                     auctionItem.TargetAmountOfMoney = input.TargetAmountOfMoney;
@@ -438,9 +438,8 @@ namespace esign.FundRaising
                             AuctionPresentAmount = item.AuctionPresentAmount,
                             StartDate = item.StartDate.Value.ToString("dd/MM/yyyy"),
                             IntroduceItem = item.IntroduceItem,
-                            Status = item.IsClose == false ? "Đang hoạt động" : "Đã đóng",
+                            Status = item.Status == 1 ? "Đã khởi tạo" : item.Status == 2 ? "Đâng hoạt động" :"Đã kết thúc",
                             LimitedPersionJoin = item.LimitedPersionJoin,
-                            IsCloseAuction = item.IsClose
                         };
 
             var totalCount = await query.CountAsync();
@@ -469,7 +468,8 @@ namespace esign.FundRaising
         public async Task<List<GetAllAuctionDto>> getAllAuctionUser()
         {
             var listAuction = (from item in _mstSleAuctionItemsRepo.GetAll().
-                               WhereIf(AbpSession.TenantId != null, e=>e.UserId != AbpSession.UserId)
+                               Where(e=>e.Status == 2).
+                               WhereIf(AbpSession.TenantId != null, e => e.UserId != AbpSession.UserId)
                                join user in _mstSleUserRepo.GetAll() on item.UserId equals user.Id
                                    //|| e.UserId != AbpSession.UserId)
                                select new GetAllAuctionDto
@@ -488,7 +488,7 @@ namespace esign.FundRaising
                                    NextMaximumBid = item.AuctionPresentAmount + item.AmountJumpMax,
                                    ListImage = _mstAuctionImagesRepo.GetAll().Where(e => e.AuctionItemId == item.Id).Select(re => re.ImageUrl).ToList(),
                                    UserCreate = item.IsPublic == true ? user.Surname + " " + user.Name : "Anomongus",
-                                   IsCloseAuction = item.IsClose
+                                   //IsCloseAuction = item.IsClose
                                }).ToListAsync();
 
 
@@ -505,7 +505,7 @@ namespace esign.FundRaising
             TimeSpan timeSpan = DateTime.Now - auctionItem.CreationTime;
             auctionResult.TimeLeft = (int?)timeSpan.TotalDays;
             auctionResult.ListImage = _mstAuctionImagesRepo.GetAll().Where(e => e.AuctionItemId == auctionItem.Id).Select(re => re.ImageUrl).ToList();
-            auctionResult.IsClose = auctionItem.IsClose;
+            auctionResult.Status = auctionItem.Status;
             //auctionResult.UserName = _mstSleUserRepo.FirstOrDefault(e => e.Id == auction.UserId).UserName;
             return auctionResult;
         }
@@ -575,13 +575,13 @@ namespace esign.FundRaising
         public async void ClosePostFundRaising(long postId)
         {
             var post = await _mstFundRaiserPostRepo.FirstOrDefaultAsync(e => e.Id == postId);
-            post.IsClose = true;
+            post.Status = 3;
             await _mstFundRaiserPostRepo.UpdateAsync(post);
         }
         public async void CloseAuctionItem(long auctionItemId)
         {
             var auctionItem = await _mstSleAuctionItemsRepo.FirstOrDefaultAsync(e => e.Id == auctionItemId);
-            auctionItem.IsClose = true;
+            auctionItem.Status = 3;
             await _mstSleAuctionItemsRepo.UpdateAsync(auctionItem);
         }
         public async void PayDepositAuction(long auctionItemId)
@@ -653,7 +653,7 @@ namespace esign.FundRaising
                                    NextMaximumBid = item.AuctionPresentAmount + item.AmountJumpMax,
                                    ListImage = _mstAuctionImagesRepo.GetAll().Where(e => e.AuctionItemId == item.Id).Select(re => re.ImageUrl).ToList(),
                                    UserCreate = item.IsPublic == true ? user.Surname + " " + user.Name : "Anomongus",
-                                   IsCloseAuction = item.IsClose,
+                                   //IsCloseAuction = item.IsClose,
                                    AuctionItemsId = item.Id
                                };
 

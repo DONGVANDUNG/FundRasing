@@ -16,7 +16,7 @@ namespace esign.Enitity
         public long? UserId { get; set; }
         //public string ImageUrl { get; set; }
         public DateTime? FinishDay { get; set; }
-        public bool? IsClose { get; set; }
+        public int? Status { get; set; }
         //Số tiền mục tiêu
         public long? FundId { get; set; }
         //Số tiền hiện tại

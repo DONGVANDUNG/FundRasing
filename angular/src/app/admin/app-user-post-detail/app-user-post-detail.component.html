@@ -22,7 +22,7 @@
             <p>Đã đạt được</p>
             <span class="amount-money-achieved">{{inforFundDetail?.amountDonatePresent}} VND</span>
         </div>
-        <div class="wpneo-single-sidebar d-flex justify-content-end mt-4" *ngIf="this.inforFundDetail.isCloseFund == 2">
+        <div class="wpneo-single-sidebar d-flex justify-content-end mt-4" *ngIf="this.inforFundDetail.isCloseFund == 3">
             <div class="container1 alert d-flex justify-content-center align-items-center" style="background: #FEF2F5;">
                 <div>
                     <img class="icon"
@@ -31,7 +31,7 @@
                 <div class="text-alert"> Kết thúc thời gian gây qũy</div>
             </div>
         </div>
-        <div class="block-donate" *ngIf="this.inforFundDetail.isCloseFund == 1">
+        <div class="block-donate" *ngIf="this.inforFundDetail.isCloseFund == 2">
             <div class="list-image-detail"></div>
             <div class="donation d-flex justify-content-end">
                 <button class="btn-donate" (click)="donateFundRaiser()">Ủng hộ ngay</button>

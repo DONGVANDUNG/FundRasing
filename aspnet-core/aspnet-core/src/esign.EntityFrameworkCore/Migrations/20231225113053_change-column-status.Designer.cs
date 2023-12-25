@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using esign.EntityFrameworkCore;
 
@@ -11,9 +12,11 @@ using esign.EntityFrameworkCore;
 namespace esign.Migrations
 {
     [DbContext(typeof(esignDbContext))]
-    partial class esignDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231225113053_change-column-status")]
+    partial class changecolumnstatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2233,6 +2236,9 @@ namespace esign.Migrations
                     b.Property<long?>("FundId")
                         .HasColumnType("bigint");
 
+                    b.Property<bool?>("IsClose")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -2250,9 +2256,6 @@ namespace esign.Migrations
 
                     b.Property<string>("Purpose")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("Status")
-                        .HasColumnType("int");
 
                     b.Property<string>("TargetIntroduce")
                         .HasColumnType("nvarchar(max)");

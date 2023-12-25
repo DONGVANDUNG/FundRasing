@@ -24009,7 +24009,6 @@ export class GetAllAuctionDto implements IGetAllAuctionDto {
     status!: string | undefined;
     limitedPersionJoin!: number | undefined;
     userCreate!: string | undefined;
-    isCloseAuction!: boolean | undefined;
     auctionItemsId!: number | undefined;
 
     constructor(data?: IGetAllAuctionDto) {
@@ -24046,7 +24045,6 @@ export class GetAllAuctionDto implements IGetAllAuctionDto {
             this.status = _data["status"];
             this.limitedPersionJoin = _data["limitedPersionJoin"];
             this.userCreate = _data["userCreate"];
-            this.isCloseAuction = _data["isCloseAuction"];
             this.auctionItemsId = _data["auctionItemsId"];
         }
     }
@@ -24083,7 +24081,6 @@ export class GetAllAuctionDto implements IGetAllAuctionDto {
         data["status"] = this.status;
         data["limitedPersionJoin"] = this.limitedPersionJoin;
         data["userCreate"] = this.userCreate;
-        data["isCloseAuction"] = this.isCloseAuction;
         data["auctionItemsId"] = this.auctionItemsId;
         return data;
     }
@@ -24109,7 +24106,6 @@ export interface IGetAllAuctionDto {
     status: string | undefined;
     limitedPersionJoin: number | undefined;
     userCreate: string | undefined;
-    isCloseAuction: boolean | undefined;
     auctionItemsId: number | undefined;
 }
 
@@ -24548,7 +24544,7 @@ export class GetAuctionDetailDto implements IGetAuctionDetailDto {
     timeLeft!: number | undefined;
     nextMinimumBid!: number | undefined;
     nextMaximumBid!: number | undefined;
-    isClose!: boolean | undefined;
+    status!: number | undefined;
 
     constructor(data?: IGetAuctionDetailDto) {
         if (data) {
@@ -24579,7 +24575,7 @@ export class GetAuctionDetailDto implements IGetAuctionDetailDto {
             this.timeLeft = _data["timeLeft"];
             this.nextMinimumBid = _data["nextMinimumBid"];
             this.nextMaximumBid = _data["nextMaximumBid"];
-            this.isClose = _data["isClose"];
+            this.status = _data["status"];
         }
     }
 
@@ -24610,7 +24606,7 @@ export class GetAuctionDetailDto implements IGetAuctionDetailDto {
         data["timeLeft"] = this.timeLeft;
         data["nextMinimumBid"] = this.nextMinimumBid;
         data["nextMaximumBid"] = this.nextMaximumBid;
-        data["isClose"] = this.isClose;
+        data["status"] = this.status;
         return data;
     }
 }
@@ -24630,7 +24626,7 @@ export interface IGetAuctionDetailDto {
     timeLeft: number | undefined;
     nextMinimumBid: number | undefined;
     nextMaximumBid: number | undefined;
-    isClose: boolean | undefined;
+    status: number | undefined;
 }
 
 export class GetCurrentLoginInformationsOutput implements IGetCurrentLoginInformationsOutput {

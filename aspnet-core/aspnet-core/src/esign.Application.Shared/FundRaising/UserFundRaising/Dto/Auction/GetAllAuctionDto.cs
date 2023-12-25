@@ -27,7 +27,6 @@ namespace esign.FundRaising.UserFundRaising.Dto.Auction
         public string Status { get; set; }
         public int? LimitedPersionJoin { get; set; }
         public string UserCreate { get; set; }
-        public bool? IsCloseAuction { get; set; }
         public long? AuctionItemsId { get; set; }
     }
 }

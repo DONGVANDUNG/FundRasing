@@ -110,7 +110,7 @@ namespace esign.FundRaising
         }
         public GetFundsDetailByIdForUser GetInforPostById(long Id)
         {
-            var fundRaising = (from post in _mstFundRaiserPostRepo.GetAll().Where(e => e.IsClose == false && e.Id == Id)
+            var fundRaising = (from post in _mstFundRaiserPostRepo.GetAll().Where(e => e.Id == Id)
                                join fund in _mstSleFundRepo.GetAll() on (long)post.FundId equals fund.Id
 
                                //join postImage in _mstFundImageRepo.GetAll() on post.Id equals postImage.PostId
@@ -139,7 +139,7 @@ namespace esign.FundRaising
         }
         public async Task<List<GetListFundRasingDto>> GetAllFundRaising()
         {
-            var listFundOutStanding = (from post in _mstFundRaiserPostRepo.GetAll().Where(e => e.IsClose == false)
+            var listFundOutStanding = (from post in _mstFundRaiserPostRepo.GetAll().Where(e => e.Status == 2)
                                        join fund in _mstSleFundRepo.GetAll() on post.FundId equals fund.Id
                                        join postImage in _mstFundImageRepo.GetAll() on post.Id equals postImage.PostId
                                        //join fundDetail in _mstSleFundDetailRepo.GetAll() on fund.Id equals fundDetail.FundId    
