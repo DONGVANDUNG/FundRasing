@@ -488,7 +488,7 @@ namespace esign.FundRaising
                                        Amount = transaction.AmountOfMoney,
                                        //Content = transaction.MessageToFund,
                                        //FundName = fund.FundName,
-                                       CreatedTime = transaction.CreationTime.ToString("dd/MM/yyyy"),
+                                       CreatedTime = transaction.CreationTime.ToString("dd/MM/yyyy hh:mm"),
                                        IsPublic = transaction.IsPublic
 
                                    }).ToListAsync();
@@ -502,7 +502,7 @@ namespace esign.FundRaising
                                    {
                                        Id = history.Id,
                                        UserAuction = user.Surname + " " + user.Name,
-                                       AuctionDate = history.AuctionDate.Value.ToString("dd/MM/yyyy"),
+                                       AuctionDate = history.AuctionDate.Value.ToString("dd/MM/yyyy hh:mm"),
                                        IsPublic = history.IsPublic,
                                        AmountOfMoney = history.NewAmount
                                    }).OrderByDescending(e=>e.AmountOfMoney).ToListAsync();

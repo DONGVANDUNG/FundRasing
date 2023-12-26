@@ -481,9 +481,9 @@ namespace esign.FundRaising
                                    TitleAuction = item.TitleAuction,
                                    AmountJumpMax = item.AmountJumpMax,
                                    AmountJumpMin = item.AmountJumpMin,
-                                   EndDate = item.EndDate.Value.ToString("dd/MM/yyyy"),
+                                   EndDate = item.EndDate.Value.ToString("dd/MM/yyyy hh:mm"),
                                    StartingPrice = item.StartingPrice,
-                                   StartDate = item.StartDate.Value.ToString("dd/MM/yyyy"),
+                                   StartDate = item.StartDate.Value.ToString("dd/MM/yyyy hh:mm"),
                                    IntroduceItem = item.IntroduceItem,
                                    NextMinimumBid = item.AuctionPresentAmount + item.AmountJumpMin,
                                    NextMaximumBid = item.AuctionPresentAmount + item.AmountJumpMax,
@@ -563,7 +563,7 @@ namespace esign.FundRaising
         }
         public List<GetListComboboxDto> getListFundName()
         {
-            var listFundRaising = from fund in _mstSleFundRepo.GetAll().Where(e => e.Status == 1)
+            var listFundRaising = from fund in _mstSleFundRepo.GetAll().Where(e => e.Status == 2)
                                   .WhereIf(AbpSession.TenantId != null,e=>e.UserId == AbpSession.UserId)
                                   select new GetListComboboxDto
                                   {

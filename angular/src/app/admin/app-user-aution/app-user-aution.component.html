@@ -10,7 +10,7 @@
         <img [src]="baseUrl + auction?.listImage[0]" alt="" name="image">
       </div>
       <br>
-      <p class="text-donate">{{auction.titleAuction}}</p>
+      <h4 class="text-donate">{{auction.titleAuction}}</h4>
       <div class="footer-block-fund">
         <p class="status">Trạng thái:&nbsp;&nbsp; <strong style="color:#4caf50">{{auction.isCloseAuction == true ? "Đã kết thúc" : "Đang diễn ra"}}</strong></p>
         <p class="time-close">Thời gian đóng:&nbsp;&nbsp; <strong>{{auction.endDate}}</strong></p>

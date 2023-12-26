@@ -46,7 +46,7 @@
                 <div class="row align-items-center mt-4 mb-4">
                     <div class="col-md-3">
                         <div class="form-group">
-                            <tmss-combobox [items]="listStatus" 
+                            <tmss-combobox [items]="listStatus"
                             [(ngModel)]="status" [text]="l('Trạng thái')" name="status"
                             [label]="'label'" [key]="'value'" >
                             </tmss-combobox>
@@ -84,6 +84,7 @@
                             (rowSelected)="selectedAccountGuest"
                             [defaultColDef]="defaultColDef"
                             (onGridReady)="onGridReady($event)"
+                            (changePaginationParams)="onGridReady($event)"
                             (callBackEvent)="callBackGrid($event)"
                             [paginationParams]="paginationParams"
                             [rowData]="rowData" [height]="'530px'"></grid-table>

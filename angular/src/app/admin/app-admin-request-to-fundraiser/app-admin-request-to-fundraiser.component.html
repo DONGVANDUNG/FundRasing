@@ -18,6 +18,7 @@
                 <div class="col-md-12">
                     <div class="item col-12">
                         <grid-table [columnDefs]="columnDefs" [defaultColDef]="defaultColDef"
+                           (changePaginationParams)="onGridReady($event)" (changePaginationParams)="onGridReady($event)"
                             (onGridReady)="onGridReady($event)" (callBackEvent)="callBackGrid($event)"
                             (onChangeSelection)="onChangeSelection($event)" [paginationParams]="paginationParams"
                             [rowData]="rowData" [height]="'430px'"></grid-table>

@@ -1,6 +1,7 @@
 ﻿using Abp.Dapper.Repositories;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
+using Abp.UI;
 using esign.Enitity;
 using esign.FundRaising;
 using esign.FundRaising.FundRaiserService.Dto;
@@ -36,8 +37,11 @@ IUnitOfWorkManager unitOfWorkManager)
             //await _auctionItemsRepo.UpdateAsync(auctionItem);
             using (var unitOfWork = _unitOfWorkManager.Begin())
             {
-                var auctionItem1 = _auctionItemsRepo.FirstOrDefault(e => e.Id == auctionItemId);
                 var auctionItem = await _auctionItemsRepo.FirstOrDefaultAsync(e => e.Id == auctionItemId);
+                if(auctionItem.Status == 3)
+                {
+                    throw new UserFriendlyException("Vật phẩm đã kết thúc đấu giá");
+                }
                 UserAuction userAuction = new UserAuction
                 {
                     AmountAuction = amountAuction,

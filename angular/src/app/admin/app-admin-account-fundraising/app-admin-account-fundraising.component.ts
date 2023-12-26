@@ -124,12 +124,12 @@ export class AppAdminAccountFundraisingComponent extends AppComponentBase implem
         this.paginationParams = paginationParams;
         this.paginationParams.skipCount = (paginationParams.pageNum - 1) * paginationParams.pageSize;
         this.maxResultCount = paginationParams.pageSize;
-        this.getAll(this.paginationParams).subscribe((result) => {
-            this.rowData = result.items;
-            this.paginationParams.totalPage = ceil(result.totalCount / this.maxResultCount);
-            this.paginationParams.totalCount = result.totalCount;
-            this.params.api.setRowData(this.rowData);
-        });
+        // this.getAll(this.paginationParams).subscribe((result) => {
+        //     this.rowData = result.items;
+        //     this.paginationParams.totalPage = ceil(result.totalCount / this.maxResultCount);
+        //     this.paginationParams.totalCount = result.totalCount;
+        //     this.params.api.setRowData(this.rowData);
+        // });
     }
 
     callBackGridDepartment(params) {
@@ -155,13 +155,13 @@ export class AppAdminAccountFundraisingComponent extends AppComponentBase implem
         this.onGridReady(this.paginationParams);
     }
 
-    getAll(paginationParams: PaginationParamsModel) {
-        return this.fundRaising.getListFundRaiser(
-            this.sorting ?? null,
-            paginationParams ? paginationParams.skipCount : 0,
-            paginationParams ? paginationParams.pageSize : 20
-        );
-    }
+    // getAll(paginationParams: PaginationParamsModel) {
+    //     return this.fundRaising.getListFundRaiser(
+    //         this.sorting ?? null,
+    //         paginationParams ? paginationParams.skipCount : 0,
+    //         paginationParams ? paginationParams.pageSize : 20
+    //     );
+    // }
     onChangeSelection(paginationParams) {
         const selected = paginationParams.api.getSelectedRows()[0];
         if (selected) {

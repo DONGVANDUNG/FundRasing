@@ -47,7 +47,7 @@
             <div class="row align-items-center">
                 <div class="col-md-12">
                     <div class="item col-12">
-                        <grid-table [columnDefs]="columnDefs" [defaultColDef]="defaultColDef"
+                        <grid-table [columnDefs]="columnDefs" [defaultColDef]="defaultColDef" (changePaginationParams)="onGridReady($event)"
                             (onGridReady)="onGridReady($event)" (callBackEvent)="callBackGrid($event)"
                             [paginationParams]="paginationParams" [rowData]="rowData" [height]="'430px'"></grid-table>
                     </div>

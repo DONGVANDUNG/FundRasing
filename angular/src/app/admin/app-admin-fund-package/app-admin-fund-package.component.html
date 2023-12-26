@@ -45,6 +45,7 @@
                         <grid-table [columnDefs]="columnDefs"
                             [defaultColDef]="defaultColDef"
                             (onGridReady)="onGridReady($event)"
+                            (changePaginationParams)="onGridReady($event)"
                             (onChangeSelection)="onChangeSelection($event)"
                             (callBackEvent)="callBackGrid($event)"
                             [paginationParams]="paginationParams"
