@@ -20966,6 +20966,7 @@ export class CreateOrEditAuctionInputDto implements ICreateOrEditAuctionInputDto
     endDate!: DateTime | undefined;
     targetAmountOfMoney!: number | undefined;
     isPublic!: boolean | undefined;
+    status!: number | undefined;
 
     constructor(data?: ICreateOrEditAuctionInputDto) {
         if (data) {
@@ -20995,6 +20996,7 @@ export class CreateOrEditAuctionInputDto implements ICreateOrEditAuctionInputDto
             this.endDate = _data["endDate"] ? DateTime.fromISO(_data["endDate"].toString()) : <any>undefined;
             this.targetAmountOfMoney = _data["targetAmountOfMoney"];
             this.isPublic = _data["isPublic"];
+            this.status = _data["status"];
         }
     }
 
@@ -21024,6 +21026,7 @@ export class CreateOrEditAuctionInputDto implements ICreateOrEditAuctionInputDto
         data["endDate"] = this.endDate ? this.endDate.toString() : <any>undefined;
         data["targetAmountOfMoney"] = this.targetAmountOfMoney;
         data["isPublic"] = this.isPublic;
+        data["status"] = this.status;
         return data;
     }
 }
@@ -21042,6 +21045,7 @@ export interface ICreateOrEditAuctionInputDto {
     endDate: DateTime | undefined;
     targetAmountOfMoney: number | undefined;
     isPublic: boolean | undefined;
+    status: number | undefined;
 }
 
 export class CreateOrEditFundPackageDto implements ICreateOrEditFundPackageDto {

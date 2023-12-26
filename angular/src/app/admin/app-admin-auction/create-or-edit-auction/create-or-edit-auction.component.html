@@ -65,6 +65,7 @@
                                                 </div>
                                                 <div class="col-7">
                                                     <p-calendar name="fundEndDate" [(ngModel)]="startDate"
+                                                     [showTime]="true" [disabled]="input.status == 2"
                                                         dateFormat="dd/mm/yy"></p-calendar>
                                                 </div>
                                             </div>
@@ -78,8 +79,8 @@
                                                     <i class="fa-solid fa-circle-info"></i>
                                                 </div>
                                                 <div class="col-7">
-                                                    <p-calendar name="fundStartDate" [(ngModel)]="endDate"
-                                                        dateFormat="dd/mm/yy"></p-calendar>
+                                                    <p-calendar name="fundStartDate" [(ngModel)]="endDate" [showTime]="true"
+                                                       [disabled]="input.status == 2" dateFormat="dd/mm/yy"></p-calendar>
                                                 </div>
                                             </div>
                                         </div>
@@ -95,7 +96,7 @@
                                                     <i class="fa-solid fa-circle-info"></i>
                                                 </div>
                                                 <div class="col-7">
-                                                    <p-inputNumber name="amountAuction"
+                                                    <p-inputNumber name="amountAuction" [disabled]="input.status == 2"
                                                         [(ngModel)]="input.amountJumpMin"
                                                         currency="VND"></p-inputNumber>
                                                 </div>
@@ -110,7 +111,7 @@
                                                     <i class="fa-solid fa-circle-info"></i>
                                                 </div>
                                                 <div class="col-7">
-                                                    <p-inputNumber name="amountAuction"
+                                                    <p-inputNumber name="amountAuction" [disabled]="input.status == 2"
                                                         [(ngModel)]="input.amountJumpMax"
                                                         currency="VND"></p-inputNumber>
                                                 </div>
@@ -125,7 +126,7 @@
                                                     <i class="fa-solid fa-circle-info"></i>
                                                 </div>
                                                 <div class="col-7">
-                                                    <p-inputNumber name="amountAuction"
+                                                    <p-inputNumber name="amountAuction" [disabled]="input.status == 2"
                                                         [(ngModel)]="input.startingPrice"
                                                         currency="VND"></p-inputNumber>
                                                 </div>

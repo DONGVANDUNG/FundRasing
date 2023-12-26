@@ -21,5 +21,6 @@ namespace esign.FundRaising.UserFundRaising.Dto.Auction
         public DateTime? EndDate { get; set; }
         public float? TargetAmountOfMoney { get; set; }
         public bool? IsPublic { get; set; }
+        public int? Status { get; set; }
     }
 }

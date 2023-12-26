@@ -59,6 +59,10 @@ export class CreateOrEditAuctionComponent extends AppComponentBase implements On
                     this.startDate = result.startDate;
                     this.endDate = result.endDate;
                     this.startDate = new Date(this.startDate);
+                    // if(this.startDate >= DateTime.now){
+                    //     this.notify.warn("Không được sửa thông tin do đang trong thời gian đấu giá");
+                    //     return;
+                    // }
                     this.endDate = new Date(this.endDate);
                     this.active = true;
                     this.input.file.forEach(image => {
@@ -104,11 +108,11 @@ export class CreateOrEditAuctionComponent extends AppComponentBase implements On
         }
         if(this.startDate < DateTime.now){
             this.notify.warn("Ngày bắt đầu không được nhỏ hơn ngày hiện tại");
-            return; 
+            return;
         }
         if(this.startDate >= this.endDate){
             this.notify.warn("Ngày kết thúc phải lớn hơn ngày bắt đầu");
-            return; 
+            return;
         }
         this.input.startDate = DateTime.fromJSDate(this.startDate);
         this.input.endDate = DateTime.fromJSDate(this.endDate);
@@ -138,6 +142,5 @@ export class CreateOrEditAuctionComponent extends AppComponentBase implements On
             node.size = element.size;
             this.input.file.push(node);
         });
-
     }
 }

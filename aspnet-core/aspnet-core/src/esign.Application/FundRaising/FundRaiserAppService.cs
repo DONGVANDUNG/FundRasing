@@ -307,8 +307,6 @@ namespace esign.FundRaising
         }
         public async Task CreateOrEditItemAuction(CreateOrEditAuctionInputDto input)
         {
-            try
-            {
                 if (input.Id == null || input.Id == 0)
                 {
                     AuctionItems auctionItem = new AuctionItems();
@@ -343,6 +341,10 @@ namespace esign.FundRaising
                 else
                 {
                     var auctionItem = await _mstSleAuctionItemsRepo.FirstOrDefaultAsync(e => e.Id == input.Id);
+                    if(auctionItem.Amount > input.LimitedPersionJoin)
+                    {
+                        throw new UserFriendlyException("Số lượng người tham gia phải lớn hơn số lượng hiện tại");
+                    }
                     if (auctionItem != null)
                     {
                         auctionItem.TitleAuction = input.TitleAuction;
@@ -386,15 +388,14 @@ namespace esign.FundRaising
                         }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Đã xảy ra lỗi trong quá trình tạo phiên đấu giá");
-            }
         }
         public async Task<CreateOrEditAuctionInputDto> getForEditAuction(long? auctionItemId)
         {
             var auctionItem = await _mstSleAuctionItemsRepo.FirstOrDefaultAsync(e => e.Id == auctionItemId);
+            //if(auctionItem.StartDate >= DateTime.Now)
+            //{
+            //    throw new UserFriendlyException("Không thể sửa do đang diễn ra đấu giá");
+            //}
             var auctionResultResponse = new CreateOrEditAuctionInputDto();
             ObjectMapper.Map(auctionItem, auctionResultResponse);
             auctionResultResponse.File = await _mstAuctionImagesRepo.GetAll().Where(e => e.AuctionItemId == auctionItemId).Select(re => new GetInforFileDto
