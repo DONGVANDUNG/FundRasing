@@ -114,6 +114,10 @@ export class CreateOrEditAuctionComponent extends AppComponentBase implements On
             this.notify.warn("Ngày kết thúc phải lớn hơn ngày bắt đầu");
             return;
         }
+        if(this.input.amountJumpMin >=this.input.amountJumpMax){
+            this.notify.warn("Bước nhảy tối đa phải lớn hơn bước nhảy tối thiểu");
+            return;
+        }
         this.input.startDate = DateTime.fromJSDate(this.startDate);
         this.input.endDate = DateTime.fromJSDate(this.endDate);
         this._fundRaiser.createOrEditItemAuction(

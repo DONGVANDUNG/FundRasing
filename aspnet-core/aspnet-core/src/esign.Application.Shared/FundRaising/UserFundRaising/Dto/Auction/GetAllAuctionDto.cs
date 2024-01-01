@@ -24,7 +24,9 @@ namespace esign.FundRaising.UserFundRaising.Dto.Auction
         public int? TimeLeft { get; set; }
         public float? NextMinimumBid { get; set; }
         public float? NextMaximumBid { get; set; }
-        public string Status { get; set; }
+        public int? Status { get; set; }
+        public string StatusString { get; set; }
+
         public int? LimitedPersionJoin { get; set; }
         public string UserCreate { get; set; }
         public long? AuctionItemsId { get; set; }

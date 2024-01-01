@@ -43,13 +43,22 @@
                 <input type="checkbox" id="is-public" [(ngModel)]="userAuction.isPublic">
             </div>
         </div>
-        <div class="wpneo-single-sidebar d-flex justify-content-end mt-4" *ngIf="dataAuction.status == 3">
+        <div class="wpneo-single-sidebar d-flex justify-content-end mr-2" *ngIf="dataAuction.status == 3">
             <div class="container1 alert d-flex justify-content-center align-items-center" style="background: #FEF2F5;">
                 <div>
                     <img class="icon"
                         src="https://givenow.vn/wp-content/themes/funlin-progression-child/images/icons/ketthuc.svg" alt="icon">
                 </div>
-                <div class="text-alert"> Kết thúc thời gian gây quỹ</div>
+                <div class="text-alert"> Kết thúc thời gian đấu giá</div>
+            </div>
+        </div>
+        <div class="wpneo-single-sidebar d-flex justify-content-end mr-2" *ngIf="dataAuction.status == 1">
+            <div class="container1 alert d-flex justify-content-center align-items-center" style="background: #FEF2F5;">
+                <div>
+                    <img class="icon"
+                        src="https://givenow.vn/wp-content/themes/funlin-progression-child/images/icons/ketthuc.svg" alt="icon">
+                </div>
+                <div class="text-alert"> Sắp diễn ra đấu giá</div>
             </div>
         </div>
     </div>

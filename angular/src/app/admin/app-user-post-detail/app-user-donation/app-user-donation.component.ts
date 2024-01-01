@@ -1,4 +1,4 @@
-import { Component, Injector, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Injector, OnInit, Output, ViewChild } from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { AppConsts } from '@shared/AppConsts';
 import { AppComponentBase } from '@shared/common/app-component-base';
@@ -12,6 +12,7 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 })
 export class AppUserDonationComponent extends AppComponentBase implements OnInit {
     @ViewChild("createOrEditModal", { static: true }) modal: ModalDirective;
+    @Output() modalSave = new EventEmitter();
     fundId;
     isLoading;
     amountOfMoney;
@@ -57,7 +58,9 @@ export class AppUserDonationComponent extends AppComponentBase implements OnInit
             () => {
                 this.notify.success("Quyên góp thành công");
                 this.isLoading = false;
-                this.router.navigateByUrl('app/admin/user-post');
+                //this.router.navigateByUrl('app/admin/user-post');
+                this.modal.hide();
+                this.modalSave.emit(null);
             },
             (error => {
                 this.isLoading = false;

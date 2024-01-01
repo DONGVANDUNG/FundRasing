@@ -80,13 +80,15 @@ export class LoginService {
             finallyCallback ||
             (() => {
                 this.spinnerService.hide();
+                //this._router.navigate(['/app/admin/user-post']);
             });
 
         const self = this;
         this._localStorageService.getItem(LoginService.twoFactorRememberClientTokenName, function (err, value) {
             self.authenticateModel.twoFactorRememberClientToken = value?.token;
             self.authenticateModel.singleSignIn = UrlHelper.getSingleSignIn();
-            self.authenticateModel.returnUrl = UrlHelper.getReturnUrl();
+            self.authenticateModel.returnUrl = 'http://localhost:4200/app/admin/user-post' ;
+            //self.authenticateModel.returnUrl = 'http://localhost:4200';
             self.authenticateModel.captchaResponse = captchaResponse;
 
             self._tokenAuthService.authenticate(self.authenticateModel).subscribe({

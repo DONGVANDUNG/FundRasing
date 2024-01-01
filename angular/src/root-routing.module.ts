@@ -4,7 +4,7 @@ import { AppUiCustomizationService } from '@shared/common/ui/app-ui-customizatio
 
 const routes: Routes = [
     {
-        path: '',
+        path: 'account-guest',
         loadChildren: () => import('account-guest/account-guest.module').then((m) => m.AccountGuestModule), //Lazy load account module
         data: { preload: true },
     },
@@ -13,8 +13,8 @@ const routes: Routes = [
         loadChildren: () => import('account/account.module').then((m) => m.AccountModule), //Lazy load account module
         data: { preload: true },
     },
-    { path: '', redirectTo: 'app/notification', pathMatch: 'full' },
-    { path: '**', redirectTo: 'guest', pathMatch: 'full' },
+    { path: '', redirectTo: 'account-guest', pathMatch: 'full' },
+    { path: '**', redirectTo: 'account-guest', pathMatch: 'full' },
 ];
 
 @NgModule({

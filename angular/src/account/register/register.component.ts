@@ -64,7 +64,7 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
                     finalize(() => {
 
                         this.saving = false;
-                        this._router.navigate(['account/login']);
+                        //this._router.navigate(['app/notifications']);
                     },
                     )
                 )
@@ -78,10 +78,12 @@ export class RegisterComponent extends AppComponentBase implements OnInit {
 
                     //Autheticate
                     this.saving = true;
+                    //this._router.navigate(['/app/admin/user-post']);
                     this._loginService.authenticateModel.userNameOrEmailAddress = this.model.userName;
                     this._loginService.authenticateModel.password = this.model.password;
                     this._loginService.authenticate(() => {
                         this.saving = false;
+                        this._router.navigate(['/app/admin/user-post']);
                     });
                 }, error => {
                     this.notify.error(this.l('Đã xảy ra lỗi khi tạo tài khoản'));

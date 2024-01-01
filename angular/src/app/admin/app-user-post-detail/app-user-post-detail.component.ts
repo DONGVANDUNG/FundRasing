@@ -21,12 +21,13 @@ export class AppUserPostDetailComponent extends AppComponentBase implements OnIn
     inforFundDetail;
     imageUrl;
     isLoading;
-    responsiveOptions
+    responsiveOptions = [];
     saving;
     fundId;
     feeFund;
     totalAmount;
     listTransaction;
+    filterText;
     amountOfMoney;
     noteTransaction;
     isFundRaiser:boolean = false;
@@ -51,40 +52,37 @@ export class AppUserPostDetailComponent extends AppComponentBase implements OnIn
             var progress = document.querySelector<HTMLElement>(".span-progress");
             progress.style.width = `${result.percentAchieved}%`
         });
-        this._userServiceProxy.getListTransactionForFund(this.fundId).subscribe(rs => {
-            this.listTransaction = rs;
-            this.listTransaction.forEach(transaction => {
-                //transaction.createdTime = this.dataFormatService.dateFormatTransaction(transaction.createdTime);
-                transaction.amount = this.dataFormatService.moneyFormat(transaction.amount)
-                //transaction.amount = this.dataFormatService.moneyFormat(transaction.amount);
-            })
-        });
+        this.getAllFilter();
         this._userServiceProxy.checkUserIsFundRaiser().subscribe(result=>{
             this.isFundRaiser = result;
         })
-        // const link = 'https://openjavascript.info/2022/08/22/using-json-in-javascript/';
-        // const msg = encodeURIComponent('Hey');
-        // const title = encodeURIComponent(document.querySelector('title').textContent);
-        // console.log([link,msg,title])
-
-        // const buttonShare = document.querySelector<HTMLAnchorElement>('.button-share-fb');
-        // buttonShare.href = `https://www/facebook.com/share.php?u=${link}`
-        // console.log(buttonShare);
         this.init();
+        this.responsiveOptions = [
+            {
+                breakpoint: '300px',
+                numVisible: 1,
+                numScroll: 1
+            },
+            {
+                breakpoint: '600px',
+                numVisible: 2,
+                numScroll: 1
+            }
+        ];
     }
     init() {
-        const buttonShare = document.querySelector<HTMLAnchorElement>('.button-share-fb');
+        const buttonShare = document.querySelector<HTMLAnchorElement>('.button-share-fb-1');
         let postUrl = encodeURI(document.location.href);
         let postTitle = encodeURI("Hi");
-        buttonShare.setAttribute("href", `https://www.facebook.com/sharer.php?u=${postUrl}`)
+        buttonShare.setAttribute("href", `https://www.facebook.com/sharer.php?u=${postUrl}`);
     }
     donateFundRaiser() {
-        if(this.inforFundDetail.isCloseFund === 2){
-            this.notify.warn("Dự án đã kết thúc");
-            return;
-        }
+        // if(this.inforFundDetail.isCloseFund === 3){
+        //     this.notify.warn("Dự án đã kết thúc");
+        //     return;
+        // }
         this._userServiceProxy.checkUserRegisterBankAccount().subscribe((re)=>{
-            if(re === true && this.inforFundDetail.isCloseFund === 1){
+            if(re === true && this.inforFundDetail.isCloseFund === 2){
                 this.modal.show(this.inforFundDetail.fundId);
             }
         })
@@ -92,65 +90,14 @@ export class AppUserPostDetailComponent extends AppComponentBase implements OnIn
     requestToFundRaiser(){
         this.router.navigateByUrl("app/admin/register-fundraiser")
     }
-    //   show(fundId) {
-    //       this.inforFundDetail = new DataDonateForFundInput;
-    //       this.amountOfMoney = undefined;
-    //       this.fundId = fundId;
-    //       this.noteTransaction = undefined;
-    //       this._userServiceProxy.getInforFundRaisingById(fundId).subscribe(result => {
-    //           this.inforFundDetail = result;
-    //           this.imageUrl = this.baseUrl + result.listImageUrl[0];
-    //       })
-    //       this.modal.show();
-    //   }
-    //   close() {
-    //       this.modal.hide();
-    //   }
-    //   limitedCharacter() {
-    //       var input = document.querySelector<HTMLInputElement>('.input-content-donation').value;
-    //       var textLimited = document.querySelector<HTMLElement>('.note-input');
-    //       console.log(input);
-    //       textLimited.textContent = `${256 - input.length} character(s) left`
-    //   }
-    openDonateInterface() {
-        // if (this.activeIndex === 0) {
-        //     this.activeIndex = 1;
-        //     this.textButton = 'Quyên góp';
-        // }
-        // else {
-        //     this.activeIndex = 0
-        //     this.textButton = 'Hủy';
-        // }
-    }
-    //   donateToFund() {
-    //       this.inputData.amountOfMoney = this.amountOfMoney;
-    //       this.inputData.fundId = this.fundId;
-    //       this.inputData.noteTransaction = this.noteTransaction;
-    //       if (this.amountOfMoney == null) {
-    //           this.notify.warn("Nhập số tiền cần quyên góp");
-    //           return;
-    //       }
-    //       this.isLoading = true;
-    //       this._userServiceProxy.donateForFund(this.inputData).subscribe(
-    //           () => {
-    //               this.notify.success("Quyên góp thành công");
-    //               this.isLoading = false;
-    //               this.modal.hide();
-    //           },
-    //           (error => {
-    //               this.notify.error(error);
-    //               this.isLoading = false;
-    //           }
-    //           )
-    //       )
-    //   }
-    // shareFaceBook(){
-    //     const link = encodeURI(window.location.href);
-    //     const msg = encodeURIComponent('Hey');
-    //     const title = encodeURIComponent(document.querySelector('title').textContent);
-    //     console.log([link,msg,title])
-
-    //     const buttonShare = document.querySelector<HTMLElement>('.button-share-fb')[0];
-    //     buttonShare.href = `https://www/facebook.com/share.php?u=${link}`
-    // }
+   getAllFilter(){
+    this._userServiceProxy.getListTransactionForFund(this.fundId,this.filterText).subscribe(rs => {
+        this.listTransaction = rs;
+        this.listTransaction.forEach(transaction => {
+            //transaction.createdTime = this.dataFormatService.dateFormatTransaction(transaction.createdTime);
+            transaction.amount = this.dataFormatService.moneyFormat(transaction.amount)
+            //transaction.amount = this.dataFormatService.moneyFormat(transaction.amount);
+        })
+    });
+   }
 }

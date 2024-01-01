@@ -49,8 +49,8 @@ IUnitOfWorkManager unitOfWorkManager)
                     IsPublic = isPublic,
                     UserId = userId
                 };
-                var amountJumnpMin = auctionItem.AmountJumpMin + auctionItem.AuctionPresentAmount;
-                var amountJumnpMax = auctionItem.AmountJumpMax + auctionItem.AuctionPresentAmount;
+                var amountJumnpMin = auctionItem.AmountJumpMin + amountAuction;
+                var amountJumnpMax = auctionItem.AmountJumpMax + amountAuction;
                 await _userAppService.UserAuction(userAuction);
                 await Clients.All.SendAsync("updateAuction", auctionItem.AuctionPresentAmount, amountJumnpMin, amountJumnpMax);
                 unitOfWork.Complete();

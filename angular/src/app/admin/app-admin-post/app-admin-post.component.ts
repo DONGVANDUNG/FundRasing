@@ -29,7 +29,7 @@ export class AppAdminPostComponent extends AppComponentBase implements OnInit {
     sorting: string = '';
     paginationParams: PaginationParamsModel;
     params: GridParams;
-
+    status;
     advancedFiltersAreShown: boolean;
     createdDate;
     fundRaising;
@@ -192,6 +192,7 @@ export class AppAdminPostComponent extends AppComponentBase implements OnInit {
         const selected = paginationParams.api.getSelectedRows()[0];
         if (selected) {
             this.seletedPost = selected.id;
+            this.status = selected.statusFunds;
         }
     }
     deleteFundPackage() {

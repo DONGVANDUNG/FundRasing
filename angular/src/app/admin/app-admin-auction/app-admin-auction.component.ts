@@ -26,7 +26,7 @@ export class AppAdminAuctionComponent extends AppComponentBase implements OnInit
     params: GridParams;
     advancedFiltersAreShown: boolean;
     createdDate;
-    isCloseAuction = false;
+    statusAuction;
     typeAuction;
     saving = false;
     listStatus = [
@@ -219,7 +219,7 @@ export class AppAdminAuctionComponent extends AppComponentBase implements OnInit
         const selected = paginationParams.api.getSelectedRows()[0];
         if (selected) {
             this.selectedAuction = selected.id;
-            this.isCloseAuction = selected.isCloseAuction
+            this.statusAuction = selected.status
         }
     }
     deleteFundAuction() {

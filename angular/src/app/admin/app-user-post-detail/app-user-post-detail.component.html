@@ -1,7 +1,15 @@
 <div class="body-content-detail-post d-flex justify-content-between">
-    <div class="block-image">
+    <!-- <div class="block-image">
         <img [src]="baseUrl + inforFundDetail?.listImageUrl[0]" alt="" class="image-main">
         <div class="post-topic"></div>
+    </div> -->
+    <div class="block-image">
+        <p-carousel [value]="inforFundDetail?.listImageUrl" [numVisible]="1" [numScroll]="1"
+            [responsiveOptions]="this.responsiveOptions">
+            <ng-template let-product pTemplate="item">
+                <img [src]="baseUrl + product" alt="" class="image-main">
+            </ng-template>
+        </p-carousel>
     </div>
     <div class="block-content-post">
         <p class="title-post">{{inforFundDetail?.postTitle}}
@@ -22,21 +30,23 @@
             <p>Đã đạt được</p>
             <span class="amount-money-achieved">{{inforFundDetail?.amountDonatePresent}} VND</span>
         </div>
-        <div class="wpneo-single-sidebar d-flex justify-content-end mt-4" *ngIf="this.inforFundDetail.isCloseFund == 3">
+        <div class="wpneo-single-sidebar d-flex justify-content-end mt-4" *ngIf="inforFundDetail?.isCloseFund == 3">
             <div class="container1 alert d-flex justify-content-center align-items-center" style="background: #FEF2F5;">
                 <div>
                     <img class="icon"
-                        src="https://givenow.vn/wp-content/themes/funlin-progression-child/images/icons/ketthuc.svg" alt="icon">
+                        src="https://givenow.vn/wp-content/themes/funlin-progression-child/images/icons/ketthuc.svg"
+                        alt="icon">
                 </div>
-                <div class="text-alert"> Kết thúc thời gian gây qũy</div>
+                <div class="text-alert"> Kết thúc thời gian gây quỹ</div>
             </div>
         </div>
-        <div class="block-donate" *ngIf="this.inforFundDetail.isCloseFund == 2">
+        <div class="block-donate" *ngIf="inforFundDetail?.isCloseFund == 2">
             <div class="list-image-detail"></div>
             <div class="donation d-flex justify-content-end">
                 <button class="btn-donate" (click)="donateFundRaiser()">Ủng hộ ngay</button>
-                <button class="btn-raiser" *ngIf="!isFundRaiser" (click)="requestToFundRaiser()">Trở thành sứ giả</button>
-                <a class="button-share-fb d-flex align-items-center">Chia sẻ<i class="fab fa-facebook ml-2"></i></a>
+                <button class="btn-raiser" *ngIf="!isFundRaiser" (click)="requestToFundRaiser()">Trở thành sứ
+                    giả</button>
+                <!-- <a class="button-share-fb d-flex align-items-center">Chia sẻ<i class="fab fa-facebook ml-2"></i></a> -->
             </div>
         </div>
     </div>
@@ -46,7 +56,7 @@
         <p-tabPanel header="Nội dung">
             <div class="block-content d-flex justify-content-between">
                 <div class="content">
-                    <p [innerHTML]="this.inforFundDetail.introduce"></p>
+                    <p [innerHTML]="inforFundDetail?.introduce"></p>
                 </div>
                 <div class="intro-orgnization">
                     <p class="text-infor">Thông tin tổ chức gây quỹ</p>
@@ -70,7 +80,7 @@
         </p-tabPanel>
         <p-tabPanel header="Danh sách ủng hộ">
             <div class="list-donation">
-                <input type="text" class="input-search">
+                <input type="text" class="input-search" [(ngModel)]="filterText" (keyup)="getAllFilter()">
                 <i class="fa-solid fa-magnifying-glass"></i>
             </div>
             <table>
@@ -81,8 +91,8 @@
                         <th>Thời gian</th>
                     </tr>
                     <tr *ngFor="let transaction of this.listTransaction">
-                        <td class="spt-name-sib"><span class="banker-name">{{transaction.isPublic == true ?
-                                transaction.userDonate : "Người dùng ẩn danh"}}</span></td>
+                        <td class="spt-name-sib"><span class="banker-name">{{transaction?.isPublic == true ?
+                                transaction?.userDonate : "Người dùng ẩn danh"}}</span></td>
                         <td class="baker-donate-money"><span
                                 class="woocommerce-Price-amount amount"><bdi>{{transaction.amount}} VND
                                 </bdi></span></td>
@@ -93,4 +103,4 @@
         </p-tabPanel>
     </p-tabView>
 </div>
-<app-user-donation #donate></app-user-donation>
+<app-user-donation #donate (modalSave)="getAllFilter()"></app-user-donation>

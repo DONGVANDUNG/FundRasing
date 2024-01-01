@@ -7129,10 +7129,15 @@ export class FundRaiserServiceProxy {
     }
 
     /**
+     * @param auctionItemId (optional) 
      * @return Success
      */
-    checkUserDepositAuction(): Observable<boolean> {
-        let url_ = this.baseUrl + "/api/services/app/FundRaiser/CheckUserDepositAuction";
+    checkUserDepositAuction(auctionItemId: number | undefined): Observable<boolean> {
+        let url_ = this.baseUrl + "/api/services/app/FundRaiser/CheckUserDepositAuction?";
+        if (auctionItemId === null)
+            throw new Error("The parameter 'auctionItemId' cannot be null.");
+        else if (auctionItemId !== undefined)
+            url_ += "auctionItemId=" + encodeURIComponent("" + auctionItemId) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -17664,14 +17669,19 @@ export class UserFundRaisingServiceProxy {
 
     /**
      * @param fundId (optional) 
+     * @param filterText (optional) 
      * @return Success
      */
-    getListTransactionForFund(fundId: number | undefined): Observable<TransactionOfFundForDto[]> {
+    getListTransactionForFund(fundId: number | undefined, filterText: string | undefined): Observable<TransactionOfFundForDto[]> {
         let url_ = this.baseUrl + "/api/services/app/UserFundRaising/getListTransactionForFund?";
         if (fundId === null)
             throw new Error("The parameter 'fundId' cannot be null.");
         else if (fundId !== undefined)
             url_ += "fundId=" + encodeURIComponent("" + fundId) + "&";
+        if (filterText === null)
+            throw new Error("The parameter 'filterText' cannot be null.");
+        else if (filterText !== undefined)
+            url_ += "filterText=" + encodeURIComponent("" + filterText) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -24010,7 +24020,8 @@ export class GetAllAuctionDto implements IGetAllAuctionDto {
     timeLeft!: number | undefined;
     nextMinimumBid!: number | undefined;
     nextMaximumBid!: number | undefined;
-    status!: string | undefined;
+    status!: number | undefined;
+    statusString!: string | undefined;
     limitedPersionJoin!: number | undefined;
     userCreate!: string | undefined;
     auctionItemsId!: number | undefined;
@@ -24047,6 +24058,7 @@ export class GetAllAuctionDto implements IGetAllAuctionDto {
             this.nextMinimumBid = _data["nextMinimumBid"];
             this.nextMaximumBid = _data["nextMaximumBid"];
             this.status = _data["status"];
+            this.statusString = _data["statusString"];
             this.limitedPersionJoin = _data["limitedPersionJoin"];
             this.userCreate = _data["userCreate"];
             this.auctionItemsId = _data["auctionItemsId"];
@@ -24083,6 +24095,7 @@ export class GetAllAuctionDto implements IGetAllAuctionDto {
         data["nextMinimumBid"] = this.nextMinimumBid;
         data["nextMaximumBid"] = this.nextMaximumBid;
         data["status"] = this.status;
+        data["statusString"] = this.statusString;
         data["limitedPersionJoin"] = this.limitedPersionJoin;
         data["userCreate"] = this.userCreate;
         data["auctionItemsId"] = this.auctionItemsId;
@@ -24107,7 +24120,8 @@ export interface IGetAllAuctionDto {
     timeLeft: number | undefined;
     nextMinimumBid: number | undefined;
     nextMaximumBid: number | undefined;
-    status: string | undefined;
+    status: number | undefined;
+    statusString: string | undefined;
     limitedPersionJoin: number | undefined;
     userCreate: string | undefined;
     auctionItemsId: number | undefined;
@@ -25958,6 +25972,7 @@ export class GetListPostByFundRaisingDto implements IGetListPostByFundRaisingDto
     fundEndDate!: string | undefined;
     fundRaisingDay!: string | undefined;
     status!: string | undefined;
+    statusFunds!: number | undefined;
 
     constructor(data?: IGetListPostByFundRaisingDto) {
         if (data) {
@@ -25982,6 +25997,7 @@ export class GetListPostByFundRaisingDto implements IGetListPostByFundRaisingDto
             this.fundEndDate = _data["fundEndDate"];
             this.fundRaisingDay = _data["fundRaisingDay"];
             this.status = _data["status"];
+            this.statusFunds = _data["statusFunds"];
         }
     }
 
@@ -26006,6 +26022,7 @@ export class GetListPostByFundRaisingDto implements IGetListPostByFundRaisingDto
         data["fundEndDate"] = this.fundEndDate;
         data["fundRaisingDay"] = this.fundRaisingDay;
         data["status"] = this.status;
+        data["statusFunds"] = this.statusFunds;
         return data;
     }
 }
@@ -26023,6 +26040,7 @@ export interface IGetListPostByFundRaisingDto {
     fundEndDate: string | undefined;
     fundRaisingDay: string | undefined;
     status: string | undefined;
+    statusFunds: number | undefined;
 }
 
 export class GetListTransactionForAuctionDto implements IGetListTransactionForAuctionDto {

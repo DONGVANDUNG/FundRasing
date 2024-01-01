@@ -20,7 +20,7 @@
                 </ul>
             </div>
             <div class="col-12 col-md-4 col-lg-2 top-right-nav my-auto text-right d-none d-lg-block">
-                <div *ngIf="isLogin == 'N'"
+                <div *ngIf="isLogin == 'N'  || isLogin == null"
                     class="navbar-expand-xl pr-3 float-right d-flex justify-content-end align-items-center">
                     <a routerLink="/account/login" class="mr-4 text-login">Đăng nhập</a>
                     <span class="text-login">&nbsp;/&nbsp;</span>

@@ -32,8 +32,6 @@ export class AppUserCheckoutComponent extends AppComponentBase implements OnInit
                 item.amountDonatePresent = this.dataFormatService.moneyFormat(item.amountDonatePresent);
                 item.amountDonateTarget = this.dataFormatService.moneyFormat(item.amountDonateTarget);
             });
-            // var process = document.querySelector<HTMLElement>(".progress-bar-checkout");
-            // process.style.width = result.
         })
     }
 

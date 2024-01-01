@@ -25,16 +25,16 @@ export class FundPackageComponent implements OnInit {
     }
     redirectLink(option) {
         if (option === 1) {
-            this.router.navigateByUrl("/home");
+            this.router.navigateByUrl("account-guest/home");
         }
         if (option === 2) {
             this.router.navigateByUrl("/project");
         }
         // if (option === 3) {
-        //     this.router.navigateByUrl("/fund-package");
+        //     this.router.navigateByUrl("account-guest/fund-package");
         // }
         if (option === 4) {
-            this.router.navigateByUrl("/about-us");
+            this.router.navigateByUrl("account-guest/about-us");
         }
     }
     routerLink(){

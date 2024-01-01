@@ -10,11 +10,11 @@ import { UserFundRaisingServiceProxy, UserServiceProxy } from '@shared/service-p
     styleUrls: ['./user-view-fund-content.component.less']
 })
 export class UserViewFundContentComponent implements OnInit {
-    activeIndex = 1;
+    activeIndex = 0;
     listFundPackage = [];
     listFundActive = [];
     listFundClose = [];
-    isLogin = localStorage.getItem("isLogin");
+    isLogin = localStorage.getItem("isLogin");  
     baseUrl = AppConsts.remoteServiceBaseUrl + '/';
     constructor(private router: Router, private _userServiceProxy: UserFundRaisingServiceProxy,
         private dataFormatService: DataFormatService) { }
@@ -44,16 +44,16 @@ export class UserViewFundContentComponent implements OnInit {
     }
     redirectLink(option) {
         if (option === 1) {
-            this.router.navigateByUrl("/home");
+            this.router.navigateByUrl("account-guest/home");
         }
         // if (option === 2) {
         //     this.router.navigateByUrl("/project");
         // }
         if (option === 3) {
-            this.router.navigateByUrl("/fund-package");
+            this.router.navigateByUrl("account-guest/fund-package");
         }
         if (option === 4) {
-            this.router.navigateByUrl("/about-us");
+            this.router.navigateByUrl("account-guest/about-us");
         }
     }
     routerLink(){

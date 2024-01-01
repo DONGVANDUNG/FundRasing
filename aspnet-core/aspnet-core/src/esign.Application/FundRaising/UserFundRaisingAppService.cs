@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 
 namespace esign.FundRaising
 {
@@ -114,7 +115,8 @@ namespace esign.FundRaising
                                join fund in _mstSleFundRepo.GetAll() on (long)post.FundId equals fund.Id
 
                                //join postImage in _mstFundImageRepo.GetAll() on post.Id equals postImage.PostId
-                               join user in _mstSleUserRepo.GetAll() on fund.UserId equals user.Id
+                               join user in _mstSleUserRepo.GetAll()
+                               on fund.UserId equals user.Id
                                select new GetFundsDetailByIdForUser
                                {
                                    Id = post.Id,
@@ -194,6 +196,7 @@ namespace esign.FundRaising
             userCreatedFundId.DonateAmount += 1;
             userCreatedFundId.AmountDonationPresent += input.AmountOfMoney;
             await _mstSleFundRepo.UpdateAsync(userCreatedFundId);
+            var emailUserCreateFund = _mstSleUserRepo.FirstOrDefault(e => e.Id == userCreatedFundId.UserId).EmailAddress;
 
             var fundPackageId = _mstUserFundPackageRepo.FirstOrDefault(e => e.UserId == userCreatedFundId.UserId).FundPackageId;
             var fundPackage = _mstSleFundPackageRepo.FirstOrDefault(e => e.Id == fundPackageId);
@@ -237,7 +240,7 @@ namespace esign.FundRaising
             var transactionAdmin = new FundTransactions();
             transactionAdmin.FundId = input.FundId;
             transactionAdmin.AmountOfMoney = fundPackage.PaymentFee;
-            transactionAdmin.MessageToFund = "Trừ tiền phí gói quỹ";
+            transactionAdmin.MessageToFund = "Trừ tiền phí giao dịch của gói quỹ";
             transactionAdmin.Commission = input.AmountOfMoney * fundPackage.Commission / 100;
             transactionAdmin.Receiver = "Admin";
             transactionAdmin.Sender = userSend;
@@ -252,26 +255,26 @@ namespace esign.FundRaising
             {
                 EmailReceive = userDonateCurrent.EmailAddress,
                 Body = "<p style='font-weight:bold;font-size:18px'>Hệ thống gây quỹ trực tuyến FundRaising.</p>" +
-                          "<p>Cảm ơn bạn đã đóng góp " + input.AmountOfMoney + " VND " + "cho quỹ " + userCreatedFundId.FundName + " vào lúc " + DateTime.Now + "</p>" +
+                          "<p>Cảm ơn bạn đã đóng góp " + string.Format(CultureInfo.GetCultureInfo("en-US"), "{0:C0}", input.AmountOfMoney) + " VND " + "cho quỹ " + userCreatedFundId.FundName + " vào lúc " + DateTime.Now + "</p>" +
                           "<p>Chúng tôi cam kết sẽ sử dụng số tiền của bạn để hỗ trợ những hoàn cảnh khó khăn một cách công khai, kịp thời, hiệu quả!</p>" +
                           "<i style='color:red'>Cảm ơn bạn đã tin tưởng vào sử dụng hệ thống.Chúng tôi cam kết tạo ra một môi trường gây quỹ công bằng, hợp pháp." +
                           "Chúc cho những dự án của bạn sẽ hoàn thành tốt đẹp giúp đỡ cho những hoàn cảnh khó khăn kịp thời, nâng cao chất lượng xã hội.</i>",
-                Subject = "Thông báo trở thành người gây quỹ",
+                Subject = "Thông báo về việc ủng hộ quỹ từ thiện",
             };
 
             SendEmailInputDto sendEmailInputForFundRaiser = new SendEmailInputDto
             {
-                EmailReceive = userDonateCurrent.EmailAddress,
+                EmailReceive = emailUserCreateFund,
                 Body = "<p style='font-weight:bold;font-size:18px'>Hệ thống gây quỹ trực tuyến FundRaising.</p>" +
-                          "<p>Người dùng " + userSend + "đã ủng hộ cho quỹ " + userCreatedFundId.FundName + " số tiền là : " + input.AmountOfMoney + " VND vào lúc " + DateTime.Now + "</p>" +
-                          "<p>Email này được thông báo từ hệ thống trang web gửi tới bạn để giúp bạn năm bắt chi tiết các thông tin về việc làm từ thiện trên hệ thống</p>" +
-                          "<i style='color:red'>Cảm ơn bạn đã tin tưởng vào sử dụng hệ thống.Chúng tôi cam kết tạo ra một môi trường gây quỹ công bằng, hợp pháp." +
+                          "<p>Người dùng " + userSend + " đã ủng hộ cho quỹ " + userCreatedFundId.FundName + " số tiền là : " + string.Format(CultureInfo.GetCultureInfo("en-US"), "{0:C0}", input.AmountOfMoney) + " VND vào lúc " + DateTime.Now + ".</p>" +
+                          "<p>Email này được thông báo từ hệ thống trang web gửi tới bạn để giúp bạn năm bắt chi tiết các thông tin về việc làm từ thiện trên hệ thống.</p>" +
+                          "<i style='color:red'>Cảm ơn bạn đã tin tưởng vào sử dụng hệ thống. Chúng tôi cam kết tạo ra một môi trường gây quỹ công bằng, hợp pháp." +
                           "Chúc cho những dự án của bạn sẽ hoàn thành tốt đẹp giúp đỡ cho những hoàn cảnh khó khăn kịp thời, nâng cao chất lượng xã hội.</i>",
-                Subject = "Thông báo trở thành người gây quỹ",
+                Subject = "Thông báo về việc ủng hộ quỹ từ thiện",
             };
 
-            _sendEmail.SendEmail(sendEmailInputForUser);
-            _sendEmail.SendEmail(sendEmailInputForFundRaiser);
+             _sendEmail.SendEmail(sendEmailInputForUser);
+             _sendEmail.SendEmail(sendEmailInputForFundRaiser);
         }
 
         public float getTotalAmountDonateOfFund(int fundId)
@@ -476,11 +479,12 @@ namespace esign.FundRaising
                             }).ToListAsync();
             return await listPost;
         }
-        public async Task<List<TransactionOfFundForDto>> getListTransactionForFund(int fundId)
+        public async Task<List<TransactionOfFundForDto>> getListTransactionForFund(int fundId,string filterText)
         {
             var listTransaction = (from transaction in _mstSleFundTransactionRepo.GetAll().Where(e => e.FundId == fundId &&
                                    (e.IsAdmin == false || e.IsAdmin == null))
-                                   join user in _mstSleUserRepo.GetAll() on transaction.SenderId equals user.Id
+                                   join user in _mstSleUserRepo.GetAll().Where(e=>filterText == null || e.Name.Contains(filterText))
+                                   on transaction.SenderId equals user.Id
                                    select new TransactionOfFundForDto
                                    {
                                        //Id = transaction.Id,
@@ -488,7 +492,7 @@ namespace esign.FundRaising
                                        Amount = transaction.AmountOfMoney,
                                        //Content = transaction.MessageToFund,
                                        //FundName = fund.FundName,
-                                       CreatedTime = transaction.CreationTime.ToString("dd/MM/yyyy hh:mm"),
+                                       CreatedTime = transaction.CreationTime.ToString("dd/MM/yyyy hh:mm tt"),
                                        IsPublic = transaction.IsPublic
 
                                    }).ToListAsync();
@@ -502,7 +506,7 @@ namespace esign.FundRaising
                                    {
                                        Id = history.Id,
                                        UserAuction = user.Surname + " " + user.Name,
-                                       AuctionDate = history.AuctionDate.Value.ToString("dd/MM/yyyy hh:mm"),
+                                       AuctionDate = history.AuctionDate.Value.ToString("dd/MM/yyyy hh:mm tt"),
                                        IsPublic = history.IsPublic,
                                        AmountOfMoney = history.NewAmount
                                    }).OrderByDescending(e=>e.AmountOfMoney).ToListAsync();
@@ -596,7 +600,7 @@ namespace esign.FundRaising
             var bankAccountUser = _mstBankRepo.FirstOrDefault(e => e.UserId == AbpSession.UserId);
             if (bankAccountUser == null)
             {
-                throw new UserFriendlyException("Bạn chưa đăng ký tài khoản ngân hàng của hệ thống");
+                throw new UserFriendlyException("Bạn chưa đăng ký tài khoản ngân hàng của hệ thống"); 
             };
             return true;
         }
@@ -617,26 +621,7 @@ namespace esign.FundRaising
         public async Task<List<GetListFundRasingDto>> GetAllFundRaisingIsClose()
         {
             var listFundOutStanding = (from post in _mstFundRaiserPostRepo.GetAll()
-                                       join fund in _mstSleFundRepo.GetAll().Where(e => e.Status == 2) on post.FundId equals fund.Id
-                                       join postImage in _mstFundImageRepo.GetAll() on post.Id equals postImage.PostId
-                                       join user in _mstSleUserRepo.GetAll() on fund.UserId equals user.Id
-                                       select new GetListFundRasingDto
-                                       {
-                                           Id = post.Id,
-                                           ListImageUrl = _mstFundImageRepo.GetAll().Where(e => e.PostId == post.Id).Select(re => re.ImageUrl).ToList(),
-                                           AmountDonatePresent = fund.AmountDonationPresent,
-                                           PercentAchieved = (fund.AmountDonationPresent / fund.AmountDonationTarget) * 100,
-                                           PostTitle = post.PostTitle,
-                                           AmountDonateTarget = fund.AmountDonationTarget,
-                                           PostTopic = post.PostTopic,
-                                           OrganizationName = user.Company
-                                       }).ToListAsync();
-            return await listFundOutStanding;
-        }
-        public async Task<List<GetListFundRasingDto>> GetAllFundRaisingIsActive()
-        {
-            var listFundOutStanding = (from post in _mstFundRaiserPostRepo.GetAll()
-                                       join fund in _mstSleFundRepo.GetAll().Where(e => e.Status == 1) on post.FundId equals fund.Id
+                                       join fund in _mstSleFundRepo.GetAll().Where(e => e.Status == 3) on post.FundId equals fund.Id
                                        join postImage in _mstFundImageRepo.GetAll() on post.Id equals postImage.PostId
                                        join user in _mstSleUserRepo.GetAll() on fund.UserId equals user.Id
                                        select new GetListFundRasingDto
@@ -649,6 +634,27 @@ namespace esign.FundRaising
                                            AmountDonateTarget = fund.AmountDonationTarget,
                                            PostTopic = post.PostTopic,
                                            OrganizationName = user.Company,
+                                           FundId = fund.Id
+                                       }).ToListAsync();
+            return await listFundOutStanding;
+        }
+        public async Task<List<GetListFundRasingDto>> GetAllFundRaisingIsActive()
+        {
+            var listFundOutStanding = (from post in _mstFundRaiserPostRepo.GetAll()
+                                       join fund in _mstSleFundRepo.GetAll().Where(e => e.Status == 2) on post.FundId equals fund.Id
+                                       join postImage in _mstFundImageRepo.GetAll() on post.Id equals postImage.PostId
+                                       join user in _mstSleUserRepo.GetAll() on fund.UserId equals user.Id
+                                       select new GetListFundRasingDto
+                                       {
+                                           Id = post.Id,
+                                           ListImageUrl = _mstFundImageRepo.GetAll().Where(e => e.PostId == post.Id).Select(re => re.ImageUrl).ToList(),
+                                           AmountDonatePresent = fund.AmountDonationPresent,
+                                           PercentAchieved = (fund.AmountDonationPresent / fund.AmountDonationTarget) * 100,
+                                           PostTitle = post.PostTitle,
+                                           AmountDonateTarget = fund.AmountDonationTarget,
+                                           PostTopic = post.PostTopic,
+                                           OrganizationName = user.Company,
+                                           FundId = fund.Id
                                        }).ToListAsync();
             return await listFundOutStanding;
         }

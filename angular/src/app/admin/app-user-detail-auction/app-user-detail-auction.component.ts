@@ -67,7 +67,7 @@ export class AppUserDetailAuctionComponent extends AppComponentBase implements O
         this.checkUserDeposit();
     }
     checkUserDeposit() {
-        this._fundRaiser.checkUserDepositAuction().subscribe(re => {
+        this._fundRaiser.checkUserDepositAuction(this.auctionItemId).subscribe(re => {
             this.isDeposit = re;
         })
     }
@@ -94,11 +94,10 @@ export class AppUserDetailAuctionComponent extends AppComponentBase implements O
 
 
     init() {
-        this.subscribeToEvent('app.chat.updateAmountAuction', (amountPresent, amountJumnpMin, amountJumnpMax, isValidAuction) => {
+        this.subscribeToEvent('app.chat.updateAmountAuction', (amountPresent, amountJumnpMin, amountJumnpMax) => {
             this.dataAuction.auctionPresentAmount = this.dataFormateService.moneyFormat(amountPresent);
             this.dataAuction.nextMinimumBid = this.dataFormateService.moneyFormat(amountJumnpMin);
             this.dataAuction.nextMaximumBid = this.dataFormateService.moneyFormat(amountJumnpMax);
-            this.isValidAuction = isValidAuction;
             this.nextMinimumBid = amountJumnpMin;
             this.nextMaximumBid = amountJumnpMax;
         });

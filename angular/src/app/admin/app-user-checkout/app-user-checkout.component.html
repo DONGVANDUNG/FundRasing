@@ -25,7 +25,7 @@
                 <a>{{item.organizationName}}</a>
                 <h3>{{item.postTitle}}</h3>
                 <div class="progress-bar-checkout">
-                    <span></span>
+                    <span [style.width.%]="item.percentAchieved"></span>
                 </div>
                 <div class="statistic-bdi d-flex">
                     <span>{{item.amountDonatePresent}} VND</span>

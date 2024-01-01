@@ -12,7 +12,7 @@
       <br>
       <h4 class="text-donate">{{auction.titleAuction}}</h4>
       <div class="footer-block-fund">
-        <p class="status">Trạng thái:&nbsp;&nbsp; <strong style="color:#4caf50">{{auction.isCloseAuction == true ? "Đã kết thúc" : "Đang diễn ra"}}</strong></p>
+        <p class="status">Trạng thái:&nbsp;&nbsp; <strong style="color:#4caf50">{{auction.status == 1 ? "Sắp diễn ra" : auction.status == 2 ? "Đang diễn ra" : "Đã kết thúc"}}</strong></p>
         <p class="time-close">Thời gian đóng:&nbsp;&nbsp; <strong>{{auction.endDate}}</strong></p>
         <!-- <button class="btn-donate">{{auction.startingPrice}} VND</button>
         <p class="text-footer">{{auction.userCreate}}</p> -->

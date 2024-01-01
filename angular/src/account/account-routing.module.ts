@@ -12,11 +12,16 @@ import { LoginComponent } from './login/login.component';
                 path: '',
                 component: AccountComponent,
                 children: [
-                    { path: '', redirectTo: 'login',pathMatch:'full'},
+                    { path: '', redirectTo: 'account-guest',pathMatch:'full'},
                     {
                         path: 'login',
                         loadChildren: () => import('./login/login.module').then((m) => m.LoginModule),
                         canActivate: [AccountRouteGuard],
+                    },
+                    {
+                        path: 'account-guest',
+                        loadChildren: () => import('account-guest/account-guest.module').then((m) => m.AccountGuestModule),
+                        //canActivate: [AccountRouteGuard],
                     },
                     {
                         path: 'register',
@@ -126,7 +131,7 @@ import { LoginComponent } from './login/login.component';
                         loadChildren: () =>
                             import('./login/session-lock-screen.module').then((m) => m.SessionLockScreenModule),
                     },
-                    { path: '**', redirectTo: 'login' },
+                    { path: '**', redirectTo: 'account-guest' },
                 ],
             },
         ]),

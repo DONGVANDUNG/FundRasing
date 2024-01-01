@@ -8,9 +8,10 @@ import { LoadingAdminComponent } from '../app-admin-post/loadingAdmin';
 import { AccordionModule } from 'primeng/accordion';
 import { TabViewModule } from 'primeng/tabview';
 import { AppUserDonationComponent } from './app-user-donation/app-user-donation.component';
+import { CarouselModule } from 'primeng/carousel';
 @NgModule({
   imports: [
-    CommonModule,AppUserPostDetailRoutingModule,AdminSharedModule,AccordionModule,SliderModule,TabViewModule
+    CommonModule,AppUserPostDetailRoutingModule,AdminSharedModule,AccordionModule,SliderModule,TabViewModule,CarouselModule
   ],
   declarations: [AppUserPostDetailComponent,LoadingAdminComponent,AppUserDonationComponent]
 })

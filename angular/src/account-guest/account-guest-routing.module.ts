@@ -13,7 +13,7 @@ const routes: Routes = [
             {
                 path: 'home',
                 loadChildren: () => import('./user-view-home/user-view-home.module').then((m) => m.UserViewHomeModule), //Lazy load account module
-                data: { preload: true },
+                //data: { preload: true },
             },
             {
                 path: 'fund-package',

@@ -16,7 +16,8 @@ export class UserViewFundDetailComponent extends AppComponentBase implements OnI
     baseUrl = AppConsts.remoteServiceBaseUrl + '/';
     isFundRaiser;
     dataPost;
-    activeIndex = 1;
+    activeIndex = 0;
+    filterText;
     listTransaction= [];
     fundId;
     isLogin = localStorage.getItem("isLogin");
@@ -37,14 +38,7 @@ export class UserViewFundDetailComponent extends AppComponentBase implements OnI
             var progress = document.querySelector<HTMLElement>(".span-progress");
             progress.style.width = `${result.percentAchieved}%`
         });
-        this._userServiceProxy.getListTransactionForFund(this.fundId).subscribe(rs => {
-            this.listTransaction = rs;
-            this.listTransaction.forEach(transaction => {
-                transaction.createdTime = this.dataFormatService.dateFormatTransaction(transaction.createdTime);
-                transaction.amount = this.dataFormatService.moneyFormat(transaction.amount)
-                //transaction.amount = this.dataFormatService.moneyFormat(transaction.amount);
-            })
-        });
+       this.getAllFilter();
         this._userServiceProxy.checkUserIsFundRaiser().subscribe(result => {
             this.isFundRaiser = result;
         });
@@ -66,20 +60,20 @@ export class UserViewFundDetailComponent extends AppComponentBase implements OnI
         const buttonShare = document.querySelector<HTMLAnchorElement>('.button-share-fb');
         let postUrl = encodeURI(document.location.href);
         let postTitle = encodeURI("Hi");
-        buttonShare.setAttribute("href", `https://www.facebook.com/sharer.php?u=${postUrl}`)
+        buttonShare.setAttribute("href", `https://www.facebook.com/sharer.php?u=${postUrl}`);
     }
     redirectLink(option) {
         if (option === 1) {
-            this.router.navigateByUrl("/home");
+            this.router.navigateByUrl("account-guest/home");
         }
         // if (option === 2) {
         //     this.router.navigateByUrl("/project");
         // }
         if (option === 3) {
-            this.router.navigateByUrl("/fund-package");
+            this.router.navigateByUrl("account-guest/fund-package");
         }
         if (option === 4) {
-            this.router.navigateByUrl("/about-us");
+            this.router.navigateByUrl("account-guest/about-us");
         }
     }
     requestToFundRaiser(){
@@ -90,5 +84,15 @@ export class UserViewFundDetailComponent extends AppComponentBase implements OnI
     }
     routerLink(){
         this.router.navigateByUrl('/app/notifications');
+    }
+    getAllFilter(){
+        this._userServiceProxy.getListTransactionForFund(this.fundId,this.filterText).subscribe(rs => {
+            this.listTransaction = rs;
+            this.listTransaction.forEach(transaction => {
+                //transaction.createdTime = this.dataFormatService.dateFormatTransaction(transaction.createdTime);
+                transaction.amount = this.dataFormatService.moneyFormat(transaction.amount)
+                //transaction.amount = this.dataFormatService.moneyFormat(transaction.amount);
+            })
+        });
     }
 }

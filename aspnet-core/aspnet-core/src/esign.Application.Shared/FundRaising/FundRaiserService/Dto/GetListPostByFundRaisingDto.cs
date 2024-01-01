@@ -19,5 +19,6 @@ namespace esign.FundRaising.FundRaiserService.Dto
         public string FundEndDate { get; set; }
         public string FundRaisingDay { get; set; }
         public string Status { get; set; }
+        public int? StatusFunds { get; set; }
     }
 }

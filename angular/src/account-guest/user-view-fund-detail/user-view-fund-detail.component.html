@@ -81,9 +81,7 @@
                         <p-tabPanel header="Nội dung">
                             <div class="block-content d-flex justify-content-between">
                                 <div class="content">
-                                    <p><strong>*Mục đích:&nbsp;</strong><span>{{this.dataPost?.purpose}}</span></p>
-                                    <p><strong>*Mục tiêu:&nbsp;</strong><span>{{this.dataPost?.target}}</span></p>
-                                    <p><strong>*</strong><span>{{this.dataPost?.note}}</span></p>
+                                    <p [innerHTML]="this.dataPost.introduce"></p>
                                 </div>
                                 <div class="intro-orgnization">
                                     <p class="text-infor">Thông tin tổ chức gây quỹ</p>
@@ -107,7 +105,7 @@
                         </p-tabPanel>
                         <p-tabPanel header="Danh sách ủng hộ">
                             <div class="list-donation">
-                                <input type="text" class="input-search">
+                                <input type="text" class="input-search" [(ngModel)]="filterText" name="filter"(keyup)="getAllFilter()">
                                 <i class="fa-solid fa-magnifying-glass"></i>
                             </div>
                             <table>
